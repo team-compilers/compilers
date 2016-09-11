@@ -16,7 +16,7 @@ FLAGS=-lfl -O2 -std=c++11 -I"src/astNodes" -I"src/grammar" -I"src/visitors" -I"s
 SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/astNodes/AstNodeNames.cpp src/visitors/Visitor.cpp src/visitors/DotLangVisitor.cpp src/visitors/TypeCheckerVisitor.cpp src/visitors/PrintCodeVisitor.cpp src/visitors/SymbolTableBuilderVisitor.cpp src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp
 
 $(TRG): $(SRC)
-	$(CC) $(FLAGS) $(SRC) -o $(TRG)
+	$(CC) $(SRC) -o $(TRG) $(FLAGS)
 
 $(FLEX_TRG): $(FLEX_SRC) $(BISON_TRG_HPP)
 	$(FLEX) -o $(FLEX_TRG) $(FLEX_SRC)
