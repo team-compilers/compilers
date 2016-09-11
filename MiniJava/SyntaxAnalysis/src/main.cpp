@@ -49,9 +49,7 @@ int main(int argc, char* argv[]) {
         std::shared_ptr<const std::vector<CCompilationError>> errors = visitor.Errors();
         std::cout << "Errors number: " << errors->size() << std::endl;
         for(const CCompilationError& error : *errors) {
-        	const CLocation& location = error.Location();
-        	std::cout << location.firstLine << ':' << location.firstColumn << ' ';
-        	std::cout << error.Message() << std::endl;
+        	std::cout << error.ToString() << error.Message() << std::endl;
         }
     } else {
         printHelp(argv[0]);
