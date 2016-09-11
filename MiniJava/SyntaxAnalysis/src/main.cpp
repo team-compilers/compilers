@@ -46,7 +46,13 @@ int main(int argc, char* argv[]) {
         CSymbolTableBuilderVisitor visitor( true );
         visitor.Visit( astRoot.get() );
         std::shared_ptr<const CSymbolTable> tablePtr = visitor.SymbolTable();
-        std::cout << tablePtr->GetClassDefinition( "Factorial" ) << std::endl;
+        std::shared_ptr<const std::vector<CCompilationError>> errors = visitor.Errors();
+        std::cout << "Errors number: " << errors->size() << std::endl;
+        for(const CCompilationError& error : *errors) {
+        	const CLocation& location = error.Location();
+        	std::cout << location.firstLine << ':' << location.firstColumn << ' ';
+        	std::cout << error.Message() << std::endl;
+        }
     } else {
         printHelp(argv[0]);
         throw std::logic_error("Wrong mode provided");
