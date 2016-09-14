@@ -26,7 +26,8 @@ struct CBinaryExpression: public IExpression {
 
     TOperandType Operation;
 
-    IExpression* LeftOperand, RightOperand;
+    IExpression* LeftOperand;
+    IExpression* RightOperand;
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };

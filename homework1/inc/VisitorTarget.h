@@ -4,11 +4,11 @@
 #ifndef VISITOR_TARGET
 #define VISITOR_TARGET
 
-class IVisitor;
+#include <Visitor.h>
 
 class IVisitorTarget {
-    public:
-        virtual void Accept( IVisitor* visitor ) = 0;
+public:
+    virtual void Accept( IVisitor* visitor ) = 0;
 };
 
 #endif
