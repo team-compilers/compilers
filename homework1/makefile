@@ -1,8 +1,10 @@
 CC=g++
-FLAGS=
+HEADERS=./inc
+SRC=./src
+FLAGS=-O2 -std=c++11
 
-homework: main.cpp PrintVisitor.cpp
-	$(CC) $(FLAGS) -o $@ $^
+homework: $(SRC)/*.cpp
+	$(CC) -I$(HEADERS) $(FLAGS) -o $@ $^
 
 clean:
 	rm -f homework

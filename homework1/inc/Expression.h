@@ -1,6 +1,9 @@
 // Author: Alexey Zhuravlev
 // Description: Expression Interface and it's implementations
 
+#ifndef EXPRESSION
+#define EXPRESSION
+
 #include <Visitor.h>
 #include <VisitorTarget.h>
 #include <string>
@@ -73,3 +76,5 @@ struct CSingleElementListExpression : public IListExpression {
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };
+
+#endif
