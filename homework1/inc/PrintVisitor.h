@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <stack>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -14,19 +13,29 @@
 class CPrintVisitor : public IVisitor {
     std::unordered_map<std::string, std::vector<std::string>> treeEdges;
     std::unordered_map<std::string, int> nodeTypeLastUsedIndex;
-    std::stack<std::string> visitedNodeStack;
+    std::vector<std::string> visitedNodeStack;
 
-    // generates unique id for nodes of one type
+    // Generates unique id for nodes of one type.
     int generateNodeNextIndex( const std::string& nodeType );
 
-    // generates full node name based on the node type and a unique id assigned to the node
+    // Generates full node name based on the node type and a unique id assigned to the node.
     std::string generateNodeName( const std::string& nodeTypeName );
 
-    // adds edge (nodeFromName; nodeToName) to treeEdges
+    // Adds edge (nodeFromName; nodeToName) to treeEdges.
     void addEdge( const std::string& nodeFromName, const std::string& nodeToName );
 
+    // Maps each TOperandType to a string.
     std::string toString( const TOperandType& type ) const;
 
+    // Generates a string, representing the last traversal of the tree, in Dot Language.
+    // Dot Language is the one supported by GraphViz.
+    std::string GetTraversalInDotLanguage() const;
+
+    // Resets the initial state of the object.
+    // Should be used before every tree traversal (except the first one).
+    void Clear();
+
+    // Visitors for different node types.
     void Visit( CBinaryExpression* expression ) override;
     void Visit( CNumberExpression* expression ) override;
     void Visit( CIdExpression* expression ) override;

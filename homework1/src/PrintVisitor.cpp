@@ -32,24 +32,34 @@ std::string CPrintVisitor::toString( const TOperandType& type ) const {
     return result;
 }
 
+std::string CPrintVisitor::GetTraversalInDotLanguage() const {
+    return std::string();
+}
+
+void CPrintVisitor::Clear() {
+    treeEdges.clear();
+    nodeTypeLastUsedIndex.clear();
+    visitedNodeStack.clear();
+}
+
 void CPrintVisitor::Visit( CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( "OpExp" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     expression->LeftOperand->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 
     addEdge( nodeName,  generateNodeName( toString( expression->Operation ) ) );
 
     expression->RightOperand->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 }
 
 void CPrintVisitor::Visit( CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( "NumExp" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     std::string valueNodeName = generateNodeName( "Value" ) + ": " + std::to_string( expression->Value );
     addEdge( nodeName, valueNodeName );
@@ -57,7 +67,7 @@ void CPrintVisitor::Visit( CNumberExpression* expression ) {
 
 void CPrintVisitor::Visit( CIdExpression* expression ) {
     std::string nodeName = generateNodeName( "IdExp" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     std::string valueNodeName = generateNodeName( "Id" ) + ": " + expression->Name;
     addEdge( nodeName, valueNodeName );
@@ -65,57 +75,57 @@ void CPrintVisitor::Visit( CIdExpression* expression ) {
 
 void CPrintVisitor::Visit( CPairListExpression* expression ) {
     std::string nodeName = generateNodeName( "PairExpList" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     expression->Head->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 
     expression->Tail->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 }
 
 void CPrintVisitor::Visit( CSingleElementListExpression* expression ) {
     std::string nodeName = generateNodeName( "LastExpList" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     expression->Element->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 }
 
 void CPrintVisitor::Visit( CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( "PrintStm" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     statement->PrintList->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 }
 
 void CPrintVisitor::Visit( CAssignStatement* statement ) {
     std::string nodeName = generateNodeName( "AssignStm" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     statement->LeftValue->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 
     statement->RightValue->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 }
 
 void CPrintVisitor::Visit( CCompoundStatement* statement ) {
     std::string nodeName = generateNodeName( "CompoundStm" );
-    visitedNodeStack.push( nodeName );
+    visitedNodeStack.push_back( nodeName );
 
     statement->First->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 
     statement->Second->Accept( this );
-    addEdge( nodeName, visitedNodeStack.top() );
-    visitedNodeStack.pop();
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 }
