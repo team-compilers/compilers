@@ -5,13 +5,14 @@
 #define VISITOR
 
 struct CBinaryExpression;
+enum class TOperandType : char;
 struct CNumberExpression;
 struct CIdExpression;
 struct CPairListExpression;
 struct CSingleElementListExpression;
 struct CPrintStatement;
 struct CAssignStatement;
-struct CCompountStatement;
+struct CCompoundStatement;
 
 class IVisitor {
 public:
@@ -22,7 +23,7 @@ public:
     virtual void Visit( CSingleElementListExpression* expression ) = 0;
     virtual void Visit( CPrintStatement* statement ) = 0;
     virtual void Visit( CAssignStatement* statement ) = 0;
-    virtual void Visit( CCompountStatement* statement ) = 0;
+    virtual void Visit( CCompoundStatement* statement ) = 0;
 };
 
 #endif

@@ -11,7 +11,7 @@
 class IStatement : public IVisitorTarget {
 };
 
-struct CCompountStatement : public IStatement {
+struct CCompoundStatement : public IStatement {
     IStatement* First; // First statement of the compound
     IStatement* Second; // Second statement of the compound
 

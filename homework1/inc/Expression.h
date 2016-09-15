@@ -13,16 +13,16 @@ class IExpression : public IVisitorTarget {
 
 //-----------------------------------------------------------------------------------------------//
 
+enum class TOperandType : char {
+    OT_Plus,
+    OT_Minus,
+    OT_Times,
+    OT_Div,
+
+    OT_Count
+};
+
 struct CBinaryExpression: public IExpression {
-
-    enum TOperandType {
-        OT_Plus,
-        OT_Minus,
-        OT_Times,
-        OT_Div,
-
-        OT_Count
-    };
 
     TOperandType Operation;
 
