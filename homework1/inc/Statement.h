@@ -1,8 +1,7 @@
 // Author: Alexey Zhuravlev
 // Description: Statement Interface and it's implementations
 
-#ifndef STATEMENT
-#define STATEMENT
+#pragma once
 
 #include <Visitor.h>
 #include <VisitorTarget.h>
@@ -30,5 +29,3 @@ struct CPrintStatement : public IStatement {
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 };
-
-#endif

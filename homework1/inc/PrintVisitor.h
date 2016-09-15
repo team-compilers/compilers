@@ -1,8 +1,7 @@
 // Author: Andrew Sautin
 // Description: PrintVisitor
 
-#ifndef PRINT_VISITOR
-#define PRINT_VISITOR
+#pragma once
 
 #include <stack>
 #include <string>
@@ -37,5 +36,3 @@ class CPrintVisitor : public IVisitor {
     void Visit( CAssignStatement* statement ) override;
     void Visit( CCompoundStatement* statement ) override;
 };
-
-#endif

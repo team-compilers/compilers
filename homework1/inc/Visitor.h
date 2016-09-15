@@ -1,8 +1,7 @@
 // Author: Alexey Zhuravlev
 // Description: Visitor interface
 
-#ifndef VISITOR
-#define VISITOR
+#pragma once
 
 struct CBinaryExpression;
 enum class TOperandType : char;
@@ -25,5 +24,3 @@ public:
     virtual void Visit( CAssignStatement* statement ) = 0;
     virtual void Visit( CCompoundStatement* statement ) = 0;
 };
-
-#endif
