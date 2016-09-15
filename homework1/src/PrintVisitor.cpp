@@ -33,7 +33,17 @@ std::string CPrintVisitor::toString( const TOperandType& type ) const {
 }
 
 std::string CPrintVisitor::GetTraversalInDotLanguage() const {
-    return std::string();
+    std::stringstream sstream;
+    sstream << "digraph {" << std::endl;
+    for (auto it = treeEdges.begin(); it != treeEdges.end(); ++it) {
+        const std::string& fromNode = it->first;
+        for (const std::string& toNode : it->second) {
+            sstream << '\t' << fromNode << " -> " << toNode << ';' << std::endl;
+        }
+    }
+    sstream << '}' << std::endl;
+
+    return sstream.str();
 }
 
 void CPrintVisitor::Clear() {

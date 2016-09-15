@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -27,8 +29,8 @@ class CPrintVisitor : public IVisitor {
     // Maps each TOperandType to a string.
     std::string toString( const TOperandType& type ) const;
 
-    // Generates a string, representing the last traversal of the tree, in Dot Language.
-    // Dot Language is the one supported by GraphViz.
+    // Generates a string, representing the last traversal of the tree, in the DOT Language.
+    // The DOT Language is the one supported by GraphViz.
     std::string GetTraversalInDotLanguage() const;
 
     // Resets the initial state of the object.
