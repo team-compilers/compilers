@@ -22,7 +22,7 @@ void CPrintVisitor::addEdge( const std::string& nodeFromName, const std::string&
 
 std::string CPrintVisitor::toString( const TOperandType& type ) const {
     std::string result;
-    switch (type) {
+    switch ( type ) {
         case TOperandType::OT_Plus: result = "Plus"; break;
         case TOperandType::OT_Minus: result = "Minus"; break;
         case TOperandType::OT_Times: result = "Times"; break;
@@ -35,9 +35,9 @@ std::string CPrintVisitor::toString( const TOperandType& type ) const {
 std::string CPrintVisitor::GetTraversalInDotLanguage() const {
     std::stringstream sstream;
     sstream << "digraph {" << std::endl;
-    for (auto it = treeEdges.begin(); it != treeEdges.end(); ++it) {
+    for ( auto it = treeEdges.begin(); it != treeEdges.end(); ++it ) {
         const std::string& fromNode = it->first;
-        for (const std::string& toNode : it->second) {
+        for ( const std::string& toNode : it->second ) {
             sstream << '\t' << fromNode << " -> " << toNode << ';' << std::endl;
         }
     }
