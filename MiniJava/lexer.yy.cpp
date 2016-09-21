@@ -576,8 +576,7 @@ static yyconst flex_int16_t yy_chk[196] =
 		outputStream << yytext;
 		updateLocation( yytext );
 	}
-
-#line 581 "lexer.yy.cpp"
+#line 580 "lexer.yy.cpp"
 
 #define INITIAL 0
 
@@ -709,9 +708,9 @@ YY_DECL
 		}
 
 	{
-#line 96 "lexer.l"
+#line 95 "lexer.l"
 
-#line 715 "lexer.yy.cpp"
+#line 714 "lexer.yy.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -771,7 +770,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 97 "lexer.l"
+#line 96 "lexer.l"
 {
 	xPosition = 0;
 	yPosition++;
@@ -779,35 +778,35 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 102 "lexer.l"
+#line 101 "lexer.l"
 {
 	printNameWithDefinition("INT", yytext);
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 105 "lexer.l"
+#line 104 "lexer.l"
 {
 	printBracket( yytext );
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 108 "lexer.l"
+#line 107 "lexer.l"
 {
 	printSimpleString( yytext );
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 111 "lexer.l"
+#line 110 "lexer.l"
 {
 	printOperation( yytext );
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 114 "lexer.l"
+#line 113 "lexer.l"
 {
 	printNameWithDefinition("ID", yytext);
 }
@@ -815,37 +814,37 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 117 "lexer.l"
+#line 116 "lexer.l"
 {
 	printEnter();
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 120 "lexer.l"
+#line 119 "lexer.l"
 {
 	printEnter();
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 123 "lexer.l"
+#line 122 "lexer.l"
 {
 	printTab( yytext );
 }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 126 "lexer.l"
+#line 125 "lexer.l"
 {
     return EOF;
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 129 "lexer.l"
+#line 128 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 849 "lexer.yy.cpp"
+#line 848 "lexer.yy.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1798,23 +1797,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 129 "lexer.l"
+#line 128 "lexer.l"
 
 
-
-#include <fstream>
-
-int main()
-{
-	std::ifstream inputStream;
-	inputStream.open("Samples/BubbleSort.java");
-	std::ofstream outputStream("TestResult.txt");
-
-	yyFlexLexer l(inputStream, outputStream);
-	while (l.yylex()!=EOF){}
-
-	inputStream.close();
-	outputStream.close();
-	return 0;
-}
 //Empty
