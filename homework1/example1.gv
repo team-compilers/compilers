@@ -1,0 +1,11 @@
+digraph {
+	ordering = out;
+	NumExp1 -> Value1: 3;
+	AssignStm0 -> IdExp0;
+	AssignStm0 -> OpExp0;
+	NumExp0 -> Value0: 5;
+	IdExp0 -> Id0: a;
+	OpExp0 -> NumExp0;
+	OpExp0 -> Plus0;
+	OpExp0 -> NumExp1;
+}
