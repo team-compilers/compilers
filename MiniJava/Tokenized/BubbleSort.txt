@@ -1,84 +1,93 @@
-CLASS{0,5}  ID(BubbleSort){0,15} LBRACE{0,16} 
-    PUBLIC{1,6}  STATIC{1,12}  VOID{1,16}  MAIN{1,20} LPAREN{1,21} ID(String){1,27} LBRACKET{1,28} RBRACKET{1,29}  ID(a){1,30} RPAREN{1,31} LBRACE{1,32} 
-	SYSTEM.OUT.PRINTLN{2,19} LPAREN{2,20} NEW{2,23}  ID(BBS){2,26} LPAREN{2,27} RPAREN{2,28} DOT{2,29} ID(Start){2,34} LPAREN{2,35} INT(10){2,37} RPAREN{2,38} RPAREN{2,39} SEMI{2,40} 
-    RBRACE{3,1} 
-RBRACE{4,1} 
+CLASS{0,5}  ID(BubbleSort){0,15} {
+    PUBLIC{1,6}  STATIC{1,12}  VOID{1,16}  MAIN{1,20} (STRING{1,26} [] ID(a){1,27} ){
+	SYSTEM.OUT.PRINTLN{2,19} (NEW{2,22}  ID(BBS){2,25} ().ID(Start){2,30} (INT(10){2,32} ));
+    }
+}
 
 
-CLASS{10,5}  ID(BBS){10,8} LBRACE{10,9} 
+// ID(This){7,4}  CLASS{7,9}  ID(contains){7,17}  ID(the){7,20}  ID(array){7,25}  ID(of){7,27}  ID(integers){7,35}  ID(and){7,38} 
+// ID(methods){8,7}  ID(to){8,9}  ID(initialize){8,19} , ID(print){8,24}  ID(and){8,27}  ID(sort){8,31}  ID(the){8,34}  ID(array){8,39} 
+// ID(using){9,5}  ID(Bublesort){9,14} 
+CLASS{10,5}  ID(BBS){10,8} {
     
-    INT{12,3} LBRACKET{12,4} RBRACKET{12,5}  ID(number){12,11}  SEMI{12,12} 
-    INT{13,3}  ID(size){13,7}  SEMI{13,8} 
+    INT{12,3} [] ID(number){12,9}  ;
+    INT{13,3}  ID(size){13,7}  ;
 
-            PUBLIC{17,6}  INT{17,9}  ID(Start){17,14} LPAREN{17,15} INT{17,18}  ID(sz){17,20} RPAREN{17,21} LBRACE{17,22} 
-	INT{18,4}  ID(aux01){18,9}  SEMI{18,10} 
-	ID(aux01){19,6}  ASSIGN{19,7}  THIS{19,11} DOT{19,12} ID(Init){19,16} LPAREN{19,17} ID(sz){19,19} RPAREN{19,20} SEMI{19,21} 
-	ID(aux01){20,6}  ASSIGN{20,7}  THIS{20,11} DOT{20,12} ID(Print){20,17} LPAREN{20,18} RPAREN{20,19} SEMI{20,20} 
-	SYSTEM.OUT.PRINTLN{21,19} LPAREN{21,20} INT(99999){21,25} RPAREN{21,26} SEMI{21,27} 
-	ID(aux01){22,6}  ASSIGN{22,7}  THIS{22,11} DOT{22,12} ID(Sort){22,16} LPAREN{22,17} RPAREN{22,18} SEMI{22,19} 
-	ID(aux01){23,6}  ASSIGN{23,7}  THIS{23,11} DOT{23,12} ID(Print){23,17} LPAREN{23,18} RPAREN{23,19} SEMI{23,20} 
-	RETURN{24,7}  INT(0){24,8}  SEMI{24,9} 
-    RBRACE{25,1} 
+    // ID(Invoke){15,6}  ID(the){15,9}  ID(Initialization){15,23} , ID(Sort){15,27}  ID(and){15,30}  ID(Printing){15,38} 
+    // ID(Methods){16,7} 
+    PUBLIC{17,6}  INT{17,9}  ID(Start){17,14} (INT{17,17}  ID(sz){17,19} ){
+	INT{18,4}  ID(aux01){18,9}  ;
+	ID(aux01){19,6}  = THIS{19,10} .ID(Init){19,14} (ID(sz){19,16} );
+	ID(aux01){20,6}  = THIS{20,10} .ID(Print){20,15} ();
+	SYSTEM.OUT.PRINTLN{21,19} (INT(99999){21,24} );
+	ID(aux01){22,6}  = THIS{22,10} .ID(Sort){22,14} ();
+	ID(aux01){23,6}  = THIS{23,10} .ID(Print){23,15} ();
+	RETURN{24,7}  INT(0){24,8}  ;
+    }
 
  
-        PUBLIC{29,6}  INT{29,9}  ID(Sort){29,13} LPAREN{29,14} RPAREN{29,15} LBRACE{29,16} 
-	INT{30,4}  ID(nt){30,6}  SEMI{30,7} 
-	INT{31,4}  ID(i){31,5}  SEMI{31,6} 
-	INT{32,4}  ID(aux02){32,9}  SEMI{32,10} 
-	INT{33,4}  ID(aux04){33,9}  SEMI{33,10} 
-	INT{34,4}  ID(aux05){34,9}  SEMI{34,10} 
-	INT{35,4}  ID(aux06){35,9}  SEMI{35,10} 
-	INT{36,4}  ID(aux07){36,9}  SEMI{36,10} 
-	INT{37,4}  ID(j){37,5}  SEMI{37,6} 
-	INT{38,4}  ID(t){38,5}  SEMI{38,6} 
-	ID(i){39,2}  ASSIGN{39,3}  ID(size){39,7}  MINUS{39,8}  INT(1){39,9}  SEMI{39,10} 
-	ID(aux02){40,6}  ASSIGN{40,7}  INT(0){40,8}  MINUS{40,9}  INT(1){40,10}  SEMI{40,11} 
-	WHILE{41,6}  LPAREN{41,7} ID(aux02){41,12}  LESS{41,13}  ID(i){41,14} RPAREN{41,15}  LBRACE{41,16} 
-	    ID(j){42,2}  ASSIGN{42,3}  INT(1){42,4}  SEMI{42,5} 
-	    	    WHILE{44,6}  LPAREN{44,7} ID(j){44,8}  LESS{44,9}  LPAREN{44,10} ID(i){44,11} PLUS{44,12} INT(1){44,13} RPAREN{44,14} RPAREN{44,15} LBRACE{44,16} 
-		ID(aux07){45,7}  ASSIGN{45,8}  ID(j){45,9}  MINUS{45,10}  INT(1){45,11}  SEMI{45,12} 
-		ID(aux04){46,7}  ASSIGN{46,8}  ID(number){46,14} LBRACKET{46,15} ID(aux07){46,20} RBRACKET{46,21}  SEMI{46,22} 
-		ID(aux05){47,7}  ASSIGN{47,8}  ID(number){47,14} LBRACKET{47,15} ID(j){47,16} RBRACKET{47,17}  SEMI{47,18} 
-		IF{48,4}  LPAREN{48,5} ID(aux05){48,10}  LESS{48,11}  ID(aux04){48,16} RPAREN{48,17}  LBRACE{48,18} 
-		    ID(aux06){49,7}  ASSIGN{49,8}  ID(j){49,9}  MINUS{49,10}  INT(1){49,11}  SEMI{49,12} 
-		    ID(t){50,3}  ASSIGN{50,4}  ID(number){50,10} LBRACKET{50,11} ID(aux06){50,16} RBRACKET{50,17}  SEMI{50,18} 
-		    ID(number){51,8} LBRACKET{51,9} ID(aux06){51,14} RBRACKET{51,15}  ASSIGN{51,16}  ID(number){51,22} LBRACKET{51,23} ID(j){51,24} RBRACKET{51,25}  SEMI{51,26} 
-		    ID(number){52,8} LBRACKET{52,9} ID(j){52,10} RBRACKET{52,11}  ASSIGN{52,12}  ID(t){52,13} SEMI{52,14} 
-		RBRACE{53,3} 
-		ELSE{54,6}  ID(nt){54,8}  ASSIGN{54,9}  INT(0){54,10}  SEMI{54,11} 
-		ID(j){55,3}  ASSIGN{55,4}  ID(j){55,5}  PLUS{55,6}  INT(1){55,7}  SEMI{55,8} 
-	    RBRACE{56,2} 
-	    ID(i){57,2}  ASSIGN{57,3}  ID(i){57,4}  MINUS{57,5}  INT(1){57,6}  SEMI{57,7} 
-	RBRACE{58,2} 
-	RETURN{59,7}  INT(0){59,8}  SEMI{59,9} 
-    RBRACE{60,1} 
+    // ID(Sort){28,4}  ID(array){28,9}  ID(of){28,11}  ID(integers){28,19}  ID(using){28,24}  ID(Bublesort){28,33}  ID(method){28,39} 
+    PUBLIC{29,6}  INT{29,9}  ID(Sort){29,13} (){
+	INT{30,4}  ID(nt){30,6}  ;
+	INT{31,4}  ID(i){31,5}  ;
+	INT{32,4}  ID(aux02){32,9}  ;
+	INT{33,4}  ID(aux04){33,9}  ;
+	INT{34,4}  ID(aux05){34,9}  ;
+	INT{35,4}  ID(aux06){35,9}  ;
+	INT{36,4}  ID(aux07){36,9}  ;
+	INT{37,4}  ID(j){37,5}  ;
+	INT{38,4}  ID(t){38,5}  ;
+	ID(i){39,2}  = ID(size){39,6}  - INT(1){39,7}  ;
+	ID(aux02){40,6}  = INT(0){40,7}  - INT(1){40,8}  ;
+	WHILE{41,6}  (ID(aux02){41,11}  < ID(i){41,12} ) {
+	    ID(j){42,2}  = INT(1){42,3}  ;
+	    //ID(aux03){43,6}  = ID(i){43,7} +INT(1){43,8}  ;
+	    WHILE{44,6}  (ID(j){44,7}  < (ID(i){44,8} +INT(1){44,9} )){
+		ID(aux07){45,7}  = ID(j){45,8}  - INT(1){45,9}  ;
+		ID(aux04){46,7}  = ID(number){46,13} [ID(aux07){46,18} ] ;
+		ID(aux05){47,7}  = ID(number){47,13} [ID(j){47,14} ] ;
+		IF{48,4}  (ID(aux05){48,9}  < ID(aux04){48,14} ) {
+		    ID(aux06){49,7}  = ID(j){49,8}  - INT(1){49,9}  ;
+		    ID(t){50,3}  = ID(number){50,9} [ID(aux06){50,14} ] ;
+		    ID(number){51,8} [ID(aux06){51,13} ] = ID(number){51,19} [ID(j){51,20} ] ;
+		    ID(number){52,8} [ID(j){52,9} ] = ID(t){52,10} ;
+		}
+		ELSE{54,6}  ID(nt){54,8}  = INT(0){54,9}  ;
+		ID(j){55,3}  = ID(j){55,4}  + INT(1){55,5}  ;
+	    }
+	    ID(i){57,2}  = ID(i){57,3}  - INT(1){57,4}  ;
+	}
+	RETURN{59,7}  INT(0){59,8}  ;
+    }
 
-        PUBLIC{63,6}  INT{63,9}  ID(Print){63,14} LPAREN{63,15} RPAREN{63,16} LBRACE{63,17} 
-	INT{64,4}  ID(j){64,5}  SEMI{64,6} 
-	ID(j){65,2}  ASSIGN{65,3}  INT(0){65,4}  SEMI{65,5} 
-	WHILE{66,6}  LPAREN{66,7} ID(j){66,8}  LESS{66,9}  LPAREN{66,10} ID(size){66,14} RPAREN{66,15} RPAREN{66,16}  LBRACE{66,17} 
-	    SYSTEM.OUT.PRINTLN{67,19} LPAREN{67,20} ID(number){67,26} LBRACKET{67,27} ID(j){67,28} RBRACKET{67,29} RPAREN{67,30} SEMI{67,31} 
-	    ID(j){68,2}  ASSIGN{68,3}  ID(j){68,4}  PLUS{68,5}  INT(1){68,6}  SEMI{68,7} 
-	RBRACE{69,2} 
-	RETURN{70,7}  INT(0){70,8}  SEMI{70,9} 
-    RBRACE{71,1} 
+    // ID(Printing){62,8}  ID(method){62,14} 
+    PUBLIC{63,6}  INT{63,9}  ID(Print){63,14} (){
+	INT{64,4}  ID(j){64,5}  ;
+	ID(j){65,2}  = INT(0){65,3}  ;
+	WHILE{66,6}  (ID(j){66,7}  < (ID(size){66,11} )) {
+	    SYSTEM.OUT.PRINTLN{67,19} (ID(number){67,25} [ID(j){67,26} ]);
+	    ID(j){68,2}  = ID(j){68,3}  + INT(1){68,4}  ;
+	}
+	RETURN{70,7}  INT(0){70,8}  ;
+    }
     
-        PUBLIC{74,6}  INT{74,9}  ID(Init){74,13} LPAREN{74,14} INT{74,17}  ID(sz){74,19} RPAREN{74,20} LBRACE{74,21} 
-	ID(size){75,5}  ASSIGN{75,6}  ID(sz){75,8}  SEMI{75,9} 
-	ID(number){76,7}  ASSIGN{76,8}  NEW{76,11}  INT{76,14} LBRACKET{76,15} ID(sz){76,17} RBRACKET{76,18}  SEMI{76,19} 
+    // ID(Initialize){73,10}  ID(array){73,15}  ID(of){73,17}  ID(integers){73,25} 
+    PUBLIC{74,6}  INT{74,9}  ID(Init){74,13} (INT{74,16}  ID(sz){74,18} ){
+	ID(size){75,5}  = ID(sz){75,7}  ;
+	ID(number){76,7}  = NEW{76,10}  INT{76,13} [ID(sz){76,15} ] ;
 	
-	ID(number){78,7} LBRACKET{78,8} INT(0){78,9} RBRACKET{78,10}  ASSIGN{78,11}  INT(20){78,13}  SEMI{78,14} 
-	ID(number){79,7} LBRACKET{79,8} INT(1){79,9} RBRACKET{79,10}  ASSIGN{79,11}  INT(7){79,12}   SEMI{79,13}  
-	ID(number){80,7} LBRACKET{80,8} INT(2){80,9} RBRACKET{80,10}  ASSIGN{80,11}  INT(12){80,13}  SEMI{80,14} 
-	ID(number){81,7} LBRACKET{81,8} INT(3){81,9} RBRACKET{81,10}  ASSIGN{81,11}  INT(18){81,13}  SEMI{81,14} 
-	ID(number){82,7} LBRACKET{82,8} INT(4){82,9} RBRACKET{82,10}  ASSIGN{82,11}  INT(2){82,12}   SEMI{82,13}  
-	ID(number){83,7} LBRACKET{83,8} INT(5){83,9} RBRACKET{83,10}  ASSIGN{83,11}  INT(11){83,13}  SEMI{83,14} 
-	ID(number){84,7} LBRACKET{84,8} INT(6){84,9} RBRACKET{84,10}  ASSIGN{84,11}  INT(6){84,12}   SEMI{84,13}  
-	ID(number){85,7} LBRACKET{85,8} INT(7){85,9} RBRACKET{85,10}  ASSIGN{85,11}  INT(9){85,12}   SEMI{85,13}  
-	ID(number){86,7} LBRACKET{86,8} INT(8){86,9} RBRACKET{86,10}  ASSIGN{86,11}  INT(19){86,13}  SEMI{86,14}  
-	ID(number){87,7} LBRACKET{87,8} INT(9){87,9} RBRACKET{87,10}  ASSIGN{87,11}  INT(5){87,12}   SEMI{87,13} 
+	ID(number){78,7} [INT(0){78,8} ] = INT(20){78,10}  ;
+	ID(number){79,7} [INT(1){79,8} ] = INT(7){79,9}   ; 
+	ID(number){80,7} [INT(2){80,8} ] = INT(12){80,10}  ;
+	ID(number){81,7} [INT(3){81,8} ] = INT(18){81,10}  ;
+	ID(number){82,7} [INT(4){82,8} ] = INT(2){82,9}   ; 
+	ID(number){83,7} [INT(5){83,8} ] = INT(11){83,10}  ;
+	ID(number){84,7} [INT(6){84,8} ] = INT(6){84,9}   ; 
+	ID(number){85,7} [INT(7){85,8} ] = INT(9){85,9}   ; 
+	ID(number){86,7} [INT(8){86,8} ] = INT(19){86,10}  ; 
+	ID(number){87,7} [INT(9){87,8} ] = INT(5){87,9}   ;
 	
-	RETURN{89,7}  INT(0){89,8}  SEMI{89,9} 	
-    RBRACE{90,1} 
+	RETURN{89,7}  INT(0){89,8}  ;	
+    }
 
-RBRACE{92,1} 
+}

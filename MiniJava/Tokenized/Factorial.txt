@@ -1,18 +1,18 @@
-CLASS{0,5}  ID(Factorial){0,14} LBRACE{0,15} 
-    PUBLIC{1,6}  STATIC{1,12}  VOID{1,16}  MAIN{1,20} LPAREN{1,21} ID(String){1,27} LBRACKET{1,28} RBRACKET{1,29}  ID(a){1,30} RPAREN{1,31} LBRACE{1,32} 
-	SYSTEM.OUT.PRINTLN{2,19} LPAREN{2,20} NEW{2,23}  ID(Fac){2,26} LPAREN{2,27} RPAREN{2,28} DOT{2,29} ID(ComputeFac){2,39} LPAREN{2,40} INT(10){2,42} RPAREN{2,43} RPAREN{2,44} SEMI{2,45} 
-    RBRACE{3,1} 
-RBRACE{4,1} 
+CLASS{0,5}  ID(Factorial){0,14} {
+    PUBLIC{1,6}  STATIC{1,12}  VOID{1,16}  MAIN{1,20} (STRING{1,26} [] ID(a){1,27} ){
+	SYSTEM.OUT.PRINTLN{2,19} (NEW{2,22}  ID(Fac){2,25} ().ID(ComputeFac){2,35} (INT(10){2,37} ));
+    }
+}
 
-CLASS{6,5}  ID(Fac){6,8}  LBRACE{6,9} 
+CLASS{6,5}  ID(Fac){6,8}  {
 
-    PUBLIC{8,6}  INT{8,9}  ID(ComputeFac){8,19} LPAREN{8,20} INT{8,23}  ID(num){8,26} RPAREN{8,27} LBRACE{8,28} 
-	INT{9,4}  ID(num_aux){9,11}  SEMI{9,12} 
-	IF{10,3}  LPAREN{10,4} ID(num){10,7}  LESS{10,8}  INT(1){10,9} RPAREN{10,10} 
-	    ID(num_aux){11,8}  ASSIGN{11,9}  INT(1){11,10}  SEMI{11,11} 
+    PUBLIC{8,6}  INT{8,9}  ID(ComputeFac){8,19} (INT{8,22}  ID(num){8,25} ){
+	INT{9,4}  ID(num_aux){9,11}  ;
+	IF{10,3}  (ID(num){10,6}  < INT(1){10,7} )
+	    ID(num_aux){11,8}  = INT(1){11,9}  ;
 	ELSE{12,5}  
-	    ID(num_aux){13,8}  ASSIGN{13,9}  ID(num){13,12}  STAR{13,13}  LPAREN{13,14} THIS{13,18} DOT{13,19} ID(ComputeFac){13,29} LPAREN{13,30} ID(num){13,33} INT(-1){13,35} RPAREN{13,36} RPAREN{13,37}  SEMI{13,38} 
-	RETURN{14,7}  ID(num_aux){14,14}  SEMI{14,15} 
-    RBRACE{15,1} 
+	    ID(num_aux){13,8}  = ID(num){13,11}  * (THIS{13,15} .ID(ComputeFac){13,25} (ID(num){13,28} INT(-1){13,30} )) ;
+	RETURN{14,7}  ID(num_aux){14,14}  ;
+    }
 
-RBRACE{17,1} 
+}
