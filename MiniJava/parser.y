@@ -23,22 +23,22 @@ In other words, it’s the best place to define types referenced in %union direc
 %error-verbose
 
 %union{
-	int 				ival;
-	char 				sval[255];
-	CProgram* 			program;
-	CMainClass* 		mainClass;
-	CClassDeclList* 	classDecls;
-	CClassDecl* 		classDecl;
-	CStatementList* 	statements;
-	IStatement* 		statement;
-	CVarDeclList* 		varDecls;
-	CVarDecl* 			varDecl;
-	CMethodDeclList* 	methodDecls;
-	CMethodDecl* 		methodDecl;
-	CType* 				type;
-	CFormalList* 		formalList;
-	CExpList* 			expList;
-	IExp* 				exp;
+	int 					ival;
+	char 					sval[255];
+	CProgram* 				program;
+	CMainClass* 			mainClass;
+	CClassDeclarationList*	classDecls;
+	CClassDeclaration* 		classDecl;
+	CStatementList* 		statements;
+	IStatement* 			statement;
+	CVarDeclarationList* 	varDecls;
+	CVarDeclaration* 		varDecl;
+	CMethodDeclarationList*	methodDecls;
+	CMethodDeclaration* 	methodDecl;
+	CType* 					type;
+	CFormalList* 			formalList;
+	CExpressionList* 		expList;
+	IExpression* 			exp;
 }
 
 %left '&'
@@ -72,80 +72,80 @@ In other words, it’s the best place to define types referenced in %union direc
 
 %type <program> 	Program
 %type <mainClass> 	MainClass
-%type <classDecls> 	ClassDecls
-%type <classDecl> 	ClassDecl
+%type <classDecls> 	ClassDeclarations
+%type <classDecl> 	ClassDeclaration
 %type <statements> 	Statements
 %type <statement> 	Statement
-%type <varDecls> 	VarDecls
-%type <varDecl> 	VarDecl
-%type <methodDecls> MethodDecls
-%type <methodDecl> 	MethodDecl
+%type <varDecls> 	VarDeclarations
+%type <varDecl> 	VarDeclaration
+%type <methodDecls> MethodDeclarations
+%type <methodDecl> 	MethodDeclaration
 %type <type> 		Type
 %type <formalList> 	FormalList FormalRest
-%type <expList> 	ExpList ExpRest
-%type <exp> 		Exp
+%type <expList> 	ExpressionList ExpressionRest
+%type <exp> 		Expression
 
 %%
 /*__________ The Grammar Rules Section __________*/
 
 Program:
-	MainClass ClassDecls <<EOF>>
+	  MainClass ClassDeclarations <<EOF>>
 	;
 
 MainClass:
-	CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statement '}' '}'
+	  CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statement '}' '}'
 	;
 
-ClassDecl:
-	CLASS ID '{' VarDecls MethodDecls '}' |
-	CLASS ID EXTENDS ID '{' VarDecls MethodDecls '}'
+ClassDeclaration:
+	  CLASS ID '{' VarDeclarations MethodDeclarations '}'
+	| CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'
 	;
 
-VarDecl:
-	Type ID ';'
+VarDeclaration:
+	  Type ID ';'
 	;
 
-MethodDecl:
-	PUBLIC Type ID '(' ')' '{' VarDecls Statements RETURN Exp ';' '}' |
-	PRIVATE Type ID '(' ')' '{' VarDecls Statements RETURN Exp ';' '}' |
+MethodDeclaration:
+	  PUBLIC Type ID '(' ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
+	| PRIVATE Type ID '(' ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
 	;
 
 Type:
-	INT '['']' 	|
-	BOOLEAN 	|
-	INT 		|
-	ID
+	  INT '['']' 	
+	| BOOLEAN 	
+	| INT 		
+	| ID
 	;
 
 Statement:
-	'{' Statements '}' 							|
-	'if' '(' Exp ')' Statement ELSE Statement 	|
-	WHILE '(' Exp ')' Statement 				|
-	SOUT '(' Exp ')' ';'						|
-	ID '=' Exp ';'								|
-	ID '[' Exp ']' '=' Exp ';'
+	  '{' Statements '}' 							
+	| 'if' '(' Expression ')' Statement ELSE Statement 	
+	| WHILE '(' Expression ')' Statement 				
+	| SOUT '(' Expression ')' ';'						
+	| ID '=' Expression ';'								
+	| ID '[' Expression ']' '=' Expression ';'
 	;
 
-Exp:
-	Exp "&&" Exp 			|
-	Exp "||" Exp 			|
-	Exp '<' Exp				|
-	Exp '+' Exp 			|
-	Exp '+' Exp 			|
-	Exp '-' Exp 			|
-	Exp '*' Exp 			|
-	Exp '%' Exp 			|
-	Exp '[' Exp ']' 		|
-	Exp '.' LENGTH  		|
-	Exp '.' ID '(' ')' 		|
-	INTEGER_LITERAL			|
-	TRUE					|
-	FALSE					|
-	ID 						|
-	THIS 					|
-	NEW INT '[' Exp ']'		|
-	NEW ID '(' ')'			|
-	'!' Exp 				|
-	'(' Exp ')'
+Expression:
+      Expression "&&" Expression 			
+	| Expression "||" Expression 			
+	| Expression '<' Expression				
+	| Expression '+' Expression 			
+	| Expression '+' Expression 			
+	| Expression '-' Expression 			
+	| Expression '*' Expression 			
+	| Expression '%' Expression 			
+	| Expression '[' Expression ']' 		
+	| Expression '.' LENGTH  		
+	| Expression '.' ID '(' ')' 		
+	| INTEGER_LITERAL			
+	| TRUE					
+	| FALSE					
+	| ID 						
+	| THIS 					
+	| NEW INT '[' Expression ']'		
+	| NEW ID '(' ')'			
+	| '!' Expression 				
+	| '(' Expression ')'
 	;
 %%
