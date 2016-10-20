@@ -83,7 +83,7 @@ In other words, it’s the best place to define types referenced in %union direc
 %type <methodDecl>  MethodDeclaration
 %type <type>        Type
 %type <accessMod>   AccessModifier
-%type <methodArgs>  NonEmptyMethodArguments
+%type <methodArgs>  MethodArguments
 %type <expList>     Expressions
 %type <exp>         Expression
 
@@ -143,9 +143,9 @@ MethodArguments:
     | NonEmptyMethodArguments
     ;
 
-NonEmptyMethodArguments:
+MethodArgumentsNonEmpty:
       MethodArgument
-    | NonEmptyMethodArguments ',' MethodArgument
+    | MethodArgumentsNonEmpty ',' MethodArgument
     ;
 
 MethodArgument:
@@ -168,7 +168,13 @@ Statement:
 
 Expressions:
       %empty
-    | Expressions Expression
+    | ExpressionsNonEmpty
+    ;
+
+ExpressionsNonEmpty:
+      Expression
+    | ExpressionsNonEmpty ',' Expression
+    ;
 
 Expression:
       Expression "&&" Expression
