@@ -30,10 +30,11 @@ INT        "int"
 DIGIT [0-9]
 LETTER [a-zA-Z_]
 ID {LETTER}({DIGIT}|{LETTER})*
-NUMBER -?[1-9]{DIGIT}*|0
+INTEGER_LITERAL -?[1-9]{DIGIT}*|0
+LOGIC_LITERAL TRUE|FALSE
 
 %%
-{NUMBER} {
+{INTEGER_LITERAL} {
     tokenPrinter.PrintNameWithDefinition( yyout, "INT", yytext );
 }
 

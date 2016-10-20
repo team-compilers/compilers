@@ -7,7 +7,7 @@ extern "C" int yylex();
 using std::make_shared;
 using std::shared_ptr;
 
-void yyerror( std::shared_ptr<CProgram>&, int*, const char *);
+// void yyerror( std::shared_ptr<CProgram>&, int*, const char *);
 %}
 
 /*__________ The Bison Declarations Section __________*/
@@ -20,10 +20,11 @@ In other words, it’s the best place to define types referenced in %union direc
 %parse-param { std::shared_ptr<CProgram>& root }
 %parse-param { int* hasError }
 
-%error-verbose
+// %error-verbose
 
 %union{
     int                     ival;
+    bool                    bval;
     char                    sval[255];
     CProgram*               program;
     CMainClass*             mainClass;
@@ -61,12 +62,11 @@ In other words, it’s the best place to define types referenced in %union direc
 %token WHILE
 %token SYSTEM_OUT_PRINTLN
 %token LENGTH
-%token TRUE
-%token FALSE
 %token NEW
 %token THIS
 %token <sval> ID
 %token <ival> INTEGER_LITERAL
+%token <bval> LOGIC_LITERAL
 %token STRING
 %token BOOLEAN
 %token INT
@@ -91,11 +91,12 @@ In other words, it’s the best place to define types referenced in %union direc
 /*__________ The Grammar Rules Section __________*/
 
 Program:
-      MainClass ClassDeclarations
+      MainClass ClassDeclarations { program = new CProgram(  ) }
     ;
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statement '}' '}'
+      { $$ }
     ;
 
 ClassDeclarations:
@@ -167,37 +168,36 @@ Statement:
     ;
 
 Expressions:
-      %empty
-    | ExpressionsNonEmpty
+      %empty              { $$ = new CExpressionList() }
+    | ExpressionsNonEmpty { $$ = $1 }
     ;
 
 ExpressionsNonEmpty:
-      Expression
-    | ExpressionsNonEmpty ',' Expression
+      Expression                         { $$ = new CExpressionList( $1 ) }
+    | ExpressionsNonEmpty ',' Expression { $$ = $1; $$.Add( $3 ) }
     ;
 
 Expression:
-      Expression "&&" Expression
-    | Expression "||" Expression
-    | Expression '<' Expression
-    | Expression '+' Expression
-    | Expression '-' Expression
-    | Expression '*' Expression
-    | Expression '/' Expression
-    | Expression '%' Expression
+      Expression "&&" Expression { $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ) }
+    | Expression "||" Expression { $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ) }
+    | Expression '<' Expression  { $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ) }
+    | Expression '+' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ) }
+    | Expression '-' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ) }
+    | Expression '*' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ) }
+    | Expression '/' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ) }
+    | Expression '%' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ) }
 
-    | Expression '[' Expression ']'
-    | Expression '.' LENGTH
-    | Expression '.' ID '(' Expressions ')'
+    | Expression '[' Expression ']'         { $$ = new CBracketExpression( $1, $3 )    }
+    | Expression '.' LENGTH                 { $$ = new CLengthExpression( $1 )         }
+    | Expression '.' ID '(' Expressions ')' { $$ = new CMethodExpression( $1, $3, $5 ) }
 
-    | INTEGER_LITERAL
-    | TRUE
-    | FALSE
-    | ID
-    | THIS
-    | NEW INT '[' Expression ']'
-    | NEW ID '(' ')'
-    | '!' Expression
-    | '(' Expression ')'
+    | INTEGER_LITERAL            { $$ = new CNumberExpression( $1 )   }
+    | LOGIC_LITERAL              { $$ = new CLogicExpression( $1 )    }
+    | ID                         { $$ = new CIdExpression( $1 )       }
+    | THIS                       { $$ = new CThisExpression()         }
+    | NEW INT '[' Expression ']' { $$ = new CNewArrayExpression( $4 ) }
+    | NEW ID '(' ')'             { $$ = new CNewIdExpression( $2 )    }
+    | '!' Expression             { $$ = new CNegateExpression( $2)    }
+    | '(' Expression ')'         { $$ = $1                            }
     ;
 %%
