@@ -1,8 +1,7 @@
 // Author: Alexey Zhuravlev
 // Description: Expression Interface and it's implementations
 
-#ifndef EXPRESSION
-#define EXPRESSION
+#pragma once
 
 #include <Visitor.h>
 #include <VisitorTarget.h>
@@ -13,16 +12,16 @@ class IExpression : public IVisitorTarget {
 
 //-----------------------------------------------------------------------------------------------//
 
+enum class TOperandType : char {
+    OT_Plus,
+    OT_Minus,
+    OT_Times,
+    OT_Div,
+
+    OT_Count
+};
+
 struct CBinaryExpression: public IExpression {
-
-    enum TOperandType {
-        OT_Plus,
-        OT_Minus,
-        OT_Times,
-        OT_Div,
-
-        OT_Count
-    };
 
     TOperandType Operation;
 
@@ -77,5 +76,3 @@ struct CSingleElementListExpression : public IListExpression {
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };
-
-#endif
