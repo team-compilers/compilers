@@ -22,7 +22,7 @@ In other words, it’s the best place to define types referenced in %union direc
 
 // %error-verbose
 
-%union{
+%union {
     int                     ival;
     bool                    bval;
     char                    sval[255];
@@ -91,80 +91,81 @@ In other words, it’s the best place to define types referenced in %union direc
 /*__________ The Grammar Rules Section __________*/
 
 Program:
-      MainClass ClassDeclarations { program = new CProgram(  ) }
+      MainClass ClassDeclarations { program = new CProgram( $1, $2 ) }
     ;
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statement '}' '}'
-      { $$ }
+      { $$ = new CMainClass( $2, $12, $15 ) }
     ;
 
 ClassDeclarations:
-      %empty
-    | ClassDeclarations ClassDeclaration
+      %empty                              { $$ = new CClassDeclarationList() }
+    | ClassDeclarations ClassDeclaration  { $$ = $1; $$.Add( $2 ) }
     ;
 
 ClassDeclaration:
-      CLASS ID '{' VarDeclarations MethodDeclarations '}'
-    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'
+      CLASS ID '{' VarDeclarations MethodDeclarations '}'             { $$ = new CClassDeclaration( $2, $4, $5 ) }
+    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { $$ = new CClassDeclaration( $2, $6, $7, $4 ) }
     ;
 
 VarDeclarations:
-      %empty
-    | VarDeclarations VarDeclaration
+      %empty                          { $$ = new CVarDeclarationList() }
+    | VarDeclarations VarDeclaration  { $$ = $1; $$.Add( $2 ) }
     ;
 
 VarDeclaration:
-      Type ID ';'
+      Type ID ';'   { $$ = new CVarDeclaration( $1, $2 ) }
     ;
 
 MethodDeclarations:
-      %empty
-    | MethodDeclarations MethodDeclaration
+      %empty                                { $$ = new CMethodDeclarationList() }
+    | MethodDeclarations MethodDeclaration  { $$ = $1; $$.Add( $2 ) }
     ;
 
 MethodDeclaration:
       AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
+      { $$ = new CMethodDeclaration( $1, $2, $3, $5, $8, $9, $11 ) }
     ;
 
 Type:
-      INT '['']'
-    | BOOLEAN
-    | INT
-    | ID
+      INT '['']'  { $$ = new CIntArrayTypeModifier() }
+    | BOOLEAN     { $$ = new CBooleanTypeModifier() }
+    | INT         { $$ = new CIntTypeModifier() }
+    | ID          { $$ = new CIdTypeModifier() }
     ;
 
 AccessModifier:
-      PUBLIC
-    | PRIVATE
+      PUBLIC    { $$ = new CPublicAccessModifier() }
+    | PRIVATE   { $$ = new CPrivateAccessModifier() }
     ;
 
 MethodArguments:
-      %empty
-    | NonEmptyMethodArguments
+      %empty                                      { $$ = new CMethodArgumentList() }
+    | NonEmptyMethodArguments                     { $$ = $1 }
     ;
 
 MethodArgumentsNonEmpty:
-      MethodArgument
-    | NonEmptyMethodArguments ',' MethodArgument
+      MethodArgument                              { $$ = new CMethodArgumentList(); $$.Add( $1 ) }
+    | NonEmptyMethodArguments ',' MethodArgument  { $$ = $1; $$.Add( $3 ) }
     ;
 
 MethodArgument:
-      Type ID
+      Type ID              { $$ = new CMethodArgument( $1, $2 ) }
     ;
 
 Statements:
-      %empty
-    | Statement Statements
+      %empty               { $$ = new CStatementList() }
+    | Statements Statement { $$ = $1; $$.Add( $2 ) }
     ;
 
 Statement:
-      '{' Statements '}'
-    | 'if' '(' Expression ')' Statement ELSE Statement
-    | WHILE '(' Expression ')' Statement
-    | SOUT '(' Expression ')' ';'
-    | ID '=' Expression ';'
-    | ID '[' Expression ']' '=' Expression ';'
+      '{' Statements '}'                              { $$ = new CBracesStatement( $2 ) }
+    | IF '(' Expression ')' Statement ELSE Statement  { $$ = new CConditionalStatement( $3, $5, $7 ) }
+    | WHILE '(' Expression ')' Statement              { $$ = new CWhileLoopStatement( $3, $5 ) }
+    | SOUT '(' Expression ')' ';'                     { $$ = new CPrintStatement( $3 ) }
+    | ID '=' Expression ';'                           { $$ = new CAssignIdStatement( $1, $3 ) }
+    | ID '[' Expression ']' '=' Expression ';'        { $$ = new CAssignIdWithIndexStatement( $1, $3, $6) }
     ;
 
 Expressions:
