@@ -36,9 +36,9 @@ In other words, it’s the best place to define types referenced in %union direc
     CVarDeclaration*        varDecl;
     CMethodDeclarationList* methodDecls;
     CMethodDeclaration*     methodDecl;
-    CType*                  type;
-    CAccessModifier*        accessMod;
-    CMethodArguments*       methodArgs;
+    ITypeModifier*          type;
+    IAccessModifier*        accessMod;
+    CMethodArgumentList*    methodArgs;
     CExpressionList*        expList;
     IExpression*            exp;
 }

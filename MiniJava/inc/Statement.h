@@ -74,22 +74,22 @@ private:
 class CConditionalStatement : public IStatement {
 public:
 
-    CConditionalStatement( const IExpression* _condition, const IExpression* _positiveTarget, const IExpression* _negativeTarget )
+    CConditionalStatement( const IExpression* _condition, const IStatement* _positiveTarget, const IStatement* _negativeTarget )
         : condition( _condition ),
           positiveTarget( _positiveTarget ),
           negativeTarget( _negativeTarget ) {}
 
     const IExpression* Condition() const { return condition; }
-    const IExpression* PositiveTarget() const { return positveTarget; }
-    const IExpression* NegativeTarget() const { return negativeTarget; }
+    const IStatement* PositiveTarget() const { return positveTarget; }
+    const IStatement* NegativeTarget() const { return negativeTarget; }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
 private:
 
     std::unique_ptr<const IExpression> condition;
-    std::unique_ptr<const IExpression> positiveTarget;
-    std::unique_ptr<const IExpression> negativeTarget;
+    std::unique_ptr<const IStatement> positiveTarget;
+    std::unique_ptr<const IStatement> negativeTarget;
 };
 
 //-----------------------------------------------------------------------------------------------//
@@ -97,23 +97,34 @@ private:
 class CWhileLoopStatement : public IStatement {
 public:
 
-    CWhileLoopStatement( const IExpression* _condition, const IExpression* _body ) 
+    CWhileLoopStatement( const IExpression* _condition, const IStatement* _body ) 
         : condition( _condition ),
         body( _body ) {}
 
     const IExpression* Condition() const { return condition; }
-    const IExpression* Body() const { return body; }
+    const IStatement* Body() const { return body; }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
 private:
 
     std::unique_ptr<const IExpression> condition;
-    std::unique_ptr<const IExpression> body;
+    std::unique_ptr<const IStatement> body;
 };
 
 //-----------------------------------------------------------------------------------------------//
 
-class CBracketsStatement : public IStatement {
-   private:
+class CStatementList;
+
+class CBracesStatement : public IStatement {
+public:
+
+    CBracesStatement( const CStatementList* _list )
+        : list( _list ) {}
+
+    const CStatementList* List() const { list; }
+
+private:
+
+    std::unique_ptr<const CStatementList> list;
 };
