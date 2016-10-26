@@ -12,7 +12,7 @@ class IExpression : public IVisitorTarget {
 };
 
 //-----------------------------------------------------------------------------------------------//
-
+//
 enum class TBinaryOperandType : char {
     OT_Plus,
     OT_Minus,
@@ -36,9 +36,9 @@ public:
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
-    TOperandType Operation() { return operation; }
-    const IExpression* LeftOperand() { return leftOperand; }
-    const IExpression* RightOperand() { return rightOperand; }
+    TOperandType Operation() const { return operation; }
+    const IExpression* LeftOperand() const { return leftOperand; }
+    const IExpression* RightOperand() const { return rightOperand; }
 
 private:
 
@@ -58,8 +58,8 @@ public:
         : containterExpression( _containterExpression ),
           indexExpression( _indexExpression ) {}
 
-    const IExpression* ContainerExpression() { return containerExpression; }
-    const IExpression* IndexExpression() { return indexExpression; }
+    const IExpression* ContainerExpression() const { return containerExpression; }
+    const IExpression* IndexExpression() const { return indexExpression; }
 
 private:
 
@@ -75,7 +75,7 @@ public:
     CNumberExpression( int _value )
         : value(_value) {}
 
-    int Value() { return value; }
+    int Value() const { return value; }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
@@ -92,7 +92,9 @@ public:
     CLogicExpressin( bool _value ) 
         : value( _value ) {}
 
-    bool Value() { return value; }
+    bool Value() const { return value; }
+    
+    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
 private:
 
@@ -108,7 +110,7 @@ public:
     CIdExpression( const std::string& _name )
         : name( _name ) {}
 
-    const std::string& Name() { return name; }
+    const std::string& Name() const { return name; }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
@@ -127,6 +129,8 @@ public:
         : lengthTarget( _lengthTarget ) {}
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    
+    const IExpression* LengthTarget() const { return lengthTarget; }
 
 private:
 
@@ -149,6 +153,10 @@ public:
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
+    const IExpression* CallerExpression() const { return callerExpression; }
+    const CIdExpression* MethodId() const { return methodId; }
+    const CListExpression* Arguments() const { return arguments; }
+
 private:
 
     std::unique_ptr<const IExpression> callerExpression;
@@ -160,7 +168,6 @@ private:
 
 class CThisExpression : public IExpression {
 public: 
-
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };
 
@@ -172,6 +179,8 @@ public:
 
     CNewArrayExpression( const IExpression* _lengthExpression )
         : lengthExpression( _lengthExpression ) {}
+
+    const IExpression* LengthExpression() const { return lengthExpression; }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
@@ -188,6 +197,8 @@ public:
     CNewIdExpression( const CIdExpression* _targetId )
         : targetId( _targetId ) {}
 
+    const CIdExpression* TargetId() { targetId; }
+
 private:
 
     std::unique_ptr<const CIdExpression> targetId;
@@ -200,6 +211,8 @@ public:
 
     CNegateExpression( const IExpression* _targetExpression )
         : targetExpression( _targetExpression ) {}
+
+    const IExpression* TargetExpression() { return targetExpression; }
 
 private:
 

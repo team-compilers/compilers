@@ -11,6 +11,9 @@ public:
 
     Add( const IExpression* expression ) 
         { expressions.push_back( expression ); }
+    
+    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+
 private:
     std::vector< std::unique_ptr<const IExpression> > expressions;
 }
