@@ -146,7 +146,7 @@ MethodArguments:
 
 MethodArgumentsNonEmpty:
       MethodArgument
-    | MethodArgumentsNonEmpty ',' MethodArgument
+    | NonEmptyMethodArguments ',' MethodArgument
     ;
 
 MethodArgument:
