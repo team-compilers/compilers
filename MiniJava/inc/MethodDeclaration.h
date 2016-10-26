@@ -1,7 +1,13 @@
 #pragma once
 
 #include <VisitorTarget.h>
+#include <Visitor.h>
 #include <AccessModifier.h>
+#include <TypeModifier.h>
+#include <Expression.h>
+#include <MethodArgumentList.h>
+#include <VarDeclarationList.h>
+#include <StatementList.h>
 
 class CMethodDeclaration : public IVisitorTarget {
 public:
@@ -23,6 +29,8 @@ public:
     const CMethodArgumentList* MethodArguments() const { return methodArguments; }
     const CStatementList* Statements() const { return statements; }
     const IExpression* ReturnExpression() const { return returnExpression; }
+
+    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const IAccessModifier> accessModifier;
