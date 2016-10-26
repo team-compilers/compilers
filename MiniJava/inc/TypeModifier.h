@@ -12,7 +12,7 @@ public:
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };
 
-class CBooleanTypeMOdifier : public ITypeModifier {
+class CBooleanTypeModifier : public ITypeModifier {
 public:
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };
