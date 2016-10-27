@@ -1,6 +1,10 @@
 #pragma once
 
+#include <VisitorTarget.h>
+#include <Visitor.h>
 #include <Statement.h>
+#include <memory>
+#include <vector>
 
 class CStatementList : public IVisitorTarget {
 public:

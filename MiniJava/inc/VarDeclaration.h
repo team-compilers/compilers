@@ -5,6 +5,7 @@
 #include <TypeModifier.h>
 #include <Expression.h>
 #include <vector>
+#include <memory>
 
 class CVarDeclaration : public IVisitorTarget {
 public:

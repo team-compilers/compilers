@@ -7,6 +7,7 @@
 #include <VisitorTarget.h>
 #include <Expression.h>
 #include <memory>
+#include <vector>
 
 class IStatement : public IVisitorTarget {
 };

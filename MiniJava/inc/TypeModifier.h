@@ -2,7 +2,9 @@
 #pragma once
 
 #include <VisitorTarget.h>
+#include <Visitor.h>
 #include <Expression.h>
+#include <memory>
 
 class ITypeModifier : public IVisitorTarget {
 };

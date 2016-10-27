@@ -1,6 +1,7 @@
 #pragma once
 
 #include <VisitorTarget.h>
+#include <Visitor.h>
 #include <Expression.h>
 #include <TypeModifier.h>
 #include <MethodArgument.h>

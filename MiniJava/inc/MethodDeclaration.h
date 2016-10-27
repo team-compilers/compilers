@@ -8,6 +8,7 @@
 #include <MethodArgumentList.h>
 #include <VarDeclarationList.h>
 #include <StatementList.h>
+#include <memory>
 
 class CMethodDeclaration : public IVisitorTarget {
 public:

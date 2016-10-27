@@ -6,6 +6,7 @@
 #include <Expression.h>
 #include <VarDeclaration.h>
 #include <vector>
+#include <memory>
 
 class CVarDeclarationList : public IVisitorTarget {
 public:

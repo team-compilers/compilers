@@ -3,15 +3,7 @@
 
 #pragma once
 
-struct CBinaryExpression;
-enum class TOperandType : char;
-struct CNumberExpression;
-struct CIdExpression;
-struct CPairListExpression;
-struct CSingleElementListExpression;
-struct CPrintStatement;
-struct CAssignStatement;
-struct CCompoundStatement;
+class 
 
 class IVisitor {
 public:

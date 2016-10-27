@@ -4,6 +4,7 @@
 #include <Visitor.h>
 #include <Expression.h>
 #include <Statement.h>
+#include <memory>
 
 class CMainClass : public IVisitorTarget {
 public:

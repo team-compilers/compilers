@@ -2,6 +2,7 @@
 
 #include <MethodDeclaration.h>
 #include <VisitorTarget.h>
+#include <Visitor.h>
 
 class CMethodDeclarationList : public IVisitorTarget {
 public:
