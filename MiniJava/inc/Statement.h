@@ -45,6 +45,7 @@ public:
     const IExpression* LeftPartIndex() const { return leftPartIndex.get(); }
     const IExpression* RightPart() const { return rightPart.get(); }
 
+    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 private:
 
     std::unique_ptr<const CIdExpression> leftPartId;

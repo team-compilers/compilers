@@ -15,6 +15,8 @@ public:
     void Add( const CMethodArgument* argument ) 
         { arguments.push_back(argument); }
 
+    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+
 private:
     std::vector< std::unique_ptr<const CMethodArgument> > arguments;
 };
