@@ -109,114 +109,114 @@ In other words, it’s the best place to define types referenced in %union direc
 /*__________ The Grammar Rules Section __________*/
 
 Program:
-      MainClass ClassDeclarations { program = new CProgram( $1, $2 ) }
+      MainClass ClassDeclarations { program = new CProgram( $1, $2 ); }
     ;
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statements '}' '}'
-      { $$ = new CMainClass( new CIdExpression( $2 ), $12, $15 ) }
+      { $$ = new CMainClass( new CIdExpression( $2 ), $12, $15 ); }
     ;
 
 ClassDeclarations:
-      %empty                              { $$ = new CClassDeclarationList() }
-    | ClassDeclarations ClassDeclaration  { $$ = $1; $$.Add( $2 ) }
+      %empty                              { $$ = new CClassDeclarationList(); }
+    | ClassDeclarations ClassDeclaration  { $$ = $1; $$->Add( $2 ); }
     ;
 
 ClassDeclaration:
-      CLASS ID '{' VarDeclarations MethodDeclarations '}'             { $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ) }
-    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, $4 ) }
+      CLASS ID '{' VarDeclarations MethodDeclarations '}'             { $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ); }
+    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, $4 ); }
     ;
 
 VarDeclarations:
-      %empty                          { $$ = new CVarDeclarationList() }
-    | VarDeclarations VarDeclaration  { $$ = $1; $$.Add( $2 ) }
+      %empty                          { $$ = new CVarDeclarationList(); }
+    | VarDeclarations VarDeclaration  { $$ = $1; $$->Add( $2 ); }
     ;
 
 VarDeclaration:
-      Type ID ';'   { $$ = new CVarDeclaration( $1, new CIdExpression( $2 ) ) }
+      Type ID ';'   { $$ = new CVarDeclaration( $1, new CIdExpression( $2 ) ); }
     ;
 
 MethodDeclarations:
-      %empty                                { $$ = new CMethodDeclarationList() }
-    | MethodDeclarations MethodDeclaration  { $$ = $1; $$.Add( $2 ) }
+      %empty                                { $$ = new CMethodDeclarationList(); }
+    | MethodDeclarations MethodDeclaration  { $$ = $1; $$->Add( $2 ); }
     ;
 
 MethodDeclaration:
       AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations ';' Statements RETURN Expression ';' '}'
-      { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $10, $12 ) }
+      { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $10, $12 ); }
     ;
 
 Type:
-      INT '['']'  { $$ = new CIntArrayTypeModifier() }
-    | BOOLEAN     { $$ = new CBooleanTypeModifier() }
-    | INT         { $$ = new CIntTypeModifier() }
-    | ID          { $$ = new CIdTypeModifier() }
+      INT '['']'  { $$ = new CIntArrayTypeModifier(); }
+    | BOOLEAN     { $$ = new CBooleanTypeModifier(); }
+    | INT         { $$ = new CIntTypeModifier(); }
+    | ID          { $$ = new CIdTypeModifier(); }
     ;
 
 AccessModifier:
-      PUBLIC    { $$ = new CPublicAccessModifier() }
-    | PRIVATE   { $$ = new CPrivateAccessModifier() }
+      PUBLIC    { $$ = new CPublicAccessModifier(); }
+    | PRIVATE   { $$ = new CPrivateAccessModifier(); }
     ;
 
 MethodArguments:
-      %empty                                      { $$ = new CMethodArgumentList() }
-    | MethodArgumentsNonEmpty                     { $$ = $1 }
+      %empty                                      { $$ = new CMethodArgumentList(); }
+    | MethodArgumentsNonEmpty                     { $$ = $1; }
     ;
 
 MethodArgumentsNonEmpty:
-      MethodArgument                              { $$ = new CMethodArgumentList(); $$.Add( $1 ) }
-    | MethodArgumentsNonEmpty ',' MethodArgument  { $$ = $1; $$.Add( $3 ) }
+      MethodArgument                              { $$ = new CMethodArgumentList(); $$->Add( $1 ); }
+    | MethodArgumentsNonEmpty ',' MethodArgument  { $$ = $1; $$->Add( $3 ); }
     ;
 
 MethodArgument:
-      Type ID              { $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ) }
+      Type ID              { $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ); }
     ;
 
 Statements:
-      %empty               { $$ = new CStatementList() }
-    | Statements Statement { $$ = $1; $$.Add( $2 ) }
+      %empty               { $$ = new CStatementList(); }
+    | Statements Statement { $$ = $1; $$->Add( $2 ); }
     ;
 
 Statement:
-      '{' Statements '}'                              { $$ = new CBracesStatement( $2 ) }
-    | IF '(' Expression ')' Statement ELSE Statement  { $$ = new CConditionalStatement( $3, $5, $7 ) } %prec CONDITIONAL_STATEMENT
-    | WHILE '(' Expression ')' Statement              { $$ = new CWhileLoopStatement( $3, $5 ) } %prec WHILE_LOOP_STATEMENT
-    | SOUT '(' Expression ')' ';'                     { $$ = new CPrintStatement( $3 ) }
-    | ID '=' Expression ';'                           { $$ = new CAssignIdStatement( new CIdExpression( $1 ), $3 ) }
-    | ID '[' Expression ']' '=' Expression ';'        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1 ), $3, $6) }
+      '{' Statements '}'                              { $$ = new CBracesStatement( $2 ); }
+    | IF '(' Expression ')' Statement ELSE Statement  { $$ = new CConditionalStatement( $3, $5, $7 ); } %prec CONDITIONAL_STATEMENT
+    | WHILE '(' Expression ')' Statement              { $$ = new CWhileLoopStatement( $3, $5 ); } %prec WHILE_LOOP_STATEMENT
+    | SOUT '(' Expression ')' ';'                     { $$ = new CPrintStatement( $3 ); }
+    | ID '=' Expression ';'                           { $$ = new CAssignIdStatement( new CIdExpression( $1 ), $3 ); }
+    | ID '[' Expression ']' '=' Expression ';'        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1 ), $3, $6); }
     ;
 
 Expressions:
-      %empty              { $$ = new CExpressionList() }
-    | ExpressionsNonEmpty { $$ = $1 }
+      %empty              { $$ = new CExpressionList(); }
+    | ExpressionsNonEmpty { $$ = $1; }
     ;
 
 ExpressionsNonEmpty:
-      Expression                         { $$ = new CExpressionList( $1 ) }
-    | ExpressionsNonEmpty ',' Expression { $$ = $1; $$.Add( $3 ) }
+      Expression                         { $$ = new CExpressionList( $1 ); }
+    | ExpressionsNonEmpty ',' Expression { $$ = $1; $$->Add( $3 ); }
     ;
 
 Expression:
-      Expression "&&" Expression { $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ) }
-    | Expression "||" Expression { $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ) }
-    | Expression '<' Expression  { $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ) }
-    | Expression '+' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ) }
-    | Expression '-' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ) }
-    | Expression '*' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ) }
-    | Expression '/' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ) }
-    | Expression '%' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ) }
+      Expression "&&" Expression { $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ); }
+    | Expression "||" Expression { $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ); }
+    | Expression '<' Expression  { $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ); }
+    | Expression '+' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ); }
+    | Expression '-' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ); }
+    | Expression '*' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ); }
+    | Expression '/' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ); }
+    | Expression '%' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ); }
 
-    | Expression '[' Expression ']'         { $$ = new CBracketExpression( $1, $3 )    }
-    | Expression '.' LENGTH                 { $$ = new CLengthExpression( $1 )         }
-    | Expression '.' ID '(' Expressions ')' { $$ = new CMethodExpression( $1, new CIdExpression( $3 ), $5 ) }
+    | Expression '[' Expression ']'         { $$ = new CBracketExpression( $1, $3 )   ; }
+    | Expression '.' LENGTH                 { $$ = new CLengthExpression( $1 )        ; }
+    | Expression '.' ID '(' Expressions ')' { $$ = new CMethodExpression( $1, new CIdExpression( $3 ), $5 ); }
 
-    | INTEGER_LITERAL            { $$ = new CNumberExpression( $1 )                     }
-    | LOGIC_LITERAL              { $$ = new CLogicExpression( $1 )                      }
-    | ID                         { $$ = new CIdExpression( $1 )                         }
-    | THIS                       { $$ = new CThisExpression()                           }
-    | NEW INT '[' Expression ']' { $$ = new CNewArrayExpression( $4 )                   }
-    | NEW ID '(' ')'             { $$ = new CNewIdExpression( new CIdExpression( $2 ) ) }
-    | '!' Expression             { $$ = new CNegateExpression( $2 )                     }
-    | '(' Expression ')'         { $$ = $2                                              }
+    | INTEGER_LITERAL            { $$ = new CNumberExpression( $1 )                    ; }
+    | LOGIC_LITERAL              { $$ = new CLogicExpression( $1 )                     ; }
+    | ID                         { $$ = new CIdExpression( $1 )                        ; }
+    | THIS                       { $$ = new CThisExpression()                          ; }
+    | NEW INT '[' Expression ']' { $$ = new CNewArrayExpression( $4 )                  ; }
+    | NEW ID '(' ')'             { $$ = new CNewIdExpression( new CIdExpression( $2 ) ); }
+    | '!' Expression             { $$ = new CNegateExpression( $2 )                    ; }
+    | '(' Expression ')'         { $$ = $2                                             ; }
     ;
 %%
