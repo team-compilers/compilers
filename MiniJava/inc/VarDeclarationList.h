@@ -14,7 +14,7 @@ public:
     CVarDeclarationList() = default;
 
     void Add( const CVarDeclarationList* varDeclaration ) 
-        { varDeclarations.push_back( varDelaration ); }
+        { varDeclarations.emplace_back( varDeclaration ); }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 

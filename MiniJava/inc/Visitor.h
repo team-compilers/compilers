@@ -30,11 +30,14 @@ class CIntArrayTypeModifier;
 class CIdTypeModifier;
 class CVarDeclaration;
 class CClassDeclaration;
+class CMainClass;
 class CProgram;
 class CStatementList;
 class CExpressionList;
 class CMethodDeclarationList;
 class CClassDeclarationList;
+class CMethodArgumentList;
+class CVarDeclarationList;
 
 class IVisitor {
 public:
@@ -64,6 +67,7 @@ public:
     virtual void Visit( CIntArrayTypeModifier* intArrayModifier ) = 0;
     virtual void Visit( CIdTypeModifier* idModifier ) = 0;
     virtual void Visit( CClassDeclaration* classDeclaration ) = 0;
+    virtual void Visit( CMainClass* mainClass ) = 0;
     virtual void Visit( CVarDeclaration* varDeclaration ) = 0;
     virtual void Visit( CProgram* program ) = 0;
     virtual void Visit( CStatementList* list ) = 0;
@@ -71,4 +75,6 @@ public:
     virtual void Visit( CMethodArgumentList* list ) = 0;
     virtual void Visit( CMethodDeclarationList* list ) = 0;
     virtual void Visit( CClassDeclarationList* list ) = 0;
+    virtual void Visit( CMethodArgumentList* list ) = 0;
+    virtual void Visit( CVarDeclarationList* list ) = 0;
 };

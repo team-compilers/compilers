@@ -14,7 +14,7 @@ public:
           argumentId( _argumentId ) {}
 
     const ITypeModifier* ArgumentType() const { return argumentType.get(); }
-    const CIdExpression* ArgumentId() const { return arugmentId.get(); }
+    const CIdExpression* ArgumentId() const { return argumentId.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 private:
