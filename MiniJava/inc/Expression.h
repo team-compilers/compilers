@@ -90,7 +90,7 @@ private:
 class CLogicExpression : public IExpression {
 public:
 
-    CLogicExpressin( bool _value ) 
+    CLogicExpression( bool _value ) 
         : value( _value ) {}
 
     bool Value() const { return value; }
