@@ -2,8 +2,9 @@
 /*__________ The C Declarations Section __________*/
 #include <iostream>
 #include <memory>
+#include <Program.h>
 extern "C" int yylex();
-void yyerror( std::unique_ptr<CProgram>&, int*, const char *);
+void yyerror( std::unique_ptr<CProgram>&, int*, const char *) {}
 %}
 
 /*__________ The Bison Declarations Section __________*/

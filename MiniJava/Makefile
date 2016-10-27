@@ -3,7 +3,7 @@ FLAGS=-O2 -std=c++11 -I"inc"
 SRC=lexer.yy.cpp parser.cpp
 
 example: $(SRC)
-	$(CC) $(FLAGS) $(SRC)
+	$(CC) $(FLAGS) $(SRC) -lm
 
 lexer.yy.cpp: lexer.l
 	flex++ -o lexer.yy.cpp lexer.l
