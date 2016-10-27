@@ -156,7 +156,7 @@ public:
 
     const IExpression* CallerExpression() const { return callerExpression.get(); }
     const CIdExpression* MethodId() const { return methodId.get(); }
-    const CListExpression* Arguments() const { return arguments.get(); }
+    const CExpressionList* Arguments() const { return arguments.get(); }
 
 private:
 
