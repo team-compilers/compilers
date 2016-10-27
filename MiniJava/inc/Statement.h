@@ -82,7 +82,7 @@ public:
           negativeTarget( _negativeTarget ) {}
 
     const IExpression* Condition() const { return condition.get(); }
-    const IStatement* PositiveTarget() const { return positveTarget.get(); }
+    const IStatement* PositiveTarget() const { return positiveTarget.get(); }
     const IStatement* NegativeTarget() const { return negativeTarget.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }

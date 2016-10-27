@@ -16,4 +16,4 @@ public:
 
 private:
     std::vector< std::unique_ptr<const CMethodDeclaration> > declarations;
-}
+};

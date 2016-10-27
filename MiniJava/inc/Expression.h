@@ -29,7 +29,7 @@ enum class TOperandType : char {
 class CBinaryExpression: public IExpression {
 public:
 
-    CBinaryExpression( TOperandType _operation, const IExpression* left, const IExpression* rightOperand )
+    CBinaryExpression( TOperandType _operation, const IExpression* left, const IExpression* right )
         : operation( _operation ),
           leftOperand( left ),
           rightOperand( right ) {}
