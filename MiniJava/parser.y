@@ -38,7 +38,7 @@ In other words, it’s the best place to define types referenced in %union direc
 %union {
     int                     ival;
     bool                    bval;
-    std::string             sval;
+    char*                   sval;
     CProgram*               program;
     CMainClass*             mainClass;
     CClassDeclarationList*  classDecls;
@@ -109,7 +109,7 @@ In other words, it’s the best place to define types referenced in %union direc
 /*__________ The Grammar Rules Section __________*/
 
 Program:
-      MainClass ClassDeclarations { program = new CProgram( $1, $2 ); }
+      MainClass ClassDeclarations { root = new CProgram( $1, $2 ); }
     ;
 
 MainClass:
