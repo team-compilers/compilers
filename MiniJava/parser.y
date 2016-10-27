@@ -2,11 +2,7 @@
 /*__________ The C Declarations Section __________*/
 #include <iostream>
 #include <memory>
-#include "TokenPrinter.h"
 extern "C" int yylex();
-using std::make_shared;
-using std::shared_ptr;
-
 // void yyerror( std::shared_ptr<CProgram>&, int*, const char *);
 %}
 
@@ -16,9 +12,25 @@ using std::shared_ptr;
 In other words, it’s the best place to define types referenced in %union directives.*/
 %code requires {
     #include <memory>
+    #include <Program.h>
+    #include <MainClass.h>
+    #include <ClassDeclarationList.h>
+    #include <ClassDeclaration.h>
+    #include <Statement.h>
+    #include <StatementList.h>
+    #include <VarDeclaration.h>
+    #include <VarDeclarationList.h>
+    #include <MethodDeclaration.h>
+    #include <MethodDeclarationList.h>
+    #include <TypeModifier.h>
+    #include <AccessModifier.h>
+    #include <MethodArgument.h>
+    #include <MethodArgumentList.h>
+    #include <ExpressionList.h>
+    #include <Expression.h>
 }
 
-%parse-param { std::shared_ptr<CProgram>& root }
+%parse-param { std::unique_ptr<CProgram>& root }
 %parse-param { int* hasError }
 
 %error-verbose
