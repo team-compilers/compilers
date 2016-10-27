@@ -3,7 +3,7 @@
 #include <iostream>
 #include <memory>
 extern "C" int yylex();
-// void yyerror( std::shared_ptr<CProgram>&, int*, const char *);
+void yyerror( std::unique_ptr<CProgram>&, int*, const char *);
 %}
 
 /*__________ The Bison Declarations Section __________*/
@@ -30,7 +30,7 @@ In other words, it’s the best place to define types referenced in %union direc
     #include <Expression.h>
 }
 
-%parse-param { std::unique_ptr<CProgram> root }
+%parse-param { std::unique_ptr<CProgram>& root }
 %parse-param { int* hasError }
 
 %error-verbose
