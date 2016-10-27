@@ -10,7 +10,7 @@ public:
     CMethodDeclarationList() = default;
 
     Add( const CMethodDeclaration* declaration ) 
-        { declarations.push_back( declaration ); }
+        { declarations.emplace_back( declaration ); }
     
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 

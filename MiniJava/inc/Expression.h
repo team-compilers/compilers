@@ -140,14 +140,14 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CListExpression;
+class CExpressionList;
 
 class CMethodExpression : public IExpression {
 public:
 
     CMethodExpression( const IExpression* _callerExpression, 
             const CIdExpression* _methodId,
-            const CListExpression* _arguments ) 
+            const CExpressionList* _arguments ) 
         : callerExpression( _callerExpression ),
           methodId( _methodId ),
           arguments( _arguments ) {}
@@ -162,7 +162,7 @@ private:
 
     std::unique_ptr<const IExpression> callerExpression;
     std::unique_ptr<const CIdExpression> methodId;
-    std::unique_ptr<const CListExpression> arguments;
+    std::unique_ptr<const CExpressionList> arguments;
 };
 
 //-----------------------------------------------------------------------------------------------//

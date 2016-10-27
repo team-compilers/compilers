@@ -13,7 +13,7 @@ public:
     CMethodArgumentList() = default;
 
     void Add( const CMethodArgument* argument ) 
-        { arguments.push_back(argument); }
+        { arguments.emplace_back(argument); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 

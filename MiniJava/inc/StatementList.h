@@ -11,11 +11,11 @@ public:
 
     CStatementList() = default;
 
-    Add( const IStatement* statement ) 
-        { statements.push_back( statement ); }
+    void Add( const IStatement* statement ) 
+        { statements.emplace_back( statement ); }
     
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
 private:
     std::vector< std::unique_ptr<const IStatement> > statements;
-}
+};
