@@ -30,7 +30,7 @@ In other words, it’s the best place to define types referenced in %union direc
     #include <Expression.h>
 }
 
-%parse-param { std::unique_ptr<CProgram>& root }
+%parse-param { std::unique_ptr<CProgram> root }
 %parse-param { int* hasError }
 
 %error-verbose
@@ -109,7 +109,7 @@ In other words, it’s the best place to define types referenced in %union direc
 /*__________ The Grammar Rules Section __________*/
 
 Program:
-      MainClass ClassDeclarations { root = new CProgram( $1, $2 ); }
+      MainClass ClassDeclarations { root = std::unique_ptr<CProgram>( new CProgram( $1, $2 ) ); }
     ;
 
 MainClass:
