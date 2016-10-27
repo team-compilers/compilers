@@ -6,7 +6,7 @@
 class CBinaryExpression;
 class CBracketExpression;
 class CNumberExpression;
-class CLogicExpressin;
+class CLogicExpression;
 class CIdExpression;
 class CLengthExpression;
 class CMethodExpression;
