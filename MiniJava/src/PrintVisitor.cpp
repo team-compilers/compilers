@@ -27,6 +27,10 @@ std::string CPrintVisitor::toString( const TOperandType& type ) const {
         case TOperandType::OT_Minus: result = "Minus"; break;
         case TOperandType::OT_Times: result = "Times"; break;
         case TOperandType::OT_Div: result = "Div"; break;
+        case TOperandType::OT_Mod: result = "Mod"; break;
+        case TOperandType::OT_LT: result = "Less"; break;
+        case TOperandType::OT_And: result = "And"; break;
+        case TOperandType::OT_Or: result = "Or"; break;
         case TOperandType::OT_Count: result = "Count"; break;
     }
     return result;
@@ -58,13 +62,13 @@ void CPrintVisitor::Visit( CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( "OpExp" );
     visitedNodeStack.push_back( nodeName );
 
-    expression->LeftOperand->Accept( this );
+    expression->LeftOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    addEdge( nodeName,  generateNodeName( toString( expression->Operation ) ) );
+    addEdge( nodeName,  generateNodeName( toString( expression->Operation() ) ) );
 
-    expression->RightOperand->Accept( this );
+    expression->RightOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 }
@@ -73,17 +77,32 @@ void CPrintVisitor::Visit( CIdExpression* expression ) {
     std::string nodeName = generateNodeName( "IdExp" );
     visitedNodeStack.push_back( nodeName );
 
-    std::string valueNodeName = generateNodeName( "Id" ) + ": " + expression->Name;
+    std::string valueNodeName = generateNodeName( "Id" ) + ": " + expression->Name();
     addEdge( nodeName, valueNodeName );
 }
 
 
 void CPrintVisitor::Visit( CBracketExpression* expression ) {
+    std::string nodeName = generateNodeName( "BracketExp" );
+    visitedNodeStack.push_back( nodeName );
 
+    expression->ContainerExpression()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
+
+    addEdge( nodeName, "[]" );
+
+    expression->IndexExpression()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back();
+    visitedNodeStack.pop_back();
 }
 
 void CPrintVisitor::Visit( CNumberExpression* expression ) {
-    
+    std::string nodeName = generateNodeName( "NumberExp" ); 
+    visitedNodeStack.push_back( nodeName );
+
+    std::string valueNodeName = generateNodeName("Value") + ": " + std::to_string( expression->Value() );
+    addEdge( nodeName, valueNodeName );
 }
 
 void CPrintVisitor::Visit( CLogicExpression* expression ) {
