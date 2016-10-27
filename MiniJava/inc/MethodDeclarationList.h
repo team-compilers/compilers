@@ -7,7 +7,7 @@
 class CMethodDeclarationList : public IVisitorTarget {
 public:
 
-    CMethodDeclarationList() {}
+    CMethodDeclarationList() = default;
 
     Add( const CMethodDeclaration* declaration ) 
         { declarations.push_back( declaration ); }

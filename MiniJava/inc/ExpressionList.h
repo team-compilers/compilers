@@ -10,7 +10,7 @@
 class CExpressionList : public IVisitorTarget {
 public:
 
-    CExpressionList() {}
+    CExpressionList() = default;
 
     CExpressionList( const IExpression* expression ) { Add( expression ); }
 

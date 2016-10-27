@@ -54,8 +54,8 @@ private:
 class CBracketExpression: public IExpression {
 public:
 
-    CBracketExpression( const IExpression* _containterExpression, const IExpression* _indexExpression )
-        : containterExpression( _containterExpression ),
+    CBracketExpression( const IExpression* _containerExpression, const IExpression* _indexExpression )
+        : containerExpression( _containerExpression ),
           indexExpression( _indexExpression ) {}
 
     const IExpression* ContainerExpression() const { return containerExpression.get(); }

@@ -1,1 +1,6 @@
-*.swp
+*lexer.yy.cpp
+*.o
+*parser.cpp
+*parser.hpp
+*parser.output
+*example

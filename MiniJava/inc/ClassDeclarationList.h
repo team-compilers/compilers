@@ -9,7 +9,7 @@
 class CClassDeclarationList : public IVisitorTarget {
 public:
 
-    CClassDeclarationList() {}
+    CClassDeclarationList() = default;
 
     Add( const CClassDeclaration* declaration ) 
         { classes.push_back( declaration ); }

@@ -9,7 +9,7 @@
 class CStatementList : public IVisitorTarget {
 public:
 
-    CStatementList() {}
+    CStatementList() = default;
 
     Add( const IStatement* statement ) 
         { statements.push_back( statement ); }

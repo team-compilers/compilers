@@ -114,7 +114,7 @@ Program:
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statements '}' '}'
-      { $$ = new CMainClass( new CIdExpression( $2 ), $12, $15 ); }
+      { $$ = new CMainClass( new CIdExpression( $2 ), new CIdExpression( $12 ), $15 ); }
     ;
 
 ClassDeclarations:
@@ -124,7 +124,7 @@ ClassDeclarations:
 
 ClassDeclaration:
       CLASS ID '{' VarDeclarations MethodDeclarations '}'             { $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ); }
-    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, $4 ); }
+    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, new CIdExpression( $4 ) ); }
     ;
 
 VarDeclarations:
@@ -150,7 +150,7 @@ Type:
       INT '['']'  { $$ = new CIntArrayTypeModifier(); }
     | BOOLEAN     { $$ = new CBooleanTypeModifier(); }
     | INT         { $$ = new CIntTypeModifier(); }
-    | ID          { $$ = new CIdTypeModifier(); }
+    | ID          { $$ = new CIdTypeModifier( new CIdExpression( $1 ) ); }
     ;
 
 AccessModifier:

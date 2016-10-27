@@ -10,7 +10,7 @@
 class CMethodArgumentList : public IVisitorTarget {
 public:
 
-    CMethodArgumentList() {}
+    CMethodArgumentList() = default;
 
     void Add( const CMethodArgument* argument ) 
         { arguments.push_back(argument); }

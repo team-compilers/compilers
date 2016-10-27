@@ -11,7 +11,7 @@
 class CVarDeclarationList : public IVisitorTarget {
 public:
 
-    CVarDeclarationList() {}
+    CVarDeclarationList() = default;
 
     void Add( const CVarDeclarationList* varDeclaration ) 
         { varDeclarations.push_back( varDelaration ); }
