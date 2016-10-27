@@ -142,8 +142,8 @@ MethodDeclarations:
     ;
 
 MethodDeclaration:
-      AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations ';' Statements RETURN Expression ';' '}'
-      { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $10, $12 ); }
+      AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
+      { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $9, $11 ); }
     ;
 
 Type:
@@ -174,7 +174,7 @@ MethodArgument:
 
 Statements:
       %empty               { $$ = new CStatementList(); }
-    | Statements Statement { $$ = $1; $$->Add( $2 ); }
+    | Statement Statements { $$ = $2; $$->Add( $1 ); }
     ;
 
 Statement:
