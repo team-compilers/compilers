@@ -21,7 +21,7 @@ enum class TBinaryOperandType : char {
     OT_Mod,
     OT_LT,
     OT_And,
-    OT_Or
+    OT_Or,
 
     OT_Count
 };
@@ -37,8 +37,8 @@ public:
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
     TOperandType Operation() const { return operation; }
-    const IExpression* LeftOperand() const { return leftOperand; }
-    const IExpression* RightOperand() const { return rightOperand; }
+    const IExpression* LeftOperand() const { return leftOperand.get(); }
+    const IExpression* RightOperand() const { return rightOperand.get(); }
 
 private:
 
@@ -58,9 +58,10 @@ public:
         : containterExpression( _containterExpression ),
           indexExpression( _indexExpression ) {}
 
-    const IExpression* ContainerExpression() const { return containerExpression; }
-    const IExpression* IndexExpression() const { return indexExpression; }
+    const IExpression* ContainerExpression() const { return containerExpression.get(); }
+    const IExpression* IndexExpression() const { return indexExpression.get(); }
 
+    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 private:
 
     std::unique_ptr<const IExpression> containerExpression; //a
@@ -130,7 +131,7 @@ public:
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
     
-    const IExpression* LengthTarget() const { return lengthTarget; }
+    const IExpression* LengthTarget() const { return lengthTarget.get(); }
 
 private:
 
@@ -153,9 +154,9 @@ public:
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
-    const IExpression* CallerExpression() const { return callerExpression; }
-    const CIdExpression* MethodId() const { return methodId; }
-    const CListExpression* Arguments() const { return arguments; }
+    const IExpression* CallerExpression() const { return callerExpression.get(); }
+    const CIdExpression* MethodId() const { return methodId.get(); }
+    const CListExpression* Arguments() const { return arguments.get(); }
 
 private:
 
@@ -180,7 +181,7 @@ public:
     CNewArrayExpression( const IExpression* _lengthExpression )
         : lengthExpression( _lengthExpression ) {}
 
-    const IExpression* LengthExpression() const { return lengthExpression; }
+    const IExpression* LengthExpression() const { return lengthExpression.get(); }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
@@ -197,7 +198,9 @@ public:
     CNewIdExpression( const CIdExpression* _targetId )
         : targetId( _targetId ) {}
 
-    const CIdExpression* TargetId() { targetId; }
+    const CIdExpression* TargetId() { targetId.get(); }
+
+    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
 private:
 
@@ -212,7 +215,9 @@ public:
     CNegateExpression( const IExpression* _targetExpression )
         : targetExpression( _targetExpression ) {}
 
-    const IExpression* TargetExpression() { return targetExpression; }
+    const IExpression* TargetExpression() { return targetExpression.get(); }
+
+    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 
 private:
 

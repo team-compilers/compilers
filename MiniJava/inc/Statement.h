@@ -21,8 +21,8 @@ public:
         : leftPart( _leftPart ),
           rightPart( _rightPart ) {}
 
-    const CIdExpression* LeftPart() const { return leftPart; }
-    const IExpression* RightPart() const { return rightPart; }
+    const CIdExpression* LeftPart() const { return leftPart.get(); }
+    const IExpression* RightPart() const { return rightPart.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 private:
@@ -41,9 +41,9 @@ public:
           leftPartIndex( _leftPartIndex ),
           rightPart( _rightPart ) {}
 
-    const CIdExpression* LeftPartId() const { return leftPartId; }
-    const IExpression* LeftPartIndex() const { return leftPartIndex; }
-    const IExpression* RightPart() const { return rightPart; }
+    const CIdExpression* LeftPartId() const { return leftPartId.get(); }
+    const IExpression* LeftPartIndex() const { return leftPartIndex.get(); }
+    const IExpression* RightPart() const { return rightPart.get(); }
 
 private:
 
@@ -60,7 +60,7 @@ public:
     CPrintStatement( const IExpression* _printTarget ) 
         : printTarget( _printTarget ) {}
 
-    const IExpression* PrintTarget() const { return printTarget; }
+    const IExpression* PrintTarget() const { return printTarget.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
@@ -80,9 +80,9 @@ public:
           positiveTarget( _positiveTarget ),
           negativeTarget( _negativeTarget ) {}
 
-    const IExpression* Condition() const { return condition; }
-    const IStatement* PositiveTarget() const { return positveTarget; }
-    const IStatement* NegativeTarget() const { return negativeTarget; }
+    const IExpression* Condition() const { return condition.get(); }
+    const IStatement* PositiveTarget() const { return positveTarget.get(); }
+    const IStatement* NegativeTarget() const { return negativeTarget.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
@@ -102,8 +102,8 @@ public:
         : condition( _condition ),
         body( _body ) {}
 
-    const IExpression* Condition() const { return condition; }
-    const IStatement* Body() const { return body; }
+    const IExpression* Condition() const { return condition.get(); }
+    const IStatement* Body() const { return body.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
@@ -123,7 +123,9 @@ public:
     CBracesStatement( const CStatementList* _list )
         : list( _list ) {}
 
-    const CStatementList* List() const { list; }
+    const CStatementList* List() const { list.get(); }
+
+    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
 private:
 

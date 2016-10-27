@@ -24,12 +24,12 @@ public:
           statements( _statements ),
           returnExpression( _returnExpression ) {}
 
-    const IAccessModifier* AccessModifier() const { return accessModifier; }
-    const ITypeModifier* TypeModifier() const { return typeModifier; }
-    const CIdExpression* MethodId() const { return methodId; }
-    const CMethodArgumentList* MethodArguments() const { return methodArguments; }
-    const CStatementList* Statements() const { return statements; }
-    const IExpression* ReturnExpression() const { return returnExpression; }
+    const IAccessModifier* AccessModifier() const { return accessModifier.get(); }
+    const ITypeModifier* TypeModifier() const { return typeModifier.get(); }
+    const CIdExpression* MethodId() const { return methodId.get(); }
+    const CMethodArgumentList* MethodArguments() const { return methodArguments.get(); }
+    const CStatementList* Statements() const { return statements.get(); }
+    const IExpression* ReturnExpression() const { return returnExpression.get(); }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 

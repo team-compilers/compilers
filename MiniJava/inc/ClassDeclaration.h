@@ -25,11 +25,11 @@ public:
           hasParent( true ),
           extendsClassName( parent ) {}
 
-    const CIdExpression* ClassName() const { return className; }
-    const CVarDeclarationList* VarDeclarations() const { return varDecls; }
-    const CMethodDeclarationList* MethodDeclarations() const { return methodDecls; }
+    const CIdExpression* ClassName() const { return className.get(); }
+    const CVarDeclarationList* VarDeclarations() const { return varDecls.get(); }
+    const CMethodDeclarationList* MethodDeclarations() const { return methodDecls.get(); }
     bool HasParent() const { return hasParent; }
-    const CIdExpression* ExtendsClassName() const { return extendsClassName; } 
+    const CIdExpression* ExtendsClassName() const { return extendsClassName.get(); } 
 
 private:
     std::unique_ptr<const CIdExpression> className;

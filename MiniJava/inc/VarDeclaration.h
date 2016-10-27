@@ -14,8 +14,8 @@ public:
         : type( _type ),
           id( _id ) {}
 
-    const ITypeModifier* Type() const { return type; }
-    const CIdExpression* Id() const { return id; }
+    const ITypeModifier* Type() const { return type.get(); }
+    const CIdExpression* Id() const { return id.get(); }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 

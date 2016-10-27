@@ -18,6 +18,7 @@ class CBooleanTypeModifier : public ITypeModifier {
 public:
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 };
+
 class CIntArrayTypeModifier : public ITypeModifier {
 public:
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }

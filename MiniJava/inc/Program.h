@@ -13,8 +13,8 @@ public:
         : mainClass( _mainClass ),
           classDeclarations( _classDeclarations ) {}
 
-    const CMainClass* MainClass() const { return mainClass; }
-    const CClassDeclarationList* ClassDeclarations() const { return classDeclarations; }
+    const CMainClass* MainClass() const { return mainClass.get(); }
+    const CClassDeclarationList* ClassDeclarations() const { return classDeclarations.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 

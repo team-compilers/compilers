@@ -13,9 +13,9 @@ public:
           classArgsName( _classArgsName ),
           statement( _statement ) {}
 
-    const CIdExpression* ClassName() const { return className; }
-    const CIdExpression* ClassArgsName() const { return classArgsName; }
-    const CStatementList* Statement() const { return statement; }
+    const CIdExpression* ClassName() const { return className.get(); }
+    const CIdExpression* ClassArgsName() const { return classArgsName.get(); }
+    const CStatementList* Statement() const { return statement.get(); }
 
     void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
 
