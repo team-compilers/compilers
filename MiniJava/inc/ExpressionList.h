@@ -14,7 +14,7 @@ public:
 
     CExpressionList( const IExpression* expression ) { Add( expression ); }
 
-    Add( const IExpression* expression ) 
+    void Add( const IExpression* expression ) 
         { expressions.push_back( expression ); }
     
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }

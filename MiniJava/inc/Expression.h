@@ -13,7 +13,7 @@ class IExpression : public IVisitorTarget {
 
 //-----------------------------------------------------------------------------------------------//
 //
-enum class TBinaryOperandType : char {
+enum class TOperandType : char {
     OT_Plus,
     OT_Minus,
     OT_Times,
