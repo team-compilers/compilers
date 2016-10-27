@@ -23,4 +23,4 @@ private:
     std::unique_ptr<const CIdExpression> className;
     std::unique_ptr<const CIdExpression> classArgsName;
     std::unique_ptr<const CStatementList> statement;
-}
+};

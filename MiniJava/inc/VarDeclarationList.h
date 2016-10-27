@@ -20,4 +20,4 @@ public:
 
 private:
     std::vector< std::unique_ptr<const CVarDeclaration> > varDeclarations;
-}
+};

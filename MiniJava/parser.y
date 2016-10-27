@@ -154,7 +154,7 @@ Type:
     ;
 
 AccessModifier:
-      PUBLIC    { $$ = new CPublicAccessModifier(); }
+      PUBLIC    { $$ = new CPublicAccessModifier();  }
     | PRIVATE   { $$ = new CPrivateAccessModifier(); }
     ;
 

@@ -18,4 +18,4 @@ public:
 
 private:
     std::vector< std::unique_ptr<const IStatement> > statements;
-}
+};
