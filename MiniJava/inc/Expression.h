@@ -135,7 +135,7 @@ public:
 
 private:
 
-    std::unique_ptr<const IExpression*> lengthTarget;
+    std::unique_ptr<const IExpression> lengthTarget;
 };
 
 //-----------------------------------------------------------------------------------------------//
