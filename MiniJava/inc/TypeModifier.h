@@ -30,7 +30,7 @@ public:
     CIdTypeModifier( const CIdExpression* _typeId ) 
         : typeId( _typeId ) {}
 
-    const CIdExpression* TypeId() const { return typeId; }
+    const CIdExpression* TypeId() const { return typeId.get(); }
 
     void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
 

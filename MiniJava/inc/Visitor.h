@@ -75,6 +75,5 @@ public:
     virtual void Visit( CMethodArgumentList* list ) = 0;
     virtual void Visit( CMethodDeclarationList* list ) = 0;
     virtual void Visit( CClassDeclarationList* list ) = 0;
-    virtual void Visit( CMethodArgumentList* list ) = 0;
     virtual void Visit( CVarDeclarationList* list ) = 0;
 };
