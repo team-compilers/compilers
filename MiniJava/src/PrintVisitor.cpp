@@ -53,6 +53,7 @@ void CPrintVisitor::Clear() {
     visitedNodeStack.clear();
 }
 
+
 void CPrintVisitor::Visit( CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( "OpExp" );
     visitedNodeStack.push_back( nodeName );
@@ -68,14 +69,6 @@ void CPrintVisitor::Visit( CBinaryExpression* expression ) {
     visitedNodeStack.pop_back();
 }
 
-void CPrintVisitor::Visit( CNumberExpression* expression ) {
-    std::string nodeName = generateNodeName( "NumExp" );
-    visitedNodeStack.push_back( nodeName );
-
-    std::string valueNodeName = generateNodeName( "Value" ) + ": " + std::to_string( expression->Value );
-    addEdge( nodeName, valueNodeName );
-}
-
 void CPrintVisitor::Visit( CIdExpression* expression ) {
     std::string nodeName = generateNodeName( "IdExp" );
     visitedNodeStack.push_back( nodeName );
@@ -84,59 +77,134 @@ void CPrintVisitor::Visit( CIdExpression* expression ) {
     addEdge( nodeName, valueNodeName );
 }
 
-void CPrintVisitor::Visit( CPairListExpression* expression ) {
-    std::string nodeName = generateNodeName( "PairExpList" );
-    visitedNodeStack.push_back( nodeName );
 
-    expression->Head->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+void CPrintVisitor::Visit( CBracketExpression* expression ) {
 
-    expression->Tail->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
 }
 
-void CPrintVisitor::Visit( CSingleElementListExpression* expression ) {
-    std::string nodeName = generateNodeName( "LastExpList" );
-    visitedNodeStack.push_back( nodeName );
+void CPrintVisitor::Visit( CNumberExpression* expression ) {
+    
+}
 
-    expression->Element->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+void CPrintVisitor::Visit( CLogicExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CLengthExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CMethodExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CThisExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CNewArrayExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CNewIdExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CNegateExpression* expression ) {
+    
+}
+
+void CPrintVisitor::Visit( CAssignIdStatement* statement ) {
+    
+}
+
+void CPrintVisitor::Visit( CAssignIdWithIndexStatement* statement ) {
+    
 }
 
 void CPrintVisitor::Visit( CPrintStatement* statement ) {
-    std::string nodeName = generateNodeName( "PrintStm" );
-    visitedNodeStack.push_back( nodeName );
-
-    statement->PrintList->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+    
 }
 
-void CPrintVisitor::Visit( CAssignStatement* statement ) {
-    std::string nodeName = generateNodeName( "AssignStm" );
-    visitedNodeStack.push_back( nodeName );
-
-    statement->LeftValue->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    statement->RightValue->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+void CPrintVisitor::Visit( CConditionalStatement* statement ) {
 }
 
-void CPrintVisitor::Visit( CCompoundStatement* statement ) {
-    std::string nodeName = generateNodeName( "CompoundStm" );
-    visitedNodeStack.push_back( nodeName );
+void CPrintVisitor::Visit( CWhileLoopStatement* statement ) {
+    
+}
 
-    statement->First->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+void CPrintVisitor::Visit( CBracesStatement* statement ) {
+    
+}
 
-    statement->Second->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+void CPrintVisitor::Visit( CPrivateAccessModifier* modifier ) {
+    
+}
+
+void CPrintVisitor::Visit( CPublicAccessModifier* modifier ) {
+    
+}
+
+void CPrintVisitor::Visit( CMethodArgument* argument ) {
+    
+}
+
+void CPrintVisitor::Visit( CMethodDeclaration* declaration ) {
+    
+}
+
+void CPrintVisitor::Visit( CIntTypeModifier* intModifier ) {
+    
+}
+
+void CPrintVisitor::Visit( CBooleanTypeModifier* booleanModifier ) {
+    
+}
+
+void CPrintVisitor::Visit( CIntArrayTypeModifier* intArrayModifier ) {
+    
+}
+
+void CPrintVisitor::Visit( CIdTypeModifier* idModifier ) {
+    
+}
+
+void CPrintVisitor::Visit( CClassDeclaration* classDeclaration ) {
+    
+}
+
+void CPrintVisitor::Visit( CMainClass* mainClass ) {
+    
+}
+
+void CPrintVisitor::Visit( CVarDeclaration* varDeclaration ) {
+    
+}
+
+void CPrintVisitor::Visit( CProgram* program ) {
+    
+}
+
+void CPrintVisitor::Visit( CStatementList* list ) {
+    
+}
+
+void CPrintVisitor::Visit( CExpressionList* list ) {
+    
+}
+
+void CPrintVisitor::Visit( CMethodArgumentList* list ) {
+    
+}
+
+void CPrintVisitor::Visit( CMethodDeclarationList* list ) {
+    
+}
+
+void CPrintVisitor::Visit( CClassDeclarationList* list ) {
+    
+}
+
+void CPrintVisitor::Visit( CVarDeclarationList* list ) {
+    
 }
