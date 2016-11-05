@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <ExpressionList.h>
 #include <Visitor.h>
 #include <VisitorTarget.h>
 #include <string>
@@ -141,8 +142,6 @@ private:
 };
 
 //-----------------------------------------------------------------------------------------------//
-
-class CExpressionList;
 
 class CMethodExpression : public IExpression {
 public:

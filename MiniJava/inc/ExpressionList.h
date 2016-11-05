@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Expression.h>
 #include <Visitor.h>
 #include <VisitorTarget.h>
 #include <vector>
 #include <memory>
 
+class IExpression;
 
 class CExpressionList : public IVisitorTarget {
 public:

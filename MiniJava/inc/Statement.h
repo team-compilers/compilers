@@ -11,7 +11,7 @@
 
 class IStatement : public IVisitorTarget {
 public:
-    virtual IStatement() {}
+    virtual ~IStatement() {}
 };
 
 //-----------------------------------------------------------------------------------------------//
