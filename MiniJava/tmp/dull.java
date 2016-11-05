@@ -1,2 +1,5 @@
-a = true;
-b = 45;
+class Main {
+	public static void main(String[] args) {
+		System.out.println(4);
+	}
+}

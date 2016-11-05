@@ -64,11 +64,11 @@ In other words, it’s the best place to define types referenced in %union direc
     IExpression*            exp;*/
 }
 
-/*%left '!' "||" "&&"
-%left '<' '='
-%left '+' '-'
-%left '*' '/' '%'
-%left '.' '[' ']'*/
+// %left '!' "||" "&&"
+// %left '<' '='
+// %left '+' '-'
+// %left '*' '/' '%'
+// %left '.' '[' ']'
 
 %token AND
 %token OR
@@ -94,11 +94,11 @@ In other words, it’s the best place to define types referenced in %union direc
 %token <bval> LOGIC_LITERAL
 %token <sval> ID
 
-/*
-%precedence WHILE IF SOUT ID
-%precedence CONDITIONAL_STATEMENT WHILE_LOOP_STATEMENT
 
-%type <program>     Program;
+// %precedence WHILE IF SOUT ID
+// %precedence CONDITIONAL_STATEMENT WHILE_LOOP_STATEMENT
+
+/*%type <program>     Program;
 %type <mainClass>   MainClass;
 %type <classDecls>  ClassDeclarations;
 %type <classDecl>   ClassDeclaration;
@@ -207,8 +207,8 @@ ExpressionsNonEmpty:
     ;
 
 Expression:
-      Expression "&&" Expression { std::cout << "Expr "; }
-    | Expression "||" Expression { std::cout << "Expr "; }
+      Expression AND Expression { std::cout << "Expr "; }
+    | Expression OR Expression { std::cout << "Expr "; }
     | Expression '<' Expression  { std::cout << "Expr "; }
     | Expression '+' Expression  { std::cout << "Expr "; }
     | Expression '-' Expression  { std::cout << "Expr "; }
