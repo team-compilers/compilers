@@ -66,7 +66,7 @@ In other words, it’s the best place to define types referenced in %union direc
 
 // Precedence and associativity of the operators
 // http://www.cs.bilkent.edu.tr/~guvenir/courses/CS101/op_precedence.html
-%left '[' '.'
+%left '[' '.' '('
 %right '!'
 %left '*' '/' '%'
 %left '+' '-'
@@ -212,26 +212,31 @@ ExpressionsNonEmpty:
     ;
 
 Expression:
-      Expression AND Expression { std::cout << "Expr\n"; }
-    | Expression OR Expression { std::cout << "Expr\n"; }
-    | Expression '<' Expression  { std::cout << "Expr\n"; }
-    | Expression '+' Expression  { std::cout << "Expr\n"; }
-    | Expression '-' Expression  { std::cout << "Expr\n"; }
-    | Expression '*' Expression  { std::cout << "Expr\n"; }
-    | Expression '/' Expression  { std::cout << "Expr\n"; }
-    | Expression '%' Expression  { std::cout << "Expr\n"; }
+      Expression AND Expression { std::cout << "ExprAND\n"; }
+    | Expression OR Expression { std::cout << "ExprOR\n"; }
+    | Expression '<' Expression  { std::cout << "Expr<\n"; }
+    | Expression '+' Expression  { std::cout << "Expr+\n"; }
+    | Expression '-' Expression  { std::cout << "Expr-\n"; }
+    | Expression '*' Expression  { std::cout << "Expr*\n"; }
+    | Expression '/' Expression  { std::cout << "Expr/\n"; }
+    | Expression '%' Expression  { std::cout << "Expr%\n"; }
 
     | Expression '[' Expression ']'         { std::cout << "Expr\n"; }
     | Expression '.' LENGTH                 { std::cout << "Expr\n"; }
     | Expression '.' ID '(' Expressions ')' { std::cout << "Expr\n"; }
 
-    | INTEGER_LITERAL            { std::cout << "Expr\n"; }
-    | LOGIC_LITERAL              { std::cout << "Expr\n"; }
-    | ID                         { std::cout << "Expr\n"; }
-    | THIS                       { std::cout << "Expr\n"; }
-    | NEW INT '[' Expression ']' { std::cout << "Expr\n"; }
-    | NEW ID '(' ')'             { std::cout << "Expr\n"; }
-    | '!' Expression             { std::cout << "Expr\n"; }
-    | '(' Expression ')'         { std::cout << "Expr\n"; }
+    | IntegerLiteral             { std::cout << "ExprInt\n"; }
+    | LOGIC_LITERAL              { std::cout << "ExprLog\n"; }
+    | ID                         { std::cout << "ExprId\n"; }
+    | THIS                       { std::cout << "ExprThis\n"; }
+    | NEW INT '[' Expression ']' { std::cout << "ExprNewArr\n"; }
+    | NEW ID '(' ')'             { std::cout << "ExprNewId\n"; }
+    | '!' Expression             { std::cout << "ExprNot\n"; }
+    | '(' Expression ')'         { std::cout << "ExprParen\n"; }
+    ;
+
+IntegerLiteral:
+    INTEGER_LITERAL { std::cout << "IntPos\n"; }
+    | '-' INTEGER_LITERAL { std::cout << "IntNeg\n"; }
     ;
 %%

@@ -42,7 +42,7 @@ void lexicalAnalysis( const std::string& inputFileName, const std::string& outpu
 }
 
 int main() {
-    std::string inputFileName = "tmp/sample.java";
+    std::string inputFileName = "Samples/TreeVisitor.java";
     std::string outputFileName = "tmp/tokenized.txt";
     lexicalAnalysis(inputFileName, outputFileName);
     return 0;
