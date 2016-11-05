@@ -99,10 +99,6 @@ In other words, it’s the best place to define types referenced in %union direc
 %token <bval> LOGIC_LITERAL
 %token <sval> ID
 
-
-// %precedence WHILE IF SOUT ID
-// %precedence CONDITIONAL_STATEMENT WHILE_LOOP_STATEMENT
-
 /*%type <program>     Program;
 %type <mainClass>   MainClass;
 %type <classDecls>  ClassDeclarations;

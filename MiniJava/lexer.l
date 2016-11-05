@@ -41,12 +41,12 @@ LEX_COMMENT \/\/(.)*\n
 
 %%
 {LEX_INTEGER_LITERAL} {
-    yylval.ival = atoi(yytext);
+    yylval.ival = atoi( yytext );
     return INTEGER_LITERAL;
 }
 
 {LEX_LOGIC_LITERAL} {
-    yylval.bval = std::string(yytext) == "true";
+    yylval.bval = std::string( yytext ) == "true";
     return LOGIC_LITERAL;
 }
 
@@ -128,7 +128,7 @@ LEX_COMMENT \/\/(.)*\n
 
 {LEX_ID} {
     // we have to copy because we can't rely on yytext not changing underneath us:
-    yylval.sval = strdup(yytext);
+    yylval.sval = strdup( yytext );
     return ID;
 }
 
