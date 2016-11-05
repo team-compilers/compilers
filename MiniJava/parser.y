@@ -10,9 +10,8 @@ extern "C" int yyparse();
 extern "C" FILE* yyin;
 
 // these are defined in main.cpp
-extern int line_num;
-extern std::unique_ptr<CProgram> root;
-extern void yyerror(const char *s);
+extern std::unique_ptr<const CProgram> astRoot;
+extern void yyerror( const char* message );
 %}
 
 /*__________ The Bison Declarations Section __________*/
@@ -130,7 +129,7 @@ extern void yyerror(const char *s);
 %%
 /*__________ The Grammar Rules Section __________*/
 Program:
-      MainClass ClassDeclarations { std::cout << "Program\n"; $$ = new CProgram( $1, $2 ); root = std::unique_ptr<CProgram>($$); }
+      MainClass ClassDeclarations { std::cout << "Program\n"; $$ = new CProgram( $1, $2 ); astRoot = std::unique_ptr<const CProgram>($$); }
     ;
 
 MainClass:

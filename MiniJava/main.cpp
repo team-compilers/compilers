@@ -4,16 +4,17 @@
 #include <stdexcept>
 #include <memory>
 #include <Program.h>
+// #include <PrintVisitor.h>
 
 extern "C" int yyparse();
 extern "C" FILE* yyin;
 extern "C" FILE* yyout;
-extern int line_num;
+extern int lineNum;
 
-std::unique_ptr<CProgram> root;
+std::unique_ptr<const CProgram> astRoot;
 
-void yyerror( const char *s ) {
-    std::cout << "Parse error at line " << line_num << ".  Message: " << s << std::endl;
+void yyerror( const char* message ) {
+    std::cout << "Parse error at line " << lineNum << ".  Message: " << message << std::endl;
 }
 
 void lexicalAnalysis( const std::string& inputFileName, const std::string& outputFileName ) {
@@ -28,10 +29,16 @@ void lexicalAnalysis( const std::string& inputFileName, const std::string& outpu
     fclose( inputStream );
 }
 
+void buildAST( const CProgram* root ) {
+    // CPrintVisitor visitor;
+    // visitor.Visit( root );
+    std::cout << root << std::endl;
+}
+
 int main() {
     std::string inputFileName = "tmp/dull.java";
     std::string outputFileName = "tmp/tokenized.txt";
     lexicalAnalysis( inputFileName, outputFileName );
-    std::cout << root.get() << std::endl;
+    buildAST( astRoot.get() );
     return 0;
 }

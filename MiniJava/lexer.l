@@ -5,7 +5,7 @@
 #include "parser.hpp"
 // used to prevent applying name-mangling to the yylex identifier
 #define YY_DECL extern "C" int yylex()
-int line_num = 1;
+int lineNum = 1;
 %}
 
 %option noyywrap
@@ -132,10 +132,10 @@ LEX_COMMENT \/\/(.)*\n
     return ID;
 }
 
-\n { ++line_num; }
+\n { ++lineNum; }
 
 {LEX_COMMENT} {
-    ++line_num;
+    ++lineNum;
 };
 
 [!%\(\)*+,-./;<=\[\]\{\}] { return yytext[0]; }

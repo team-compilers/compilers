@@ -29,7 +29,7 @@ enum class TOperandType : char {
     OT_Count
 };
 
-class CBinaryExpression: public IExpression {
+class CBinaryExpression : public IExpression {
 public:
 
     CBinaryExpression( TOperandType _operation, const IExpression* left, const IExpression* right )
@@ -54,7 +54,7 @@ private:
 //-----------------------------------------------------------------------------------------------//
 
 // a[b]
-class CBracketExpression: public IExpression {
+class CBracketExpression : public IExpression {
 public:
 
     CBracketExpression( const IExpression* _containerExpression, const IExpression* _indexExpression )
