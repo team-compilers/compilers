@@ -15,7 +15,7 @@ void yyerror(const char *s);
 
 /*__________ The Bison Declarations Section __________*/
 
-/*This is the best place to write dependency code required for YYSTYPE and YYLTYPE. 
+/*This is the best place to write dependency code required for YYSTYPE and YYLTYPE.
 In other words, it’s the best place to define types referenced in %union directives.*/
 /*%code requires {
     #include <memory>
@@ -64,11 +64,16 @@ In other words, it’s the best place to define types referenced in %union direc
     IExpression*            exp;*/
 }
 
-// %left '!' "||" "&&"
-// %left '<' '='
-// %left '+' '-'
-// %left '*' '/' '%'
-// %left '.' '[' ']'
+// Precedence and associativity of the operators
+// http://www.cs.bilkent.edu.tr/~guvenir/courses/CS101/op_precedence.html
+%left '[' '.'
+%right '!'
+%left '*' '/' '%'
+%left '+' '-'
+%left '<'
+%left AND
+%left OR
+%left '='
 
 %token AND
 %token OR
