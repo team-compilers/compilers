@@ -13,17 +13,17 @@ public:
 
 class CIntTypeModifier : public ITypeModifier {
 public:
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
 class CBooleanTypeModifier : public ITypeModifier {
 public:
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
 class CIntArrayTypeModifier : public ITypeModifier {
 public:
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
 class CIdTypeModifier : public ITypeModifier {
@@ -34,7 +34,7 @@ public:
 
     const CIdExpression* TypeId() const { return typeId.get(); }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CIdExpression> typeId;

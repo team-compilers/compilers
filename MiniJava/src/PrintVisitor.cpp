@@ -54,16 +54,16 @@ void CPrintVisitor::Clear() {
     visitedNodeStack.clear();
 }
 
-void CPrintVisitor::Visit( CPublicAccessModifier* modifier ) {
+void CPrintVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPublic" );
 }
 
-void CPrintVisitor::Visit( CPrivateAccessModifier* modifier ) {
+void CPrintVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CBinaryExpression* expression ) {
+void CPrintVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( "BinExp" );
     visitedNodeStack.push_back( nodeName );
 
@@ -78,7 +78,7 @@ void CPrintVisitor::Visit( CBinaryExpression* expression ) {
     visitedNodeStack.pop_back();
 }
 
-void CPrintVisitor::Visit( CBracketExpression* expression ) {
+void CPrintVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( "BracketExp" );
     visitedNodeStack.push_back( nodeName );
 
@@ -93,7 +93,7 @@ void CPrintVisitor::Visit( CBracketExpression* expression ) {
     visitedNodeStack.pop_back();
 }
 
-void CPrintVisitor::Visit( CNumberExpression* expression ) {
+void CPrintVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( "NumberExp" ); 
     visitedNodeStack.push_back( nodeName );
 
@@ -101,12 +101,12 @@ void CPrintVisitor::Visit( CNumberExpression* expression ) {
     addEdge( nodeName, valueNodeName );
 }
 
-void CPrintVisitor::Visit( CLogicExpression* expression ) {
+void CPrintVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CIdExpression* expression ) {
+void CPrintVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( "IdExp" );
     visitedNodeStack.push_back( nodeName );
 
@@ -114,142 +114,142 @@ void CPrintVisitor::Visit( CIdExpression* expression ) {
     addEdge( nodeName, valueNodeName );
 }
 
-void CPrintVisitor::Visit( CLengthExpression* expression ) {
+void CPrintVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CMethodExpression* expression ) {
+void CPrintVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CThisExpression* expression ) {
+void CPrintVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CNewArrayExpression* expression ) {
+void CPrintVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CNewIdExpression* expression ) {
+void CPrintVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CNegateExpression* expression ) {
+void CPrintVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CAssignIdStatement* statement ) {
+void CPrintVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CAssignIdWithIndexStatement* statement ) {
+void CPrintVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CPrintStatement* statement ) {
+void CPrintVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CConditionalStatement* statement ) {
+void CPrintVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CWhileLoopStatement* statement ) {
+void CPrintVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CBracesStatement* statement ) {
+void CPrintVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CIntTypeModifier* typeModifier ) {
+void CPrintVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CBooleanTypeModifier* typeModifier ) {
+void CPrintVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CIntArrayTypeModifier* typeModifier ) {
+void CPrintVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CIdTypeModifier* typeModifier ) {
+void CPrintVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CVarDeclaration* declaration ) {
+void CPrintVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CMethodArgument* argument ) {
+void CPrintVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CMethodDeclaration* declaration ) {
+void CPrintVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CMainClass* mainClass ) {
+void CPrintVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CClassDeclaration* declaration ) {
+void CPrintVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CProgram* program ) {
+void CPrintVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CExpressionList* list ) {
+void CPrintVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CStatementList* list ) {
+void CPrintVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CVarDeclarationList* list ) {
+void CPrintVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CMethodArgumentList* list ) {
+void CPrintVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CMethodDeclarationList* list ) {
+void CPrintVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }
 
-void CPrintVisitor::Visit( CClassDeclarationList* list ) {
+void CPrintVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( "" );
     visitedNodeStack.push_back( nodeName );
 }

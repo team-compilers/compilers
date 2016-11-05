@@ -3,7 +3,7 @@ FLEX=flex
 BISON=bison
 # -lfl includes flex library
 FLAGS=-lfl -O2 -std=c++11 -I"inc"
-SRC=lexer.yy.cpp parser.cpp main.cpp
+SRC=lexer.yy.cpp parser.cpp main.cpp src/PrintVisitor.cpp
 
 prog: $(SRC)
 	$(CC) $(FLAGS) $(SRC) -o prog

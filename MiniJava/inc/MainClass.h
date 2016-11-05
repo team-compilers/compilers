@@ -18,7 +18,7 @@ public:
     const CIdExpression* ClassArgsName() const { return classArgsName.get(); }
     const CStatementList* Statement() const { return statements.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CIdExpression> className;

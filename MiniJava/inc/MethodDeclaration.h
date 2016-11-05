@@ -31,7 +31,7 @@ public:
     const CStatementList* Statements() const { return statements.get(); }
     const IExpression* ReturnExpression() const { return returnExpression.get(); }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const IAccessModifier> accessModifier;

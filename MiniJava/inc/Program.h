@@ -16,7 +16,7 @@ public:
     const CMainClass* MainClass() const { return mainClass.get(); }
     const CClassDeclarationList* ClassDeclarations() const { return classDeclarations.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 

@@ -26,7 +26,7 @@ public:
     const CIdExpression* LeftPart() const { return leftPart.get(); }
     const IExpression* RightPart() const { return rightPart.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
 
     std::unique_ptr<const CIdExpression> leftPart;
@@ -47,7 +47,7 @@ public:
     const IExpression* LeftPartIndex() const { return leftPartIndex.get(); }
     const IExpression* RightPart() const { return rightPart.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
 
     std::unique_ptr<const CIdExpression> leftPartId;
@@ -65,7 +65,7 @@ public:
 
     const IExpression* PrintTarget() const { return printTarget.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -87,7 +87,7 @@ public:
     const IStatement* PositiveTarget() const { return positiveTarget.get(); }
     const IStatement* NegativeTarget() const { return negativeTarget.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -108,7 +108,7 @@ public:
     const IExpression* Condition() const { return condition.get(); }
     const IStatement* Body() const { return body.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -128,7 +128,7 @@ public:
 
     const CStatementList* List() const { list.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 

@@ -14,7 +14,7 @@ public:
     void Add( const IStatement* statement ) 
         { statements.emplace_back( statement ); }
     
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::vector< std::unique_ptr<const IStatement> > statements;

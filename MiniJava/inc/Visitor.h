@@ -46,45 +46,45 @@ class CClassDeclarationList;
 
 class IVisitor {
 public:
-    virtual ~IVisitor();
-    virtual void Visit( CPublicAccessModifier* modifier ) = 0;
-    virtual void Visit( CPrivateAccessModifier* modifier ) = 0;
+    virtual ~IVisitor() {}
+    virtual void Visit( const CPublicAccessModifier* modifier ) = 0;
+    virtual void Visit( const CPrivateAccessModifier* modifier ) = 0;
 
-    virtual void Visit( CBinaryExpression* expression ) = 0;
-    virtual void Visit( CBracketExpression* expression ) = 0;
-    virtual void Visit( CNumberExpression* expression ) = 0;
-    virtual void Visit( CLogicExpression* expression ) = 0;
-    virtual void Visit( CIdExpression* expression ) = 0;
-    virtual void Visit( CLengthExpression* expression ) = 0;
-    virtual void Visit( CMethodExpression* expression ) = 0;
-    virtual void Visit( CThisExpression* expression ) = 0;
-    virtual void Visit( CNewArrayExpression* expression ) = 0;
-    virtual void Visit( CNewIdExpression* expression ) = 0;
-    virtual void Visit( CNegateExpression* expression ) = 0;
+    virtual void Visit( const CBinaryExpression* expression ) = 0;
+    virtual void Visit( const CBracketExpression* expression ) = 0;
+    virtual void Visit( const CNumberExpression* expression ) = 0;
+    virtual void Visit( const CLogicExpression* expression ) = 0;
+    virtual void Visit( const CIdExpression* expression ) = 0;
+    virtual void Visit( const CLengthExpression* expression ) = 0;
+    virtual void Visit( const CMethodExpression* expression ) = 0;
+    virtual void Visit( const CThisExpression* expression ) = 0;
+    virtual void Visit( const CNewArrayExpression* expression ) = 0;
+    virtual void Visit( const CNewIdExpression* expression ) = 0;
+    virtual void Visit( const CNegateExpression* expression ) = 0;
 
-    virtual void Visit( CAssignIdStatement* statement ) = 0;
-    virtual void Visit( CAssignIdWithIndexStatement* statement ) = 0;
-    virtual void Visit( CPrintStatement* statement ) = 0;
-    virtual void Visit( CConditionalStatement* statement ) = 0;
-    virtual void Visit( CWhileLoopStatement* statement ) = 0;
-    virtual void Visit( CBracesStatement* statement ) = 0;
+    virtual void Visit( const CAssignIdStatement* statement ) = 0;
+    virtual void Visit( const CAssignIdWithIndexStatement* statement ) = 0;
+    virtual void Visit( const CPrintStatement* statement ) = 0;
+    virtual void Visit( const CConditionalStatement* statement ) = 0;
+    virtual void Visit( const CWhileLoopStatement* statement ) = 0;
+    virtual void Visit( const CBracesStatement* statement ) = 0;
 
-    virtual void Visit( CIntTypeModifier* typeModifier ) = 0;
-    virtual void Visit( CBooleanTypeModifier* typeModifier ) = 0;
-    virtual void Visit( CIntArrayTypeModifier* typeModifier ) = 0;
-    virtual void Visit( CIdTypeModifier* typeModifier ) = 0;
+    virtual void Visit( const CIntTypeModifier* typeModifier ) = 0;
+    virtual void Visit( const CBooleanTypeModifier* typeModifier ) = 0;
+    virtual void Visit( const CIntArrayTypeModifier* typeModifier ) = 0;
+    virtual void Visit( const CIdTypeModifier* typeModifier ) = 0;
 
-    virtual void Visit( CVarDeclaration* declaration ) = 0;
-    virtual void Visit( CMethodArgument* argument ) = 0;
-    virtual void Visit( CMethodDeclaration* declaration ) = 0;
-    virtual void Visit( CMainClass* mainClass ) = 0;
-    virtual void Visit( CClassDeclaration* declaration ) = 0;
-    virtual void Visit( CProgram* program ) = 0;
+    virtual void Visit( const CVarDeclaration* declaration ) = 0;
+    virtual void Visit( const CMethodArgument* argument ) = 0;
+    virtual void Visit( const CMethodDeclaration* declaration ) = 0;
+    virtual void Visit( const CMainClass* mainClass ) = 0;
+    virtual void Visit( const CClassDeclaration* declaration ) = 0;
+    virtual void Visit( const CProgram* program ) = 0;
 
-    virtual void Visit( CExpressionList* list ) = 0;
-    virtual void Visit( CStatementList* list ) = 0;
-    virtual void Visit( CVarDeclarationList* list ) = 0;
-    virtual void Visit( CMethodArgumentList* list ) = 0;
-    virtual void Visit( CMethodDeclarationList* list ) = 0;
-    virtual void Visit( CClassDeclarationList* list ) = 0;
+    virtual void Visit( const CExpressionList* list ) = 0;
+    virtual void Visit( const CStatementList* list ) = 0;
+    virtual void Visit( const CVarDeclarationList* list ) = 0;
+    virtual void Visit( const CMethodArgumentList* list ) = 0;
+    virtual void Visit( const CMethodDeclarationList* list ) = 0;
+    virtual void Visit( const CClassDeclarationList* list ) = 0;
 };

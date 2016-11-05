@@ -17,7 +17,7 @@ public:
     const ITypeModifier* Type() const { return type.get(); }
     const CIdExpression* Id() const { return id.get(); }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const ITypeModifier> type;

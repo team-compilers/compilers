@@ -16,7 +16,7 @@ public:
     const ITypeModifier* ArgumentType() const { return argumentType.get(); }
     const CIdExpression* ArgumentId() const { return argumentId.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
     std::unique_ptr<const ITypeModifier> argumentType;
     std::unique_ptr<const CIdExpression> argumentId;

@@ -27,46 +27,46 @@ public:
     void Clear();
 
     // Visitors for different node types.
-    void Visit( CPublicAccessModifier* modifier ) override;
-    void Visit( CPrivateAccessModifier* modifier ) override;
+    void Visit( const CPublicAccessModifier* modifier ) override;
+    void Visit( const CPrivateAccessModifier* modifier ) override;
 
-    void Visit( CBinaryExpression* expression ) override;
-    void Visit( CBracketExpression* expression ) override;
-    void Visit( CNumberExpression* expression ) override;
-    void Visit( CLogicExpression* expression ) override;
-    void Visit( CIdExpression* expression ) override;
-    void Visit( CLengthExpression* expression ) override;
-    void Visit( CMethodExpression* expression ) override;
-    void Visit( CThisExpression* expression ) override;
-    void Visit( CNewArrayExpression* expression ) override;
-    void Visit( CNewIdExpression* expression ) override;
-    void Visit( CNegateExpression* expression ) override;
+    void Visit( const CBinaryExpression* expression ) override;
+    void Visit( const CBracketExpression* expression ) override;
+    void Visit( const CNumberExpression* expression ) override;
+    void Visit( const CLogicExpression* expression ) override;
+    void Visit( const CIdExpression* expression ) override;
+    void Visit( const CLengthExpression* expression ) override;
+    void Visit( const CMethodExpression* expression ) override;
+    void Visit( const CThisExpression* expression ) override;
+    void Visit( const CNewArrayExpression* expression ) override;
+    void Visit( const CNewIdExpression* expression ) override;
+    void Visit( const CNegateExpression* expression ) override;
 
-    void Visit( CAssignIdStatement* statement ) override;
-    void Visit( CAssignIdWithIndexStatement* statement ) override;
-    void Visit( CPrintStatement* statement ) override;
-    void Visit( CConditionalStatement* statement ) override;
-    void Visit( CWhileLoopStatement* statement ) override;
-    void Visit( CBracesStatement* statement ) override;
+    void Visit( const CAssignIdStatement* statement ) override;
+    void Visit( const CAssignIdWithIndexStatement* statement ) override;
+    void Visit( const CPrintStatement* statement ) override;
+    void Visit( const CConditionalStatement* statement ) override;
+    void Visit( const CWhileLoopStatement* statement ) override;
+    void Visit( const CBracesStatement* statement ) override;
 
-    void Visit( CIntTypeModifier* typeModifier ) override;
-    void Visit( CBooleanTypeModifier* typeModifier ) override;
-    void Visit( CIntArrayTypeModifier* typeModifier ) override;
-    void Visit( CIdTypeModifier* typeModifier ) override;
+    void Visit( const CIntTypeModifier* typeModifier ) override;
+    void Visit( const CBooleanTypeModifier* typeModifier ) override;
+    void Visit( const CIntArrayTypeModifier* typeModifier ) override;
+    void Visit( const CIdTypeModifier* typeModifier ) override;
 
-    void Visit( CVarDeclaration* declaration ) override;
-    void Visit( CMethodArgument* argument ) override;
-    void Visit( CMethodDeclaration* declaration ) override;
-    void Visit( CMainClass* mainClass ) override;
-    void Visit( CClassDeclaration* declaration ) override;
-    void Visit( CProgram* program ) override;
+    void Visit( const CVarDeclaration* declaration ) override;
+    void Visit( const CMethodArgument* argument ) override;
+    void Visit( const CMethodDeclaration* declaration ) override;
+    void Visit( const CMainClass* mainClass ) override;
+    void Visit( const CClassDeclaration* declaration ) override;
+    void Visit( const CProgram* program ) override;
 
-    void Visit( CExpressionList* list ) override;
-    void Visit( CStatementList* list ) override;
-    void Visit( CVarDeclarationList* list ) override;
-    void Visit( CMethodArgumentList* list ) override;
-    void Visit( CMethodDeclarationList* list ) override;
-    void Visit( CClassDeclarationList* list ) override;
+    void Visit( const CExpressionList* list ) override;
+    void Visit( const CStatementList* list ) override;
+    void Visit( const CVarDeclarationList* list ) override;
+    void Visit( const CMethodArgumentList* list ) override;
+    void Visit( const CMethodDeclarationList* list ) override;
+    void Visit( const CClassDeclarationList* list ) override;
 
 private:
     std::unordered_map<std::string, std::vector<std::string>> treeEdges;

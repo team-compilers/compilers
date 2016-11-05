@@ -8,5 +8,5 @@
 class IVisitorTarget {
 public:
 	virtual ~IVisitorTarget() {}
-    virtual void Accept( IVisitor* visitor ) = 0;
+    virtual void Accept( IVisitor* visitor ) const = 0;
 };

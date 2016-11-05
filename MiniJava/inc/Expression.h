@@ -37,7 +37,7 @@ public:
           leftOperand( left ),
           rightOperand( right ) {}
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     TOperandType Operation() const { return operation; }
     const IExpression* LeftOperand() const { return leftOperand.get(); }
@@ -64,7 +64,7 @@ public:
     const IExpression* ContainerExpression() const { return containerExpression.get(); }
     const IExpression* IndexExpression() const { return indexExpression.get(); }
 
-    void Accept( IVisitor* visitor) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
 
     std::unique_ptr<const IExpression> containerExpression; //a
@@ -81,7 +81,7 @@ public:
 
     int Value() const { return value; }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -98,7 +98,7 @@ public:
 
     bool Value() const { return value; }
     
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -116,7 +116,7 @@ public:
 
     const std::string& Name() const { return name; }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -132,7 +132,7 @@ public:
     CLengthExpression( const IExpression* _lengthTarget )
         : lengthTarget( _lengthTarget ) {}
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
     
     const IExpression* LengthTarget() const { return lengthTarget.get(); }
 
@@ -153,7 +153,7 @@ public:
           methodId( _methodId ),
           arguments( _arguments ) {}
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     const IExpression* CallerExpression() const { return callerExpression.get(); }
     const CIdExpression* MethodId() const { return methodId.get(); }
@@ -170,7 +170,7 @@ private:
 
 class CThisExpression : public IExpression {
 public: 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
 
@@ -184,7 +184,7 @@ public:
 
     const IExpression* LengthExpression() const { return lengthExpression.get(); }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -201,7 +201,7 @@ public:
 
     const CIdExpression* TargetId() { targetId.get(); }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
@@ -218,7 +218,7 @@ public:
 
     const IExpression* TargetExpression() { return targetExpression.get(); }
 
-    void Accept( IVisitor* visitor ) override { visitor->Visit( this ); }
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
