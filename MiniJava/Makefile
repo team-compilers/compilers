@@ -1,15 +1,18 @@
 CC=g++
-FLAGS=-O2 -std=c++11 -I"inc"
+FLEX=flex
+BISON=bison
+# -lfl includes flex library
+FLAGS=-lfl -O2 -std=c++11 -I"inc"
 SRC=lexer.yy.cpp parser.cpp
 
-example: $(SRC)
-	$(CC) $(FLAGS) $(SRC) -lm
+prog: $(SRC)
+	$(CC) $(FLAGS) $(SRC) -o prog
 
-lexer.yy.cpp: lexer.l
-	flex++ -o lexer.yy.cpp lexer.l
+lexer.yy.cpp: lexer.l parser.hpp
+	$(FLEX) -o lexer.yy.cpp lexer.l
 
-parser.cpp: parser.y
-	bison -d parser.y --verbose -o parser.cpp
+parser.cpp parser.hpp: parser.y
+	$(BISON) -d parser.y --verbose -o parser.cpp
 
 clean:
-	rm -f example lexer.yy.cpp parser.cpp
+	rm -f prog lexer.yy.cpp parser.cpp parser.hpp

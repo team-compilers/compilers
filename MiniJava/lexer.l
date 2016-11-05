@@ -1,9 +1,17 @@
 %{
-	#include "parser.hpp"
+#include <cstdio>    
+#include <iostream>
+#include <string>
+#include "parser.hpp"
+// used to prevent applying name-mangling to the yylex identifier
+#define YY_DECL extern "C" int yylex()
+int line_num = 1;
 %}
 
 %option noyywrap
 
+LEX_AND        "&&"
+LEX_OR         "||"
 LEX_CLASS      "class"
 LEX_PUBLIC     "public"
 LEX_PRIVATE    "private"
@@ -17,22 +25,28 @@ LEX_ELSE       "else"
 LEX_WHILE      "while"
 LEX_SOUT       "System.out.println"
 LEX_LENGTH     "length"
-LEX_TRUE       "true"
-LEX_FALSE      "false"
 LEX_NEW        "new"
 LEX_THIS       "this"
+LEX_TRUE       "true"
+LEX_FALSE      "false"
 LEX_STRING     "String"
 LEX_BOOLEAN    "boolean"
 LEX_INT        "int"
 LEX_DIGIT [0-9]
 LEX_LETTER [a-zA-Z_]
-LEX_ID {LEX_LETTER}({LEX_DIGIT}|{LEX_LETTER})*
 LEX_INTEGER_LITERAL -?[1-9]{LEX_DIGIT}*|0
-LEX_LOGIC_LITERAL LEX_TRUE|LEX_FALSE
+LEX_LOGIC_LITERAL {LEX_TRUE}|{LEX_FALSE}
+LEX_ID {LEX_LETTER}({LEX_DIGIT}|{LEX_LETTER})*
 
 %%
 {LEX_INTEGER_LITERAL} {
+    yylval.ival = atoi(yytext);
     return INTEGER_LITERAL;
+}
+
+{LEX_LOGIC_LITERAL} {
+    yylval.bval = std::string(yytext) == "true";
+    return LOGIC_LITERAL;
 }
 
 {LEX_CLASS} {
@@ -87,14 +101,6 @@ LEX_LOGIC_LITERAL LEX_TRUE|LEX_FALSE
     return LENGTH;
 }
 
-{LEX_TRUE} {
-    return LOGIC_LITERAL;
-}
-
-{LEX_FALSE} {
-    return LOGIC_LITERAL;
-}
-
 {LEX_NEW} {
     return NEW;
 }
@@ -115,9 +121,19 @@ LEX_LOGIC_LITERAL LEX_TRUE|LEX_FALSE
     return INT;
 }
 
+{LEX_OR} { return OR; }
+
+{LEX_AND} { return AND; }
+
 {LEX_ID} {
+    // we have to copy because we can't rely on yytext not changing underneath us:
+    yylval.sval = strdup(yytext);
     return ID;
 }
+
+\n { ++line_num; }
+
+[!%\(\)*+,-./;<=\[\]\{\}] { return yytext[0]; }
 
 <<EOF>> {
     return EOF;

@@ -2,16 +2,22 @@
 /*__________ The C Declarations Section __________*/
 #include <iostream>
 #include <memory>
-#include <Program.h>
+// #include <Program.h>
+
+// used to prevent applying name-mangling to the yylex identifier
 extern "C" int yylex();
-void yyerror( std::unique_ptr<CProgram>&, int*, const char *) {}
+extern "C" int yyparse();
+extern "C" FILE *yyin;
+extern int line_num;
+
+void yyerror(const char *s);
 %}
 
 /*__________ The Bison Declarations Section __________*/
 
 /*This is the best place to write dependency code required for YYSTYPE and YYLTYPE. 
 In other words, it’s the best place to define types referenced in %union directives.*/
-%code requires {
+/*%code requires {
     #include <memory>
     #include <Program.h>
     #include <MainClass.h>
@@ -29,10 +35,10 @@ In other words, it’s the best place to define types referenced in %union direc
     #include <MethodArgumentList.h>
     #include <ExpressionList.h>
     #include <Expression.h>
-}
+}*/
 
-%parse-param { std::unique_ptr<CProgram>& root }
-%parse-param { int* hasError }
+/*%parse-param { std::unique_ptr<CProgram>& root }
+%parse-param { int* hasError }*/
 
 %error-verbose
 
@@ -40,7 +46,7 @@ In other words, it’s the best place to define types referenced in %union direc
     int                     ival;
     bool                    bval;
     char*                   sval;
-    CProgram*               program;
+    /*CProgram*               program;
     CMainClass*             mainClass;
     CClassDeclarationList*  classDecls;
     CClassDeclaration*      classDecl;
@@ -55,15 +61,17 @@ In other words, it’s the best place to define types referenced in %union direc
     CMethodArgument*        methodArg;
     CMethodArgumentList*    methodArgs;
     CExpressionList*        expList;
-    IExpression*            exp;
+    IExpression*            exp;*/
 }
 
-%left '!' "||" "&&"
+/*%left '!' "||" "&&"
 %left '<' '='
 %left '+' '-'
 %left '*' '/' '%'
-%left '.' '[' ']'
+%left '.' '[' ']'*/
 
+%token AND
+%token OR
 %token CLASS
 %token PUBLIC
 %token PRIVATE
@@ -72,20 +80,21 @@ In other words, it’s the best place to define types referenced in %union direc
 %token MAIN
 %token EXTENDS
 %token RETURN
-%token ELSE
 %token IF
+%token ELSE
 %token WHILE
 %token SOUT
 %token LENGTH
 %token NEW
 %token THIS
-%token <sval> ID
-%token <ival> INTEGER_LITERAL
-%token <bval> LOGIC_LITERAL
 %token STRING
 %token BOOLEAN
 %token INT
+%token <ival> INTEGER_LITERAL
+%token <bval> LOGIC_LITERAL
+%token <sval> ID
 
+/*
 %precedence WHILE IF SOUT ID
 %precedence CONDITIONAL_STATEMENT WHILE_LOOP_STATEMENT
 
@@ -105,119 +114,163 @@ In other words, it’s the best place to define types referenced in %union direc
 %type <methodArgs>  MethodArguments MethodArgumentsNonEmpty;
 %type <exp>         Expression;
 %type <expList>     Expressions ExpressionsNonEmpty;
+*/
 
 %%
 /*__________ The Grammar Rules Section __________*/
-
 Program:
-      MainClass ClassDeclarations { root = std::unique_ptr<CProgram>( new CProgram( $1, $2 ) ); }
+      MainClass ClassDeclarations { std::cout << "Program\n"; }
     ;
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statements '}' '}'
-      { $$ = new CMainClass( new CIdExpression( $2 ), new CIdExpression( $12 ), $15 ); }
+      { std::cout << "MainClass\n"; }
     ;
 
 ClassDeclarations:
-      %empty                              { $$ = new CClassDeclarationList(); }
-    | ClassDeclarations ClassDeclaration  { $$ = $1; $$->Add( $2 ); }
+      %empty                              { std::cout << "ClDecls\n"; }
+    | ClassDeclarations ClassDeclaration  { std::cout << "ClDecls\n"; }
     ;
 
 ClassDeclaration:
-      CLASS ID '{' VarDeclarations MethodDeclarations '}'             { $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ); }
-    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, new CIdExpression( $4 ) ); }
+      CLASS ID '{' VarDeclarations MethodDeclarations '}'             { std::cout << "ClDecl\n"; }
+    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { std::cout << "ClDecl\n"; }
     ;
 
 VarDeclarations:
-      %empty                          { $$ = new CVarDeclarationList(); }
-    | VarDeclarations VarDeclaration  { $$ = $1; $$->Add( $2 ); }
+      %empty                          { std::cout << "VarDecls\n"; }
+    | VarDeclarations VarDeclaration  { std::cout << "VarDecls\n"; }
     ;
 
 VarDeclaration:
-      Type ID ';'   { $$ = new CVarDeclaration( $1, new CIdExpression( $2 ) ); }
+      Type ID ';'   { std::cout << "VarDecl\n"; }
     ;
 
 MethodDeclarations:
-      %empty                                { $$ = new CMethodDeclarationList(); }
-    | MethodDeclarations MethodDeclaration  { $$ = $1; $$->Add( $2 ); }
+      %empty                                { std::cout << "MethDecls\n"; }
+    | MethodDeclarations MethodDeclaration  { std::cout << "MethDecls\n"; }
     ;
 
 MethodDeclaration:
       AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
-      { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $9, $11 ); }
+      { std::cout << "MethDecl\n"; }
     ;
 
 Type:
-      INT '['']'  { $$ = new CIntArrayTypeModifier(); }
-    | BOOLEAN     { $$ = new CBooleanTypeModifier(); }
-    | INT         { $$ = new CIntTypeModifier(); }
-    | ID          { $$ = new CIdTypeModifier( new CIdExpression( $1 ) ); }
+      INT '['']'  { std::cout << "IntArr "; }
+    | BOOLEAN     { std::cout << "Bool "; }
+    | INT         { std::cout << "Int "; }
+    | ID          { std::cout << "ID "; }
     ;
 
 AccessModifier:
-      PUBLIC    { $$ = new CPublicAccessModifier();  }
-    | PRIVATE   { $$ = new CPrivateAccessModifier(); }
+      PUBLIC    { std::cout << "Public "; }
+    | PRIVATE   { std::cout << "Public "; }
     ;
 
 MethodArguments:
-      %empty                                      { $$ = new CMethodArgumentList(); }
-    | MethodArgumentsNonEmpty                     { $$ = $1; }
+      %empty                                      { std::cout << "MethArgs "; }
+    | MethodArgumentsNonEmpty                     { std::cout << "MethArgs "; }
     ;
 
 MethodArgumentsNonEmpty:
-      MethodArgument                              { $$ = new CMethodArgumentList(); $$->Add( $1 ); }
-    | MethodArgumentsNonEmpty ',' MethodArgument  { $$ = $1; $$->Add( $3 ); }
+      MethodArgument                              { std::cout << "MethArgsNE "; }
+    | MethodArgumentsNonEmpty ',' MethodArgument  { std::cout << "MethArgsNE "; }
     ;
 
 MethodArgument:
-      Type ID              { $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ); }
+      Type ID              { std::cout << "MethArg "; }
     ;
 
 Statements:
-      %empty               { $$ = new CStatementList(); }
-    | Statement Statements { $$ = $2; $$->Add( $1 ); }
+      %empty               { std::cout << "Stats "; }
+    | Statement Statements { std::cout << "Stats "; }
     ;
 
 Statement:
-      '{' Statements '}'                              { $$ = new CBracesStatement( $2 ); }
-    | IF '(' Expression ')' Statement ELSE Statement  { $$ = new CConditionalStatement( $3, $5, $7 ); } %prec CONDITIONAL_STATEMENT
-    | WHILE '(' Expression ')' Statement              { $$ = new CWhileLoopStatement( $3, $5 ); } %prec WHILE_LOOP_STATEMENT
-    | SOUT '(' Expression ')' ';'                     { $$ = new CPrintStatement( $3 ); }
-    | ID '=' Expression ';'                           { $$ = new CAssignIdStatement( new CIdExpression( $1 ), $3 ); }
-    | ID '[' Expression ']' '=' Expression ';'        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1 ), $3, $6); }
+      '{' Statements '}'                              { std::cout << "Stat\n"; }
+    | IF '(' Expression ')' Statement ELSE Statement  { std::cout << "Stat\n"; }
+    | WHILE '(' Expression ')' Statement              { std::cout << "Stat\n"; }
+    | SOUT '(' Expression ')' ';'                     { std::cout << "Stat\n"; }
+    | ID '=' Expression ';'                           { std::cout << "Stat\n"; }
+    | ID '[' Expression ']' '=' Expression ';'        { std::cout << "Stat\n"; }
     ;
 
 Expressions:
-      %empty              { $$ = new CExpressionList(); }
-    | ExpressionsNonEmpty { $$ = $1; }
+      %empty              { std::cout << "Exprs "; }
+    | ExpressionsNonEmpty { std::cout << "Exprs "; }
     ;
 
 ExpressionsNonEmpty:
-      Expression                         { $$ = new CExpressionList( $1 ); }
-    | ExpressionsNonEmpty ',' Expression { $$ = $1; $$->Add( $3 ); }
+      Expression                         { std::cout << "ExprsNE\n"; }
+    | ExpressionsNonEmpty ',' Expression { std::cout << "ExprsNE\n"; }
     ;
 
 Expression:
-      Expression "&&" Expression { $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ); }
-    | Expression "||" Expression { $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ); }
-    | Expression '<' Expression  { $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ); }
-    | Expression '+' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ); }
-    | Expression '-' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ); }
-    | Expression '*' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ); }
-    | Expression '/' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ); }
-    | Expression '%' Expression  { $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ); }
+      Expression "&&" Expression { std::cout << "Expr "; }
+    | Expression "||" Expression { std::cout << "Expr "; }
+    | Expression '<' Expression  { std::cout << "Expr "; }
+    | Expression '+' Expression  { std::cout << "Expr "; }
+    | Expression '-' Expression  { std::cout << "Expr "; }
+    | Expression '*' Expression  { std::cout << "Expr "; }
+    | Expression '/' Expression  { std::cout << "Expr "; }
+    | Expression '%' Expression  { std::cout << "Expr "; }
 
-    | Expression '[' Expression ']'         { $$ = new CBracketExpression( $1, $3 )   ; }
-    | Expression '.' LENGTH                 { $$ = new CLengthExpression( $1 )        ; }
-    | Expression '.' ID '(' Expressions ')' { $$ = new CMethodExpression( $1, new CIdExpression( $3 ), $5 ); }
+    | Expression '[' Expression ']'         { std::cout << "Expr "; }
+    | Expression '.' LENGTH                 { std::cout << "Expr "; }
+    | Expression '.' ID '(' Expressions ')' { std::cout << "Expr "; }
 
-    | INTEGER_LITERAL            { $$ = new CNumberExpression( $1 )                    ; }
-    | LOGIC_LITERAL              { $$ = new CLogicExpression( $1 )                     ; }
-    | ID                         { $$ = new CIdExpression( $1 )                        ; }
-    | THIS                       { $$ = new CThisExpression()                          ; }
-    | NEW INT '[' Expression ']' { $$ = new CNewArrayExpression( $4 )                  ; }
-    | NEW ID '(' ')'             { $$ = new CNewIdExpression( new CIdExpression( $2 ) ); }
-    | '!' Expression             { $$ = new CNegateExpression( $2 )                    ; }
-    | '(' Expression ')'         { $$ = $2                                             ; }
+    | INTEGER_LITERAL            { std::cout << "Expr "; }
+    | LOGIC_LITERAL              { std::cout << "Expr "; }
+    | ID                         { std::cout << "Expr "; }
+    | THIS                       { std::cout << "Expr "; }
+    | NEW INT '[' Expression ']' { std::cout << "Expr "; }
+    | NEW ID '(' ')'             { std::cout << "Expr "; }
+    | '!' Expression             { std::cout << "Expr "; }
+    | '(' Expression ')'         { std::cout << "Expr "; }
     ;
 %%
+
+#include <stdio.h>
+#include <string>
+#include <stdexcept>
+
+void yyerror(const char *s) {
+    std::cout << "Parse error at line " << line_num << ".  Message: " << s << std::endl;
+    // might as well halt now:
+    // exit(-1);
+}
+
+void lexicalAnalysis( const std::string& inputFileName, const std::string& outputFileName ) {
+    FILE* inputStream = fopen(inputFileName.c_str(), "r");
+    if (!inputStream) {
+        throw std::invalid_argument( "Cannot open file: " + inputFileName );
+    }
+    yyin = inputStream;
+    do {
+        yyparse();
+    } while (!feof(yyin));
+    // std::ifstream inputStream( inputFileName.c_str() );
+    // std::ofstream outputStream( outputFileName.c_str() );
+    // if ( inputStream.good() ) {
+        // if ( outputStream.good() ) {
+        //     yyFlexLexer lexer( inputStream, outputStream );
+        //     while ( lexer.yylex() != EOF );
+        //     inputStream.close();
+        //     outputStream.close();
+        // } else {
+        //     throw std::invalid_argument( "Cannot open file: " + inputFileName );
+        // }
+        // yyin = inputStream;
+        // yylex();
+    // } else {
+        // throw std::invalid_argument( "Cannot open file: " + inputFileName );
+    // }
+}
+
+int main() {
+    std::string inputFileName = "tmp/dull.java";
+    std::string outputFileName = "tmp/tokenized.txt";
+    lexicalAnalysis(inputFileName, outputFileName);
+    return 0;
+}
