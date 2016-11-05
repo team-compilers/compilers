@@ -133,7 +133,7 @@ MainClass:
     ;
 
 ClassDeclarations:
-      %empty                              { std::cout << "ClDecls\n"; }
+      %empty                              { std::cout << "ClDeclsE\n"; }
     | ClassDeclarations ClassDeclaration  { std::cout << "ClDecls\n"; }
     ;
 
@@ -143,7 +143,7 @@ ClassDeclaration:
     ;
 
 VarDeclarations:
-      %empty                          { std::cout << "VarDecls\n"; }
+      %empty                          { std::cout << "VarDeclsE\n"; }
     | VarDeclarations VarDeclaration  { std::cout << "VarDecls\n"; }
     ;
 
@@ -152,7 +152,7 @@ VarDeclaration:
     ;
 
 MethodDeclarations:
-      %empty                                { std::cout << "MethDecls\n"; }
+      %empty                                { std::cout << "MethDeclsE\n"; }
     | MethodDeclarations MethodDeclaration  { std::cout << "MethDecls\n"; }
     ;
 
@@ -162,34 +162,34 @@ MethodDeclaration:
     ;
 
 Type:
-      INT '['']'  { std::cout << "IntArr "; }
-    | BOOLEAN     { std::cout << "Bool "; }
-    | INT         { std::cout << "Int "; }
-    | ID          { std::cout << "ID "; }
+      INT '['']'  { std::cout << "IntArr\n"; }
+    | BOOLEAN     { std::cout << "Bool\n"; }
+    | INT         { std::cout << "Int\n"; }
+    | ID          { std::cout << "ID\n"; }
     ;
 
 AccessModifier:
-      PUBLIC    { std::cout << "Public "; }
-    | PRIVATE   { std::cout << "Public "; }
+      PUBLIC    { std::cout << "Public\n"; }
+    | PRIVATE   { std::cout << "Public\n"; }
     ;
 
 MethodArguments:
-      %empty                                      { std::cout << "MethArgs "; }
-    | MethodArgumentsNonEmpty                     { std::cout << "MethArgs "; }
+      %empty                                      { std::cout << "MethArgsE\n"; }
+    | MethodArgumentsNonEmpty                     { std::cout << "MethArgs\n"; }
     ;
 
 MethodArgumentsNonEmpty:
-      MethodArgument                              { std::cout << "MethArgsNE "; }
-    | MethodArgumentsNonEmpty ',' MethodArgument  { std::cout << "MethArgsNE "; }
+      MethodArgument                              { std::cout << "MethArgsNE\n"; }
+    | MethodArgumentsNonEmpty ',' MethodArgument  { std::cout << "MethArgsNE\n"; }
     ;
 
 MethodArgument:
-      Type ID              { std::cout << "MethArg "; }
+      Type ID              { std::cout << "MethArg\n"; }
     ;
 
 Statements:
-      %empty               { std::cout << "Stats "; }
-    | Statement Statements { std::cout << "Stats "; }
+      %empty               { std::cout << "StatsE\n"; }
+    | Statement Statements { std::cout << "Stats\n"; }
     ;
 
 Statement:
@@ -202,8 +202,8 @@ Statement:
     ;
 
 Expressions:
-      %empty              { std::cout << "Exprs "; }
-    | ExpressionsNonEmpty { std::cout << "Exprs "; }
+      %empty              { std::cout << "ExprsE\n"; }
+    | ExpressionsNonEmpty { std::cout << "Exprs\n"; }
     ;
 
 ExpressionsNonEmpty:
@@ -212,27 +212,27 @@ ExpressionsNonEmpty:
     ;
 
 Expression:
-      Expression AND Expression { std::cout << "Expr "; }
-    | Expression OR Expression { std::cout << "Expr "; }
-    | Expression '<' Expression  { std::cout << "Expr "; }
-    | Expression '+' Expression  { std::cout << "Expr "; }
-    | Expression '-' Expression  { std::cout << "Expr "; }
-    | Expression '*' Expression  { std::cout << "Expr "; }
-    | Expression '/' Expression  { std::cout << "Expr "; }
-    | Expression '%' Expression  { std::cout << "Expr "; }
+      Expression AND Expression { std::cout << "Expr\n"; }
+    | Expression OR Expression { std::cout << "Expr\n"; }
+    | Expression '<' Expression  { std::cout << "Expr\n"; }
+    | Expression '+' Expression  { std::cout << "Expr\n"; }
+    | Expression '-' Expression  { std::cout << "Expr\n"; }
+    | Expression '*' Expression  { std::cout << "Expr\n"; }
+    | Expression '/' Expression  { std::cout << "Expr\n"; }
+    | Expression '%' Expression  { std::cout << "Expr\n"; }
 
-    | Expression '[' Expression ']'         { std::cout << "Expr "; }
-    | Expression '.' LENGTH                 { std::cout << "Expr "; }
-    | Expression '.' ID '(' Expressions ')' { std::cout << "Expr "; }
+    | Expression '[' Expression ']'         { std::cout << "Expr\n"; }
+    | Expression '.' LENGTH                 { std::cout << "Expr\n"; }
+    | Expression '.' ID '(' Expressions ')' { std::cout << "Expr\n"; }
 
-    | INTEGER_LITERAL            { std::cout << "Expr "; }
-    | LOGIC_LITERAL              { std::cout << "Expr "; }
-    | ID                         { std::cout << "Expr "; }
-    | THIS                       { std::cout << "Expr "; }
-    | NEW INT '[' Expression ']' { std::cout << "Expr "; }
-    | NEW ID '(' ')'             { std::cout << "Expr "; }
-    | '!' Expression             { std::cout << "Expr "; }
-    | '(' Expression ')'         { std::cout << "Expr "; }
+    | INTEGER_LITERAL            { std::cout << "Expr\n"; }
+    | LOGIC_LITERAL              { std::cout << "Expr\n"; }
+    | ID                         { std::cout << "Expr\n"; }
+    | THIS                       { std::cout << "Expr\n"; }
+    | NEW INT '[' Expression ']' { std::cout << "Expr\n"; }
+    | NEW ID '(' ')'             { std::cout << "Expr\n"; }
+    | '!' Expression             { std::cout << "Expr\n"; }
+    | '(' Expression ')'         { std::cout << "Expr\n"; }
     ;
 %%
 

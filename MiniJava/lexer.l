@@ -37,6 +37,7 @@ LEX_LETTER [a-zA-Z_]
 LEX_INTEGER_LITERAL -?[1-9]{LEX_DIGIT}*|0
 LEX_LOGIC_LITERAL {LEX_TRUE}|{LEX_FALSE}
 LEX_ID {LEX_LETTER}({LEX_DIGIT}|{LEX_LETTER})*
+LEX_COMMENT \/\/(.)*\n
 
 %%
 {LEX_INTEGER_LITERAL} {
@@ -131,6 +132,8 @@ LEX_ID {LEX_LETTER}({LEX_DIGIT}|{LEX_LETTER})*
     return ID;
 }
 
+{LEX_COMMENT} ;
+
 \n { ++line_num; }
 
 [!%\(\)*+,-./;<=\[\]\{\}] { return yytext[0]; }
@@ -138,4 +141,6 @@ LEX_ID {LEX_LETTER}({LEX_DIGIT}|{LEX_LETTER})*
 <<EOF>> {
     return EOF;
 }
+
+.                ;
 %%
