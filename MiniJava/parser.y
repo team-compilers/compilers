@@ -17,25 +17,9 @@ void yyerror(const char *s);
 
 /*This is the best place to write dependency code required for YYSTYPE and YYLTYPE.
 In other words, it’s the best place to define types referenced in %union directives.*/
-/*%code requires {
-    #include <memory>
-    #include <Program.h>
-    #include <MainClass.h>
-    #include <ClassDeclarationList.h>
-    #include <ClassDeclaration.h>
-    #include <Statement.h>
-    #include <StatementList.h>
-    #include <VarDeclaration.h>
-    #include <VarDeclarationList.h>
-    #include <MethodDeclaration.h>
-    #include <MethodDeclarationList.h>
-    #include <TypeModifier.h>
+%code requires {
     #include <AccessModifier.h>
-    #include <MethodArgument.h>
-    #include <MethodArgumentList.h>
-    #include <ExpressionList.h>
-    #include <Expression.h>
-}*/
+}
 
 /*%parse-param { std::unique_ptr<CProgram>& root }
 %parse-param { int* hasError }*/

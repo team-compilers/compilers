@@ -7,5 +7,6 @@
 
 class IVisitorTarget {
 public:
+	virtual ~IVisitorTarget() {}
     virtual void Accept( IVisitor* visitor ) = 0;
 };
