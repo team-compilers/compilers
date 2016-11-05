@@ -4,6 +4,8 @@
 #include <Visitor.h>
 
 class IAccessModifier : public IVisitorTarget {
+public:
+	virtual ~IAccessModifier() {}
 };
 
 class CPublicAccessModifier : public IAccessModifier {

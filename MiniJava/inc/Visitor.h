@@ -41,6 +41,7 @@ class CVarDeclarationList;
 
 class IVisitor {
 public:
+    virtual ~IVisitor() {}
     virtual void Visit( CBinaryExpression* expression ) = 0;
     virtual void Visit( CBracketExpression* expression ) = 0; 
     virtual void Visit( CNumberExpression* expression ) = 0; 

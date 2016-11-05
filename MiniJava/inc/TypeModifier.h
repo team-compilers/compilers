@@ -7,6 +7,8 @@
 #include <memory>
 
 class ITypeModifier : public IVisitorTarget {
+public:
+	virtual ~ITypeModifier() {}
 };
 
 class CIntTypeModifier : public ITypeModifier {

@@ -30,6 +30,7 @@ In other words, it’s the best place to define types referenced in %union direc
     int                     ival;
     bool                    bval;
     char*                   sval;
+    IAccessModifier*        accessMod;
     /*CProgram*               program;
     CMainClass*             mainClass;
     CClassDeclarationList*  classDecls;
@@ -41,7 +42,6 @@ In other words, it’s the best place to define types referenced in %union direc
     CMethodDeclarationList* methodDecls;
     CMethodDeclaration*     methodDecl;
     ITypeModifier*          type;
-    IAccessModifier*        accessMod;
     CMethodArgument*        methodArg;
     CMethodArgumentList*    methodArgs;
     CExpressionList*        expList;
@@ -83,6 +83,7 @@ In other words, it’s the best place to define types referenced in %union direc
 %token <bval> LOGIC_LITERAL
 %token <sval> ID
 
+%type <accessMod>   AccessModifier;
 /*%type <program>     Program;
 %type <mainClass>   MainClass;
 %type <classDecls>  ClassDeclarations;
@@ -94,7 +95,6 @@ In other words, it’s the best place to define types referenced in %union direc
 %type <methodDecls> MethodDeclarations;
 %type <methodDecl>  MethodDeclaration;
 %type <type>        Type;
-%type <accessMod>   AccessModifier;
 %type <methodArg>   MethodArgument;
 %type <methodArgs>  MethodArguments MethodArgumentsNonEmpty;
 %type <exp>         Expression;
@@ -149,8 +149,8 @@ Type:
     ;
 
 AccessModifier:
-      PUBLIC    { std::cout << "Public\n"; }
-    | PRIVATE   { std::cout << "Public\n"; }
+      PUBLIC    { $$ = new CPublicAccessModifier();  }
+    | PRIVATE   { $$ = new CPrivateAccessModifier(); }
     ;
 
 MethodArguments:

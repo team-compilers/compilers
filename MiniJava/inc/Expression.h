@@ -9,6 +9,8 @@
 #include <memory>
 
 class IExpression : public IVisitorTarget {
+public:
+    virtual ~IExpression() {}
 };
 
 //-----------------------------------------------------------------------------------------------//

@@ -10,6 +10,8 @@
 #include <vector>
 
 class IStatement : public IVisitorTarget {
+public:
+    virtual IStatement() {}
 };
 
 //-----------------------------------------------------------------------------------------------//
