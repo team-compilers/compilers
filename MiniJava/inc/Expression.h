@@ -79,7 +79,7 @@ class CNumberExpression : public IExpression {
 public:
 
     CNumberExpression( int _value )
-        : value(_value) {}
+        : value( _value ) {}
 
     int Value() const { return value; }
 

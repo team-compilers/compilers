@@ -36,8 +36,8 @@ std::string CPrintVisitor::toString( const TOperandType& type ) const {
 void CPrintVisitor::onNodeEnter( const std::string& nodeName ) {
     if ( verbose ) {
         std::cout << margin << nodeEnterMarker << nodeName << std::endl;
-        // margin.push_back('\t');
-        margin.append("  ");
+        // margin.push_back( '\t' );
+        margin.append( "  " );
     }
 }
 
@@ -512,8 +512,8 @@ void CPrintVisitor::Visit( const CExpressionList* list ) {
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const IExpression> >& expressions = list->Expressions();
-    for (auto it = expressions.begin(); it != expressions.end(); ++it) {
-        (*it)->Accept( this );
+    for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
+        ( *it )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();
@@ -529,8 +529,8 @@ void CPrintVisitor::Visit( const CStatementList* list ) {
 
     const std::vector< std::unique_ptr<const IStatement> >& statements = list->Statements();
     // must be reversed before being used
-    for (auto rit = statements.rbegin(); rit != statements.rend(); ++rit) {
-        (*rit)->Accept( this );
+    for ( auto rit = statements.rbegin(); rit != statements.rend(); ++rit ) {
+        ( *rit )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();
@@ -545,8 +545,8 @@ void CPrintVisitor::Visit( const CVarDeclarationList* list ) {
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
-    for (auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it) {
-        (*it)->Accept( this );
+    for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();
@@ -561,8 +561,8 @@ void CPrintVisitor::Visit( const CMethodArgumentList* list ) {
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
-    for (auto it = methodArguments.begin(); it != methodArguments.end(); ++it) {
-        (*it)->Accept( this );
+    for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
+        ( *it )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();
@@ -577,8 +577,8 @@ void CPrintVisitor::Visit( const CMethodDeclarationList* list ) {
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
-    for (auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it) {
-        (*it)->Accept( this );
+    for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();
@@ -593,8 +593,8 @@ void CPrintVisitor::Visit( const CClassDeclarationList* list ) {
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
-    for (auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it) {
-        (*it)->Accept( this );
+    for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();

@@ -16,7 +16,7 @@ public:
     CMethodArgumentList() = default;
 
     void Add( const CMethodArgument* argument ) 
-        { arguments.emplace_back(argument); }
+        { arguments.emplace_back( argument ); }
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& MethodArguments() const { return arguments; }
 

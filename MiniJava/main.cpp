@@ -1,3 +1,4 @@
+#include <dirent.h>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -17,6 +18,26 @@ void yyerror( CProgram** root, const char* message ) {
     std::cout << "Parse error at line " << lineNum << ".  Message: " << message << std::endl;
 }
 
+std::vector<std::string> listDirectory( const std::string& dirName ) {
+    std::vector<std::string> fileNames;
+
+    struct dirent* dirpent;
+    DIR* dirp = opendir( dirName.c_str() );
+    if ( dirp ) {
+        while ( ( dirpent = readdir( dirp ) ) != NULL ) {
+            if ( dirpent->d_type == 8 ) {
+                // it's a file, not folder
+                fileNames.emplace_back( dirpent->d_name );
+            }
+        }
+        closedir( dirp );
+    } else {
+        throw std::invalid_argument( "Directory doesn't exist: " + dirName );
+    }
+
+    return fileNames;
+}
+
 std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName ) {
     CProgram* root;
 
@@ -26,11 +47,11 @@ std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName ) {
     }
     yyin = inputStream;
     do {
-        yyparse(&root);
+        yyparse( &root );
     } while ( !feof( yyin ) );
     fclose( inputStream );
 
-    return std::unique_ptr<const CProgram>(root);
+    return std::unique_ptr<const CProgram>( root );
 }
 
 std::string traverseAST( const CProgram* root, bool verbose ) {
@@ -40,14 +61,22 @@ std::string traverseAST( const CProgram* root, bool verbose ) {
 }
 
 int main() {
-    std::string inputFileName = "tmp/sample.java";
-    std::string outputFileName = "tmp/sample.gv";
-    std::unique_ptr<const CProgram> astRoot = buildAST( inputFileName );
-    std::string traversal = traverseAST( astRoot.get(), true );
+    const std::string inputDirName = "Samples";
+    const std::string outputDirName = "SamplesGV";
+    std::vector<std::string> inputFileNames = listDirectory( inputDirName );
+    for ( const std::string& inputFileName : inputFileNames ) {
+        std::string inputPath = inputDirName + '/' + inputFileName;
+        std::string outputFileName = inputFileName.substr( 0, inputFileName.find_last_of( '.' ) ) + ".gv";
+        std::string outputPath = outputDirName + '/' + outputFileName;
 
-    std::ofstream outStream( outputFileName );
-    outStream << traversal;
-    outStream.close();
+        std::cout << "\e[1;34m" << inputPath << "\e[1;39m" << std::endl;
+        std::unique_ptr<const CProgram> astRoot = buildAST( inputPath );
+        std::string traversal = traverseAST( astRoot.get(), false );
+
+        std::ofstream outStream( outputPath );
+        outStream << traversal;
+        outStream.close();
+    }
 
     return 0;
 }
