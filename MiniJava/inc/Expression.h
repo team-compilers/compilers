@@ -199,7 +199,7 @@ public:
     CNewIdExpression( const CIdExpression* _targetId )
         : targetId( _targetId ) {}
 
-    const CIdExpression* TargetId() { targetId.get(); }
+    const CIdExpression* TargetId() const { targetId.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
@@ -216,7 +216,7 @@ public:
     CNegateExpression( const IExpression* _targetExpression )
         : targetExpression( _targetExpression ) {}
 
-    const IExpression* TargetExpression() { return targetExpression.get(); }
+    const IExpression* TargetExpression() const { return targetExpression.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 

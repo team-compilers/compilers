@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <StatementList.h>
 #include <Visitor.h>
 #include <VisitorTarget.h>
 #include <Expression.h>
@@ -117,8 +118,6 @@ private:
 };
 
 //-----------------------------------------------------------------------------------------------//
-
-class CStatementList;
 
 class CBracesStatement : public IStatement {
 public:

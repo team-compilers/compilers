@@ -192,6 +192,7 @@ MethodArgument:
       Type ID              { std::cout << "MethArg\n"; $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ); }
     ;
 
+// statements have to be reversed in every visitor
 Statements:
       %empty               { std::cout << "StatsE\n"; $$ = new CStatementList(); }
     | Statement Statements { std::cout << "Stats\n"; $$ = $2; $$->Add( $1 );    }

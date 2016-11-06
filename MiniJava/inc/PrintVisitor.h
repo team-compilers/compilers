@@ -11,8 +11,23 @@
 #include <vector>
 
 #include <Visitor.h>
+
+#include <AccessModifier.h>
 #include <Expression.h>
-// #include <Statement.h>
+#include <ExpressionList.h>
+#include <Statement.h>
+#include <StatementList.h>
+#include <TypeModifier.h>
+#include <VarDeclaration.h>
+#include <VarDeclarationList.h>
+#include <MethodArgument.h>
+#include <MethodArgumentList.h>
+#include <MethodDeclaration.h>
+#include <MethodDeclarationList.h>
+#include <MainClass.h>
+#include <ClassDeclaration.h>
+#include <ClassDeclarationList.h>
+#include <Program.h>
 
 class CPrintVisitor : public IVisitor {
 public:

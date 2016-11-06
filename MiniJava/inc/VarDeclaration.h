@@ -1,9 +1,9 @@
 #pragma once
 
-#include <VisitorTarget.h>
 #include <Visitor.h>
-#include <TypeModifier.h>
+#include <VisitorTarget.h>
 #include <Expression.h>
+#include <TypeModifier.h>
 #include <vector>
 #include <memory>
 

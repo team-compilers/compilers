@@ -14,6 +14,8 @@ public:
     void Add( const CClassDeclaration* declaration ) 
         { classes.emplace_back( declaration ); }
     
+    const std::vector< std::unique_ptr<const CClassDeclaration> >& ClassDeclarations() const { return classes; }
+
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:

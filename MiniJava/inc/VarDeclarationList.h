@@ -16,6 +16,8 @@ public:
     void Add( const CVarDeclaration* varDeclaration ) 
         { varDeclarations.emplace_back( varDeclaration ); }
 
+    const std::vector< std::unique_ptr<const CVarDeclaration> >& VarDeclarations() const { return varDeclarations; }
+
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:

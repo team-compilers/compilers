@@ -1,23 +1,25 @@
 #pragma once
 
+#include <vector>
+#include <memory>
+
 #include <Visitor.h>
 #include <VisitorTarget.h>
 #include <Expression.h>
 #include <TypeModifier.h>
-#include <vector>
 
 class CMethodArgument : public IVisitorTarget {
 public:
 
-    CMethodArgument( const ITypeModifier* _argumentType, const CIdExpression* _argumentId )
-        : argumentType( _argumentType ),
-          argumentId( _argumentId ) {}
+    CMethodArgument( const ITypeModifier* _type, const CIdExpression* _id )
+        : type( _type ),
+          id( _id ) {}
 
-    const ITypeModifier* ArgumentType() const { return argumentType.get(); }
-    const CIdExpression* ArgumentId() const { return argumentId.get(); }
+    const ITypeModifier* Type() const { return type.get(); }
+    const CIdExpression* Id() const { return id.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
-    std::unique_ptr<const ITypeModifier> argumentType;
-    std::unique_ptr<const CIdExpression> argumentId;
+    std::unique_ptr<const ITypeModifier> type;
+    std::unique_ptr<const CIdExpression> id;
 };

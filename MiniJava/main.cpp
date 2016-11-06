@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <memory>
 #include <Program.h>
-// #include <PrintVisitor.h>
+#include <PrintVisitor.h>
 
 extern "C" int yyparse();
 extern "C" FILE* yyin;
@@ -30,8 +30,8 @@ void lexicalAnalysis( const std::string& inputFileName, const std::string& outpu
 }
 
 void buildAST( const CProgram* root ) {
-    // CPrintVisitor visitor;
-    // visitor.Visit( root );
+    CPrintVisitor visitor;
+    visitor.Visit( root );
     std::cout << root << std::endl;
 }
 

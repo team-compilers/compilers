@@ -28,6 +28,7 @@ public:
     const ITypeModifier* TypeModifier() const { return typeModifier.get(); }
     const CIdExpression* MethodId() const { return methodId.get(); }
     const CMethodArgumentList* MethodArguments() const { return methodArguments.get(); }
+    const CVarDeclarationList* VarDeclarations() const { return varDeclarations.get(); }
     const CStatementList* Statements() const { return statements.get(); }
     const IExpression* ReturnExpression() const { return returnExpression.get(); }
 
