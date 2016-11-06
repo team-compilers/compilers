@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <iostream> // for verbose output
 #include <memory>
 #include <ostream>
 #include <sstream>
@@ -32,7 +33,7 @@
 
 class CPrintVisitor : public IVisitor {
 public:
-    CPrintVisitor() = default;
+    CPrintVisitor( bool _verbose = false ) : verbose( _verbose ) {}
     ~CPrintVisitor() {}
     // Generates a string, representing the last traversal of the tree, in the DOT Language.
     // The DOT Language is the one supported by GraphViz.
@@ -88,6 +89,7 @@ private:
     std::unordered_map<std::string, std::vector<std::string>> treeEdges;
     std::unordered_map<std::string, int> nodeTypeLastUsedIndex;
     std::vector<std::string> visitedNodeStack;
+    bool verbose;
 
     // Generates unique id for nodes of one type.
     int generateNodeNextIndex( const std::string& nodeType );

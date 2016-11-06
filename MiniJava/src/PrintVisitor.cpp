@@ -58,11 +58,17 @@ void CPrintVisitor::Clear() {
 
 void CPrintVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPublic" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 }
 
 void CPrintVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPrivate" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 }
 
@@ -70,6 +76,9 @@ void CPrintVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 
 void CPrintVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpBinary" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->LeftOperand()->Accept( this );
@@ -85,6 +94,9 @@ void CPrintVisitor::Visit( const CBinaryExpression* expression ) {
 
 void CPrintVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpBracket" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->ContainerExpression()->Accept( this );
@@ -100,30 +112,44 @@ void CPrintVisitor::Visit( const CBracketExpression* expression ) {
 
 void CPrintVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNumber" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
-    std::string valueNodeName = generateNodeName("Value") + ": " + std::to_string( expression->Value() );
+    std::string valueNodeName = "\"" + generateNodeName( "Value" ) + ": ";
+    valueNodeName += std::to_string( expression->Value() ) + "\"";
     addEdge( nodeName, valueNodeName );
 }
 
 void CPrintVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpLogic" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
-    std::string valueNodeName = generateNodeName("Value") + ": " + std::to_string( expression->Value() );
+    std::string valueNodeName = "\"" + generateNodeName( "Value" ) + ": ";
+    valueNodeName += std::string( expression->Value() ? "true" : "false" ) + '\"';
     addEdge( nodeName, valueNodeName );
 }
 
 void CPrintVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpId" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
-    std::string valueNodeName = generateNodeName( "Id" ) + ": " + expression->Name();
+    std::string valueNodeName = "\"" + generateNodeName( "Id" ) + ": " + expression->Name() + "\"";
     addEdge( nodeName, valueNodeName );
 }
 
 void CPrintVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpLength" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->LengthTarget()->Accept( this );
@@ -133,6 +159,9 @@ void CPrintVisitor::Visit( const CLengthExpression* expression ) {
 
 void CPrintVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpMethod" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->CallerExpression()->Accept( this );
@@ -150,11 +179,17 @@ void CPrintVisitor::Visit( const CMethodExpression* expression ) {
 
 void CPrintVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpThis" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 }
 
 void CPrintVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNewArray" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->LengthExpression()->Accept( this );
@@ -164,6 +199,9 @@ void CPrintVisitor::Visit( const CNewArrayExpression* expression ) {
 
 void CPrintVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNewId" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->TargetId()->Accept( this );
@@ -173,6 +211,9 @@ void CPrintVisitor::Visit( const CNewIdExpression* expression ) {
 
 void CPrintVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNegate" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     expression->TargetExpression()->Accept( this );
@@ -184,6 +225,9 @@ void CPrintVisitor::Visit( const CNegateExpression* expression ) {
 
 void CPrintVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( "StatAssignId" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     statement->LeftPart()->Accept( this );
@@ -197,6 +241,9 @@ void CPrintVisitor::Visit( const CAssignIdStatement* statement ) {
 
 void CPrintVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( "StatAssignIdWithIndex" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     statement->LeftPartId()->Accept( this );
@@ -214,6 +261,9 @@ void CPrintVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
 
 void CPrintVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( "StatPrint" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     statement->PrintTarget()->Accept( this );
@@ -223,6 +273,9 @@ void CPrintVisitor::Visit( const CPrintStatement* statement ) {
 
 void CPrintVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( "StatConditional" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     statement->Condition()->Accept( this );
@@ -240,6 +293,9 @@ void CPrintVisitor::Visit( const CConditionalStatement* statement ) {
 
 void CPrintVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( "StatWhileLoop" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     statement->Condition()->Accept( this );
@@ -253,6 +309,9 @@ void CPrintVisitor::Visit( const CWhileLoopStatement* statement ) {
 
 void CPrintVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( "StatBraces" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     statement->List()->Accept( this );
@@ -264,21 +323,33 @@ void CPrintVisitor::Visit( const CBracesStatement* statement ) {
 
 void CPrintVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModInt" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 }
 
 void CPrintVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModBool" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 }
 
 void CPrintVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModIntArray" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 }
 
 void CPrintVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModId" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     typeModifier->TypeId()->Accept( this );
@@ -290,6 +361,9 @@ void CPrintVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
 void CPrintVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "VarDecl" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     declaration->Type()->Accept( this );
@@ -303,6 +377,9 @@ void CPrintVisitor::Visit( const CVarDeclaration* declaration ) {
 
 void CPrintVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( "MethArg" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     argument->Type()->Accept( this );
@@ -316,6 +393,9 @@ void CPrintVisitor::Visit( const CMethodArgument* argument ) {
 
 void CPrintVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "MethDecl" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     declaration->AccessModifier()->Accept( this );
@@ -349,6 +429,9 @@ void CPrintVisitor::Visit( const CMethodDeclaration* declaration ) {
 
 void CPrintVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( "MainClass" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     mainClass->ClassName()->Accept( this );
@@ -366,6 +449,9 @@ void CPrintVisitor::Visit( const CMainClass* mainClass ) {
 
 void CPrintVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "ClassDecl" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     declaration->ClassName()->Accept( this );
@@ -389,6 +475,9 @@ void CPrintVisitor::Visit( const CClassDeclaration* declaration ) {
 
 void CPrintVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( "Program" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     program->MainClass()->Accept( this );
@@ -404,6 +493,9 @@ void CPrintVisitor::Visit( const CProgram* program ) {
 
 void CPrintVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( "ExpList" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const IExpression> >& expressions = list->Expressions();
@@ -416,11 +508,15 @@ void CPrintVisitor::Visit( const CExpressionList* list ) {
 
 void CPrintVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( "StatList" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const IStatement> >& statements = list->Statements();
-    for (auto it = statements.begin(); it != statements.end(); ++it) {
-        (*it)->Accept( this );
+    // must be reversed before being used
+    for (auto rit = statements.rbegin(); rit != statements.rend(); ++rit) {
+        (*rit)->Accept( this );
         addEdge( nodeName, visitedNodeStack.back() );
         visitedNodeStack.pop_back();
     }
@@ -428,6 +524,9 @@ void CPrintVisitor::Visit( const CStatementList* list ) {
 
 void CPrintVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( "VarDeclList" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
@@ -440,6 +539,9 @@ void CPrintVisitor::Visit( const CVarDeclarationList* list ) {
 
 void CPrintVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( "MethArgList" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
@@ -452,6 +554,9 @@ void CPrintVisitor::Visit( const CMethodArgumentList* list ) {
 
 void CPrintVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( "MethDeclList" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
@@ -464,6 +569,9 @@ void CPrintVisitor::Visit( const CMethodDeclarationList* list ) {
 
 void CPrintVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( "ClassDeclList" );
+    if ( verbose ) {
+        std::cout << "Node: " << nodeName << std::endl;
+    }
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();

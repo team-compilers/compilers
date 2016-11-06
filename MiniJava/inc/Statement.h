@@ -127,7 +127,7 @@ public:
     CBracesStatement( const CStatementList* _list )
         : list( _list ) {}
 
-    const CStatementList* List() const { list.get(); }
+    const CStatementList* List() const { return list.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 

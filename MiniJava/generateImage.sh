@@ -1,0 +1,1 @@
+dot -Tpng tmp/dull.gv -otmp/dull.png

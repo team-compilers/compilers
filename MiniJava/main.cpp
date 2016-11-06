@@ -1,8 +1,10 @@
-#include <stdio.h>
+#include <fstream>
 #include <iostream>
-#include <string>
-#include <stdexcept>
 #include <memory>
+#include <stdexcept>
+#include <stdio.h>
+#include <string>
+
 #include <Program.h>
 #include <PrintVisitor.h>
 
@@ -15,7 +17,7 @@ void yyerror( CProgram** root, const char* message ) {
     std::cout << "Parse error at line " << lineNum << ".  Message: " << message << std::endl;
 }
 
-std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName, const std::string& outputFileName ) {
+std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName ) {
     CProgram* root;
 
     FILE* inputStream = fopen( inputFileName.c_str(), "r" );
@@ -31,16 +33,21 @@ std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName, cons
     return std::unique_ptr<const CProgram>(root);
 }
 
-void printAST( const CProgram* root ) {
-    CPrintVisitor visitor;
-    // visitor.Visit( root );
-    std::cout << root << std::endl;
+std::string traverseAST( const CProgram* root, bool verbose ) {
+    CPrintVisitor visitor( verbose );
+    visitor.Visit( root );
+    return visitor.GetTraversalInDotLanguage();
 }
 
 int main() {
     std::string inputFileName = "tmp/dull.java";
-    std::string outputFileName = "tmp/tokenized.txt";
-    std::unique_ptr<const CProgram> astRoot = buildAST( inputFileName, outputFileName );
-    printAST( astRoot.get() );
+    std::string outputFileName = "tmp/dull.gv";
+    std::unique_ptr<const CProgram> astRoot = buildAST( inputFileName );
+    std::string traversal = traverseAST( astRoot.get(), true );
+
+    std::ofstream outStream( outputFileName );
+    outStream << traversal;
+    outStream.close();
+
     return 0;
 }
