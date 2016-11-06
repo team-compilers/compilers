@@ -10,7 +10,7 @@ BISON_TRG_HPP=src/parser.hpp
 BISON_TRG=$(BISON_TRG_HPP) $(BISON_TRG_CPP)
 MAIN=src/main.cpp
 
-TRG=prog
+TRG=ast
 # -lfl includes flex library
 FLAGS=-lfl -O2 -std=c++11 -I"inc"
 SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/PrintVisitor.cpp
