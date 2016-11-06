@@ -131,121 +131,175 @@ extern void yyerror( CProgram** root, const char* message );
 %%
 /*__________ The Grammar Rules Section __________*/
 Program:
-      MainClass ClassDeclarations { std::cout << "Program\n"; $$ = new CProgram( $1, $2 ); *root = $$; }
+      MainClass ClassDeclarations
+        { $$ = new CProgram( $1, $2 ); *root = $$; }
     ;
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statements '}' '}'
-      { std::cout << "MainClass\n"; $$ = new CMainClass( new CIdExpression( $2 ), new CIdExpression( $12 ), $15 ); }
+        { $$ = new CMainClass( new CIdExpression( $2 ), new CIdExpression( $12 ), $15 ); }
     ;
 
 ClassDeclarations:
-      %empty                              { std::cout << "ClDeclsE\n"; $$ = new CClassDeclarationList(); }
-    | ClassDeclarations ClassDeclaration  { std::cout << "ClDecls\n"; $$ = $1; $$->Add( $2 ); }
+      %empty
+        { $$ = new CClassDeclarationList(); }
+    | ClassDeclarations ClassDeclaration
+        { $$ = $1; $$->Add( $2 ); }
     ;
 
 ClassDeclaration:
-      CLASS ID '{' VarDeclarations MethodDeclarations '}'             { std::cout << "ClDecl\n"; $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ); }
-    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'  { std::cout << "ClDecl\n"; $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, new CIdExpression( $4 ) ); }
+      CLASS ID '{' VarDeclarations MethodDeclarations '}'
+        { $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ); }
+    | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'
+        { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, new CIdExpression( $4 ) ); }
     ;
 
 MethodDeclarations:
-      %empty                                { std::cout << "MethDeclsE\n"; $$ = new CMethodDeclarationList(); }
-    | MethodDeclarations MethodDeclaration  { std::cout << "MethDecls\n"; $$ = $1; $$->Add( $2 ); }
+      %empty
+        { $$ = new CMethodDeclarationList(); }
+    | MethodDeclarations MethodDeclaration
+        { $$ = $1; $$->Add( $2 ); }
     ;
 
 MethodDeclaration:
       AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
-      { std::cout << "MethDecl\n"; $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $9, $11 ); }
+        { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $9, $11 ); }
     ;
 
 VarDeclarations:
-      %empty                          { std::cout << "VarDeclsE\n"; $$ = new CVarDeclarationList(); }
-    | VarDeclarations VarDeclaration  { std::cout << "VarDecls\n"; $$ = $1; $$->Add( $2 ); }
+      %empty
+        { $$ = new CVarDeclarationList(); }
+    | VarDeclarations VarDeclaration
+        { $$ = $1; $$->Add( $2 ); }
     ;
 
 VarDeclaration:
-      Type ID ';'   { std::cout << "VarDecl\n"; $$ = new CVarDeclaration( $1, new CIdExpression( $2 ) ); }
+      Type ID ';'
+        { $$ = new CVarDeclaration( $1, new CIdExpression( $2 ) ); }
     ;
 
 Type:
-      INT '['']'  { std::cout << "IntArr\n"; $$ = new CIntArrayTypeModifier(); }
-    | BOOLEAN     { std::cout << "Bool\n"; $$ = new CBooleanTypeModifier(); }
-    | INT         { std::cout << "Int\n"; $$ = new CIntTypeModifier(); }
-    | ID          { std::cout << "ID\n"; $$ = new CIdTypeModifier( new CIdExpression( $1 ) ); }
+      INT '['']'
+        { $$ = new CIntArrayTypeModifier(); }
+    | BOOLEAN
+        { $$ = new CBooleanTypeModifier(); }
+    | INT
+        { $$ = new CIntTypeModifier(); }
+    | ID
+        { $$ = new CIdTypeModifier( new CIdExpression( $1 ) ); }
     ;
 
 AccessModifier:
-      PUBLIC    { std::cout << "Public\n"; $$ = new CPublicAccessModifier(); }
-    | PRIVATE   { std::cout << "Private\n"; $$ = new CPrivateAccessModifier(); }
+      PUBLIC
+        { $$ = new CPublicAccessModifier(); }
+    | PRIVATE
+        { $$ = new CPrivateAccessModifier(); }
     ;
 
 MethodArguments:
-      %empty                  { std::cout << "MethArgsE\n"; $$ = new CMethodArgumentList(); }
-    | MethodArgumentsNonEmpty { std::cout << "MethArgs\n"; $$ = $1; }
+      %empty
+        { $$ = new CMethodArgumentList(); }
+    | MethodArgumentsNonEmpty
+        { $$ = $1; }
     ;
 
 MethodArgumentsNonEmpty:
-      MethodArgument                             { std::cout << "MethArgsNE\n"; $$ = new CMethodArgumentList(); $$->Add( $1 ); }
-    | MethodArgumentsNonEmpty ',' MethodArgument { std::cout << "MethArgsNE\n"; $$ = $1; $$->Add( $3 ); }
+      MethodArgument
+        { $$ = new CMethodArgumentList(); $$->Add( $1 ); }
+    | MethodArgumentsNonEmpty ',' MethodArgument
+        { $$ = $1; $$->Add( $3 ); }
     ;
 
 MethodArgument:
-      Type ID              { std::cout << "MethArg\n"; $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ); }
+      Type ID
+        { $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ); }
     ;
 
 // statements have to be reversed in every visitor
 Statements:
-      %empty               { std::cout << "StatsE\n"; $$ = new CStatementList(); }
-    | Statement Statements { std::cout << "Stats\n"; $$ = $2; $$->Add( $1 );    }
+      %empty
+        { $$ = new CStatementList(); }
+    | Statement Statements
+        { $$ = $2; $$->Add( $1 ); }
     ;
 
 Statement:
-      '{' Statements '}'                              { std::cout << "Stat\n"; $$ = new CBracesStatement( $2 );                                        }
-    | IF '(' Expression ')' Statement ELSE Statement  { std::cout << "Stat\n"; $$ = new CConditionalStatement( $3, $5, $7 );                           }
-    | WHILE '(' Expression ')' Statement              { std::cout << "Stat\n"; $$ = new CWhileLoopStatement( $3, $5 );                                 }
-    | SOUT '(' Expression ')' ';'                     { std::cout << "Stat\n"; $$ = new CPrintStatement( $3 );                                         }
-    | ID '=' Expression ';'                           { std::cout << "Stat\n"; $$ = new CAssignIdStatement( new CIdExpression( $1 ), $3 );             }
-    | ID '[' Expression ']' '=' Expression ';'        { std::cout << "Stat\n"; $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1 ), $3, $6); }
+      '{' Statements '}'
+        { $$ = new CBracesStatement( $2 ); }
+    | IF '(' Expression ')' Statement ELSE Statement
+        { $$ = new CConditionalStatement( $3, $5, $7 ); }
+    | WHILE '(' Expression ')' Statement
+        { $$ = new CWhileLoopStatement( $3, $5 ); }
+    | SOUT '(' Expression ')' ';'
+        { $$ = new CPrintStatement( $3 ); }
+    | ID '=' Expression ';'
+        { $$ = new CAssignIdStatement( new CIdExpression( $1 ), $3 ); }
+    | ID '[' Expression ']' '=' Expression ';'
+        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1 ), $3, $6); }
     ;
 
 Expressions:
-      %empty              { std::cout << "ExprsE\n"; $$ = new CExpressionList(); }
-    | ExpressionsNonEmpty { std::cout << "Exprs\n";  $$ = $1; }
+      %empty
+        { $$ = new CExpressionList(); }
+    | ExpressionsNonEmpty
+        { $$ = $1; }
     ;
 
 ExpressionsNonEmpty:
-      Expression                         { std::cout << "ExprsNE\n"; $$ = new CExpressionList( $1 ); }
-    | ExpressionsNonEmpty ',' Expression { std::cout << "ExprsNE\n"; $$ = $1; $1->Add( $3 );         }
+      Expression
+        { $$ = new CExpressionList( $1 ); }
+    | ExpressionsNonEmpty ',' Expression
+        { $$ = $1; $1->Add( $3 ); }
     ;
 
 Expression:
-      Expression AND Expression  { std::cout << "ExprAND\n"; $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ); }
-    | Expression OR Expression   { std::cout << "ExprOR\n";  $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ); }
-    | Expression '<' Expression  { std::cout << "Expr<\n";   $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ); }
-    | Expression '+' Expression  { std::cout << "Expr+\n";   $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ); }
-    | Expression '-' Expression  { std::cout << "Expr-\n";   $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ); }
-    | Expression '*' Expression  { std::cout << "Expr*\n";   $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ); }
-    | Expression '/' Expression  { std::cout << "Expr/\n";   $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ); }
-    | Expression '%' Expression  { std::cout << "Expr%\n";   $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ); }
+      Expression AND Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ); }
+    | Expression OR Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ); }
+    | Expression '<' Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ); }
+    | Expression '+' Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ); }
+    | Expression '-' Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ); }
+    | Expression '*' Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ); }
+    | Expression '/' Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ); }
+    | Expression '%' Expression
+        { $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ); }
 
-    | Expression '[' Expression ']'         { std::cout << "Expr\n"; $$ = new CBracketExpression( $1, $3 ); }
-    | Expression '.' LENGTH                 { std::cout << "Expr\n"; $$ = new CLengthExpression( $1 )     ; }
-    | Expression '.' ID '(' Expressions ')' { std::cout << "Expr\n"; $$ = new CMethodExpression( $1, new CIdExpression( $3 ), $5 ); }
+    | Expression '[' Expression ']'
+        { $$ = new CBracketExpression( $1, $3 ); }
+    | Expression '.' LENGTH
+        { $$ = new CLengthExpression( $1 ); }
+    | Expression '.' ID '(' Expressions ')'
+        { $$ = new CMethodExpression( $1, new CIdExpression( $3 ), $5 ); }
 
-    | IntegerLiteral             { std::cout << "ExprInt{"<<$1<<"}\n"; $$ = new CNumberExpression( $1 )                    ; }
-    | LOGIC_LITERAL              { std::cout << "ExprLog{"<<($1 ? "true" : "false")<<"}\n"; $$ = new CLogicExpression( $1 )                     ; }
-    | ID                         { std::cout << "ExprId{"<<$1<<"}\n"; $$ = new CIdExpression( $1 )                        ; }
-    | THIS                       { std::cout << "ExprThis\n"; $$ = new CThisExpression()                          ; }
-    | NEW INT '[' Expression ']' { std::cout << "ExprNewArr\n"; $$ = new CNewArrayExpression( $4 )                  ; }
-    | NEW ID '(' ')'             { std::cout << "ExprNewId\n"; $$ = new CNewIdExpression( new CIdExpression( $2 ) ); }
-    | '!' Expression             { std::cout << "ExprNot\n"; $$ = new CNegateExpression( $2 )                    ; }
-    | '(' Expression ')'         { std::cout << "ExprParen\n"; $$ = $2                                             ; }
+    | IntegerLiteral
+        { $$ = new CNumberExpression( $1 ); }
+    | LOGIC_LITERAL
+        { $$ = new CLogicExpression( $1 ); }
+    | ID
+        { $$ = new CIdExpression( $1 ); }
+    | THIS
+        { $$ = new CThisExpression(); }
+    | NEW INT '[' Expression ']'
+        { $$ = new CNewArrayExpression( $4 ); }
+    | NEW ID '(' ')'
+        { $$ = new CNewIdExpression( new CIdExpression( $2 ) ); }
+    | '!' Expression
+        { $$ = new CNegateExpression( $2 ); }
+    | '(' Expression ')'
+        { $$ = $2; }
     ;
 
 IntegerLiteral:
-      INTEGER_LITERAL     { std::cout << "IntPos\n"; $$ = $1;  }
-    | '-' INTEGER_LITERAL { std::cout << "IntNeg\n"; $$ = -$2; }
+      INTEGER_LITERAL
+        { $$ = $1; }
+    | '-' INTEGER_LITERAL
+        { $$ = -$2; }
     ;
 %%
 /*__________ The C Code Section __________*/
