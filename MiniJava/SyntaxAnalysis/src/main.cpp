@@ -61,8 +61,8 @@ std::string traverseAST( const CProgram* root, bool verbose ) {
 }
 
 int main() {
-    const std::string inputDirName = "Samples";
-    const std::string outputDirName = "SamplesGV";
+    const std::string inputDirName = "data/Samples";
+    const std::string outputDirName = "data/SamplesGV";
     std::vector<std::string> inputFileNames = listDirectory( inputDirName );
     for ( const std::string& inputFileName : inputFileNames ) {
         std::string inputPath = inputDirName + '/' + inputFileName;

@@ -8,14 +8,15 @@ parser.add_argument('input', help='path to the input file')
 parser.add_argument('-o', '--output', type=str, help='path to the output file')
 args = parser.parse_args()
 
-output_format = '.png'
+output_format = 'svg'
+output_ext = '.' + output_format
 
 if args.output is None:
-	args.output = splitext(args.input)[0] + output_format
-elif splitext(args.output)[1] != output_format:
-	args.output += output_format
+	args.output = splitext(args.input)[0] + output_ext
+elif splitext(args.output)[1] != output_ext:
+	args.output += output_ext
 
 # print args.output
-cmd = 'dot -Tpng ' + args.input + ' -o' + args.output
+cmd = 'dot -T' + output_format + ' ' + args.input + ' -o' + args.output
 print cmd
 system(cmd)
