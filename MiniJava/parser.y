@@ -6,12 +6,11 @@
 
 // used to prevent applying name-mangling to the yylex identifier
 extern "C" int yylex();
-extern "C" int yyparse();
+extern "C" int yyparse( CProgram** root );
 extern "C" FILE* yyin;
 
 // these are defined in main.cpp
-extern std::unique_ptr<const CProgram> astRoot;
-extern void yyerror( const char* message );
+extern void yyerror( CProgram** root, const char* message );
 %}
 
 /*__________ The Bison Declarations Section __________*/
@@ -37,8 +36,11 @@ extern void yyerror( const char* message );
     #include <Program.h>
 }
 
-/*%parse-param { std::unique_ptr<CProgram>& root }
-%parse-param { int* hasError }*/
+// Declare that one or more argument-declaration are additional yyparse arguments.
+// The argument-declaration is used when declaring functions or prototypes.
+// The last identifier in argument-declaration must be the argument name.
+// These are also additional arguments for yyerror function.
+%parse-param { CProgram** root }
 
 %error-verbose
 
@@ -129,7 +131,7 @@ extern void yyerror( const char* message );
 %%
 /*__________ The Grammar Rules Section __________*/
 Program:
-      MainClass ClassDeclarations { std::cout << "Program\n"; $$ = new CProgram( $1, $2 ); astRoot = std::unique_ptr<const CProgram>($$); }
+      MainClass ClassDeclarations { std::cout << "Program\n"; $$ = new CProgram( $1, $2 ); *root = $$; }
     ;
 
 MainClass:
