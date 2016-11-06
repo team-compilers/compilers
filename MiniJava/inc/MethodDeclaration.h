@@ -1,14 +1,16 @@
 #pragma once
 
-#include <VisitorTarget.h>
+#include <memory>
+
 #include <Visitor.h>
+#include <VisitorTarget.h>
+
 #include <AccessModifier.h>
-#include <TypeModifier.h>
 #include <Expression.h>
 #include <MethodArgumentList.h>
-#include <VarDeclarationList.h>
 #include <StatementList.h>
-#include <memory>
+#include <TypeModifier.h>
+#include <VarDeclarationList.h>
 
 class CMethodDeclaration : public IVisitorTarget {
 public:

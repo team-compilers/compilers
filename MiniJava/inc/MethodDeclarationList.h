@@ -1,8 +1,12 @@
 #pragma once
 
-#include <MethodDeclaration.h>
-#include <VisitorTarget.h>
+#include <memory>
+#include <vector>
+
 #include <Visitor.h>
+#include <VisitorTarget.h>
+
+#include <MethodDeclaration.h>
 
 class CMethodDeclarationList : public IVisitorTarget {
 public:

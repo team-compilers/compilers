@@ -3,11 +3,13 @@
 
 #pragma once
 
-#include <ExpressionList.h>
+#include <memory>
+#include <string>
+
 #include <Visitor.h>
 #include <VisitorTarget.h>
-#include <string>
-#include <memory>
+
+#include <ExpressionList.h>
 
 class IExpression : public IVisitorTarget {
 public:

@@ -1,12 +1,14 @@
 #pragma once
 
-#include <VisitorTarget.h>
-#include <Visitor.h>
-#include <TypeModifier.h>
-#include <Expression.h>
-#include <VarDeclaration.h>
-#include <vector>
 #include <memory>
+#include <vector>
+
+#include <Visitor.h>
+#include <VisitorTarget.h>
+
+#include <Expression.h>
+#include <TypeModifier.h>
+#include <VarDeclaration.h>
 
 class CVarDeclarationList : public IVisitorTarget {
 public:

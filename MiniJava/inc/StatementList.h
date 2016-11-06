@@ -1,9 +1,10 @@
 #pragma once
 
-#include <VisitorTarget.h>
-#include <Visitor.h>
 #include <memory>
 #include <vector>
+
+#include <Visitor.h>
+#include <VisitorTarget.h>
 
 class IStatement;
 

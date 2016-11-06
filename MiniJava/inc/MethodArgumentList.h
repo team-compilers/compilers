@@ -1,11 +1,14 @@
 #pragma once
 
-#include <VisitorTarget.h>
-#include <Visitor.h>
-#include <Expression.h>
-#include <TypeModifier.h>
-#include <MethodArgument.h>
+#include <memory>
 #include <vector>
+
+#include <Visitor.h>
+#include <VisitorTarget.h>
+
+#include <Expression.h>
+#include <MethodArgument.h>
+#include <TypeModifier.h>
 
 class CMethodArgumentList : public IVisitorTarget {
 public:

@@ -1,9 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <Visitor.h>
 #include <VisitorTarget.h>
-#include <vector>
-#include <memory>
 
 class IExpression;
 

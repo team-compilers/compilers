@@ -1,10 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include <Visitor.h>
 #include <VisitorTarget.h>
+
 #include <Expression.h>
 #include <TypeModifier.h>
 

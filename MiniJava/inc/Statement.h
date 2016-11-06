@@ -3,12 +3,14 @@
 
 #pragma once
 
-#include <StatementList.h>
-#include <Visitor.h>
-#include <VisitorTarget.h>
-#include <Expression.h>
 #include <memory>
 #include <vector>
+
+#include <Visitor.h>
+#include <VisitorTarget.h>
+
+#include <Expression.h>
+#include <StatementList.h>
 
 class IStatement : public IVisitorTarget {
 public:

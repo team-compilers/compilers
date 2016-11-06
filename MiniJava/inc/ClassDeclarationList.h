@@ -1,10 +1,12 @@
 #pragma once
 
-#include <ClassDeclaration.h>
+#include <memory>
+#include <vector>
+
 #include <Visitor.h>
 #include <VisitorTarget.h>
-#include <vector>
-#include <memory>
+
+#include <ClassDeclaration.h>
 
 class CClassDeclarationList : public IVisitorTarget {
 public:
