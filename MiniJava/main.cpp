@@ -40,8 +40,8 @@ std::string traverseAST( const CProgram* root, bool verbose ) {
 }
 
 int main() {
-    std::string inputFileName = "tmp/dull.java";
-    std::string outputFileName = "tmp/dull.gv";
+    std::string inputFileName = "tmp/sample.java";
+    std::string outputFileName = "tmp/sample.gv";
     std::unique_ptr<const CProgram> astRoot = buildAST( inputFileName );
     std::string traversal = traverseAST( astRoot.get(), true );
 

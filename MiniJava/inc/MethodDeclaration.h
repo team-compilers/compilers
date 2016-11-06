@@ -21,6 +21,7 @@ public:
             const IExpression* _returnExpression )
         : accessModifier( _accessModifier ),
           typeModifier( _typeModifier ),
+          methodId( _methodId ),
           methodArguments( _methodArguments ),
           varDeclarations( _varDeclarations ),
           statements( _statements ),

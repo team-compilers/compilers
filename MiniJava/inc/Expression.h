@@ -201,7 +201,7 @@ public:
     CNewIdExpression( const CIdExpression* _targetId )
         : targetId( _targetId ) {}
 
-    const CIdExpression* TargetId() const { targetId.get(); }
+    const CIdExpression* TargetId() const { return targetId.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 

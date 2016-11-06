@@ -89,7 +89,12 @@ private:
     std::unordered_map<std::string, std::vector<std::string>> treeEdges;
     std::unordered_map<std::string, int> nodeTypeLastUsedIndex;
     std::vector<std::string> visitedNodeStack;
+
+    // used for verbose output while traversing the tree
     bool verbose;
+    const std::string nodeEnterMarker = "in: ";
+    const std::string nodeExitMarker = "out: ";
+    std::string margin;
 
     // Generates unique id for nodes of one type.
     int generateNodeNextIndex( const std::string& nodeType );
@@ -102,4 +107,9 @@ private:
 
     // Maps each TOperandType to a string.
     std::string toString( const TOperandType& type ) const;
+
+    // Is called every time visitor enters a node
+    void onNodeEnter( const std::string& nodeName );
+    // Is called every time visitor is about to exit a node
+    void onNodeExit( const std::string& nodeName );
 };
