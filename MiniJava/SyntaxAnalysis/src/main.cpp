@@ -1,54 +1,11 @@
-#include <dirent.h>
 #include <fstream>
-#include <iostream>
 #include <memory>
-#include <stdexcept>
-#include <stdio.h>
 #include <string>
-
-#include "parser.hpp"
 
 #include <Program.h>
 #include <DotLangVisitor.h>
 
-extern "C" FILE* yyin;
-extern "C" FILE* yyout;
-
-std::vector<std::string> listDirectory( const std::string& dirName ) {
-    std::vector<std::string> fileNames;
-
-    struct dirent* dirpent;
-    DIR* dirp = opendir( dirName.c_str() );
-    if ( dirp ) {
-        while ( ( dirpent = readdir( dirp ) ) != NULL ) {
-            if ( dirpent->d_type == 8 ) {
-                // it's a file, not folder
-                fileNames.emplace_back( dirpent->d_name );
-            }
-        }
-        closedir( dirp );
-    } else {
-        throw std::invalid_argument( "Directory doesn't exist: " + dirName );
-    }
-
-    return fileNames;
-}
-
-std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName ) {
-    CProgram* root;
-
-    FILE* inputStream = fopen( inputFileName.c_str(), "r" );
-    if ( !inputStream ) {
-        throw std::invalid_argument( "Cannot open file: " + inputFileName );
-    }
-    yyin = inputStream;
-    do {
-        yyparse( &root );
-    } while ( !feof( yyin ) );
-    fclose( inputStream );
-
-    return std::unique_ptr<const CProgram>( root );
-}
+#include <BisonParser.h>
 
 std::string traverseAST( const CProgram* root, bool verbose ) {
     CDotLangVisitor visitor( verbose );
@@ -56,23 +13,19 @@ std::string traverseAST( const CProgram* root, bool verbose ) {
     return visitor.GetTraversalInDotLanguage();
 }
 
-int main() {
-    const std::string inputDirName = "data/Samples";
-    const std::string outputDirName = "data/SamplesGV";
-    std::vector<std::string> inputFileNames = listDirectory( inputDirName );
-    for ( const std::string& inputFileName : inputFileNames ) {
-        std::string inputPath = inputDirName + '/' + inputFileName;
-        std::string outputFileName = inputFileName.substr( 0, inputFileName.find_last_of( '.' ) ) + ".gv";
-        std::string outputPath = outputDirName + '/' + outputFileName;
-
-        std::cout << "\e[1;34m" << inputPath << "\e[1;39m" << std::endl;
-        std::unique_ptr<const CProgram> astRoot = buildAST( inputPath );
-        std::string traversal = traverseAST( astRoot.get(), false );
-
-        std::ofstream outStream( outputPath );
-        outStream << traversal;
-        outStream.close();
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        throw std::logic_error("Too few arguments provided");
     }
+    const std::string inputFilePath(argv[1]);
+    const std::string outputFilePath(argv[2]);
+    CBisonParser parser(inputFilePath);
+    std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
+    std::string traversal = traverseAST( astRoot.get(), false );
+
+    std::ofstream outStream( outputFilePath );
+    outStream << traversal;
+    outStream.close();
 
     return 0;
 }

@@ -13,9 +13,9 @@ dirpath_output = args.output
 if dirpath_output is None:
 	dirpath_output = dirpath_input
 if dirpath_input is None and dirpath_output is None:
-	dirpath_input, dirpath_output = 'data/SamplesGV/', 'data/SamplesAST/'
+	dirpath_input, dirpath_output = 'data/Samples/', 'data/SamplesGV/'
 
 for filename in listdir(dirpath_input):
 	filepath_input = join(dirpath_input, filename)
-	filepath_output = splitext(join(dirpath_output, filename))[0]
-	system('./generateImage.py ' + filepath_input + ' -o ' + filepath_output)
+	filepath_output = splitext(join(dirpath_output, filename))[0] + '.gv'
+	system('./ast ' + filepath_input + ' ' + filepath_output)
