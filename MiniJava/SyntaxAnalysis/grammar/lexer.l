@@ -5,7 +5,22 @@
 #include "parser.hpp"
 // used to prevent applying name-mangling to the yylex identifier
 #define YY_DECL extern "C" int yylex()
-int lineNum = 1;
+
+void updateLocation(YYLTYPE* location, char* text) {
+    location->first_line = location->last_line;
+    location->first_column = location->last_column;
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (text[i] == '\n') {
+            ++location->last_line;
+            location->last_column = 0;
+        }
+        else {
+            ++location->last_column;
+        }
+    }
+}
+
+#define YY_USER_ACTION updateLocation(&yylloc, yytext);
 %}
 
 %option noyywrap
@@ -127,15 +142,15 @@ LEX_COMMENT \/\/(.)*\n
 {LEX_AND} { return AND; }
 
 {LEX_ID} {
-    // we have to copy because we can't rely on yytext not changing underneath us:
+    // we have to copy because we can't rely on text not changing underneath us:
     yylval.sval = strdup( yytext );
     return ID;
 }
 
-\n { ++lineNum; }
+[\n\t\r ] {}
 
 {LEX_COMMENT} {
-    ++lineNum;
+    // ++lineNum;
 };
 
 [!%\(\)*+,-./;<=\[\]\{\}] { return yytext[0]; }

@@ -6,17 +6,13 @@
 #include <stdio.h>
 #include <string>
 
+#include "parser.hpp"
+
 #include <Program.h>
 #include <DotLangVisitor.h>
 
-extern "C" int yyparse( CProgram** root );
 extern "C" FILE* yyin;
 extern "C" FILE* yyout;
-extern int lineNum;
-
-void yyerror( CProgram** root, const char* message ) {
-    std::cout << "Parse error at line " << lineNum << ".  Message: " << message << std::endl;
-}
 
 std::vector<std::string> listDirectory( const std::string& dirName ) {
     std::vector<std::string> fileNames;

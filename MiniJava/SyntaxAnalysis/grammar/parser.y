@@ -3,14 +3,17 @@
 #include <iostream>
 #include <memory>
 #include <Program.h>
+#include "parser.hpp"
 
 // used to prevent applying name-mangling to the yylex identifier
 extern "C" int yylex();
-extern "C" int yyparse( CProgram** root );
+// extern "C" int yyparse( CProgram** root );
 extern "C" FILE* yyin;
 
 // these are defined in main.cpp
-extern void yyerror( CProgram** root, const char* message );
+void yyerror( CProgram** root, const char* message ) {
+    std::cout << "Parse error at line " << yylloc.first_line << ".  Message: " << message << std::endl;
+}
 %}
 
 /*__________ The Bison Declarations Section __________*/
@@ -41,6 +44,8 @@ extern void yyerror( CProgram** root, const char* message );
 // The last identifier in argument-declaration must be the argument name.
 // These are also additional arguments for yyerror function.
 %parse-param { CProgram** root }
+
+%locations
 
 %error-verbose
 
