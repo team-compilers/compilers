@@ -7,7 +7,7 @@
 #include <string>
 
 #include <Program.h>
-#include <PrintVisitor.h>
+#include <DotLangVisitor.h>
 
 extern "C" int yyparse( CProgram** root );
 extern "C" FILE* yyin;
@@ -55,7 +55,7 @@ std::unique_ptr<const CProgram> buildAST( const std::string& inputFileName ) {
 }
 
 std::string traverseAST( const CProgram* root, bool verbose ) {
-    CPrintVisitor visitor( verbose );
+    CDotLangVisitor visitor( verbose );
     visitor.Visit( root );
     return visitor.GetTraversalInDotLanguage();
 }

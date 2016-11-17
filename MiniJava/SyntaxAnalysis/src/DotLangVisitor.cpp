@@ -1,6 +1,6 @@
-#include <PrintVisitor.h>
+#include <DotLangVisitor.h>
 
-int CPrintVisitor::generateNodeNextIndex( const std::string& nodeType ) {
+int CDotLangVisitor::generateNodeNextIndex( const std::string& nodeType ) {
     int result = 0;
     auto insertResult = nodeTypeLastUsedIndex.insert( std::make_pair( nodeType, result ) );
     if ( !insertResult.second ) {
@@ -9,15 +9,15 @@ int CPrintVisitor::generateNodeNextIndex( const std::string& nodeType ) {
     return result;
 }
 
-std::string CPrintVisitor::generateNodeName( const std::string& nodeTypeName ) {
+std::string CDotLangVisitor::generateNodeName( const std::string& nodeTypeName ) {
     return nodeTypeName + std::to_string( generateNodeNextIndex( nodeTypeName ) );
 }
 
-void CPrintVisitor::addEdge( const std::string& nodeFromName, const std::string& nodeToName ) {
+void CDotLangVisitor::addEdge( const std::string& nodeFromName, const std::string& nodeToName ) {
     treeEdges[nodeFromName].push_back( nodeToName );
 }
 
-std::string CPrintVisitor::toString( const TOperandType& type ) const {
+std::string CDotLangVisitor::toString( const TOperandType& type ) const {
     std::string result;
     switch ( type ) {
         case TOperandType::OT_Plus: result = "Plus"; break;
@@ -33,7 +33,7 @@ std::string CPrintVisitor::toString( const TOperandType& type ) const {
     return result;
 }
 
-void CPrintVisitor::onNodeEnter( const std::string& nodeName ) {
+void CDotLangVisitor::onNodeEnter( const std::string& nodeName ) {
     if ( verbose ) {
         std::cout << margin << nodeEnterMarker << nodeName << std::endl;
         // margin.push_back( '\t' );
@@ -41,7 +41,7 @@ void CPrintVisitor::onNodeEnter( const std::string& nodeName ) {
     }
 }
 
-void CPrintVisitor::onNodeExit( const std::string& nodeName ) {
+void CDotLangVisitor::onNodeExit( const std::string& nodeName ) {
     if ( verbose ) {
         margin.erase( margin.size() - 2 );
         // margin.pop_back();
@@ -49,7 +49,7 @@ void CPrintVisitor::onNodeExit( const std::string& nodeName ) {
     }
 }
 
-std::string CPrintVisitor::GetTraversalInDotLanguage() const {
+std::string CDotLangVisitor::GetTraversalInDotLanguage() const {
     std::stringstream sstream;
     sstream << "digraph {" << std::endl;
     sstream << '\t' << "ordering = out;" << std::endl;
@@ -64,7 +64,7 @@ std::string CPrintVisitor::GetTraversalInDotLanguage() const {
     return sstream.str();
 }
 
-void CPrintVisitor::Clear() {
+void CDotLangVisitor::Clear() {
     treeEdges.clear();
     nodeTypeLastUsedIndex.clear();
     visitedNodeStack.clear();
@@ -72,7 +72,7 @@ void CPrintVisitor::Clear() {
 
 /*__________ Access Modifiers __________*/
 
-void CPrintVisitor::Visit( const CPublicAccessModifier* modifier ) {
+void CDotLangVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPublic" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -80,7 +80,7 @@ void CPrintVisitor::Visit( const CPublicAccessModifier* modifier ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CPrivateAccessModifier* modifier ) {
+void CDotLangVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPrivate" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -90,7 +90,7 @@ void CPrintVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 
 /*__________ Expressions __________*/
 
-void CPrintVisitor::Visit( const CBinaryExpression* expression ) {
+void CDotLangVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpBinary" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -108,7 +108,7 @@ void CPrintVisitor::Visit( const CBinaryExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CBracketExpression* expression ) {
+void CDotLangVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpBracket" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -124,7 +124,7 @@ void CPrintVisitor::Visit( const CBracketExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CNumberExpression* expression ) {
+void CDotLangVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNumber" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -136,7 +136,7 @@ void CPrintVisitor::Visit( const CNumberExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CLogicExpression* expression ) {
+void CDotLangVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpLogic" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -148,7 +148,7 @@ void CPrintVisitor::Visit( const CLogicExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CIdExpression* expression ) {
+void CDotLangVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpId" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -159,7 +159,7 @@ void CPrintVisitor::Visit( const CIdExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CLengthExpression* expression ) {
+void CDotLangVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpLength" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -171,7 +171,7 @@ void CPrintVisitor::Visit( const CLengthExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CMethodExpression* expression ) {
+void CDotLangVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpMethod" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -191,7 +191,7 @@ void CPrintVisitor::Visit( const CMethodExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CThisExpression* expression ) {
+void CDotLangVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpThis" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -199,7 +199,7 @@ void CPrintVisitor::Visit( const CThisExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CNewArrayExpression* expression ) {
+void CDotLangVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNewArray" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -211,7 +211,7 @@ void CPrintVisitor::Visit( const CNewArrayExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CNewIdExpression* expression ) {
+void CDotLangVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNewId" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -223,7 +223,7 @@ void CPrintVisitor::Visit( const CNewIdExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CNegateExpression* expression ) {
+void CDotLangVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNegate" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -237,7 +237,7 @@ void CPrintVisitor::Visit( const CNegateExpression* expression ) {
 
 /*__________ Statements __________*/
 
-void CPrintVisitor::Visit( const CAssignIdStatement* statement ) {
+void CDotLangVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( "StatAssignId" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -253,7 +253,7 @@ void CPrintVisitor::Visit( const CAssignIdStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
+void CDotLangVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( "StatAssignIdWithIndex" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -273,7 +273,7 @@ void CPrintVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CPrintStatement* statement ) {
+void CDotLangVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( "StatPrint" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -285,7 +285,7 @@ void CPrintVisitor::Visit( const CPrintStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CConditionalStatement* statement ) {
+void CDotLangVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( "StatConditional" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -305,7 +305,7 @@ void CPrintVisitor::Visit( const CConditionalStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CWhileLoopStatement* statement ) {
+void CDotLangVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( "StatWhileLoop" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -321,7 +321,7 @@ void CPrintVisitor::Visit( const CWhileLoopStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CBracesStatement* statement ) {
+void CDotLangVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( "StatBraces" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -335,7 +335,7 @@ void CPrintVisitor::Visit( const CBracesStatement* statement ) {
 
 /*__________ Type Modifiers __________*/
 
-void CPrintVisitor::Visit( const CIntTypeModifier* typeModifier ) {
+void CDotLangVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModInt" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -343,7 +343,7 @@ void CPrintVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
+void CDotLangVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModBool" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -351,7 +351,7 @@ void CPrintVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
+void CDotLangVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModIntArray" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -359,7 +359,7 @@ void CPrintVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CIdTypeModifier* typeModifier ) {
+void CDotLangVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModId" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -373,7 +373,7 @@ void CPrintVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
 /*__________ Other (except lists) __________*/
 
-void CPrintVisitor::Visit( const CVarDeclaration* declaration ) {
+void CDotLangVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "VarDecl" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -389,7 +389,7 @@ void CPrintVisitor::Visit( const CVarDeclaration* declaration ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CMethodArgument* argument ) {
+void CDotLangVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( "MethArg" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -405,7 +405,7 @@ void CPrintVisitor::Visit( const CMethodArgument* argument ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CMethodDeclaration* declaration ) {
+void CDotLangVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "MethDecl" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -441,7 +441,7 @@ void CPrintVisitor::Visit( const CMethodDeclaration* declaration ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CMainClass* mainClass ) {
+void CDotLangVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( "MainClass" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -461,7 +461,7 @@ void CPrintVisitor::Visit( const CMainClass* mainClass ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CClassDeclaration* declaration ) {
+void CDotLangVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "ClassDecl" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -488,7 +488,7 @@ void CPrintVisitor::Visit( const CClassDeclaration* declaration ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CProgram* program ) {
+void CDotLangVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( "Program" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -506,7 +506,7 @@ void CPrintVisitor::Visit( const CProgram* program ) {
 
 /*__________  Lists __________*/
 
-void CPrintVisitor::Visit( const CExpressionList* list ) {
+void CDotLangVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( "ExpList" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -522,7 +522,7 @@ void CPrintVisitor::Visit( const CExpressionList* list ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CStatementList* list ) {
+void CDotLangVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( "StatList" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -539,7 +539,7 @@ void CPrintVisitor::Visit( const CStatementList* list ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CVarDeclarationList* list ) {
+void CDotLangVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( "VarDeclList" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -555,7 +555,7 @@ void CPrintVisitor::Visit( const CVarDeclarationList* list ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CMethodArgumentList* list ) {
+void CDotLangVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( "MethArgList" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -571,7 +571,7 @@ void CPrintVisitor::Visit( const CMethodArgumentList* list ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CMethodDeclarationList* list ) {
+void CDotLangVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( "MethDeclList" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
@@ -587,7 +587,7 @@ void CPrintVisitor::Visit( const CMethodDeclarationList* list ) {
     onNodeExit( nodeName );
 }
 
-void CPrintVisitor::Visit( const CClassDeclarationList* list ) {
+void CDotLangVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( "ClassDeclList" );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );

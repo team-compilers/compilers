@@ -31,10 +31,10 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
-class CPrintVisitor : public IVisitor {
+class CDotLangVisitor : public IVisitor {
 public:
-    CPrintVisitor( bool _verbose = false ) : verbose( _verbose ) {}
-    ~CPrintVisitor() {}
+    CDotLangVisitor( bool _verbose = false ) : verbose( _verbose ) {}
+    ~CDotLangVisitor() {}
     // Generates a string, representing the last traversal of the tree, in the DOT Language.
     // The DOT Language is the one supported by GraphViz.
     std::string GetTraversalInDotLanguage() const;
