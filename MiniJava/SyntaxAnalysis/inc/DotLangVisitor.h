@@ -1,11 +1,10 @@
 // Author: Andrew Sautin
-// Description: PrintVisitor
+// Description: DotLangVisitor
 
 #pragma once
 
 #include <iostream> // for verbose output
 #include <memory>
-#include <ostream>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -31,9 +30,9 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
-class CDotLangVisitor : public IVisitor {
+class CDotLangVisitor : public CVisitor {
 public:
-    CDotLangVisitor( bool _verbose = false ) : verbose( _verbose ) {}
+    CDotLangVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
     ~CDotLangVisitor() {}
     // Generates a string, representing the last traversal of the tree, in the DOT Language.
     // The DOT Language is the one supported by GraphViz.
@@ -87,29 +86,7 @@ public:
 
 private:
     std::unordered_map<std::string, std::vector<std::string>> treeEdges;
-    std::unordered_map<std::string, int> nodeTypeLastUsedIndex;
-    std::vector<std::string> visitedNodeStack;
-
-    // used for verbose output while traversing the tree
-    bool verbose;
-    const std::string nodeEnterMarker = "in: ";
-    const std::string nodeExitMarker = "out: ";
-    std::string margin;
-
-    // Generates unique id for nodes of one type.
-    int generateNodeNextIndex( const std::string& nodeType );
-
-    // Generates full node name based on the node type and a unique id assigned to the node.
-    std::string generateNodeName( const std::string& nodeTypeName );
 
     // Adds edge (nodeFromName; nodeToName) to treeEdges.
     void addEdge( const std::string& nodeFromName, const std::string& nodeToName );
-
-    // Maps each TOperandType to a string.
-    std::string toString( const TOperandType& type ) const;
-
-    // Is called every time visitor enters a node
-    void onNodeEnter( const std::string& nodeName );
-    // Is called every time visitor is about to exit a node
-    void onNodeExit( const std::string& nodeName );
 };

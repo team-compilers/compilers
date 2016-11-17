@@ -3,6 +3,11 @@
 
 #pragma once
 
+#include <iostream> // for verbose output
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 class CPublicAccessModifier;
 class CPrivateAccessModifier;
 
@@ -87,4 +92,36 @@ public:
     virtual void Visit( const CMethodArgumentList* list ) = 0;
     virtual void Visit( const CMethodDeclarationList* list ) = 0;
     virtual void Visit( const CClassDeclarationList* list ) = 0;
+};
+
+enum class TOperandType : char;
+
+class CVisitor : public IVisitor {
+public:
+    CVisitor( bool _verbose ) : verbose( _verbose ) {}
+protected:
+    // Generates unique id for nodes of one type.
+    int generateNodeNextIndex( const std::string& nodeType );
+
+    // Generates full node name based on the node type and a unique id assigned to the node.
+    std::string generateNodeName( const std::string& nodeTypeName );
+
+    // Is called every time visitor enters a node
+    void onNodeEnter( const std::string& nodeName );
+    // Is called every time visitor is about to exit a node
+    void onNodeExit( const std::string& nodeName );
+
+    // Maps each TOperandType to a string.
+    std::string toString( const TOperandType& type ) const;
+
+    // used for generating unique node names
+    std::unordered_map<std::string, int> nodeTypeLastUsedIndex;
+    // used to track the traverse and collect some information
+    std::vector<std::string> visitedNodeStack;
+
+    // used for verbose output while traversing the tree
+    bool verbose;
+    const std::string nodeEnterMarker = "in: ";
+    const std::string nodeExitMarker = "out: ";
+    std::string margin;
 };
