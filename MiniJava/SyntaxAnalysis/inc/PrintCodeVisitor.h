@@ -30,17 +30,12 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
-class CDotLangVisitor : public CVisitor {
+class CPrintCodeVisitor : public CVisitor {
 public:
-    CDotLangVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
-    ~CDotLangVisitor() {}
-    // Generates a string, representing the last traversal of the tree, in the DOT Language.
-    // The DOT Language is the one supported by GraphViz.
-    std::string GetTraversalInDotLanguage() const;
-
-    // Resets the initial state of the object.
-    // Should be used before every tree traversal (except the first one).
-    void Clear();
+    CPrintCodeVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    ~CPrintCodeVisitor() {}
+    // Returns code generated on the base of the AST traversed.
+    std::string GetCode() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -85,10 +80,5 @@ public:
     void Visit( const CClassDeclarationList* list ) override;
 
 private:
-    std::unordered_map<std::string, std::vector<std::string>> treeEdges;
-    // used to track the traverse and collect some information
-    std::vector<std::string> visitedNodeStack;
-
-    // Adds edge (nodeFromName; nodeToName) to treeEdges.
-    void addEdge( const std::string& nodeFromName, const std::string& nodeToName );
+    std::stringstream sstream;
 };

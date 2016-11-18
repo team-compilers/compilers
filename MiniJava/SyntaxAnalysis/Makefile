@@ -13,7 +13,7 @@ MAIN=src/main.cpp
 TRG=ast
 # -lfl includes flex library
 FLAGS=-lfl -O2 -std=c++11 -I"inc"
-SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/DotLangVisitor.cpp src/Visitor.cpp src/BisonParser.cpp
+SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/DotLangVisitor.cpp src/Visitor.cpp src/PrintCodeVisitor.cpp src/BisonParser.cpp
 
 $(TRG): $(SRC)
 	$(CC) $(FLAGS) $(SRC) -o $(TRG)

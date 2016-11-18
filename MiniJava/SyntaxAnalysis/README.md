@@ -7,19 +7,28 @@
 make
 
 # парсит файлы из директории data/Samples/, строит AST, сохраняет в формате DOT в data/SamplesGV/
-./generateGVs.py
-# или
-./generateGVs.py -i data/Samples -o data/SamplesGV
+python launcher.py dot
 
-# компилирует файлы (DOT формат) в картинки (SVG), сохраняет в data/SamplesAST/
-./generateImages.py
-# или
-./generateImages.py -i data/SamplesGV -o data/SamplesAST
-```
+# компилирует файлы в data/SamplesGV/ в картинки (SVG), сохраняет в data/SamplesAST/
+python launcher.py images
 
-При желании можно включить подробный вывод у PrintVisitor'а. Для этого замените в вызове `traverseAST` второй аргумент с `false` на `true`:
-```c++
-std::string traversal = traverseAST( astRoot.get(), true );
+# генерирует код, аналогичный коду исходной программы, сохраняет в data/SamplesCode/
+python launcher.py code
+
+# удаляет все результаты из директорий data/SamplesGV/, data/SamplesAST/, data/SamplesCode/
+python launcher.py clean
 ```  
+
+При желании можно включить подробный вывод у визиторов. Для этого замените в вызовах `AstToCode` и `AstToDotLanguage` второй аргумент с `false` на `true`:
+```c++
+traversal = AstToCode( astRoot.get(), true );
+// ...
+traversal = AstToDotLanguage( astRoot.get(), true );
+```    
+
+Также можно после сборки (`make`) генерировать все результаты одной командой:
+```bash
+python launcher.py all
+```
 
 Качать актуальную версию flex отсюда: https://sourceforge.net/projects/flex/files/

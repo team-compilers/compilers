@@ -54,7 +54,7 @@ void CDotLangVisitor::Visit( const CBinaryExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    addEdge( nodeName,  generateNodeName( toString( expression->Operation() ) ) );
+    addEdge( nodeName,  generateNodeName( operatorName( expression->Operation() ) ) );
 
     expression->RightOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
@@ -409,7 +409,7 @@ void CDotLangVisitor::Visit( const CMainClass* mainClass ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    mainClass->Statement()->Accept( this );
+    mainClass->Statements()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
