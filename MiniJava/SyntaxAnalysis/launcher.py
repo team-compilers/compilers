@@ -10,11 +10,11 @@ def generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = ''
         system(sys_command_f(filepath_input, filepath_output))
 
 DEF_DIR_IN_DOT = 'data/Samples/'
-DEF_DIR_OUT_DOT = 'data/SamplesGV/'
+DEF_DIR_OUT_DOT = 'results/SamplesGV/'
 DEF_DIR_IN_IMGS = DEF_DIR_OUT_DOT
-DEF_DIR_OUT_IMGS = 'data/SamplesAST/'
+DEF_DIR_OUT_IMGS = 'results/SamplesAST/'
 DEF_DIR_IN_CODE = DEF_DIR_IN_DOT
-DEF_DIR_OUT_CODE = 'data/SamplesCode/'
+DEF_DIR_OUT_CODE = 'results/SamplesCode/'
 
 def generate_results_dot(dirpath_input = DEF_DIR_IN_DOT, dirpath_output = DEF_DIR_OUT_DOT):
     def sys_command_f(filepath_input, filepath_output):

@@ -1,4 +1,4 @@
-#include <BisonParser.h>
+#include "BisonParser.h"
 #include "parser.hpp"
 
 std::unique_ptr<const CProgram> CBisonParser::buildAST( const std::string& inputFileName ) {

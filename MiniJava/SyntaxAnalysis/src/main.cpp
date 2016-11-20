@@ -6,7 +6,7 @@
 #include <DotLangVisitor.h>
 #include <PrintCodeVisitor.h>
 
-#include <BisonParser.h>
+#include "BisonParser.h"
 
 std::string AstToDotLanguage( const CProgram* root, bool verbose ) {
     CDotLangVisitor visitor( verbose );
