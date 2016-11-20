@@ -1,15 +1,23 @@
 #include <PrintCodeVisitor.h>
 
-/*__________ Access Modifiers __________*/
+void CPrintCodeVisitor::increaseCodeMargin() {
+    codeMargin += "    ";
+}
+
+void CPrintCodeVisitor::decreaseCodeMargin() {
+    codeMargin.erase( codeMargin.size() - 4 );
+}
 
 std::string CPrintCodeVisitor::GetCode() const {
     return sstream.str();
 }
 
+/*__________ Access Modifiers __________*/
+
 void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPublic" );
     onNodeEnter( nodeName );
-    sstream << "public";
+    sstream << "public ";
 
     onNodeExit( nodeName );
 }
@@ -17,7 +25,7 @@ void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
 void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( "AccessModPrivate" );
     onNodeEnter( nodeName );
-    sstream << "private";
+    sstream << "private ";
 
     onNodeExit( nodeName );
 }
@@ -124,6 +132,7 @@ void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNewId" );
     onNodeEnter( nodeName );
 
+    sstream << "new ";
     expression->TargetId()->Accept( this );
     sstream << "()";
 
@@ -134,8 +143,9 @@ void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( "ExpNegate" );
     onNodeEnter( nodeName );
 
-    sstream << '!';
+    sstream << "!(";
     expression->TargetExpression()->Accept( this );
+    sstream << ')';
 
     onNodeExit( nodeName );
 }
@@ -146,10 +156,11 @@ void CPrintCodeVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( "StatAssignId" );
     onNodeEnter( nodeName );
 
+    sstream << codeMargin;
     statement->LeftPart()->Accept( this );
     sstream << " = ";
     statement->RightPart()->Accept( this );
-    sstream << ';';
+    sstream << ';' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -158,12 +169,13 @@ void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( "StatAssignIdWithIndex" );
     onNodeEnter( nodeName );
 
+    sstream << codeMargin;
     statement->LeftPartId()->Accept( this );
     sstream << '[';
     statement->LeftPartIndex()->Accept( this );
     sstream << ']' << " = ";
     statement->RightPart()->Accept( this );
-    sstream << ';';
+    sstream << ';' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -172,9 +184,9 @@ void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( "StatPrint" );
     onNodeEnter( nodeName );
 
-    sstream << "System.out.println(";
+    sstream << codeMargin << "System.out.println(";
     statement->PrintTarget()->Accept( this );
-    sstream << ')' << ';';
+    sstream << ')' << ';' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -183,14 +195,16 @@ void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( "StatConditional" );
     onNodeEnter( nodeName );
 
-    sstream << "if (";
+    sstream << codeMargin << "if (";
     statement->Condition()->Accept( this );
-    sstream << ") ";
-
+    sstream << ") " << std::endl;
+    increaseCodeMargin();
     statement->PositiveTarget()->Accept( this );
-    sstream << " else ";
-
+    decreaseCodeMargin();
+    sstream << codeMargin << "else " << std::endl;
+    increaseCodeMargin();
     statement->NegativeTarget()->Accept( this );
+    decreaseCodeMargin();
 
     onNodeExit( nodeName );
 }
@@ -199,11 +213,13 @@ void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( "StatWhileLoop" );
     onNodeEnter( nodeName );
 
-    sstream << "while (";
+    sstream << codeMargin << "while (";
     statement->Condition()->Accept( this );
-    sstream << ") ";
+    sstream << ") " << std::endl;
 
+    increaseCodeMargin();
     statement->Body()->Accept( this );
+    decreaseCodeMargin();
 
     onNodeExit( nodeName );
 }
@@ -212,9 +228,11 @@ void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( "StatBraces" );
     onNodeEnter( nodeName );
 
-    sstream << "{\n";
+    sstream << codeMargin << '{' << std::endl;
+    increaseCodeMargin();
     statement->List()->Accept( this );
-    sstream << "\n}";
+    decreaseCodeMargin();
+    sstream << codeMargin << '}' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -225,7 +243,7 @@ void CPrintCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModInt" );
     onNodeEnter( nodeName );
     
-    sstream << "int";
+    sstream << "int ";
 
     onNodeExit( nodeName );
 }
@@ -234,7 +252,7 @@ void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModBool" );
     onNodeEnter( nodeName );
 
-    sstream << "boolean";
+    sstream << "boolean ";
 
     onNodeExit( nodeName );
 }
@@ -243,7 +261,7 @@ void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( "TypeModIntArray" );
     onNodeEnter( nodeName );
 
-    sstream << "int[]";
+    sstream << "int[] ";
 
     onNodeExit( nodeName );
 }
@@ -253,6 +271,7 @@ void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     onNodeEnter( nodeName );
 
     typeModifier->TypeId()->Accept( this );
+    sstream << ' ';
 
     onNodeExit( nodeName );
 }
@@ -263,6 +282,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "VarDecl" );
     onNodeEnter( nodeName );
 
+    sstream << codeMargin;
     declaration->Type()->Accept( this );
     declaration->Id()->Accept( this );
     sstream << ';' << std::endl;
@@ -284,17 +304,21 @@ void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "MethDecl" );
     onNodeEnter( nodeName );
 
+    sstream << codeMargin;
     declaration->AccessModifier()->Accept( this );
     declaration->TypeModifier()->Accept( this );
     declaration->MethodId()->Accept( this );
     sstream << '(';
     declaration->MethodArguments()->Accept( this );
     sstream << ") {" << std::endl;
+    increaseCodeMargin();
     declaration->VarDeclarations()->Accept( this );
     declaration->Statements()->Accept( this );
-    sstream << "return ";
+    sstream << codeMargin << "return ";
     declaration->ReturnExpression()->Accept( this );
-    sstream << ';' << std::endl << '}';
+    sstream << ';' << std::endl;
+    decreaseCodeMargin();
+    sstream << codeMargin << '}' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -303,13 +327,20 @@ void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( "MainClass" );
     onNodeEnter( nodeName );
 
-    sstream << "class ";
+    sstream << codeMargin << "class ";
     mainClass->ClassName()->Accept( this );
-    sstream << '{' << std::endl << "public static void main(String[] ";
+    sstream << ' ';
+    sstream << '{' << std::endl;
+    increaseCodeMargin();
+    sstream << codeMargin << "public static void main(String[] ";
     mainClass->ClassArgsName()->Accept( this );
     sstream << ") {" << std::endl;
+    increaseCodeMargin();
     mainClass->Statements()->Accept( this );
-    sstream << '}' << std::endl << '}';
+    decreaseCodeMargin();
+    sstream << codeMargin << '}' << std::endl;
+    decreaseCodeMargin();
+    sstream << codeMargin << '}' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -318,18 +349,21 @@ void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( "ClassDecl" );
     onNodeEnter( nodeName );
 
-    sstream << "class ";
+    sstream << codeMargin << "class ";
     declaration->ClassName()->Accept( this );
+    sstream << ' ';
     if ( declaration->HasParent() ) {
-        sstream << " extends ";
+        sstream << "extends ";
         declaration->ExtendsClassName()->Accept( this );
     }
-    sstream << " {" << std::endl;
+    sstream << '{' << std::endl;
+    increaseCodeMargin();
 
     declaration->VarDeclarations()->Accept( this );
     declaration->MethodDeclarations()->Accept( this );
 
-    sstream << '}' << std::endl;
+    decreaseCodeMargin();
+    sstream << codeMargin << '}' << std::endl;
 
     onNodeExit( nodeName );
 }
@@ -352,8 +386,12 @@ void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const IExpression> >& expressions = list->Expressions();
+    auto itLast = std::prev( expressions.end() );
     for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
         ( *it )->Accept( this );
+        if (it != itLast) {
+            sstream << ", ";
+        }
     }
 
     onNodeExit( nodeName );
@@ -389,8 +427,12 @@ void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
+    auto itLast = std::prev( methodArguments.end() );
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this );
+        if (it != itLast) {
+            sstream << ", ";
+        }
     }
 
     onNodeExit( nodeName );
@@ -403,6 +445,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
+        sstream << std::endl;
     }
 
     onNodeExit( nodeName );

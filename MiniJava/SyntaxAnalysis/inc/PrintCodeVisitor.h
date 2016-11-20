@@ -4,6 +4,7 @@
 #pragma once
 
 #include <iostream> // for verbose output
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -81,4 +82,8 @@ public:
 
 private:
     std::stringstream sstream;
+    std::string codeMargin;
+
+    void increaseCodeMargin();
+    void decreaseCodeMargin();
 };
