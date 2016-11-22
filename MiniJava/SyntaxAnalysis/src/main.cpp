@@ -40,6 +40,8 @@ int main(int argc, char* argv[]) {
         traversal = AstToCode( astRoot.get(), false );
     } else if (mode == "dot") {
         traversal = AstToDotLanguage( astRoot.get(), false );
+    } else if (mode == "errors") {
+        // TODO
     } else {
         printHelp(argv[0]);
         throw std::logic_error("Wrong mode provided");
