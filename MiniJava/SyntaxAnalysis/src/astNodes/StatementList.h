@@ -6,21 +6,21 @@
 #include <Visitor.h>
 #include <VisitorTarget.h>
 
-class IStatement;
+class CStatement;
 
-class CStatementList : public IVisitorTarget {
+class CStatementList : public CVisitorTarget {
 public:
 
-    CStatementList() = default;
+    CStatementList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
-    void Add( const IStatement* statement ) 
+    void Add( const CStatement* statement ) 
         { statements.emplace_back( statement ); }
 
-    const std::vector< std::unique_ptr<const IStatement> >& Statements() const { return statements; }
+    const std::vector< std::unique_ptr<const CStatement> >& Statements() const { return statements; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     // must be reversed before being used
-    std::vector< std::unique_ptr<const IStatement> > statements;
+    std::vector< std::unique_ptr<const CStatement> > statements;
 };

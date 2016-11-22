@@ -11,9 +11,10 @@
 
 #include <ExpressionList.h>
 
-class IExpression : public IVisitorTarget {
+class CExpression : public CVisitorTarget {
 public:
-    virtual ~IExpression() {}
+    CExpression( const CLocation& _location ) : CVisitorTarget( _location ) {}
+    virtual ~CExpression() {}
 };
 
 //-----------------------------------------------------------------------------------------------//
@@ -31,24 +32,25 @@ enum class TOperatorType : char {
     OT_Count
 };
 
-class CBinaryExpression : public IExpression {
+class CBinaryExpression : public CExpression {
 public:
 
-    CBinaryExpression( TOperatorType _operation, const IExpression* left, const IExpression* right )
-        : operation( _operation ),
+    CBinaryExpression( TOperatorType _operation, const CExpression* left, const CExpression* right, const CLocation& _location )
+        : CExpression( _location ),
+          operation( _operation ),
           leftOperand( left ),
           rightOperand( right ) {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     TOperatorType Operation() const { return operation; }
-    const IExpression* LeftOperand() const { return leftOperand.get(); }
-    const IExpression* RightOperand() const { return rightOperand.get(); }
+    const CExpression* LeftOperand() const { return leftOperand.get(); }
+    const CExpression* RightOperand() const { return rightOperand.get(); }
 
 private:
 
-    std::unique_ptr<const IExpression> leftOperand;
-    std::unique_ptr<const IExpression> rightOperand;
+    std::unique_ptr<const CExpression> leftOperand;
+    std::unique_ptr<const CExpression> rightOperand;
     TOperatorType operation;
 };
 
@@ -56,30 +58,31 @@ private:
 //-----------------------------------------------------------------------------------------------//
 
 // a[b]
-class CBracketExpression : public IExpression {
+class CBracketExpression : public CExpression {
 public:
 
-    CBracketExpression( const IExpression* _containerExpression, const IExpression* _indexExpression )
-        : containerExpression( _containerExpression ),
+    CBracketExpression( const CExpression* _containerExpression, const CExpression* _indexExpression, const CLocation& _location )
+        : CExpression( _location ),
+          containerExpression( _containerExpression ),
           indexExpression( _indexExpression ) {}
 
-    const IExpression* ContainerExpression() const { return containerExpression.get(); }
-    const IExpression* IndexExpression() const { return indexExpression.get(); }
+    const CExpression* ContainerExpression() const { return containerExpression.get(); }
+    const CExpression* IndexExpression() const { return indexExpression.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
 
-    std::unique_ptr<const IExpression> containerExpression; //a
-    std::unique_ptr<const IExpression> indexExpression; //b
+    std::unique_ptr<const CExpression> containerExpression; //a
+    std::unique_ptr<const CExpression> indexExpression; //b
 };
 
 //-----------------------------------------------------------------------------------------------//
 
-class CNumberExpression : public IExpression {
+class CNumberExpression : public CExpression {
 public:
 
-    CNumberExpression( int _value )
-        : value( _value ) {}
+    CNumberExpression( int _value, const CLocation& _location )
+        : CExpression( _location ), value( _value ) {}
 
     int Value() const { return value; }
 
@@ -92,11 +95,11 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CLogicExpression : public IExpression {
+class CLogicExpression : public CExpression {
 public:
 
-    CLogicExpression( bool _value ) 
-        : value( _value ) {}
+    CLogicExpression( bool _value, const CLocation& _location ) 
+        : CExpression( _location ), value( _value ) {}
 
     bool Value() const { return value; }
     
@@ -110,11 +113,11 @@ private:
 //----------------------------------------------------------------------------------------------//
 
 // Expression for identities (variables)
-class CIdExpression : public IExpression {
+class CIdExpression : public CExpression {
 public:
 
-    CIdExpression( const std::string& _name )
-        : name( _name ) {}
+    CIdExpression( const std::string& _name, const CLocation& _location )
+        : CExpression( _location ), name( _name ) {}
 
     const std::string& Name() const { return name; }
 
@@ -128,78 +131,83 @@ private:
 
 //----------------------------------------------------------------------------------------------//
 
-class CLengthExpression : public IExpression {
+class CLengthExpression : public CExpression {
 public:
 
-    CLengthExpression( const IExpression* _lengthTarget )
-        : lengthTarget( _lengthTarget ) {}
+    CLengthExpression( const CExpression* _lengthTarget, const CLocation& _location )
+        : CExpression( _location ), lengthTarget( _lengthTarget ) {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
     
-    const IExpression* LengthTarget() const { return lengthTarget.get(); }
+    const CExpression* LengthTarget() const { return lengthTarget.get(); }
 
 private:
 
-    std::unique_ptr<const IExpression> lengthTarget;
+    std::unique_ptr<const CExpression> lengthTarget;
 };
 
 //-----------------------------------------------------------------------------------------------//
 
-class CMethodExpression : public IExpression {
+class CMethodExpression : public CExpression {
 public:
 
-    CMethodExpression( const IExpression* _callerExpression, 
+    CMethodExpression( const CExpression* _callerExpression, 
             const CIdExpression* _methodId,
-            const CExpressionList* _arguments ) 
-        : callerExpression( _callerExpression ),
+            const CExpressionList* _arguments, const CLocation& _location ) 
+        : CExpression( _location ),
+          callerExpression( _callerExpression ),
           methodId( _methodId ),
           arguments( _arguments ) {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    const IExpression* CallerExpression() const { return callerExpression.get(); }
+    const CExpression* CallerExpression() const { return callerExpression.get(); }
     const CIdExpression* MethodId() const { return methodId.get(); }
     const CExpressionList* Arguments() const { return arguments.get(); }
 
 private:
 
-    std::unique_ptr<const IExpression> callerExpression;
+    std::unique_ptr<const CExpression> callerExpression;
     std::unique_ptr<const CIdExpression> methodId;
     std::unique_ptr<const CExpressionList> arguments;
 };
 
 //-----------------------------------------------------------------------------------------------//
 
-class CThisExpression : public IExpression {
-public: 
+class CThisExpression : public CExpression {
+public:
+
+    CThisExpression( const CLocation& _location )
+        : CExpression( _location ) {}
+
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
 
 //-----------------------------------------------------------------------------------------------//
 
-class CNewArrayExpression : public IExpression {
+class CNewArrayExpression : public CExpression {
 public:
 
-    CNewArrayExpression( const IExpression* _lengthExpression )
-        : lengthExpression( _lengthExpression ) {}
+    CNewArrayExpression( const CExpression* _lengthExpression, const CLocation& _location )
+        : CExpression( _location ), lengthExpression( _lengthExpression ) {}
 
-    const IExpression* LengthExpression() const { return lengthExpression.get(); }
+    const CExpression* LengthExpression() const { return lengthExpression.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
-    std::unique_ptr<const IExpression> lengthExpression;
+    std::unique_ptr<const CExpression> lengthExpression;
 };
 
 //-----------------------------------------------------------------------------------------------//
 
-class CNewIdExpression : public IExpression {
+class CNewIdExpression : public CExpression {
 public:
 
-    CNewIdExpression( const CIdExpression* _targetId )
-        : targetId( _targetId ) {}
+    CNewIdExpression( const CIdExpression* _targetId, const CLocation& _location )
+        : CExpression( _location ), targetId( _targetId ) {}
 
     const CIdExpression* TargetId() const { return targetId.get(); }
 
@@ -212,17 +220,17 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CNegateExpression : public IExpression {
+class CNegateExpression : public CExpression {
 public:
 
-    CNegateExpression( const IExpression* _targetExpression )
-        : targetExpression( _targetExpression ) {}
+    CNegateExpression( const CExpression* _targetExpression, const CLocation& _location )
+        : CExpression( _location ), targetExpression( _targetExpression ) {}
 
-    const IExpression* TargetExpression() const { return targetExpression.get(); }
+    const CExpression* TargetExpression() const { return targetExpression.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
 
-    std::unique_ptr<const IExpression> targetExpression;
+    std::unique_ptr<const CExpression> targetExpression;
 };

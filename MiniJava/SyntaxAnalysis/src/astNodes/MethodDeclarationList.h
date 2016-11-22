@@ -8,10 +8,10 @@
 
 #include <MethodDeclaration.h>
 
-class CMethodDeclarationList : public IVisitorTarget {
+class CMethodDeclarationList : public CVisitorTarget {
 public:
 
-    CMethodDeclarationList() = default;
+    CMethodDeclarationList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
     void Add( const CMethodDeclaration* declaration ) 
         { declarations.emplace_back( declaration ); }

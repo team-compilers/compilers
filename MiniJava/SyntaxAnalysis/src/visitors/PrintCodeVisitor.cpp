@@ -385,7 +385,7 @@ void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( "ExpList" );
     onNodeEnter( nodeName );
 
-    const std::vector< std::unique_ptr<const IExpression> >& expressions = list->Expressions();
+    const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
     auto itLast = std::prev( expressions.end() );
     for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
         ( *it )->Accept( this );
@@ -401,7 +401,7 @@ void CPrintCodeVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( "StatList" );
     onNodeEnter( nodeName );
 
-    const std::vector< std::unique_ptr<const IStatement> >& statements = list->Statements();
+    const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
     // must be reversed before being used
     for ( auto rit = statements.rbegin(); rit != statements.rend(); ++rit ) {
         ( *rit )->Accept( this );

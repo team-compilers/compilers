@@ -8,11 +8,12 @@
 #include <ClassDeclarationList.h>
 #include <MainClass.h>
 
-class CProgram : public IVisitorTarget {
+class CProgram : public CVisitorTarget {
 public:
 
-    CProgram( const CMainClass* _mainClass, const CClassDeclarationList* _classDeclarations )
-        : mainClass( _mainClass ),
+    CProgram( const CMainClass* _mainClass, const CClassDeclarationList* _classDeclarations, const CLocation& _location )
+        : CVisitorTarget( _location ),
+          mainClass( _mainClass ),
           classDeclarations( _classDeclarations ) {}
 
     const CMainClass* MainClass() const { return mainClass.get(); }

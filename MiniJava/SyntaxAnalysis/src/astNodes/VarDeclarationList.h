@@ -10,10 +10,10 @@
 #include <TypeModifier.h>
 #include <VarDeclaration.h>
 
-class CVarDeclarationList : public IVisitorTarget {
+class CVarDeclarationList : public CVisitorTarget {
 public:
 
-    CVarDeclarationList() = default;
+    CVarDeclarationList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
     void Add( const CVarDeclaration* varDeclaration ) 
         { varDeclarations.emplace_back( varDeclaration ); }

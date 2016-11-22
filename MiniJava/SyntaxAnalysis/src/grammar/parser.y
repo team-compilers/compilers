@@ -62,12 +62,12 @@ CLocation ToCLocation( YYLTYPE yylloc ) {
     int                     ival;
     bool                    bval;
     char*                   sval;
-    IAccessModifier*        accessMod;
-    IExpression*            exp;
+    CAccessModifier*        accessMod;
+    CExpression*            exp;
     CExpressionList*        expList;
-    IStatement*             statement;
+    CStatement*             statement;
     CStatementList*         statements;
-    ITypeModifier*          type;
+    CTypeModifier*          type;
     CVarDeclaration*        varDecl;
     CVarDeclarationList*    varDecls;
     CMethodArgument*        methodArg;
@@ -141,61 +141,87 @@ CLocation ToCLocation( YYLTYPE yylloc ) {
 /*__________ The Grammar Rules Section __________*/
 Program:
       MainClass ClassDeclarations
-        { $$ = new CProgram( $1, $2 ); *root = $$; }
+        { $$ = new CProgram( $1, $2, ToCLocation( @$ ) ); *root = $$; }
     ;
 
 MainClass:
       CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING '['']' ID ')' '{' Statements '}' '}'
-        { $$ = new CMainClass( new CIdExpression( $2 ), new CIdExpression( $12 ), $15 ); }
+        {
+            $$ = new CMainClass(
+                new CIdExpression( $2, ToCLocation( @2 ) ),
+                new CIdExpression( $12, ToCLocation( @12 ) ),
+                $15,
+                ToCLocation( @$ )
+            );
+        }
     ;
 
 ClassDeclarations:
       %empty
-        { $$ = new CClassDeclarationList(); }
+        { $$ = new CClassDeclarationList( ToCLocation( @$ ) ); }
     | ClassDeclarations ClassDeclaration
         { $$ = $1; $$->Add( $2 ); }
     ;
 
 ClassDeclaration:
       CLASS ID '{' VarDeclarations MethodDeclarations '}'
-        { $$ = new CClassDeclaration( new CIdExpression( $2 ), $4, $5 ); }
+        { $$ = new CClassDeclaration( new CIdExpression( $2, ToCLocation( @2 ) ), $4, $5, ToCLocation( @$ ) ); }
     | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'
-        { $$ = new CClassDeclaration( new CIdExpression( $2 ), $6, $7, new CIdExpression( $4 ) ); }
+        {
+            $$ = new CClassDeclaration(
+                new CIdExpression( $2, ToCLocation( @2 ) ),
+                $6,
+                $7,
+                new CIdExpression( $4, ToCLocation( @4 ) ),
+                ToCLocation( @$ )
+            );
+        }
     ;
 
 MethodDeclarations:
       %empty
-        { $$ = new CMethodDeclarationList(); }
+        { $$ = new CMethodDeclarationList( ToCLocation( @$ ) ); }
     | MethodDeclarations MethodDeclaration
         { $$ = $1; $$->Add( $2 ); }
     ;
 
 MethodDeclaration:
       AccessModifier Type ID '(' MethodArguments ')' '{' VarDeclarations Statements RETURN Expression ';' '}'
-        { $$ = new CMethodDeclaration( $1, $2, new CIdExpression( $3 ), $5, $8, $9, $11 ); }
+        {
+            $$ = new CMethodDeclaration(
+                $1,
+                $2,
+                new CIdExpression( $3, ToCLocation( @3 ) ),
+                $5,
+                $8,
+                $9,
+                $11,
+                ToCLocation( @$ )
+            );
+        }
     ;
 
 VarDeclarations:
       %empty
-        { $$ = new CVarDeclarationList(); }
+        { $$ = new CVarDeclarationList( ToCLocation( @$ ) ); }
     | VarDeclarations VarDeclaration
         { $$ = $1; $$->Add( $2 ); }
     ;
 
 VarDeclaration:
       Type ID ';'
-        { $$ = new CVarDeclaration( $1, new CIdExpression( $2 ) ); }
+        { $$ = new CVarDeclaration( $1, new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) ); }
     ;
 
 Type:
       INT '['']'
-        { $$ = new CIntArrayTypeModifier(); }
+        { $$ = new CIntArrayTypeModifier( ToCLocation( @$ ) ); }
     | BOOLEAN
-        { $$ = new CBooleanTypeModifier(); }
+        { $$ = new CBooleanTypeModifier( ToCLocation( @$ ) ); }
     | INT
-        { $$ = new CIntTypeModifier(); }
+        { $$ = new CIntTypeModifier( ToCLocation( @$ ) ); }
     | ID
-        { $$ = new CIdTypeModifier( new CIdExpression( $1 ) ); }
+        { $$ = new CIdTypeModifier( new CIdExpression( $1, ToCLocation( @1 ) ), ToCLocation( @$ ) ); }
     ;
 
 AccessModifier:
@@ -207,99 +233,99 @@ AccessModifier:
 
 MethodArguments:
       %empty
-        { $$ = new CMethodArgumentList(); }
+        { $$ = new CMethodArgumentList( ToCLocation( @$ ) ); }
     | MethodArgumentsNonEmpty
         { $$ = $1; }
     ;
 
 MethodArgumentsNonEmpty:
       MethodArgument
-        { $$ = new CMethodArgumentList(); $$->Add( $1 ); }
+        { $$ = new CMethodArgumentList( ToCLocation( @$ ) ); $$->Add( $1 ); }
     | MethodArgumentsNonEmpty ',' MethodArgument
         { $$ = $1; $$->Add( $3 ); }
     ;
 
 MethodArgument:
       Type ID
-        { $$ = new CMethodArgument( $1, new CIdExpression( $2 ) ); }
+        { $$ = new CMethodArgument( $1, new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) ); }
     ;
 
 // statements have to be reversed in every visitor
 Statements:
       %empty
-        { $$ = new CStatementList(); }
+        { $$ = new CStatementList( ToCLocation( @$ ) ); }
     | Statement Statements
         { $$ = $2; $$->Add( $1 ); }
     ;
 
 Statement:
       '{' Statements '}'
-        { $$ = new CBracesStatement( $2 ); }
+        { $$ = new CBracesStatement( $2, ToCLocation( @$ ) ); }
     | IF '(' Expression ')' Statement ELSE Statement
-        { $$ = new CConditionalStatement( $3, $5, $7 ); }
+        { $$ = new CConditionalStatement( $3, $5, $7, ToCLocation( @$ ) ); }
     | WHILE '(' Expression ')' Statement
-        { $$ = new CWhileLoopStatement( $3, $5 ); }
+        { $$ = new CWhileLoopStatement( $3, $5, ToCLocation( @$ ) ); }
     | SOUT '(' Expression ')' ';'
-        { $$ = new CPrintStatement( $3 ); }
+        { $$ = new CPrintStatement( $3, ToCLocation( @$ ) ); }
     | ID '=' Expression ';'
-        { $$ = new CAssignIdStatement( new CIdExpression( $1 ), $3 ); }
+        { $$ = new CAssignIdStatement( new CIdExpression( $1, ToCLocation( @$ ) ), $3, ToCLocation( @$ ) ); }
     | ID '[' Expression ']' '=' Expression ';'
-        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1 ), $3, $6); }
+        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1, ToCLocation( @$ ) ), $3, $6, ToCLocation( @$ )); }
     ;
 
 Expressions:
       %empty
-        { $$ = new CExpressionList(); }
+        { $$ = new CExpressionList( ToCLocation( @$ ) ); }
     | ExpressionsNonEmpty
         { $$ = $1; }
     ;
 
 ExpressionsNonEmpty:
       Expression
-        { $$ = new CExpressionList( $1 ); }
+        { $$ = new CExpressionList( $1, ToCLocation( @$ ) ); }
     | ExpressionsNonEmpty ',' Expression
         { $$ = $1; $1->Add( $3 ); }
     ;
 
 Expression:
       Expression AND Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_And,   $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_And,   $1, $3, ToCLocation( @$ ) ); }
     | Expression OR Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_Or,    $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Or,    $1, $3, ToCLocation( @$ ) ); }
     | Expression '<' Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_LT,    $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_LT,    $1, $3, ToCLocation( @$ ) ); }
     | Expression '+' Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_Plus,  $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Plus,  $1, $3, ToCLocation( @$ ) ); }
     | Expression '-' Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_Minus, $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Minus, $1, $3, ToCLocation( @$ ) ); }
     | Expression '*' Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_Times, $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Times, $1, $3, ToCLocation( @$ ) ); }
     | Expression '/' Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_Div,   $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Div,   $1, $3, ToCLocation( @$ ) ); }
     | Expression '%' Expression
-        { $$ = new CBinaryExpression( TOperatorType::OT_Mod,   $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Mod,   $1, $3, ToCLocation( @$ ) ); }
 
     | Expression '[' Expression ']'
-        { $$ = new CBracketExpression( $1, $3 ); }
+        { $$ = new CBracketExpression( $1, $3, ToCLocation( @$ ) ); }
     | Expression '.' LENGTH
-        { $$ = new CLengthExpression( $1 ); }
+        { $$ = new CLengthExpression( $1, ToCLocation( @$ ) ); }
     | Expression '.' ID '(' Expressions ')'
-        { $$ = new CMethodExpression( $1, new CIdExpression( $3 ), $5 ); }
+        { $$ = new CMethodExpression( $1, new CIdExpression( $3, ToCLocation( @3 ) ), $5, ToCLocation( @$ ) ); }
 
     | IntegerLiteral
-        { $$ = new CNumberExpression( $1 ); }
+        { $$ = new CNumberExpression( $1, ToCLocation( @$ ) ); }
     | LOGIC_LITERAL
-        { $$ = new CLogicExpression( $1 ); }
+        { $$ = new CLogicExpression( $1, ToCLocation( @$ ) ); }
     | ID
-        { $$ = new CIdExpression( $1 ); }
+        { $$ = new CIdExpression( $1, ToCLocation( @$ ) ); }
     | THIS
-        { $$ = new CThisExpression(); }
+        { $$ = new CThisExpression( ToCLocation( @$ ) ); }
     | NEW INT '[' Expression ']'
-        { $$ = new CNewArrayExpression( $4 ); }
+        { $$ = new CNewArrayExpression( $4, ToCLocation( @$ ) ); }
     | NEW ID '(' ')'
-        { $$ = new CNewIdExpression( new CIdExpression( $2 ) ); }
+        { $$ = new CNewIdExpression( new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) ); }
     | '!' Expression
-        { $$ = new CNegateExpression( $2 ); }
+        { $$ = new CNegateExpression( $2, ToCLocation( @$ ) ); }
     | '(' Expression ')'
         { $$ = $2; }
     ;

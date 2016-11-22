@@ -7,31 +7,35 @@
 
 #include <Expression.h>
 
-class ITypeModifier : public IVisitorTarget {
+class CTypeModifier : public CVisitorTarget {
 public:
-    virtual ~ITypeModifier() {}
+    CTypeModifier( const CLocation& _location ) : CVisitorTarget( _location ) {}
+    virtual ~CTypeModifier() {}
 };
 
-class CIntTypeModifier : public ITypeModifier {
+class CIntTypeModifier : public CTypeModifier {
 public:
+    CIntTypeModifier( const CLocation& _location ) : CTypeModifier( _location ) {}
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
-class CBooleanTypeModifier : public ITypeModifier {
+class CBooleanTypeModifier : public CTypeModifier {
 public:
+    CBooleanTypeModifier( const CLocation& _location ) : CTypeModifier( _location ) {}
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
-class CIntArrayTypeModifier : public ITypeModifier {
+class CIntArrayTypeModifier : public CTypeModifier {
 public:
+    CIntArrayTypeModifier( const CLocation& _location ) : CTypeModifier( _location ) {}
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
-class CIdTypeModifier : public ITypeModifier {
+class CIdTypeModifier : public CTypeModifier {
 public:
 
-    CIdTypeModifier( const CIdExpression* _typeId ) 
-        : typeId( _typeId ) {}
+    CIdTypeModifier( const CIdExpression* _typeId, const CLocation& _location ) 
+        : CTypeModifier( _location ), typeId( _typeId ) {}
 
     const CIdExpression* TypeId() const { return typeId.get(); }
 

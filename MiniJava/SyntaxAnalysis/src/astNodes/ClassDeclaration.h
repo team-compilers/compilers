@@ -9,19 +9,20 @@
 #include <MethodDeclarationList.h>
 #include <VarDeclarationList.h>
 
-class CClassDeclaration : public IVisitorTarget {
+class CClassDeclaration : public CVisitorTarget {
 public:
-
     CClassDeclaration( const CIdExpression* _className, const CVarDeclarationList* _varDelcs, 
-            const CMethodDeclarationList* _methodDecls )
-        : className( _className ),
+            const CMethodDeclarationList* _methodDecls, const CLocation& _location )
+        : CVisitorTarget( _location ),
+          className( _className ),
           varDecls( _varDelcs ),
           methodDecls( _methodDecls ),
           hasParent( false ) {}
 
     CClassDeclaration( const CIdExpression* _className, const CVarDeclarationList* _varDecls,
-            const CMethodDeclarationList* _methodDecls, const CIdExpression* parent ) 
-        : className( _className ),
+            const CMethodDeclarationList* _methodDecls, const CIdExpression* parent, const CLocation& _location ) 
+        : CVisitorTarget( _location ),
+          className( _className ),
           varDecls( _varDecls ),
           methodDecls( _methodDecls ),
           hasParent( true ),

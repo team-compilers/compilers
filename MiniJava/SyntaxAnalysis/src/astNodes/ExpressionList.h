@@ -6,22 +6,23 @@
 #include <Visitor.h>
 #include <VisitorTarget.h>
 
-class IExpression;
+class CExpression;
 
-class CExpressionList : public IVisitorTarget {
+class CExpressionList : public CVisitorTarget {
 public:
 
-    CExpressionList() = default;
+    CExpressionList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
-    CExpressionList( const IExpression* expression ) { Add( expression ); }
+    CExpressionList( const CExpression* expression, const CLocation& _location ) 
+        : CVisitorTarget( _location ) { Add( expression ); }
 
-    void Add( const IExpression* expression ) 
+    void Add( const CExpression* expression ) 
         { expressions.emplace_back( expression ); }
 
-    const std::vector< std::unique_ptr<const IExpression> >& Expressions() const { return expressions; }
+    const std::vector< std::unique_ptr<const CExpression> >& Expressions() const { return expressions; }
     
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    std::vector< std::unique_ptr<const IExpression> > expressions;
+    std::vector< std::unique_ptr<const CExpression> > expressions;
 };

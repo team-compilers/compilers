@@ -10,10 +10,10 @@
 #include <MethodArgument.h>
 #include <TypeModifier.h>
 
-class CMethodArgumentList : public IVisitorTarget {
+class CMethodArgumentList : public CVisitorTarget {
 public:
 
-    CMethodArgumentList() = default;
+    CMethodArgumentList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
     void Add( const CMethodArgument* argument ) 
         { arguments.emplace_back( argument ); }

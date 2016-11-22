@@ -8,10 +8,9 @@
 
 #include <ClassDeclaration.h>
 
-class CClassDeclarationList : public IVisitorTarget {
+class CClassDeclarationList : public CVisitorTarget {
 public:
-
-    CClassDeclarationList() = default;
+    CClassDeclarationList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
     void Add( const CClassDeclaration* declaration ) 
         { classes.emplace_back( declaration ); }

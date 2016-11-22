@@ -9,18 +9,19 @@
 #include <Expression.h>
 #include <TypeModifier.h>
 
-class CMethodArgument : public IVisitorTarget {
+class CMethodArgument : public CVisitorTarget {
 public:
 
-    CMethodArgument( const ITypeModifier* _type, const CIdExpression* _id )
-        : type( _type ),
+    CMethodArgument( const CTypeModifier* _type, const CIdExpression* _id, const CLocation& _location )
+        : CVisitorTarget( _location ),
+          type( _type ),
           id( _id ) {}
 
-    const ITypeModifier* Type() const { return type.get(); }
+    const CTypeModifier* Type() const { return type.get(); }
     const CIdExpression* Id() const { return id.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
-    std::unique_ptr<const ITypeModifier> type;
+    std::unique_ptr<const CTypeModifier> type;
     std::unique_ptr<const CIdExpression> id;
 };
