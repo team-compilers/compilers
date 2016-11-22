@@ -1,5 +1,4 @@
-// Author: Andrew Sautin
-// Description: DotLangVisitor
+// Description: SymbolTableBuilderVisitor
 
 #pragma once
 
@@ -31,19 +30,12 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
-class CDotLangVisitor : public CVisitor {
+class CSymbolTableBuilderVisitor : public CVisitor {
 public:
-    CDotLangVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
-    ~CDotLangVisitor() {}
-    // Generates a string, representing the last traversal of the tree, in the DOT Language.
-    // The DOT Language is the one supported by GraphViz.
-    std::string GetTraversalInDotLanguage() const;
+    CSymbolTableBuilderVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    ~CSymbolTableBuilderVisitor() {}
 
-    // Resets the initial state of the object.
-    // Should be used before every tree traversal (except the first one).
-    void Clear();
-
-    // Visitors for different node types.
+    // Visitors for different node types
     void Visit( const CPublicAccessModifier* modifier ) override;
     void Visit( const CPrivateAccessModifier* modifier ) override;
 
@@ -84,12 +76,4 @@ public:
     void Visit( const CMethodArgumentList* list ) override;
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
-
-private:
-    std::unordered_map<std::string, std::vector<std::string>> treeEdges;
-    // used to track the traverse and collect some information
-    std::vector<std::string> visitedNodeStack;
-
-    // Adds edge (nodeFromName; nodeToName) to treeEdges.
-    void addEdge( const std::string& nodeFromName, const std::string& nodeToName );
 };

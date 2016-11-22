@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include <AstNodeNames.h>
 #include <Visitor.h>
 
 #include <AccessModifier.h>
