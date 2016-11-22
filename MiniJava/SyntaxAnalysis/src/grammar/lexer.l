@@ -6,21 +6,20 @@
 // used to prevent applying name-mangling to the yylex identifier
 #define YY_DECL extern "C" int yylex()
 
-void updateLocation(YYLTYPE* location, char* text) {
+void updateLocation( YYLTYPE* location, char* text ) {
     location->first_line = location->last_line;
     location->first_column = location->last_column;
-    for (int i = 0; text[i] != '\0'; i++) {
-        if (text[i] == '\n') {
+    for ( int i = 0; text[i] != '\0'; i++ ) {
+        if ( text[i] == '\n' ) {
             ++location->last_line;
             location->last_column = 0;
-        }
-        else {
+        } else {
             ++location->last_column;
         }
     }
 }
 
-#define YY_USER_ACTION updateLocation(&yylloc, yytext);
+#define YY_USER_ACTION updateLocation( &yylloc, yytext );
 %}
 
 %option noyywrap
