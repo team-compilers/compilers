@@ -12,7 +12,9 @@ void updateLocation( YYLTYPE* location, char* text ) {
     for ( int i = 0; text[i] != '\0'; i++ ) {
         if ( text[i] == '\n' ) {
             ++location->last_line;
-            location->last_column = 0;
+            location->last_column = 1;
+        } else if (text[i] == '\t') {
+            location->last_column += 4;
         } else {
             ++location->last_column;
         }

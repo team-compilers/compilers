@@ -7,12 +7,15 @@
 
 // used to prevent applying name-mangling to the yylex identifier
 extern "C" int yylex();
-// extern "C" int yyparse( CProgram** root );
 extern "C" FILE* yyin;
 
-// these are defined in main.cpp
 void yyerror( CProgram** root, const char* message ) {
     std::cout << "Parse error at line " << yylloc.first_line << ".  Message: " << message << std::endl;
+}
+
+CLocation ToCLocation( YYLTYPE yylloc ) {
+    return CLocation( yylloc.first_line, yylloc.last_line, 
+        yylloc.first_column, yylloc.last_column );
 }
 %}
 
@@ -37,6 +40,7 @@ void yyerror( CProgram** root, const char* message ) {
     #include <ClassDeclaration.h>
     #include <ClassDeclarationList.h>
     #include <Program.h>
+    #include <VisitorTarget.h>
 }
 
 // Declare that one or more argument-declaration are additional yyparse arguments.
@@ -196,9 +200,9 @@ Type:
 
 AccessModifier:
       PUBLIC
-        { $$ = new CPublicAccessModifier(); }
+        { $$ = new CPublicAccessModifier( ToCLocation( @$ ) ); }
     | PRIVATE
-        { $$ = new CPrivateAccessModifier(); }
+        { $$ = new CPrivateAccessModifier( ToCLocation( @$ ) ); }
     ;
 
 MethodArguments:

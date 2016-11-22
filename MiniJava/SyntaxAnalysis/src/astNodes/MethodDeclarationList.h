@@ -16,7 +16,7 @@ public:
     void Add( const CMethodDeclaration* declaration ) 
         { declarations.emplace_back( declaration ); }
     
-	const std::vector< std::unique_ptr<const CMethodDeclaration> >& MethodDeclarations() const { return declarations; }
+    const std::vector< std::unique_ptr<const CMethodDeclaration> >& MethodDeclarations() const { return declarations; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 

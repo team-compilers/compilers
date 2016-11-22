@@ -9,7 +9,7 @@
 
 class ITypeModifier : public IVisitorTarget {
 public:
-	virtual ~ITypeModifier() {}
+    virtual ~ITypeModifier() {}
 };
 
 class CIntTypeModifier : public ITypeModifier {

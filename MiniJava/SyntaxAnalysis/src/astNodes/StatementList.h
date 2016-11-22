@@ -21,6 +21,6 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-	// must be reversed before being used
+    // must be reversed before being used
     std::vector< std::unique_ptr<const IStatement> > statements;
 };
