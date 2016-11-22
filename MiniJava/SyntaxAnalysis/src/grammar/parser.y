@@ -259,21 +259,21 @@ ExpressionsNonEmpty:
 
 Expression:
       Expression AND Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_And,   $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_And,   $1, $3 ); }
     | Expression OR Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_Or,    $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Or,    $1, $3 ); }
     | Expression '<' Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_LT,    $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_LT,    $1, $3 ); }
     | Expression '+' Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_Plus,  $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Plus,  $1, $3 ); }
     | Expression '-' Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_Minus, $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Minus, $1, $3 ); }
     | Expression '*' Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_Times, $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Times, $1, $3 ); }
     | Expression '/' Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_Div,   $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Div,   $1, $3 ); }
     | Expression '%' Expression
-        { $$ = new CBinaryExpression( TOperandType::OT_Mod,   $1, $3 ); }
+        { $$ = new CBinaryExpression( TOperatorType::OT_Mod,   $1, $3 ); }
 
     | Expression '[' Expression ']'
         { $$ = new CBracketExpression( $1, $3 ); }

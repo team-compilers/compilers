@@ -94,7 +94,7 @@ public:
     virtual void Visit( const CClassDeclarationList* list ) = 0;
 };
 
-enum class TOperandType : char;
+enum class TOperatorType : char;
 
 class CVisitor : public IVisitor {
 public:
@@ -111,11 +111,11 @@ protected:
     // Is called every time visitor is about to exit a node
     void onNodeExit( const std::string& nodeName );
 
-    // Maps each TOperandType to a string with its name.
-    std::string operatorName( const TOperandType& type ) const;
+    // Maps each TOperatorType to a string with its name.
+    std::string operatorName( const TOperatorType& type ) const;
 
-    // Maps each TOperandType to a string with its character.
-    std::string operatorChar( const TOperandType& type ) const;
+    // Maps each TOperatorType to a string with its character.
+    std::string operatorChar( const TOperatorType& type ) const;
 
     // used for generating unique node names
     std::unordered_map<std::string, int> nodeTypeLastUsedIndex;

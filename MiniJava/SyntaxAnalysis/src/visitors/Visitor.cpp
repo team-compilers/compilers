@@ -14,34 +14,34 @@ std::string CVisitor::generateNodeName( const std::string& nodeTypeName ) {
     return nodeTypeName + std::to_string( generateNodeNextIndex( nodeTypeName ) );
 }
 
-std::string CVisitor::operatorName( const TOperandType& type ) const {
+std::string CVisitor::operatorName( const TOperatorType& type ) const {
     std::string result;
     switch ( type ) {
-        case TOperandType::OT_Plus: result = "Plus"; break;
-        case TOperandType::OT_Minus: result = "Minus"; break;
-        case TOperandType::OT_Times: result = "Times"; break;
-        case TOperandType::OT_Div: result = "Div"; break;
-        case TOperandType::OT_Mod: result = "Mod"; break;
-        case TOperandType::OT_LT: result = "Less"; break;
-        case TOperandType::OT_And: result = "And"; break;
-        case TOperandType::OT_Or: result = "Or"; break;
-        case TOperandType::OT_Count: result = "Count"; break;
+        case TOperatorType::OT_Plus: result = "Plus"; break;
+        case TOperatorType::OT_Minus: result = "Minus"; break;
+        case TOperatorType::OT_Times: result = "Times"; break;
+        case TOperatorType::OT_Div: result = "Div"; break;
+        case TOperatorType::OT_Mod: result = "Mod"; break;
+        case TOperatorType::OT_LT: result = "Less"; break;
+        case TOperatorType::OT_And: result = "And"; break;
+        case TOperatorType::OT_Or: result = "Or"; break;
+        case TOperatorType::OT_Count: result = "Count"; break;
     }
     return result;
 }
 
-std::string CVisitor::operatorChar( const TOperandType& type ) const {
+std::string CVisitor::operatorChar( const TOperatorType& type ) const {
     std::string result;
     switch ( type ) {
-        case TOperandType::OT_Plus: result = "+"; break;
-        case TOperandType::OT_Minus: result = "-"; break;
-        case TOperandType::OT_Times: result = "*"; break;
-        case TOperandType::OT_Div: result = "/"; break;
-        case TOperandType::OT_Mod: result = "%"; break;
-        case TOperandType::OT_LT: result = "<"; break;
-        case TOperandType::OT_And: result = "&&"; break;
-        case TOperandType::OT_Or: result = "||"; break;
-        case TOperandType::OT_Count: result = ".Count"; break;
+        case TOperatorType::OT_Plus: result = "+"; break;
+        case TOperatorType::OT_Minus: result = "-"; break;
+        case TOperatorType::OT_Times: result = "*"; break;
+        case TOperatorType::OT_Div: result = "/"; break;
+        case TOperatorType::OT_Mod: result = "%"; break;
+        case TOperatorType::OT_LT: result = "<"; break;
+        case TOperatorType::OT_And: result = "&&"; break;
+        case TOperatorType::OT_Or: result = "||"; break;
+        case TOperatorType::OT_Count: result = ".Count"; break;
     }
     return result;
 }

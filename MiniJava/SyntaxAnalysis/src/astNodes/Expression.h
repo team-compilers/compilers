@@ -18,7 +18,7 @@ public:
 
 //-----------------------------------------------------------------------------------------------//
 //
-enum class TOperandType : char {
+enum class TOperatorType : char {
     OT_Plus,
     OT_Minus,
     OT_Times,
@@ -34,14 +34,14 @@ enum class TOperandType : char {
 class CBinaryExpression : public IExpression {
 public:
 
-    CBinaryExpression( TOperandType _operation, const IExpression* left, const IExpression* right )
+    CBinaryExpression( TOperatorType _operation, const IExpression* left, const IExpression* right )
         : operation( _operation ),
           leftOperand( left ),
           rightOperand( right ) {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    TOperandType Operation() const { return operation; }
+    TOperatorType Operation() const { return operation; }
     const IExpression* LeftOperand() const { return leftOperand.get(); }
     const IExpression* RightOperand() const { return rightOperand.get(); }
 
@@ -49,7 +49,7 @@ private:
 
     std::unique_ptr<const IExpression> leftOperand;
     std::unique_ptr<const IExpression> rightOperand;
-    TOperandType operation;
+    TOperatorType operation;
 };
 
 
