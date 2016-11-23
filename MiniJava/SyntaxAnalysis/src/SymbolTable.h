@@ -78,6 +78,8 @@ public:
         : className( _className ), parentName( _parentName ), hasParent( true ), 
           methods( _methods ), fields( _fields ) {}
 
+    ~CClassDefinition() = default;
+
     const std::string& ClassName() const;
     // Get method definition by name. Zero if not exists
     const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;

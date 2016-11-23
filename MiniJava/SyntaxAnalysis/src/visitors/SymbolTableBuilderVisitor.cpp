@@ -322,7 +322,7 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
     for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        auto res = localVariableTypes.insert( std::make_pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
+        auto res = localVariableTypes.insert( std::pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
@@ -338,7 +338,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this );
-        auto res = localVariableTypes.insert( std::make_pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
+        auto res = localVariableTypes.insert( std::pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
@@ -355,9 +355,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
         auto res = methodDefinitions.insert(
-            std::make_pair<std::string, std::unique_ptr<CMethodDefinition>>(
-                methodDefinitionLast->MethodName(), methodDefinitionLast
-            );
+            std::pair<std::string, std::unique_ptr<CMethodDefinition>>( methodDefinitionLast->MethodName(), methodDefinitionLast );
         );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_METHOD ) );
