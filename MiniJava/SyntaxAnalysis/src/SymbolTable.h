@@ -69,12 +69,12 @@ public:
     typedef std::unordered_map<std::string, CTypeIdentifier > TNameToFieldTypeMap;
 
     // Create class defintion without parent
-    CClassDefinition( const std::string& _className, const TNameToMethodDefinitionMap& _methods, 
-            const TNameToFieldTypeMap& _fields )
+    CClassDefinition( const std::string& _className, std::shared_ptr<TNameToMethodDefinitionMap> _methods, 
+            std::shared_ptr<TNameToFieldTypeMap> _fields )
         : className( _className ), hasParent( false ), methods( _methods ), fields( _fields ) {}
 
     CClassDefinition( const std::string& _className, const std::string& _parentName,
-            const TNameToMethodDefinitionMap& _methods, const TNameToFieldTypeMap& _fields )
+            std::shared_ptr<TNameToMethodDefinitionMap> _methods, std::shared_ptr<TNameToFieldTypeMap> _fields )
         : className( _className ), parentName( _parentName ), hasParent( true ), 
           methods( _methods ), fields( _fields ) {}
 
@@ -82,14 +82,14 @@ public:
 
     const std::string& ClassName() const;
     // Get method definition by name. Zero if not exists
-    const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;
+    std::shared_ptr<const CMethodDefinition> GetMethodDefinition( const std::string& name ) const;
 
     // Get field definition by name. NotFount if not exists
     CTypeIdentifier GetFieldType( const std::string& name ) const;
 private:
     std::string className;
-    TNameToMethodDefinitionMap methods;
-    TNameToFieldTypeMap fields;
+    std::shared_ptr<TNameToMethodDefinitionMap> methods;
+    std::shared_ptr<TNameToFieldTypeMap> fields;
     bool hasParent;
     std::string parentName;
 };
@@ -100,14 +100,16 @@ class CMethodDefinition {
 public:
     typedef std::unordered_map<std::string, CTypeIdentifier> TNameToVarTypeMap;
 
-    CMethodDefinition( TAccessModifier _accessModifier, const std::string& _methodName, 
-            CTypeIdentifier _returnType, const TNameToVarTypeMap& _argumentTypes,
-            const TNameToVarTypeMap& _localVariablesTypes )
-        : accessModifier( _accessModifier ),
-          methodName( _methodName ),
-          returnType( _returnType ),
-          localVariableTypes( _localVariablesTypes ) {}
-
+    CMethodDefinition( 
+            TAccessModifier _accessModifier,
+            const std::string& _methodName,
+            CTypeIdentifier _returnType,
+            std::shared_ptr<TNameToVarTypeMap> _argumentTypes,
+            std::shared_ptr<TNameToVarTypeMap> _localVariablesTypes
+        ) : accessModifier( _accessModifier ),
+            methodName( _methodName ),
+            returnType( _returnType ),
+            localVariableTypes( _localVariablesTypes ) {}
     ~CMethodDefinition() {};
 
     TAccessModifier AccessModifier() const { return accessModifier; }
@@ -122,6 +124,6 @@ private:
     TAccessModifier accessModifier;
     std::string methodName;
     CTypeIdentifier returnType;
-    std::unordered_map<std::string, CTypeIdentifier> argumentTypes;
-    std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
+    std::shared_ptr<TNameToVarTypeMap> argumentTypes;
+    std::shared_ptr<TNameToVarTypeMap> localVariableTypes;
 };

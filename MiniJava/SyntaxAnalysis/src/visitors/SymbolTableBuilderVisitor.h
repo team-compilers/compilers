@@ -32,13 +32,23 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
+using MethodNameToDefinitionMap = std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>>;
+using VarNameToTypeMap = std::unordered_map<std::string, CTypeIdentifier>;
+
 class CSymbolTableBuilderVisitor : public CVisitor {
 public:
-    CSymbolTableBuilderVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    CSymbolTableBuilderVisitor( bool _verbose = false ) 
+        : CVisitor( _verbose ),
+          methodDefinitions( nullptr ),
+          classDefinitionLast( nullptr ),
+          methodDefinitionLast( nullptr ),
+          table( new CSymbolTable() ),
+          errors( new std::vector<CCompilationError>() ) {}
+
     ~CSymbolTableBuilderVisitor() {}
 
-    const CSymbolTable& SymbolTable() const;
-    const std::vector<CCompilationError> Errors() const;
+    std::shared_ptr<const CSymbolTable> SymbolTable() const;
+    std::shared_ptr<const std::vector<CCompilationError>> Errors() const;
 
     // Visitors for different node types
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -86,11 +96,11 @@ private:
     CTypeIdentifier typeLast;
     TAccessModifier accessModLast;
     std::string idLast;
-    std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
-    std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>> methodDefinitions;
+    std::vector<std::shared_ptr<VarNameToTypeMap>> localVariableTypes;
+    std::shared_ptr<MethodNameToDefinitionMap> methodDefinitions;
     std::shared_ptr<const CClassDefinition> classDefinitionLast;
     std::shared_ptr<const CMethodDefinition> methodDefinitionLast;
 
-    CSymbolTable table;
-    std::vector<CCompilationError> errors;
+    std::shared_ptr<CSymbolTable> table;
+    std::shared_ptr<std::vector<CCompilationError>> errors;
 };
