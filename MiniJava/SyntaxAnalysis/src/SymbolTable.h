@@ -108,7 +108,7 @@ class CMethodDefinition {
 public:
     
     CMethodDefinition( TAccessModifier _accessModifier, const std::string& methodName, 
-            CTypeIdentifier _returnType, std::vector<CVariableDefinition> arguments  );
+            CTypeIdentifier _returnType, const std::vector<CVariableDefinition>& arguments  );
 
     // Adds local variable. Returns false on conflict
     bool AddLocalVariable( const std::string& name, CTypeIdentifier type )

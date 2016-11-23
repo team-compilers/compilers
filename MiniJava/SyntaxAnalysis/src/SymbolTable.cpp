@@ -1,4 +1,4 @@
-#include <SymbolsTable.h>
+#include <SymbolTable.h>
 
 bool CSymbolsTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
     if( classes.count( name ) == 0 ) {
@@ -33,7 +33,7 @@ const CFieldDefinition* GetFieldDefinition( const std::string& name ) const {
 
 CMethodDefinition:CMethodDefinition( TAccessModifier _accessModifier,
     const std::string& _methodName, CTypeIdentifier _returnType,
-    std::vector<CVariableDefinition> arguments )
+    const std::vector<CVariableDefinition>& arguments )
     : accessModifier( _accessModifier ),
       methodName( _methodName),
       returnType( _returnType ) {
