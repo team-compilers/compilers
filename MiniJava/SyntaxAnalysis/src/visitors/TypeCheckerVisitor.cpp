@@ -131,7 +131,18 @@ void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftPart()->Accept( this );
+    TTypeIdentifier leftPartLocalType = lastType;
+
+    statement->RightPart()->Accept( this );
+    TTypeIdentifier rightPartLocalType = lastType;
+
+    if ( leftPartLocalType != rightPartLocalType ) {
+        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::STATEMENT_DIFFERENT_TYPES ) );
+        lastType = TTypeIdentifier::NotFound;
+    } else {
+        lastType = leftPartLocalType;
+    }
 
     onNodeExit( nodeName );
 }
@@ -140,7 +151,26 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftPartId()->Accept( this );
+    if ( lastType != TTypeIdentifier::Int ) {
+        errors->push_back( CCompilationError( ( statement->LeftPartId() )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
+    }
+
+    // how to get type of elements in array???
+    /*statement->LeftPart()->Accept( this );
+    TTypeIdentifier leftPartLocalType = lastType;
+
+
+    statement->RightPart()->Accept( this );
+    TTypeIdentifier rightPartLocalType = lastType;
+
+    if ( leftPartLocalType != rightPartLocalType ) {
+        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::STATEMENT_DIFFERENT_TYPES ) );
+        lastType = TTypeIdentifier::NotFound;
+    } else {
+        lastType = leftPartLocalType;
+    }
+    */
 
     onNodeExit( nodeName );
 }
@@ -149,7 +179,11 @@ void CTypeCheckerVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_PRINT );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->PrintTarget()->Accept( this );
+
+    if ( lastType != TTypeIdentifier::Int ) {
+        errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_PRINT_TYPE ) );
+    }
 
     onNodeExit( nodeName );
 }
@@ -158,7 +192,10 @@ void CTypeCheckerVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Condition()->Accept( this );
+    if ( lastType != TTypeIdentifier::Boolean ) {
+        errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_CONDITION_TYPE ) );
+    }
 
     onNodeExit( nodeName );
 }
@@ -167,7 +204,10 @@ void CTypeCheckerVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Condition()->Accept( this );
+    if ( lastType != TTypeIdentifier::Boolean ) {
+        errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_CONDITION_TYPE ) );
+    }
 
     onNodeExit( nodeName );
 }
@@ -176,7 +216,7 @@ void CTypeCheckerVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_BRACES );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->List()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -243,7 +283,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->Statements()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -307,7 +347,10 @@ void CTypeCheckerVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
+    for ( auto it = statements.rbegin(); it != statements.rend(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }
@@ -334,7 +377,10 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
+    for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );   
+    }
 
     onNodeExit( nodeName );
 }
