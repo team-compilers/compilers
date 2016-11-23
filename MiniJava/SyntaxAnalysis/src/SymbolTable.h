@@ -30,6 +30,7 @@ enum class TTypeIdentifier {
 // Type identifier class for other methods
 class CTypeIdentifier {
 public:
+    CTypeIdentifier() = default;
     CTypeIdentifier( TTypeIdentifier _type )
         : type( _type ) { assert( type != TTypeIdentifier::ClassId ); }
 

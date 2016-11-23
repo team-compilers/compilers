@@ -1,6 +1,6 @@
 #include <SymbolTableBuilderVisitor.h>
 
-const CSymbolTableBuilderVisitor::CSymbolTable& SymbolTable() const {
+const CSymbolTable& CSymbolTableBuilderVisitor::SymbolTable() const {
     return table;
 }
 
@@ -247,7 +247,9 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     declaration->VarDeclarations()->Accept( this );
 
-    methodDefinitionLast = CMethodDefinition( accessModLast, methodName, returnType, arguments, localVariableTypes);
+    methodDefinitionLast = std::unique_ptr<CMethodDefinition>( 
+        new CMethodDefinition( accessModLast, methodName, returnType, arguments, localVariableTypes )
+    );
 
     onNodeExit( nodeName );
 }
@@ -275,9 +277,13 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     if ( declaration->HasParent() ) {
         declaration->ExtendsClassName()->Accept( this );
         const std::string& parentName = idLast;
-        classDefinitionLast = CClassDefinition( className, parentName, methodDefinitions, fields );
+        classDefinitionLast = std::unique_ptr<CClassDefinition>( 
+            new CClassDefinition( className, parentName, methodDefinitions, fields )
+        );
     } else {
-        classDefinitionLast = CClassDefinition( className, methodDefinitions, fields );
+        classDefinitionLast = std::unique_ptr<CClassDefinition>(
+            new CClassDefinition( className, methodDefinitions, fields )
+        );
     }
 
     onNodeExit( nodeName );
@@ -350,8 +356,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         ( *it )->Accept( this );
         auto res = methodDefinitions.insert(
             std::make_pair<std::string, std::unique_ptr<CMethodDefinition>>(
-                methodDefinitionLast.MethodName(),
-                std::make_unique< CMethodDefinition >( methodDefinitionLast )
+                methodDefinitionLast->MethodName(), methodDefinitionLast
             );
         );
         if ( !res.second ) {
@@ -369,7 +374,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
     for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        bool isAdded = table.AddClassDefinition( classDefinitionLast.ClassName(), classDefinitionLast );
+        bool isAdded = table.AddClassDefinition( classDefinitionLast->ClassName(), classDefinitionLast );
         if ( !isAdded ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_CLASS ) );
         }

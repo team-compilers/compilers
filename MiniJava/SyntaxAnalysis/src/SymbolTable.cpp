@@ -7,10 +7,6 @@ bool CSymbolTable::AddClassDefinition( const std::string& name, const CClassDefi
 
 //////////////////////////////////////////
 
-const std::string& CSymbolTable::GetClassName() const {
-    return className;
-}
-
 const CMethodDefinition* CClassDefinition::GetMethodDefinition( const std::string& name ) const {
     auto result = methods.find( name );
     if( result != methods.end() ) {
