@@ -7,7 +7,6 @@
 
 class CClassDefinition;
 class CMethodDefinition;
-class CFieldDefinition;
 
 enum class TAccessModifier {
     Public,
@@ -18,7 +17,10 @@ enum class TTypeIdentifier {
     Int,
     IntArray,
     Boolean,
-    ClassId
+    ClassId,
+
+// Value to return if no valid variable type found
+    NotFound
 };
 
 // Type identifier class for other methods
@@ -39,6 +41,19 @@ private:
     std::string className;
 };
 
+// Variable definition 
+class CVariableDefinition {
+public:
+    CVariableDeclaration( CTypeIdentifier _type, const std::string& _name ) 
+        : type( _type ), name( _name ) {}
+
+    CTypeIdentifier Type() const { return type; }
+    const std::string& Name() const { return name; }
+private:
+    CTypeIdentifier type;
+    std::string name;
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 class CSymbolsTable {
@@ -48,7 +63,7 @@ public:
     // Add class definition. Return true on success. False if some error occured
     bool AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition );
     // Get class definition by name. Returns zero pointer if it doesn't exist
-    const CClassDefinition* GetClassDefinition( const std::string& name )
+    const CClassDefinition* GetClassDefinition( const std::string& name ) const;
 
 private:
     std::map<std::string, std::unique_ptr<CClassDefinition>> classes;
@@ -66,11 +81,11 @@ public:
     // Add method definition. True on success
     bool AddMethodDefinition( const std::string& name, const CMethodDefinition* methodDefinition );
     // Get method definition by name. Zer if not exists
-    const CMethodDefinition* GetMethodDefinition( const std::string& name );
+    const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;
     // Add field definition. True on success
     bool AddFieldDefinition( const std::string& name, const CFieldDefinition* fieldDefinition );
     // Get field definition by name. Zero if not exists
-    const CFieldDefinition* GetFieldDefinition( const std::string& name );
+    const CFieldDefinition* GetFieldDefinition( const std::string& name ) const;
 private:
     std::string className;
     std::map<std::string, std::unique_ptr<CMethodDefinition> > methods;
@@ -81,15 +96,37 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-// Сигнатура метода
-class CMethodSignature {
-    
-};
-
 class CMethodDefinition {
 public:
+    
+    CMethodDefinition( TAccessModifier _accessModifier, const std::string& methodName, 
+            CTypeIdentifier _returnType, std::vector<CVariableDefinition> arguments  );
+
+    // Adds local variable. Returns false on conflict
+    bool AddLocalVariable( const std::string& name, CTypeIdentifier type )
+
+    TAccessModifier AccessModifier() const { return accessModifier; }
+    const std::string& MethodName() const { return methodName; }
+    CTypeIdentifier ReturnType() const { return returnType; }
+
+// Return NotFound in CTypeIdentifier if variable not found
+    CTypeIdentifier GetLocalVariableReturnType() const;
 
 private:
-    TAccessModifierType accessModifierType;
-    std::string name;
+    TAccessModifierType accessModifier;
+    std::string methodName;
+    CTypeIdentifier returnType;
+    std::map<std::string, CTypeIdentifier> localVariableTypes;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+class CFieldDefinition : public CVariableDefinition {
+public:
+    CFieldDefinition( CTypeIdentifier type, std::string name, TAccessModifier _accessModifier )
+        : CVariableDefinition( type, name ), _accessModifier( accessModifier ) {}
+
+    TAccessModifier AccessModifier() const { return accessModifier; }
+private:
+    TAccessModifier accessModifier;
 };
