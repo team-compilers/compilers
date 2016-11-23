@@ -10,6 +10,7 @@ const std::string CCompilationError::INVALID_CONDITION_TYPE = "Condition should 
 const std::string CCompilationError::INVALID_INDEX_TYPE = "Index should have integer type";
 const std::string CCompilationError::CYCLIC_INHERITANCE = "Cyclic inheritance";
 const std::string CCompilationError::PARENT_CLASS_NOT_EXISTS = "Parent class does not exist";
+const std::string CCompilationError::TYPE_NOT_EXISTS = "Type does not exist";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 
