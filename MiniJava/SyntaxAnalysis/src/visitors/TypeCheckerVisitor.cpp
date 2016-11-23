@@ -275,7 +275,11 @@ void CTypeCheckerVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    std::string className = typeModifier->TypeId()->Name();
+
+    if ( symbolTablePtr->GetClassDefinition(className) == nullptr ) {
+    	errors->push_back( CCompilationError( typeModifier->Location(), CCompilationError::TYPE_NOT_EXISTS ) );
+    }
 
     onNodeExit( nodeName );
 }
@@ -286,7 +290,7 @@ void CTypeCheckerVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->Type()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -295,7 +299,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
-    // write your code here
+    argument->Type()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -304,6 +308,9 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
+	declaration->TypeModifier()->Accept( this );
+	declaration->MethodArguments()->Accept( this );
+    declaration->VarDeclarations()->Accept( this );
     declaration->Statements()->Accept( this );
 
     onNodeExit( nodeName );
@@ -325,20 +332,26 @@ void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
     using TClassDefinition = std::shared_ptr<const CClassDefinition>;
 
     std::string thisClassName = declaration->ClassName()->Name();
-    std::string parentName = declaration->ExtendsClassName()->Name();
-    TClassDefinition parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
 
-    if ( parentClassDefinition == nullptr ) {
-    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::PARENT_CLASS_NOT_EXISTS ) );
-    } else {
-	    while ( parentClassDefinition != nullptr && parentClassDefinition->HasParent() && parentClassDefinition->ClassName() != thisClassName ) {
-	    	parentName = parentClassDefinition->GetParentName();
-	    	parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
-	    }
+    declaration->VarDeclarations()->Accept( this );
+	declaration->MethodDeclarations()->Accept( this );
 
-	    if ( parentName == thisClassName ) {
-	    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::CYCLIC_INHERITANCE ) );
-	    }
+    if ( declaration->HasParent() ) {
+	    std::string parentName = declaration->ExtendsClassName()->Name();
+	    TClassDefinition parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
+
+	    if ( parentClassDefinition == nullptr ) {
+	    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::PARENT_CLASS_NOT_EXISTS ) );
+	    } else {
+		    while ( parentClassDefinition != nullptr && parentClassDefinition->HasParent() && parentClassDefinition->ClassName() != thisClassName ) {
+		    	parentName = parentClassDefinition->GetParentName();
+		    	parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
+		    }
+
+		    if ( parentName == thisClassName ) {
+		    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::CYCLIC_INHERITANCE ) );
+		    }
+		}
 	}
 
     onNodeExit( nodeName );
@@ -383,7 +396,10 @@ void CTypeCheckerVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
+    for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {        
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }
@@ -392,7 +408,10 @@ void CTypeCheckerVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
+    for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }

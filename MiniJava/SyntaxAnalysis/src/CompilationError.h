@@ -20,6 +20,7 @@ public:
     static const std::string INVALID_LENGTH_TYPE;
     static const std::string CYCLIC_INHERITANCE;
     static const std::string PARENT_CLASS_NOT_EXISTS;
+    static const std::string TYPE_NOT_EXISTS;
 
 private:
     CLocation location;
