@@ -8,6 +8,7 @@ const std::string CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS = "This item h
 const std::string CCompilationError::INVALID_PRINT_TYPE = "Can't print not Int expression";
 const std::string CCompilationError::INVALID_CONDITION_TYPE = "Condition should have boolean arguments";
 const std::string CCompilationError::INVALID_INDEX_TYPE = "Index should have integer type";
+const std::string CCompilationError::INVALID_LENGTH_TYPE = "Array length should have integer type";
 const std::string CCompilationError::CYCLIC_INHERITANCE = "Cyclic inheritance";
 const std::string CCompilationError::PARENT_CLASS_NOT_EXISTS = "Parent class does not exist";
 

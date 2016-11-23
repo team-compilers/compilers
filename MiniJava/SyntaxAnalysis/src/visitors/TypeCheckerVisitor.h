@@ -32,6 +32,7 @@ public:
     CVisitor( _verbose ),
     symbolTablePtr( _symbolTablePtr ),
     lastType( TTypeIdentifier::NotFound ),
+    lastClassName( "" ),
     errors( new std::vector<CCompilationError>() )
     {}
 
@@ -82,6 +83,7 @@ public:
     void Visit( const CClassDeclarationList* list ) override;
 private:
     TTypeIdentifier lastType;
+    std::string lastClassName;
     std::shared_ptr<const CSymbolTable> symbolTablePtr;
     std::shared_ptr<std::vector<CCompilationError>> errors;
 };
