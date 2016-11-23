@@ -73,11 +73,19 @@ private:
 
 class CClassDefinition {
 public:
+    typedef std::map<std::string, std::unique_ptr<CMethodDefinition> > TNameToMethodDefinitionMap;
+    typedef std::map<std::string, std::unique_ptr<CFieldDefinition> > TNameToFieldDefinitionMap;
+
     // Create class defintion without parent
-    CClassDefinition( const std::string& _className )
-        : className( _className ), hasParent( false ) {}
-    CClassDefinition( const std::string& _className, const std::string& _parentName )
-        : className( _className ), parentName( _parentName ), hasParent( true ) {}
+    CClassDefinition( const std::string& _className, const TNameToMethodDefinitionMap& _methods, 
+            const TNameToFieldDefinitionMap& _fields )
+        : className( _className ), hasParent( false ), methods( _methods ), fields( _fields ) {}
+
+    CClassDefinition( const std::string& _className, const std::string& _parentName,
+            const TNameToMethodDefinitionMap& _methods, const TNameToFieldDefinitionMap& _fields )
+        : className( _className ), parentName( _parentName ), hasParent( true ), 
+          methods( _methods ), fields( _fields ) {}
+
     // Add method definition. True on success
     bool AddMethodDefinition( const std::string& name, const CMethodDefinition* methodDefinition );
     // Get method definition by name. Zer if not exists
@@ -88,8 +96,8 @@ public:
     const CFieldDefinition* GetFieldDefinition( const std::string& name ) const;
 private:
     std::string className;
-    std::map<std::string, std::unique_ptr<CMethodDefinition> > methods;
-    std::map<std::string, std::unique_ptr<CFieldDefinition> > fields;
+    TNameToFieldDefinitionMap methods;
+    TNameToMethodDefinitionMap fields;
     bool hasParent;
     std::string parentName;
 };
