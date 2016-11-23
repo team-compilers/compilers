@@ -39,11 +39,8 @@ class CSymbolTableBuilderVisitor : public CVisitor {
 public:
     CSymbolTableBuilderVisitor( bool _verbose = false ) 
         : CVisitor( _verbose ),
-          localVariableTypes( nullptr ),
-          methodDefinitions( nullptr ),
-          classDefinitionLast( nullptr ),
-          methodDefinitionLast( nullptr ),
-          table( new CSymbolTable() ),
+          lastMethodDefinition( nullptr ), lastClassDefinition(nullptr),
+          methodDefinitions( nullptr ), table( new CSymbolTable() ),
           errors( new std::vector<CCompilationError>() ) {}
 
     ~CSymbolTableBuilderVisitor() {}
@@ -94,14 +91,17 @@ public:
     void Visit( const CClassDeclarationList* list ) override;
 
 private:
-    CTypeIdentifier typeLast;
-    TAccessModifier accessModLast;
-    std::string idLast;
-    std::shared_ptr<VarNameToTypeMap> localVariableTypes;
+    CTypeIdentifier lastType;
+    TAccessModifier lastAccessModifier;
+    std::vector<std::string> lastId;
+    
+    std::shared_ptr<const CMethodDefinition> lastMethodDefinition;
+    std::shared_ptr<const CClassDefinition> lastClassDefinition;
+    
+    std::vector<std::shared_ptr<VarNameToTypeMap>> localVariableTypes;
     std::shared_ptr<MethodNameToDefinitionMap> methodDefinitions;
-    std::shared_ptr<const CClassDefinition> classDefinitionLast;
-    std::shared_ptr<const CMethodDefinition> methodDefinitionLast;
-
+    
     std::shared_ptr<CSymbolTable> table;
+
     std::shared_ptr<std::vector<CCompilationError>> errors;
 };
