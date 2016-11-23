@@ -289,7 +289,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
-    // write your code here
+    argument->Type()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -398,7 +398,10 @@ void CTypeCheckerVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
+    for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }
