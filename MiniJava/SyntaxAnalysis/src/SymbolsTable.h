@@ -1,5 +1,5 @@
 // Author: Alexey Zhuravlev
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <assert>
 
@@ -66,15 +66,15 @@ public:
     const CClassDefinition* GetClassDefinition( const std::string& name ) const;
 
 private:
-    std::map<std::string, std::unique_ptr<CClassDefinition>> classes;
+    std::unordered_map<std::string, std::unique_ptr<CClassDefinition>> classes;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
 class CClassDefinition {
 public:
-    typedef std::map<std::string, std::unique_ptr<CMethodDefinition> > TNameToMethodDefinitionMap;
-    typedef std::map<std::string, std::unique_ptr<CFieldDefinition> > TNameToFieldDefinitionMap;
+    typedef std::unordered_map<std::string, std::unique_ptr<CMethodDefinition> > TNameToMethodDefinitionMap;
+    typedef std::unordered_map<std::string, std::unique_ptr<CFieldDefinition> > TNameToFieldDefinitionMap;
 
     // Create class defintion without parent
     CClassDefinition( const std::string& _className, const TNameToMethodDefinitionMap& _methods, 
@@ -124,7 +124,7 @@ private:
     TAccessModifierType accessModifier;
     std::string methodName;
     CTypeIdentifier returnType;
-    std::map<std::string, CTypeIdentifier> localVariableTypes;
+    std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////
