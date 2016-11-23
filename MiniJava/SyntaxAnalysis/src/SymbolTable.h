@@ -53,9 +53,9 @@ public:
     CSymbolTable() {}
 
     // Add class definition. Return true on success. False if such class already exists
-    bool AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition );
+    bool AddClassDefinition( const std::string& name, std::shared_ptr<const CClassDefinition> classDefinition );
     // Get class definition by name. Returns zero pointer if it doesn't exist
-    const CClassDefinition* GetClassDefinition( const std::string& name ) const;
+    std::shared_ptr<CClassDefinition> GetClassDefinition( const std::string& name ) const;
 
 private:
     std::unordered_map<std::string, std::shared_ptr<const CClassDefinition>> classes;

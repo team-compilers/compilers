@@ -5,8 +5,9 @@
 #include <Program.h>
 #include <DotLangVisitor.h>
 #include <PrintCodeVisitor.h>
+#include <SymbolTableBuilderVisitor.h>
 
-#include "BisonParser.h"
+#include <BisonParser.h>
 
 std::string AstToDotLanguage( const CProgram* root, bool verbose ) {
     CDotLangVisitor visitor( verbose );
@@ -41,7 +42,8 @@ int main(int argc, char* argv[]) {
     } else if (mode == "dot") {
         traversal = AstToDotLanguage( astRoot.get(), false );
     } else if (mode == "errors") {
-        // TODO
+        CSymbolTableBuilderVisitor visitor( true);
+        visitor.Visit( astRoot.get() );
     } else {
         printHelp(argv[0]);
         throw std::logic_error("Wrong mode provided");

@@ -372,7 +372,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
     for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        bool isAdded = table.AddClassDefinition( classDefinitionLast->ClassName(), classDefinitionLast.get() );
+        bool isAdded = table.AddClassDefinition( classDefinitionLast->ClassName(), classDefinitionLast );
         if ( !isAdded ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_CLASS ) );
         }

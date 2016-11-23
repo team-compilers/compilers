@@ -1,8 +1,13 @@
 #include <SymbolTable.h>
 
-bool CSymbolTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
+bool CSymbolTable::AddClassDefinition( const std::string& name, std::shared_ptr<const CClassDefinition> classDefinition ) {
     bool ok = classes.insert( std::make_pair( name, std::shared_ptr<const CClassDefinition>( classDefinition ) ) ).second;
     return ok;
+}
+
+std::shared_ptr<CClassDefinition> CSymbolTable::GetClassDefinition( const std::string& name ) const {
+    // todo
+    return nullptr;
 }
 
 //////////////////////////////////////////
