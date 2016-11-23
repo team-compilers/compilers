@@ -15,6 +15,9 @@ public:
     static const std::string REDEFINITION_METHOD;
 
     static const std::string STATEMENT_DIFFERENT_TYPES;
+    static const std::string INVALID_PRINT_TYPE;
+    static const std::string INVALID_CONDITION_TYPE;
+    static const std::string INVALID_INDEX_TYPE;
 private:
     CLocation location;
     std::string message;
