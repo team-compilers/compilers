@@ -4,6 +4,8 @@
 const std::string CCompilationError::REDEFINITION_LOCAL_VAR = "Local variable redefined";
 const std::string CCompilationError::REDEFINITION_CLASS = "Class redefined";
 const std::string CCompilationError::REDEFINITION_METHOD = "Method redefined";
+const std::string CCompilationError::CYCLIC_INHERITANCE = "Cyclic inheritance";
+const std::string CCompilationError::PARENT_CLASS_NOT_EXISTS = "Parent class does not exist";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 

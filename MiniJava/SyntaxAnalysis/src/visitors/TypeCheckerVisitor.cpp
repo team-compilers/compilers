@@ -261,7 +261,24 @@ void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    using TClassDefinition = std::shared_ptr<const CClassDefinition>;
+
+    std::string thisClassName = declaration->ClassName()->Name();
+    std::string parentName = declaration->ExtendsClassName()->Name();
+    TClassDefinition parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
+
+    if ( parentClassDefinition == nullptr ) {
+    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::PARENT_CLASS_NOT_EXISTS ) );
+    } else {
+	    while ( parentClassDefinition != nullptr && parentClassDefinition->HasParent() && parentClassDefinition->ClassName() != thisClassName ) {
+	    	parentName = parentClassDefinition->GetParentName();
+	    	parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
+	    }
+
+	    if ( parentName == thisClassName ) {
+	    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::CYCLIC_INHERITANCE ) );
+	    }
+	}
 
     onNodeExit( nodeName );
 }
@@ -270,7 +287,7 @@ void CTypeCheckerVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    program->ClassDeclarations()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -326,7 +343,10 @@ void CTypeCheckerVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
+    for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }

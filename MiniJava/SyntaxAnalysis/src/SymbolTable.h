@@ -55,7 +55,7 @@ public:
     // Add class definition. Return true on success. False if such class already exists
     bool AddClassDefinition( const std::string& name, std::shared_ptr<const CClassDefinition> classDefinition );
     // Get class definition by name. Returns zero pointer if it doesn't exist
-    std::shared_ptr<CClassDefinition> GetClassDefinition( const std::string& name ) const;
+    std::shared_ptr<const CClassDefinition> GetClassDefinition( const std::string& name ) const;
 private:
     std::unordered_map<std::string, std::shared_ptr<const CClassDefinition>> classes;
 };
@@ -86,6 +86,7 @@ public:
     // Get field definition by name. NotFount if not exists
     CTypeIdentifier GetFieldType( const std::string& name ) const;
     bool HasParent() const { return hasParent; }
+    std::string GetParentName() const { return parentName; }
 private:
     std::string className;
     std::shared_ptr<TNameToMethodDefinitionMap> methods;
