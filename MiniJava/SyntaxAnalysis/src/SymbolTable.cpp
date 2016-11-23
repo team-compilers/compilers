@@ -7,6 +7,9 @@ bool CSymbolsTable::AddClassDefinition( const std::string& name, const CClassDef
 
 //////////////////////////////////////////
 
+const std::string& CSymbolTable::GetClassName() const {
+    return className;
+}
 
 const CMethodDefinition* GetMethodDefinition( const std::string& name ) const {
     auto result = methods.find( name );
@@ -17,7 +20,7 @@ const CMethodDefinition* GetMethodDefinition( const std::string& name ) const {
     }
 }
 
-const CFieldDefinition* GetFieldDefinition( const std::string& name ) const {
+const CFieldDefinition* CSymbolTable::GetFieldDefinition( const std::string& name ) const {
     auto result = fields.find( name );
     if( result != fields.end() ) {
         return *result;

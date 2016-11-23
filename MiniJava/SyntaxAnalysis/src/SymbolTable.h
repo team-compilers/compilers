@@ -60,11 +60,11 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-class CSymbolsTable {
+class CSymbolTable {
 public:
-    CSymbolsTable() {}
+    CSymbolTable() {}
 
-    // Add class definition. Return true on success. False if some error occured
+    // Add class definition. Return true on success. False if such class already exists
     bool AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition );
     // Get class definition by name. Returns zero pointer if it doesn't exist
     const CClassDefinition* GetClassDefinition( const std::string& name ) const;
@@ -90,6 +90,7 @@ public:
         : className( _className ), parentName( _parentName ), hasParent( true ), 
           methods( _methods ), fields( _fields ) {}
 
+    const std::string& ClassName() const;
     // Get method definition by name. Zero if not exists
     const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;
     // Get field definition by name. Zero if not exists
