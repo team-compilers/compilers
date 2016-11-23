@@ -45,19 +45,6 @@ private:
     std::string className;
 };
 
-// Variable definition 
-class CVariableDefinition {
-public:
-    CVariableDefinition( CTypeIdentifier _type, const std::string& _name ) 
-        : type( _type ), name( _name ) {}
-
-    CTypeIdentifier Type() const { return type; }
-    const std::string& Name() const { return name; }
-private:
-    CTypeIdentifier type;
-    std::string name;
-};
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 class CSymbolTable {
@@ -78,11 +65,11 @@ private:
 class CClassDefinition {
 public:
     typedef std::unordered_map<std::string, std::unique_ptr<CMethodDefinition> > TNameToMethodDefinitionMap;
-    typedef std::unordered_map<std::string, std::unique_ptr<CVariableDefinition> > TNameToFieldDefinitionMap;
+    typedef std::unordered_map<std::string, CTypeIdentifier > TNameToFieldTypeMap;
 
     // Create class defintion without parent
     CClassDefinition( const std::string& _className, const TNameToMethodDefinitionMap& _methods, 
-            const TNameToFieldDefinitionMap& _fields )
+            const TNameToFieldTypeMap& _fields )
         : className( _className ), hasParent( false ), methods( _methods ), fields( _fields ) {}
 
     CClassDefinition( const std::string& _className, const std::string& _parentName,
@@ -98,7 +85,7 @@ public:
 private:
     std::string className;
     TNameToMethodDefinitionMap methods;
-    TNameToFieldDefinitionMap fields;
+    TNameToFieldTypeMap fields;
     bool hasParent;
     std::string parentName;
 };

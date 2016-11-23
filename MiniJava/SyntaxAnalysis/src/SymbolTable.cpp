@@ -1,6 +1,6 @@
 #include <SymbolTable.h>
 
-bool CSymbolsTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
+bool CSymbolTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
     bool ok = classes.insert({name, classDefinition}).second;
     return ok;
 }
