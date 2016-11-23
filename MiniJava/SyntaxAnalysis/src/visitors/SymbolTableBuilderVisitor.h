@@ -11,6 +11,8 @@
 #include <vector>
 
 #include <AstNodeNames.h>
+#include <SymbolTable.h>
+#include <CompilationError.h>
 #include <Visitor.h>
 
 #include <AccessModifier.h>
@@ -76,4 +78,12 @@ public:
     void Visit( const CMethodArgumentList* list ) override;
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
+
+private:
+    CTypeIdentifier typeLast;
+    TAccessModifier accessModLast;
+    const std::string& idLast;
+    std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
+
+    std::vector<CCompilationError> errors;
 };

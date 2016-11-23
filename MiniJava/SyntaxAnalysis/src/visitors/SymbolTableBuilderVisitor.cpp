@@ -6,7 +6,7 @@ void CSymbolTableBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) 
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
 
-    // write your code here
+    accessModLast = TAccessModifier::Public;
 
     onNodeExit( nodeName );
 }
@@ -15,13 +15,14 @@ void CSymbolTableBuilderVisitor::Visit( const CPrivateAccessModifier* modifier )
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    accessModLast = TAccessModifier::Private;
 
     onNodeExit( nodeName );
 }
 
-/*__________ Expressions __________ (ignored by visitor)*/
+/*__________ Expressions __________*/
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
@@ -29,6 +30,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName );
@@ -36,6 +38,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBracketExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
@@ -43,6 +46,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNumberExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
@@ -54,9 +58,12 @@ void CSymbolTableBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
+    idLast = expression->Name();
+
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName );
@@ -64,6 +71,7 @@ void CSymbolTableBuilderVisitor::Visit( const CLengthExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
@@ -71,6 +79,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
@@ -78,6 +87,7 @@ void CSymbolTableBuilderVisitor::Visit( const CThisExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName );
@@ -85,6 +95,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNewArrayExpression* expression ) 
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
@@ -92,6 +103,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName );
@@ -99,8 +111,9 @@ void CSymbolTableBuilderVisitor::Visit( const CNegateExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-/*__________ Statements __________ (ignored by visitor)*/
+/*__________ Statements __________*/
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
@@ -108,6 +121,7 @@ void CSymbolTableBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
@@ -115,6 +129,7 @@ void CSymbolTableBuilderVisitor::Visit( const CAssignIdWithIndexStatement* state
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_PRINT );
     onNodeEnter( nodeName );
@@ -122,6 +137,7 @@ void CSymbolTableBuilderVisitor::Visit( const CPrintStatement* statement ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName );
@@ -129,6 +145,7 @@ void CSymbolTableBuilderVisitor::Visit( const CConditionalStatement* statement )
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName );
@@ -136,6 +153,7 @@ void CSymbolTableBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_BRACES );
     onNodeEnter( nodeName );
@@ -149,7 +167,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
 
-    // write your code here
+    typeLast = CTypeIdentifier( TTypeIdentifier::Int );
 
     onNodeExit( nodeName );
 }
@@ -158,7 +176,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    typeLast = CTypeIdentifier( TTypeIdentifier::Boolean );
 
     onNodeExit( nodeName );
 }
@@ -167,7 +185,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifie
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    typeLast = CTypeIdentifier( TTypeIdentifier::IntArray );
 
     onNodeExit( nodeName );
 }
@@ -176,7 +194,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    typeLast = CTypeIdentifier( typeModifier->TypeId()->Name() );
 
     onNodeExit( nodeName );
 }
@@ -187,7 +205,8 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->Type()->Accept( this );
+    declaration->Id()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -205,7 +224,20 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->AccessModifier()->Accept( this );
+    TAccessModifier accessMod = accessModLast;
+
+    declaration->TypeModifier()->Accept( this );
+    CTypeIdentifier returnType = typeLast;
+
+    declaration->MethodId()->Accept( this );
+    const std::string& methodName = idLast;
+
+    declaration->MethodArguments()->Accept( this );
+    // method arguments
+
+    declaration->VarDeclarations()->Accept( this );
+    // var decls
 
     onNodeExit( nodeName );
 }
@@ -223,7 +255,19 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->ClassName()->Accept( this );
+    CClassDefinition classNew( idLast );
+
+    declaration->VarDeclarations()->Accept( this );
+    // field definitions
+
+    declaration->MethodDeclarations()->Accept( this );
+    // method definitions
+
+    if ( declaration->HasParent() ) {
+        declaration->ExtendsClassName()->Accept( this );
+        const std::string& parentName = idLast;
+    }
 
     onNodeExit( nodeName );
 }
@@ -238,7 +282,7 @@ void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
 }
 
 /*__________  Lists __________*/
-
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
@@ -246,6 +290,7 @@ void CSymbolTableBuilderVisitor::Visit( const CExpressionList* list ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
@@ -260,7 +305,10 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
     for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        // write your code here
+        auto res = localVariableTypes.insert( std::make_pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
+        if ( !res.second ) {
+            errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
+        }
     }
 
     onNodeExit( nodeName );
