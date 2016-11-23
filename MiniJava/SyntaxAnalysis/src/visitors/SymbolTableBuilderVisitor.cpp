@@ -1,5 +1,13 @@
 #include <SymbolTableBuilderVisitor.h>
 
+const CSymbolTableBuilderVisitor::CSymbolTable& SymbolTable() const {
+    return table;
+}
+
+const std::vector<CCompilationError> CSymbolTableBuilderVisitor::Errors() const {
+    return errors;
+}
+
 /*__________ Access Modifiers __________*/
 
 void CSymbolTableBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
@@ -215,7 +223,8 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
-    // write your code here
+    argument->Type()->Accept( this );
+    argument->Id()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -234,10 +243,11 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     const std::string& methodName = idLast;
 
     declaration->MethodArguments()->Accept( this );
-    // method arguments
+    std::unordered_map<std::string, CTypeIdentifier> arguments = localVariableTypes;
 
     declaration->VarDeclarations()->Accept( this );
-    // var decls
+
+    methodDefinitionLast = CMethodDefinition( accessModLast, methodName, returnType, arguments, localVariableTypes);
 
     onNodeExit( nodeName );
 }
@@ -256,17 +266,19 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     onNodeEnter( nodeName );
 
     declaration->ClassName()->Accept( this );
-    CClassDefinition classNew( idLast );
+    const std::string& className = idLast;
 
     declaration->VarDeclarations()->Accept( this );
-    // field definitions
+    std::unordered_map<std::string, CTypeIdentifier> fields = localVariableTypes;
 
     declaration->MethodDeclarations()->Accept( this );
-    // method definitions
 
     if ( declaration->HasParent() ) {
         declaration->ExtendsClassName()->Accept( this );
         const std::string& parentName = idLast;
+        classDefinitionLast = CClassDefinition( className, parentName, methodDefinitions, fields );
+    } else {
+        classDefinitionLast = CClassDefinition( className, methodDefinitions, fields );
     }
 
     onNodeExit( nodeName );
@@ -321,7 +333,10 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this );
-        // write your code here
+        auto res = localVariableTypes.insert( std::make_pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
+        if ( !res.second ) {
+            errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
+        }
     }
 
     onNodeExit( nodeName );
@@ -334,7 +349,15 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        // write your code here
+        auto res = methodDefinitions.insert(
+            std::make_pair<std::string, std::unique_ptr<CMethodDefinition>>(
+                methodDefinitionLast.MethodName(),
+                std::make_unique< CMethodDefinition >( methodDefinitionLast )
+            );
+        );
+        if ( !res.second ) {
+            errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_METHOD ) );
+        }
     }
 
     onNodeExit( nodeName );
@@ -347,7 +370,10 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
     for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        // write your code here
+        bool isAdded = table.AddClassDefinition( classDefinitionLast.ClassName(), classDefinitionLast );
+        if ( !isAdded ) {
+            errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_CLASS ) );
+        }
     }
 
     onNodeExit( nodeName );

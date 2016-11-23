@@ -37,6 +37,9 @@ public:
     CSymbolTableBuilderVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
     ~CSymbolTableBuilderVisitor() {}
 
+    const CSymbolTable& SymbolTable() const;
+    const std::vector<CCompilationError> Errors() const;
+
     // Visitors for different node types
     void Visit( const CPublicAccessModifier* modifier ) override;
     void Visit( const CPrivateAccessModifier* modifier ) override;
@@ -84,6 +87,10 @@ private:
     TAccessModifier accessModLast;
     const std::string& idLast;
     std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
+    std::unordered_map<std::string, std::unique_ptr<CMethodDefinition>> methodDefinitions;
+    CClassDefinition classDefinitionLast;
+    CMethodDefinition methodDefinitionLast;
 
+    CSymbolTable table;
     std::vector<CCompilationError> errors;
 };

@@ -11,6 +11,8 @@ public:
     std::string ToString() const;
 
     static const std::string REDEFINITION_LOCAL_VAR;
+    static const std::string REDEFINITION_CLASS;
+    static const std::string REDEFINITION_METHOD;
 private:
     CLocation location;
     std::string message;
