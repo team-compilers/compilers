@@ -34,6 +34,14 @@ void printHelp(const std::string& programName) {
     std::cerr << "<mode>: dot / code" << std::endl;
 }
 
+template<typename T>
+void extractVisitorErrorsAndPrint(T* visitor) {
+	std::shared_ptr<const std::vector<CCompilationError>> errors = visitor->Errors();
+    for ( const CCompilationError& error : *errors ) {
+        std::cout << error.ToString() << std::endl;
+    }
+}
+
 int main( int argc, char* argv[] ) {
     if ( argc < 4 ) {
         printHelp( argv[0] );
@@ -52,22 +60,13 @@ int main( int argc, char* argv[] ) {
         traversal = AstToDotLanguage( astRoot.get(), false );
         printResultToFile( outputFilePath, traversal );
     } else if ( mode == "errors" ) {
-        CSymbolTableBuilderVisitor visitor( false );
-        visitor.Visit( astRoot.get() );
-        std::shared_ptr<const CSymbolTable> tablePtr = visitor.SymbolTable();
-        std::shared_ptr<const std::vector<CCompilationError>> errors = visitor.Errors();
-        std::cout << "Errors number: " << errors->size() << std::endl;
-        for ( const CCompilationError& error : *errors ) {
-            std::cout << error.ToString() << std::endl;
-        }
-
-        CTypeCheckerVisitor errorVisitor( tablePtr, true );
-        errorVisitor.Visit( astRoot.get() );
-        std::shared_ptr<const std::vector<CCompilationError>> typeCheckerErrors = errorVisitor.Errors();
-        std::cout << "Errors from visitor" << std::endl;
-        for ( const CCompilationError& error : *typeCheckerErrors ) {
-            std::cout << error.ToString() << error.Message() << std::endl;
-        }
+        CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
+        symbolTableBuilderVisitor.Visit( astRoot.get() );
+        std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
+        CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
+        typeCheckerVisitor.Visit( astRoot.get() );
+        extractVisitorErrorsAndPrint(&symbolTableBuilderVisitor);
+        extractVisitorErrorsAndPrint(&typeCheckerVisitor);
     } else {
         printHelp( argv[0] );
         throw std::logic_error( "Wrong mode provided" );
