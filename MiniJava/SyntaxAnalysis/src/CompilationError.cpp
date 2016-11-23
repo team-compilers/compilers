@@ -4,6 +4,7 @@
 const std::string CCompilationError::REDEFINITION_LOCAL_VAR = "Local variable redefined";
 const std::string CCompilationError::REDEFINITION_CLASS = "Class redefined";
 const std::string CCompilationError::REDEFINITION_METHOD = "Method redefined";
+const std::string CCompilationError::STATEMENT_DIFFERENT_TYPES = "Statement has different types of left and right part";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 

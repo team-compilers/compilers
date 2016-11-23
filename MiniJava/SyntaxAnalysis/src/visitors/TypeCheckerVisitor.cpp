@@ -131,6 +131,18 @@ void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
 
+    TTypeIdentifier leftPartLocalType = lastType;
+    statement->LeftPart()->Accept( this );
+
+    TTypeIdentifier rightPartLocalType = lastType;
+    statement->RightPart()->Accept( this );
+
+    if ( leftPartLocalType != rightPartLocalType ){
+        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::STATEMENT_DIFFERENT_TYPES ) );
+        lastType = TTypeIdentifier::NotFound;
+    } else {
+        lastType = leftPartLocalType;
+    }
     // write your code here
 
     onNodeExit( nodeName );
@@ -243,7 +255,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->Statements()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -270,7 +282,7 @@ void CTypeCheckerVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    program->ClassDeclarations()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -290,7 +302,10 @@ void CTypeCheckerVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
+    for ( auto it = statements.rbegin(); it != statements.rend(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }
@@ -317,7 +332,10 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
+    for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );   
+    }
 
     onNodeExit( nodeName );
 }
@@ -326,7 +344,10 @@ void CTypeCheckerVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
+    for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }

@@ -13,6 +13,8 @@ public:
     static const std::string REDEFINITION_LOCAL_VAR;
     static const std::string REDEFINITION_CLASS;
     static const std::string REDEFINITION_METHOD;
+
+    static const std::string STATEMENT_DIFFERENT_TYPES;
 private:
     CLocation location;
     std::string message;

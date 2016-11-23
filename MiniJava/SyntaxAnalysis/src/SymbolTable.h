@@ -65,7 +65,7 @@ private:
 class CClassDefinition {
 public:
     using TNameToMethodDefinitionMap = std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>>;
-    using TNameToFieldTypeMap =std::unordered_map<std::string, CTypeIdentifier>;
+    using TNameToFieldTypeMap = std::unordered_map<std::string, CTypeIdentifier>;
 
     // Create class defintion without parent
     CClassDefinition( const std::string& _className, std::shared_ptr<TNameToMethodDefinitionMap> _methods, 
