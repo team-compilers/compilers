@@ -1,47 +1,37 @@
 #include <SymbolTable.h>
 
 bool CSymbolTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
-    bool ok = classes.insert({name, classDefinition}).second;
-    return ok;
+    classes[name] = classDefinition;
+    return true;
 }
 
 //////////////////////////////////////////
 
-const std::string& CSymbolTable::GetClassName() const {
-    return className;
-}
-
 const CMethodDefinition* CClassDefinition::GetMethodDefinition( const std::string& name ) const {
     auto result = methods.find( name );
     if( result != methods.end() ) {
-        return *result;
+        return result->second.get();
     } else {
         return 0;
     }
 }
 
-const CVariableDefinition* CClassDefinition::GetFieldDefinition( const std::string& name ) const {
+CTypeIdentifier CClassDefinition::GetFieldType( const std::string& name ) const {
     auto result = fields.find( name );
     if( result != fields.end() ) {
-        return *result;
+        return result->second;
     } else {
-        return 0;
+        return CTypeIdentifier( TTypeIdentifier::NotFound );
     }
 }
 
 ////////////////////////////////////////////////////
 
 
-bool CMethodDefinition::AddLocalVariable( cosnt std::string& name, CTypeIdentifier type )
-{
-    bool ok = localVariableTypes.insert({name, type}).second;
-    return ok;
-}
-
-CTypeIdentifier CMethodDefinition::GetLocalVariable( const std::string& name ) const {
+CTypeIdentifier CMethodDefinition::GetLocalVariableType( const std::string& name ) const {
     auto result = localVariableTypes.find( name );
     if( result != localVariableTypes.end() ) {
-        return *result;
+        return result->second;
     } else {
         return CTypeIdentifier( TTypeIdentifier::NotFound );
     }
@@ -50,7 +40,7 @@ CTypeIdentifier CMethodDefinition::GetLocalVariable( const std::string& name ) c
 CTypeIdentifier CMethodDefinition::GetArgumentType( const std::string& name ) const {
     auto result = localVariableTypes.find( name );
     if( result != localVariableTypes.end() ) {
-        return *result;
+        return result->second;
     } else {
         return CTypeIdentifier( TTypeIdentifier::NotFound );
     }

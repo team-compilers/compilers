@@ -57,14 +57,14 @@ public:
     const CClassDefinition* GetClassDefinition( const std::string& name ) const;
 
 private:
-    std::unordered_map<std::string, std::unique_ptr<CClassDefinition>> classes;
+    std::unordered_map<std::string, std::unique_ptr<const CClassDefinition>> classes;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
 class CClassDefinition {
 public:
-    typedef std::unordered_map<std::string, std::unique_ptr<CMethodDefinition> > TNameToMethodDefinitionMap;
+    typedef std::unordered_map<std::string, std::unique_ptr<const CMethodDefinition> > TNameToMethodDefinitionMap;
     typedef std::unordered_map<std::string, CTypeIdentifier > TNameToFieldTypeMap;
 
     // Create class defintion without parent
@@ -73,15 +73,16 @@ public:
         : className( _className ), hasParent( false ), methods( _methods ), fields( _fields ) {}
 
     CClassDefinition( const std::string& _className, const std::string& _parentName,
-            const TNameToMethodDefinitionMap& _methods, const TNameToFieldDefinitionMap& _fields )
+            const TNameToMethodDefinitionMap& _methods, const TNameToFieldTypeMap& _fields )
         : className( _className ), parentName( _parentName ), hasParent( true ), 
           methods( _methods ), fields( _fields ) {}
 
     const std::string& ClassName() const;
     // Get method definition by name. Zero if not exists
     const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;
-    // Get field definition by name. Zero if not exists
-    const CVariableDefinition* GetFieldDefinition( const std::string& name ) const;
+
+    // Get field definition by name. NotFount if not exists
+    CTypeIdentifier GetFieldType( const std::string& name ) const;
 private:
     std::string className;
     TNameToMethodDefinitionMap methods;
@@ -104,9 +105,6 @@ public:
           returnType( _returnType ),
           localVariableTypes( _localVariablesTypes ) {}
 
-
-    // Adds local variable. Returns false on conflict
-    bool AddLocalVariable( const std::string& name, CTypeIdentifier type );
 
     TAccessModifier AccessModifier() const { return accessModifier; }
     const std::string& MethodName() const { return methodName; }
