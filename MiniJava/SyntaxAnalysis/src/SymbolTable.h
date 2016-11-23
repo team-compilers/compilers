@@ -136,4 +136,3 @@ private:
     std::unordered_map<std::string, CTypeIdentifier> argumentTypes;
     std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
 };
-
