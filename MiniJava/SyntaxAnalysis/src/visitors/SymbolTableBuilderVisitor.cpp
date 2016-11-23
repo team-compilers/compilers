@@ -247,13 +247,6 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     declaration->VarDeclarations()->Accept( this );
     methodDefinitionLast = std::make_shared<CMethodDefinition>( accessModLast, methodName, returnType, arguments, localVariableTypes );
-
-    std::cout << margin << "FOUND Method" << std::endl;
-    std::cout << "Access: " << (methodDefinitionLast->AccessModifier() == TAccessModifier::Public ? "Public" : "Private") << "# " << std::endl;
-    // std::cout << "Type: " << methodDefinitionLast->ReturnType() << std:endl;
-    std::cout << "Name: " << methodDefinitionLast->MethodName() << std::endl;
-    std::cout << "Args: " << arguments->size() << std::endl;
-    std::cout << "Vars: " << localVariableTypes->size() << std::endl;
     
     onNodeExit( nodeName );
 }
@@ -284,11 +277,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     } else {
         classDefinitionLast = std::make_shared<CClassDefinition>( className, methodDefinitions, fields );
     }
-    std::cout << margin << "FOUND class" << std::endl;
-    std::cout << "Name: " << classDefinitionLast->ClassName() << std::endl;
-    std::cout << "Vars: " << localVariableTypes->size() << std::endl;
-    std::cout << "MethDecls: " << methodDefinitions->size() << std::endl;
-    std::cout << "Parent: " << classDefinitionLast->HasParent() ? "true" : "false";
+    
     methodDefinitions = nullptr;
 
     onNodeExit( nodeName );
@@ -330,7 +319,6 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
         ( *it )->Accept( this );
         auto res = localVariableTypes->insert( std::make_pair( idLast, typeLast ) );
         if ( !res.second ) {
-            std::cout << "err!" << std::endl;
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
     }
@@ -348,7 +336,6 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
         ( *it )->Accept( this );
         auto res = localVariableTypes->insert( std::make_pair( idLast, typeLast ) );
         if ( !res.second ) {
-            std::cout << "err!" << std::endl;
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
     }
@@ -368,7 +355,6 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
             std::make_pair( methodDefinitionLast->MethodName(), methodDefinitionLast )
         );
         if ( !res.second ) {
-            std::cout << "err!" << std::endl;
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_METHOD ) );
         }
     }
