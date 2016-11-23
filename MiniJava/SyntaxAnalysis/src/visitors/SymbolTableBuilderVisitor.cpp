@@ -243,20 +243,18 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     std::string methodName = idLast;
 
     declaration->MethodArguments()->Accept( this );
-    std::shared_ptr<VarNameToTypeMap> arguments = localVariableTypes.at( 0 );
-    localVariableTypes.clear();
+    std::shared_ptr<VarNameToTypeMap> arguments = localVariableTypes;
 
     declaration->VarDeclarations()->Accept( this );
-    methodDefinitionLast = std::make_shared<CMethodDefinition>( accessModLast, methodName, returnType, arguments, localVariableTypes.back() );
+    methodDefinitionLast = std::make_shared<CMethodDefinition>( accessModLast, methodName, returnType, arguments, localVariableTypes );
 
     std::cout << margin << "FOUND Method" << std::endl;
     std::cout << "Access: " << (methodDefinitionLast->AccessModifier() == TAccessModifier::Public ? "Public" : "Private") << "# " << std::endl;
     // std::cout << "Type: " << methodDefinitionLast->ReturnType() << std:endl;
     std::cout << "Name: " << methodDefinitionLast->MethodName() << std::endl;
     std::cout << "Args: " << arguments->size() << std::endl;
-    std::cout << "Vars: " << localVariableTypes.back()->size() << std::endl;
+    std::cout << "Vars: " << localVariableTypes->size() << std::endl;
     
-    localVariableTypes.clear();
     onNodeExit( nodeName );
 }
 
@@ -276,8 +274,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string className = idLast;
 
     declaration->VarDeclarations()->Accept( this );
-    std::shared_ptr<VarNameToTypeMap> fields = localVariableTypes.at( 0 );
-    localVariableTypes.clear();
+    std::shared_ptr<VarNameToTypeMap> fields = localVariableTypes;
 
     declaration->MethodDeclarations()->Accept( this );
 
@@ -287,13 +284,12 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     } else {
         classDefinitionLast = std::make_shared<CClassDefinition>( className, methodDefinitions, fields );
     }
-    std::cout << margin << "FOUND class";
+    std::cout << margin << "FOUND class" << std::endl;
     std::cout << "Name: " << classDefinitionLast->ClassName() << std::endl;
-    std::cout << "Vars: " << localVariableTypes.back()->size() << std::endl;
+    std::cout << "Vars: " << localVariableTypes->size() << std::endl;
     std::cout << "MethDecls: " << methodDefinitions->size() << std::endl;
     std::cout << "Parent: " << classDefinitionLast->HasParent() ? "true" : "false";
     methodDefinitions = nullptr;
-    localVariableTypes.clear();
 
     onNodeExit( nodeName );
 }
@@ -328,11 +324,11 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
-    localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );
+    localVariableTypes = std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() );
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
     for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        auto res = localVariableTypes.back()->insert( std::make_pair( idLast, typeLast ) );
+        auto res = localVariableTypes->insert( std::make_pair( idLast, typeLast ) );
         if ( !res.second ) {
             std::cout << "err!" << std::endl;
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
@@ -346,11 +342,11 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
-    localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );
+    localVariableTypes = std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() );
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this );
-        auto res = localVariableTypes.back()->insert( std::make_pair( idLast, typeLast ) );
+        auto res = localVariableTypes->insert( std::make_pair( idLast, typeLast ) );
         if ( !res.second ) {
             std::cout << "err!" << std::endl;
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );

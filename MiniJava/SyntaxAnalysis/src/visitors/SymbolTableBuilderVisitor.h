@@ -39,6 +39,7 @@ class CSymbolTableBuilderVisitor : public CVisitor {
 public:
     CSymbolTableBuilderVisitor( bool _verbose = false ) 
         : CVisitor( _verbose ),
+          localVariableTypes( nullptr ),
           methodDefinitions( nullptr ),
           classDefinitionLast( nullptr ),
           methodDefinitionLast( nullptr ),
@@ -96,7 +97,7 @@ private:
     CTypeIdentifier typeLast;
     TAccessModifier accessModLast;
     std::string idLast;
-    std::vector<std::shared_ptr<VarNameToTypeMap>> localVariableTypes;
+    std::shared_ptr<VarNameToTypeMap> localVariableTypes;
     std::shared_ptr<MethodNameToDefinitionMap> methodDefinitions;
     std::shared_ptr<const CClassDefinition> classDefinitionLast;
     std::shared_ptr<const CMethodDefinition> methodDefinitionLast;
