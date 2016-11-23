@@ -59,18 +59,7 @@ void CTypeCheckerVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
-    expression->LeftOperand()->Accept( this );
-    TTypeIdentifier leftOperandType = lastType;
-
-    expression->RightOperand()->Accept( this );
-    TTypeIdentifier RightOperandType = lastType;
-
-    if ( leftOperandType != RightOperandType || leftOperandType != TTypeIdentifier::Int ) {
-        errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
-        lastType = TTypeIdentifier::NotFound;
-    } else {
-        lastType = leftOperandType;
-    }
+    lastType = TTypeIdentifier::Int;
 
     onNodeExit( nodeName );
 }
@@ -79,18 +68,7 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
-    expression->LeftOperand()->Accept( this );
-    TTypeIdentifier leftOperandType = lastType;
-
-    expression->RightOperand()->Accept( this );
-    TTypeIdentifier RightOperandType = lastType;
-
-    if ( leftOperandType != RightOperandType || leftOperandType != TTypeIdentifier::Boolean ) {
-        errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
-        lastType = TTypeIdentifier::NotFound;
-    } else {
-        lastType = leftOperandType;
-    }
+    lastType = TTypeIdentifier::Boolean;
 
     onNodeExit( nodeName );
 }
