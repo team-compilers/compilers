@@ -252,11 +252,10 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     onNodeExit( nodeName );
 }
 
+// ignored
 void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
-
-    // write your code here
 
     onNodeExit( nodeName );
 }
@@ -288,7 +287,7 @@ void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    program->ClassDeclarations()->Accept( this );
 
     onNodeExit( nodeName );
 }
