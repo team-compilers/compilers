@@ -78,7 +78,6 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
 void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
-<<<<<<< HEAD
 
     std::string expressionName = expression->Name();
     std::shared_ptr<const CClassDefinition> classInfo = symbolTablePtr->GetClassDefinition( lastClassName );
@@ -89,8 +88,6 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     CTypeIdentifier typeId = classInfo->GetFieldType( expressionName );
     lastType = typeId.Type();
 
-=======
->>>>>>> 349d093a6162efa86d6eda0a655aaf349d744eb0
     onNodeExit( nodeName );
 }
 
@@ -126,12 +123,10 @@ void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
     onNodeEnter( nodeName );
 
     expression->LengthExpression()->Accept( this );
-<<<<<<< HEAD
+
     if ( lastType != TTypeIdentifier::Int ) {
         errors->push_back( CCompilationError( expression->Location(), CCompilationError::INVALID_LENGTH_TYPE ) );
     }
-=======
->>>>>>> 349d093a6162efa86d6eda0a655aaf349d744eb0
 
     onNodeExit( nodeName );
 }
