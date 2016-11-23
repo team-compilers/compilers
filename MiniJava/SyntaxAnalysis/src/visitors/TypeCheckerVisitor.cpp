@@ -30,7 +30,18 @@ void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->LeftOperand()->Accept( this );
+    TTypeIdentifier leftOperandType = lastType;
+
+    expression->RightOperand()->Accept( this );
+    TTypeIdentifier RightOperandType = lastType;
+
+    if ( leftOperandType != RightOperandType ) {
+        errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
+        lastType = TTypeIdentifier::NotFound;
+    } else {
+        lastType = leftOperandType;
+    }
 
     onNodeExit( nodeName );
 }
@@ -48,7 +59,7 @@ void CTypeCheckerVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
-    // write your code here
+    lastType = TTypeIdentifier::Int;
 
     onNodeExit( nodeName );
 }
@@ -57,7 +68,7 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
-    // write your code here
+    lastType = TTypeIdentifier::Boolean;
 
     onNodeExit( nodeName );
 }
@@ -138,7 +149,7 @@ void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
     TTypeIdentifier rightPartLocalType = lastType;
 
     if ( leftPartLocalType != rightPartLocalType ) {
-        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::STATEMENT_DIFFERENT_TYPES ) );
+        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
         lastType = TTypeIdentifier::NotFound;
     } else {
         lastType = leftPartLocalType;
@@ -165,7 +176,7 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
     TTypeIdentifier rightPartLocalType = lastType;
 
     if ( leftPartLocalType != rightPartLocalType ) {
-        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::STATEMENT_DIFFERENT_TYPES ) );
+        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
         lastType = TTypeIdentifier::NotFound;
     } else {
         lastType = leftPartLocalType;
@@ -351,7 +362,10 @@ void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
+    for ( auto it = expressions.rbegin(); it != expressions.rend(); ++it ) {
+        ( *it )->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }
