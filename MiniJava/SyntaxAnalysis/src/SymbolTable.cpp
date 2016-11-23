@@ -1,30 +1,28 @@
 #include <SymbolTable.h>
 
 bool CSymbolsTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
-    if( classes.count( name ) == 0 ) {
-        return false;
-    } else {
-        classes[name] = classDefinition;
-        return true;
-    }
+    bool ok = clases.insert({name, classDefinition}).second;
+    return ok;
 }
 
 //////////////////////////////////////////
 
 
 const CMethodDefinition* GetMethodDefinition( const std::string& name ) const {
-    if( methods.count( name ) == 0 ) {
-        return 0;
+    auto result = methods.find( name );
+    if( result != methods.end() ) {
+        return *result;
     } else {
-        return methods[name];
+        return 0;
     }
 }
 
 const CFieldDefinition* GetFieldDefinition( const std::string& name ) const {
-    if( fields.count( name ) == 0 ) {
-        return 0;
+    auto result = fields.find( name );
+    if( result != fields.end() ) {
+        return *result;
     } else {
-        return fields[name];
+        return 0;
     }
 }
 
@@ -44,26 +42,24 @@ CMethodDefinition:CMethodDefinition( TAccessModifier _accessModifier,
 
 bool CMethodDefinition::AddLocalVariable( cosnt std::string& name, CTypeIdentifier type )
 {
-    if( localVariableTypes.count( name ) == 0 ) {
-        return false;
-    } else {
-        localVariableTypes[name] = type;
-        return true;
-    }
+    bool ok = localVariableTypes.insert({name, type}).second;
+    return ok;
 }
 
 CTypeIdentifier CMethodDefinition::GetLocalVariable( const std::string& name ) const {
-    if( localVariableTypes.count(name) == 0 ) {
-        return CTypeIdentifier( TTypeIdentifier::NotFound );
+    auto result = localVariableTypes.find( name );
+    if( result != localVariableTypes.end() ) {
+        return *result;
     } else {
-        return localVariableTypes[name];
+        return CTypeIdentifier( TTypeIdentifier::NotFound );
     }
 }
 
 CTypeIdentifier CMethodDefinition::GetArgumentType( const std::string& name ) const {
-    if( argumentTypes.count(name) == 0 ) {
-        return CTypeIdentifier( TTypeIdentifier::NotFound );
+    auto result = localVariableTypes.find( name );
+    if( result != localVariableTypes.end() ) {
+        return *result;
     } else {
-        return argumentTypes[name];
+        return CTypeIdentifier( TTypeIdentifier::NotFound );
     }
 }
