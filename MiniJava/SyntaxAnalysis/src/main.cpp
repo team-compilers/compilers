@@ -23,6 +23,12 @@ std::string AstToCode( const CProgram* root, bool verbose ) {
     return visitor.GetCode();
 }
 
+void printResultToFile( const std::string& outputFilePath, const std::string& result ) {
+    std::ofstream outStream( outputFilePath );
+    outStream << result;
+    outStream.close();
+}
+
 void printHelp(const std::string& programName) {
     std::cerr << programName << " <inputFilePath> <outputFilePath> <mode>" << std::endl;
     std::cerr << "<mode>: dot / code" << std::endl;
@@ -41,16 +47,18 @@ int main( int argc, char* argv[] ) {
     std::string traversal;
     if ( mode == "code" ) {
         traversal = AstToCode( astRoot.get(), false );
+        printResultToFile( outputFilePath, traversal );
     } else if ( mode == "dot" ) {
         traversal = AstToDotLanguage( astRoot.get(), false );
+        printResultToFile( outputFilePath, traversal );
     } else if ( mode == "errors" ) {
-        CSymbolTableBuilderVisitor visitor( true );
+        CSymbolTableBuilderVisitor visitor( false );
         visitor.Visit( astRoot.get() );
         std::shared_ptr<const CSymbolTable> tablePtr = visitor.SymbolTable();
         std::shared_ptr<const std::vector<CCompilationError>> errors = visitor.Errors();
         std::cout << "Errors number: " << errors->size() << std::endl;
         for ( const CCompilationError& error : *errors ) {
-            std::cout << error.ToString() << error.Message() << std::endl;
+            std::cout << error.ToString() << std::endl;
         }
 
         CTypeCheckerVisitor errorVisitor( tablePtr, true );
@@ -64,10 +72,6 @@ int main( int argc, char* argv[] ) {
         printHelp( argv[0] );
         throw std::logic_error( "Wrong mode provided" );
     }
-
-    std::ofstream outStream( outputFilePath );
-    outStream << traversal;
-    outStream.close();
 
     return 0;
 }
