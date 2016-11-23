@@ -85,11 +85,11 @@ public:
 private:
     CTypeIdentifier typeLast;
     TAccessModifier accessModLast;
-    const std::string& idLast;
+    std::string idLast;
     std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
     std::unordered_map<std::string, std::unique_ptr<CMethodDefinition>> methodDefinitions;
-    CClassDefinition classDefinitionLast;
-    CMethodDefinition methodDefinitionLast;
+    std::unique_ptr<CClassDefinition> classDefinitionLast;
+    std::unique_ptr<CMethodDefinition> methodDefinitionLast;
 
     CSymbolTable table;
     std::vector<CCompilationError> errors;
