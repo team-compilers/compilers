@@ -58,14 +58,14 @@ public:
     const CClassDefinition* GetClassDefinition( const std::string& name ) const;
 
 private:
-    std::unordered_map<std::string, std::unique_ptr<const CClassDefinition>> classes;
+    std::unordered_map<std::string, std::shared_ptr<const CClassDefinition>> classes;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
 class CClassDefinition {
 public:
-    typedef std::unordered_map<std::string, std::unique_ptr<const CMethodDefinition> > TNameToMethodDefinitionMap;
+    typedef std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition> > TNameToMethodDefinitionMap;
     typedef std::unordered_map<std::string, CTypeIdentifier > TNameToFieldTypeMap;
 
     // Create class defintion without parent

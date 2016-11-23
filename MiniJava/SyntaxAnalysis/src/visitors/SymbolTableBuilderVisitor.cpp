@@ -247,7 +247,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     declaration->VarDeclarations()->Accept( this );
 
-    methodDefinitionLast = std::unique_ptr<CMethodDefinition>( 
+    methodDefinitionLast = std::shared_ptr<CMethodDefinition>( 
         new CMethodDefinition( accessModLast, methodName, returnType, arguments, localVariableTypes )
     );
 
@@ -277,11 +277,11 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     if ( declaration->HasParent() ) {
         declaration->ExtendsClassName()->Accept( this );
         const std::string& parentName = idLast;
-        classDefinitionLast = std::unique_ptr<CClassDefinition>( 
+        classDefinitionLast = std::shared_ptr<CClassDefinition>( 
             new CClassDefinition( className, parentName, methodDefinitions, fields )
         );
     } else {
-        classDefinitionLast = std::unique_ptr<CClassDefinition>(
+        classDefinitionLast = std::shared_ptr<CClassDefinition>(
             new CClassDefinition( className, methodDefinitions, fields )
         );
     }
@@ -322,7 +322,7 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
     for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        auto res = localVariableTypes.insert( std::pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
+        auto res = localVariableTypes.insert( std::make_pair( idLast, typeLast ) );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
@@ -338,7 +338,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this );
-        auto res = localVariableTypes.insert( std::pair<std::string, CTypeIdentifier>( idLast, typeLast ) );
+        auto res = localVariableTypes.insert( std::make_pair( idLast, typeLast ) );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
@@ -355,7 +355,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
         auto res = methodDefinitions.insert(
-            std::pair<std::string, std::unique_ptr<const CMethodDefinition>>( methodDefinitionLast->MethodName(), methodDefinitionLast );
+            std::make_pair( methodDefinitionLast->MethodName(), methodDefinitionLast )
         );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_METHOD ) );

@@ -1,9 +1,9 @@
 #include <CompilationError.h>
-#include <stringstream>
+#include <sstream>
 
 const std::string CCompilationError::REDEFINITION_LOCAL_VAR = "Local variable redefined";
 const std::string CCompilationError::REDEFINITION_CLASS = "Class redefined";
-static const std::string CCompilationError::REDEFINITION_METHOD = "Method redefined";
+const std::string CCompilationError::REDEFINITION_METHOD = "Method redefined";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 

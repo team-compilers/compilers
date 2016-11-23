@@ -87,9 +87,9 @@ private:
     TAccessModifier accessModLast;
     std::string idLast;
     std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
-    std::unordered_map<std::string, std::unique_ptr<const CMethodDefinition>> methodDefinitions;
-    std::unique_ptr<const CClassDefinition> classDefinitionLast;
-    std::unique_ptr<const CMethodDefinition> methodDefinitionLast;
+    std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>> methodDefinitions;
+    std::shared_ptr<const CClassDefinition> classDefinitionLast;
+    std::shared_ptr<const CMethodDefinition> methodDefinitionLast;
 
     CSymbolTable table;
     std::vector<CCompilationError> errors;

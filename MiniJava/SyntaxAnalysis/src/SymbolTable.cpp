@@ -1,11 +1,15 @@
 #include <SymbolTable.h>
 
 bool CSymbolTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
-    bool ok = classes.emplace( std::make_pair( name, classDefinition ) ).second;
+    bool ok = classes.insert( std::make_pair( name, std::shared_ptr<const CClassDefinition>( classDefinition ) ) ).second;
     return ok;
 }
 
 //////////////////////////////////////////
+
+const std::string& CClassDefinition::ClassName() const {
+    return className;
+}
 
 const CMethodDefinition* CClassDefinition::GetMethodDefinition( const std::string& name ) const {
     auto result = methods.find( name );
