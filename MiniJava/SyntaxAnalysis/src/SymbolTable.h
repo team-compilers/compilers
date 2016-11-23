@@ -98,16 +98,17 @@ private:
 
 class CMethodDefinition {
 public:
-    typedef std::unordered_map<std::string, CTypeIdentifier> TNameToIdentifierMapping;
+    typedef std::unordered_map<std::string, CTypeIdentifier> TNameToVarTypeMap;
 
     CMethodDefinition( TAccessModifier _accessModifier, const std::string& _methodName, 
-            CTypeIdentifier _returnType, const TNameToIdentifierMapping& _argumentTypes,
-            const TNameToIdentifierMapping& _localVariablesTypes )
+            CTypeIdentifier _returnType, const TNameToVarTypeMap& _argumentTypes,
+            const TNameToVarTypeMap& _localVariablesTypes )
         : accessModifier( _accessModifier ),
           methodName( _methodName ),
           returnType( _returnType ),
           localVariableTypes( _localVariablesTypes ) {}
 
+    ~CMethodDefinition() {};
 
     TAccessModifier AccessModifier() const { return accessModifier; }
     const std::string& MethodName() const { return methodName; }

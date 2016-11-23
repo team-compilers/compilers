@@ -355,7 +355,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
         auto res = methodDefinitions.insert(
-            std::pair<std::string, std::unique_ptr<CMethodDefinition>>( methodDefinitionLast->MethodName(), methodDefinitionLast );
+            std::pair<std::string, std::unique_ptr<const CMethodDefinition>>( methodDefinitionLast->MethodName(), methodDefinitionLast );
         );
         if ( !res.second ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_METHOD ) );
@@ -372,7 +372,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
     for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
-        bool isAdded = table.AddClassDefinition( classDefinitionLast->ClassName(), classDefinitionLast );
+        bool isAdded = table.AddClassDefinition( classDefinitionLast->ClassName(), classDefinitionLast.get() );
         if ( !isAdded ) {
             errors.push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_CLASS ) );
         }
