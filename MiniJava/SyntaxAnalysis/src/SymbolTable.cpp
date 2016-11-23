@@ -1,8 +1,8 @@
 #include <SymbolTable.h>
 
 bool CSymbolTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
-    classes[name] = classDefinition;
-    return true;
+    bool ok = classes.emplace( std::make_pair( name, classDefinition ) ).second;
+    return ok;
 }
 
 //////////////////////////////////////////
