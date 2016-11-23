@@ -5,9 +5,13 @@ bool CSymbolTable::AddClassDefinition( const std::string& name, std::shared_ptr<
     return ok;
 }
 
-std::shared_ptr<CClassDefinition> CSymbolTable::GetClassDefinition( const std::string& name ) const {
-    // todo
-    return nullptr;
+std::shared_ptr<const CClassDefinition> CSymbolTable::GetClassDefinition( const std::string& name ) const {
+	auto it = classes.find(name);
+	if ( it == classes.end() ) {
+		return nullptr;
+	} else {
+		return it->second;
+	}
 }
 
 //////////////////////////////////////////
