@@ -1,4 +1,7 @@
 // Author: Alexey Zhuravlev
+
+#pragma once
+
 #include <unordered_map>
 #include <memory>
 #include <assert>
@@ -7,6 +10,7 @@
 
 class CClassDefinition;
 class CMethodDefinition;
+class CFieldDefinition;
 
 enum class TAccessModifier {
     Public,
@@ -86,12 +90,8 @@ public:
         : className( _className ), parentName( _parentName ), hasParent( true ), 
           methods( _methods ), fields( _fields ) {}
 
-    // Add method definition. True on success
-    bool AddMethodDefinition( const std::string& name, const CMethodDefinition* methodDefinition );
-    // Get method definition by name. Zer if not exists
+    // Get method definition by name. Zero if not exists
     const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;
-    // Add field definition. True on success
-    bool AddFieldDefinition( const std::string& name, const CFieldDefinition* fieldDefinition );
     // Get field definition by name. Zero if not exists
     const CFieldDefinition* GetFieldDefinition( const std::string& name ) const;
 private:
@@ -118,12 +118,14 @@ public:
     CTypeIdentifier ReturnType() const { return returnType; }
 
 // Return NotFound in CTypeIdentifier if variable not found
-    CTypeIdentifier GetLocalVariableReturnType() const;
+    CTypeIdentifier GetLocalVariableType( const std::string& name ) const;
+    CTypeIdentifier GetArgumentType( const std::string& name ) const;
 
 private:
     TAccessModifierType accessModifier;
     std::string methodName;
     CTypeIdentifier returnType;
+    std::unordered_map<std::string, CTypeIdentifier> argumentTypes;
     std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
 };
 
