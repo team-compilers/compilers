@@ -66,7 +66,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
-    lastId = expression->Name();
+    lastId.push_back( expression->Name() );
 
     onNodeExit( nodeName );
 }
@@ -213,8 +213,8 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
-    declaration->Type()->Accept( this );
-    declaration->Id()->Accept( this );
+    declaration->Type()->Accept( this ); // fills lastType
+    declaration->Id()->Accept( this ); // fills lastId.back()
 
     onNodeExit( nodeName );
 }
@@ -223,8 +223,8 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
-    argument->Type()->Accept( this );
-    argument->Id()->Accept( this );
+    argument->Type()->Accept( this ); // fills lastType
+    argument->Id()->Accept( this ); // fills lastId.back()
 
     onNodeExit( nodeName );
 }
@@ -233,20 +233,22 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
-    declaration->AccessModifier()->Accept( this );
-    TAccessModifier accessMod = lastAccessModifier;
+    declaration->AccessModifier()->Accept( this ); // fills lastAccessModifier
 
-    declaration->TypeModifier()->Accept( this );
-    CTypeIdentifier returnType = lastType;
+    localVariableTypes = std::vector<std::shared_ptr<VarNameToTypeMap>> {
+        std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() )
+    };
+    declaration->MethodArguments()->Accept( this ); // fills localVariableTypes.back()
 
-    declaration->MethodId()->Accept( this );
-    std::string methodName = lastId;
+    localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );
+    declaration->VarDeclarations()->Accept( this ); // fills localVariableTypes.back()
+    
+    declaration->TypeModifier()->Accept( this ); // fills lastType
 
-    declaration->MethodArguments()->Accept( this );
-    std::shared_ptr<VarNameToTypeMap> arguments = localVariableTypes;
+    declaration->MethodId()->Accept( this ); // fills lastId.back()
 
-    declaration->VarDeclarations()->Accept( this );
-    lastMethodDefinition = std::make_shared<CMethodDefinition>( lastAccessModifier, methodName, returnType, arguments, localVariableTypes );
+    lastMethodDefinition = std::make_shared<CMethodDefinition>( lastAccessModifier, lastId.back(), lastType,
+        localVariableTypes.at(localVariableTypes.size() - 2), localVariableTypes.back() );
     
     onNodeExit( nodeName );
 }
@@ -263,23 +265,24 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
-    declaration->ClassName()->Accept( this );
-    std::string className = lastId;
+    lastId.clear();
+    declaration->ClassName()->Accept( this ); // fills lastId[0]
 
-    declaration->VarDeclarations()->Accept( this );
-    std::shared_ptr<VarNameToTypeMap> fields = localVariableTypes;
+    localVariableTypes = std::vector<std::shared_ptr<VarNameToTypeMap>> {
+        std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() )
+    };
+    declaration->VarDeclarations()->Accept( this ); // fills localVariableTypes[0]
 
-    declaration->MethodDeclarations()->Accept( this );
+    methodDefinitions = std::shared_ptr<MethodNameToDefinitionMap>( new MethodNameToDefinitionMap() );
+    declaration->MethodDeclarations()->Accept( this ); // fills methodDefinitions
 
     if ( declaration->HasParent() ) {
-        declaration->ExtendsClassName()->Accept( this );
-        lastClassDefinition = std::make_shared<CClassDefinition>( className, lastId, methodDefinitions, fields );
+        declaration->ExtendsClassName()->Accept( this ); // fills lastId.back()
+        lastClassDefinition = std::make_shared<CClassDefinition>( lastId[0], lastId.back(), methodDefinitions, localVariableTypes[0] );
     } else {
-        lastClassDefinition = std::make_shared<CClassDefinition>( className, methodDefinitions, fields );
+        lastClassDefinition = std::make_shared<CClassDefinition>( lastId[0], methodDefinitions, localVariableTypes[0] );
     }
     
-    methodDefinitions = nullptr;
-
     onNodeExit( nodeName );
 }
 
@@ -313,11 +316,10 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
-    localVariableTypes = std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() );
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
-    for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
-        ( *it )->Accept( this );
-        auto res = localVariableTypes->insert( std::make_pair( lastId, lastType ) );
+    for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {        
+        ( *it )->Accept( this ); // fills lastId.back() and lastType
+        auto res = localVariableTypes.back()->insert( std::make_pair( lastId.back(), lastType ) );
         if ( !res.second ) {
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
@@ -330,11 +332,10 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
-    localVariableTypes = std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() );
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
-        ( *it )->Accept( this );
-        auto res = localVariableTypes->insert( std::make_pair( lastId, lastType ) );
+        ( *it )->Accept( this ); // fills lastId.back() and lastType
+        auto res = localVariableTypes.back()->insert( std::make_pair( lastId.back(), lastType ) );
         if ( !res.second ) {
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }
@@ -347,7 +348,6 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
-    methodDefinitions = std::shared_ptr<MethodNameToDefinitionMap>( new MethodNameToDefinitionMap() );
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
