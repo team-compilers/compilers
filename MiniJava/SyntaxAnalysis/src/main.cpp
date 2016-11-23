@@ -6,6 +6,7 @@
 #include <DotLangVisitor.h>
 #include <PrintCodeVisitor.h>
 #include <SymbolTableBuilderVisitor.h>
+#include <SymbolTable.h>
 
 #include <BisonParser.h>
 
@@ -42,8 +43,10 @@ int main(int argc, char* argv[]) {
     } else if (mode == "dot") {
         traversal = AstToDotLanguage( astRoot.get(), false );
     } else if (mode == "errors") {
-        CSymbolTableBuilderVisitor visitor( true);
+        CSymbolTableBuilderVisitor visitor( true );
         visitor.Visit( astRoot.get() );
+        std::shared_ptr<const CSymbolTable> tablePtr = visitor.SymbolTable();
+        std::cout << tablePtr->GetClassDefinition( "Factorial" ) << std::endl;
     } else {
         printHelp(argv[0]);
         throw std::logic_error("Wrong mode provided");

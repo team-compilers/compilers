@@ -56,7 +56,6 @@ public:
     bool AddClassDefinition( const std::string& name, std::shared_ptr<const CClassDefinition> classDefinition );
     // Get class definition by name. Returns zero pointer if it doesn't exist
     std::shared_ptr<CClassDefinition> GetClassDefinition( const std::string& name ) const;
-
 private:
     std::unordered_map<std::string, std::shared_ptr<const CClassDefinition>> classes;
 };
@@ -65,8 +64,8 @@ private:
 
 class CClassDefinition {
 public:
-    typedef std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition> > TNameToMethodDefinitionMap;
-    typedef std::unordered_map<std::string, CTypeIdentifier > TNameToFieldTypeMap;
+    using TNameToMethodDefinitionMap = std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>>;
+    using TNameToFieldTypeMap =std::unordered_map<std::string, CTypeIdentifier>;
 
     // Create class defintion without parent
     CClassDefinition( const std::string& _className, std::shared_ptr<TNameToMethodDefinitionMap> _methods, 
@@ -86,6 +85,7 @@ public:
 
     // Get field definition by name. NotFount if not exists
     CTypeIdentifier GetFieldType( const std::string& name ) const;
+    bool HasParent() const { return hasParent; }
 private:
     std::string className;
     std::shared_ptr<TNameToMethodDefinitionMap> methods;
@@ -98,7 +98,7 @@ private:
 
 class CMethodDefinition {
 public:
-    typedef std::unordered_map<std::string, CTypeIdentifier> TNameToVarTypeMap;
+    using TNameToVarTypeMap = std::unordered_map<std::string, CTypeIdentifier>;
 
     CMethodDefinition( 
             TAccessModifier _accessModifier,
