@@ -1,8 +1,8 @@
-#include <SymbolTableBuilderVisitor.h>
+#include <TypeCheckerVisitor.h>
 
 /*__________ Access Modifiers __________*/
 
-void CSymbolTableBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
+void CTypeCheckerVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
 
@@ -11,7 +11,7 @@ void CSymbolTableBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) 
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
+void CTypeCheckerVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
 
@@ -20,132 +20,166 @@ void CSymbolTableBuilderVisitor::Visit( const CPrivateAccessModifier* modifier )
     onNodeExit( nodeName );
 }
 
-/*__________ Expressions __________ (ignored by visitor)*/
+/*__________ Expressions __________*/
 
-void CSymbolTableBuilderVisitor::Visit( const CBinaryExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CBracketExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CNumberExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CLogicExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CIdExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CLengthExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CMethodExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CThisExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CNewIdExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CNegateExpression* expression ) {
+void CTypeCheckerVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-/*__________ Statements __________ (ignored by visitor)*/
+/*__________ Statements __________*/
 
-void CSymbolTableBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
+void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
+void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CPrintStatement* statement ) {
+void CTypeCheckerVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_PRINT );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CConditionalStatement* statement ) {
+void CTypeCheckerVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
+void CTypeCheckerVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CBracesStatement* statement ) {
+void CTypeCheckerVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_BRACES );
     onNodeEnter( nodeName );
+
+    // write your code here
 
     onNodeExit( nodeName );
 }
 
 /*__________ Type Modifiers __________*/
 
-void CSymbolTableBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
+void CTypeCheckerVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
 
@@ -154,7 +188,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
+void CTypeCheckerVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
 
@@ -163,7 +197,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
+void CTypeCheckerVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
 
@@ -172,7 +206,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifie
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
+void CTypeCheckerVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName );
 
@@ -183,7 +217,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
 /*__________ Other (except lists) __________*/
 
-void CSymbolTableBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
+void CTypeCheckerVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
@@ -192,7 +226,7 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CMethodArgument* argument ) {
+void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
@@ -201,7 +235,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgument* argument ) {
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
+void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
@@ -210,7 +244,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
+void CTypeCheckerVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
 
@@ -219,7 +253,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
+void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
@@ -228,7 +262,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
+void CTypeCheckerVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
@@ -239,68 +273,56 @@ void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
 
 /*__________  Lists __________*/
 
-void CSymbolTableBuilderVisitor::Visit( const CExpressionList* list ) {
+void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CStatementList* list ) {
+void CTypeCheckerVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
+    // write your code here
+
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
+void CTypeCheckerVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
-    const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
-    for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
-        ( *it )->Accept( this );
-        // write your code here
-    }
+    // write your code here
 
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
+void CTypeCheckerVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
-    const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
-    for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
-        ( *it )->Accept( this );
-        // write your code here
-    }
+    // write your code here
 
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
+void CTypeCheckerVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
-    const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
-    for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
-        ( *it )->Accept( this );
-        // write your code here
-    }
+    // write your code here
 
     onNodeExit( nodeName );
 }
 
-void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
+void CTypeCheckerVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName );
 
-    const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
-    for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
-        ( *it )->Accept( this );
-        // write your code here
-    }
+    // write your code here
 
     onNodeExit( nodeName );
 }
