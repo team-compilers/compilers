@@ -10,7 +10,7 @@ void CTypeCheckerVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // TODO
 
     onNodeExit( nodeName );
 }
@@ -19,7 +19,7 @@ void CTypeCheckerVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // TODO
 
     onNodeExit( nodeName );
 }
@@ -50,7 +50,8 @@ void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->ContainerExpression()->Accept( this );
+    expression->IndexExpression()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -73,9 +74,11 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
     onNodeExit( nodeName );
 }
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
+<<<<<<< HEAD
 
     std::string expressionName = expression->Name();
     std::shared_ptr<const CClassDefinition> classInfo = symbolTablePtr->GetClassDefinition( lastClassName );
@@ -86,6 +89,8 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     CTypeIdentifier typeId = classInfo->GetFieldType( expressionName );
     lastType = typeId.Type();
 
+=======
+>>>>>>> 349d093a6162efa86d6eda0a655aaf349d744eb0
     onNodeExit( nodeName );
 }
 
@@ -93,7 +98,7 @@ void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->LengthTarget()->Accept ( this );
 
     onNodeExit( nodeName );
 }
@@ -102,17 +107,17 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->CallerExpression()->Accept( this );
+    expression->Arguments()->Accept( this );
 
     onNodeExit( nodeName );
 }
 
+
+// ignored
 void CTypeCheckerVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
-
-    // write your code here
-
     onNodeExit( nodeName );
 }
 
@@ -121,9 +126,12 @@ void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
     onNodeEnter( nodeName );
 
     expression->LengthExpression()->Accept( this );
+<<<<<<< HEAD
     if ( lastType != TTypeIdentifier::Int ) {
         errors->push_back( CCompilationError( expression->Location(), CCompilationError::INVALID_LENGTH_TYPE ) );
     }
+=======
+>>>>>>> 349d093a6162efa86d6eda0a655aaf349d744eb0
 
     onNodeExit( nodeName );
 }
@@ -132,7 +140,11 @@ void CTypeCheckerVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    std::string className = expression->TargetId()->Name();
+
+    if ( symbolTablePtr->GetClassDefinition(className) == nullptr ) {
+    	errors->push_back( CCompilationError( expression->Location(), CCompilationError::TYPE_NOT_EXISTS ) );
+    }
 
     onNodeExit( nodeName );
 }
@@ -141,7 +153,7 @@ void CTypeCheckerVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->TargetExpression()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -248,7 +260,7 @@ void CTypeCheckerVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // TODO
 
     onNodeExit( nodeName );
 }
@@ -257,7 +269,7 @@ void CTypeCheckerVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // TODO
 
     onNodeExit( nodeName );
 }
@@ -266,7 +278,7 @@ void CTypeCheckerVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // TODO
 
     onNodeExit( nodeName );
 }
@@ -312,16 +324,15 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
 	declaration->MethodArguments()->Accept( this );
     declaration->VarDeclarations()->Accept( this );
     declaration->Statements()->Accept( this );
+    declaration->ReturnExpression()->Accept( this );
 
     onNodeExit( nodeName );
 }
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
-
-    // write your code here
-
     onNodeExit( nodeName );
 }
 
