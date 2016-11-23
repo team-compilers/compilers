@@ -1,5 +1,9 @@
 #include <TypeCheckerVisitor.h>
 
+std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckerVisitor::Errors() const {
+    return errors;
+}
+
 /*__________ Access Modifiers __________*/
 
 void CTypeCheckerVisitor::Visit( const CPublicAccessModifier* modifier ) {

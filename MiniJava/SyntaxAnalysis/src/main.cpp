@@ -7,6 +7,7 @@
 #include <PrintCodeVisitor.h>
 #include <SymbolTableBuilderVisitor.h>
 #include <SymbolTable.h>
+#include <TypeCheckerVisitor.h>
 
 #include <BisonParser.h>
 
@@ -49,6 +50,14 @@ int main( int argc, char* argv[] ) {
         std::shared_ptr<const std::vector<CCompilationError>> errors = visitor.Errors();
         std::cout << "Errors number: " << errors->size() << std::endl;
         for ( const CCompilationError& error : *errors ) {
+            std::cout << error.ToString() << error.Message() << std::endl;
+        }
+
+        CTypeCheckerVisitor errorVisitor( tablePtr, true );
+        errorVisitor.Visit( astRoot.get() );
+        std::shared_ptr<const std::vector<CCompilationError>> typeCheckerErrors = errorVisitor.Errors();
+        std::cout << "Errors from visitor" << std::endl;
+        for ( const CCompilationError& error : *typeCheckerErrors ) {
             std::cout << error.ToString() << error.Message() << std::endl;
         }
     } else {

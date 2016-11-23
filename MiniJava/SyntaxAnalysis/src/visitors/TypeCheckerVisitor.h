@@ -1,3 +1,4 @@
+// Author: Sanya
 // Description: CTypeCheckerVisitor
 
 #pragma once
@@ -21,11 +22,22 @@
 #include <ClassDeclaration.h>
 #include <ClassDeclarationList.h>
 #include <Program.h>
+#include <SymbolTable.h>
+#include <CompilationError.h>
+
 
 class CTypeCheckerVisitor : public CVisitor {
 public:
-    CTypeCheckerVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    CTypeCheckerVisitor( std::shared_ptr<const CSymbolTable> _symbolTablePtr, bool _verbose = false ) : 
+    CVisitor( _verbose ),
+    symbolTablePtr( _symbolTablePtr ),
+    lastType( TTypeIdentifier::NotFound ),
+    errors( new std::vector<CCompilationError>() )
+    {}
+
     ~CTypeCheckerVisitor() {}
+
+    std::shared_ptr<const std::vector<CCompilationError>> Errors() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -68,4 +80,8 @@ public:
     void Visit( const CMethodArgumentList* list ) override;
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
+private:
+    TTypeIdentifier lastType;
+    std::shared_ptr<const CSymbolTable> symbolTablePtr;
+    std::shared_ptr<std::vector<CCompilationError>> errors;
 };
