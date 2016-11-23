@@ -4,13 +4,13 @@
 
 #include <unordered_map>
 #include <memory>
-#include <assert>
+#include <cassert>
+#include <vector>
 
 // Predeclarations and general enum and classes declarations
 
 class CClassDefinition;
 class CMethodDefinition;
-class CFieldDefinition;
 
 enum class TAccessModifier {
     Public,
@@ -31,10 +31,10 @@ enum class TTypeIdentifier {
 class CTypeIdentifier {
 public:
     CTypeIdentifier( TTypeIdentifier _type )
-        : type( _type ) { assert( type != TTypeIdentifier::ClassId ) }
+        : type( _type ) { assert( type != TTypeIdentifier::ClassId ); }
 
     explicit CTypeIdentifier( const std::string& _className )
-        : Type( TTypeIdentifier::ClassId ), className( _className ) {}
+        : type( TTypeIdentifier::ClassId ), className( _className ) {}
 
     TTypeIdentifier Type() const { return type; }
     const std::string& ClassName() const { return className; }
@@ -48,7 +48,7 @@ private:
 // Variable definition 
 class CVariableDefinition {
 public:
-    CVariableDeclaration( CTypeIdentifier _type, const std::string& _name ) 
+    CVariableDefinition( CTypeIdentifier _type, const std::string& _name ) 
         : type( _type ), name( _name ) {}
 
     CTypeIdentifier Type() const { return type; }
@@ -78,7 +78,7 @@ private:
 class CClassDefinition {
 public:
     typedef std::unordered_map<std::string, std::unique_ptr<CMethodDefinition> > TNameToMethodDefinitionMap;
-    typedef std::unordered_map<std::string, std::unique_ptr<CFieldDefinition> > TNameToFieldDefinitionMap;
+    typedef std::unordered_map<std::string, std::unique_ptr<CVariableDefinition> > TNameToFieldDefinitionMap;
 
     // Create class defintion without parent
     CClassDefinition( const std::string& _className, const TNameToMethodDefinitionMap& _methods, 
@@ -93,11 +93,11 @@ public:
     // Get method definition by name. Zero if not exists
     const CMethodDefinition* GetMethodDefinition( const std::string& name ) const;
     // Get field definition by name. Zero if not exists
-    const CFieldDefinition* GetFieldDefinition( const std::string& name ) const;
+    const CVariableDefinition* GetFieldDefinition( const std::string& name ) const;
 private:
     std::string className;
-    TNameToFieldDefinitionMap methods;
-    TNameToMethodDefinitionMap fields;
+    TNameToMethodDefinitionMap methods;
+    TNameToFieldDefinitionMap fields;
     bool hasParent;
     std::string parentName;
 };
@@ -106,12 +106,19 @@ private:
 
 class CMethodDefinition {
 public:
-    
-    CMethodDefinition( TAccessModifier _accessModifier, const std::string& methodName, 
-            CTypeIdentifier _returnType, const std::vector<CVariableDefinition>& arguments  );
+    typedef std::unordered_map<std::string, CTypeIdentifier> TNameToIdentifierMapping;
+
+    CMethodDefinition( TAccessModifier _accessModifier, const std::string& _methodName, 
+            CTypeIdentifier _returnType, const TNameToIdentifierMapping& _argumentTypes,
+            const TNameToIdentifierMapping& _localVariablesTypes )
+        : accessModifier( _accessModifier ),
+          methodName( _methodName ),
+          returnType( _returnType ),
+          localVariableTypes( _localVariablesTypes ) {}
+
 
     // Adds local variable. Returns false on conflict
-    bool AddLocalVariable( const std::string& name, CTypeIdentifier type )
+    bool AddLocalVariable( const std::string& name, CTypeIdentifier type );
 
     TAccessModifier AccessModifier() const { return accessModifier; }
     const std::string& MethodName() const { return methodName; }
@@ -122,21 +129,10 @@ public:
     CTypeIdentifier GetArgumentType( const std::string& name ) const;
 
 private:
-    TAccessModifierType accessModifier;
+    TAccessModifier accessModifier;
     std::string methodName;
     CTypeIdentifier returnType;
     std::unordered_map<std::string, CTypeIdentifier> argumentTypes;
     std::unordered_map<std::string, CTypeIdentifier> localVariableTypes;
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////
-
-class CFieldDefinition : public CVariableDefinition {
-public:
-    CFieldDefinition( CTypeIdentifier type, std::string name, TAccessModifier _accessModifier )
-        : CVariableDefinition( type, name ), _accessModifier( accessModifier ) {}
-
-    TAccessModifier AccessModifier() const { return accessModifier; }
-private:
-    TAccessModifier accessModifier;
-};

@@ -1,14 +1,14 @@
 #include <SymbolTable.h>
 
 bool CSymbolsTable::AddClassDefinition( const std::string& name, const CClassDefinition* classDefinition ) {
-    bool ok = clases.insert({name, classDefinition}).second;
+    bool ok = classes.insert({name, classDefinition}).second;
     return ok;
 }
 
 //////////////////////////////////////////
 
 
-const CMethodDefinition* GetMethodDefinition( const std::string& name ) const {
+const CMethodDefinition* CClassDefinition::GetMethodDefinition( const std::string& name ) const {
     auto result = methods.find( name );
     if( result != methods.end() ) {
         return *result;
@@ -17,7 +17,7 @@ const CMethodDefinition* GetMethodDefinition( const std::string& name ) const {
     }
 }
 
-const CFieldDefinition* GetFieldDefinition( const std::string& name ) const {
+const CVariableDefinition* CClassDefinition::GetFieldDefinition( const std::string& name ) const {
     auto result = fields.find( name );
     if( result != fields.end() ) {
         return *result;
@@ -28,17 +28,6 @@ const CFieldDefinition* GetFieldDefinition( const std::string& name ) const {
 
 ////////////////////////////////////////////////////
 
-
-CMethodDefinition:CMethodDefinition( TAccessModifier _accessModifier,
-    const std::string& _methodName, CTypeIdentifier _returnType,
-    const std::vector<CVariableDefinition>& arguments )
-    : accessModifier( _accessModifier ),
-      methodName( _methodName),
-      returnType( _returnType ) {
-    for( unsigned int i = 0; i < arguments.size(); i++ ) {
-        argumentTypes[arguments[i].Name()] = arguments[i].Type();
-    }
-}
 
 bool CMethodDefinition::AddLocalVariable( cosnt std::string& name, CTypeIdentifier type )
 {
