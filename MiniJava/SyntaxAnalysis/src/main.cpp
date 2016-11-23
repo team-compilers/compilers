@@ -27,33 +27,33 @@ void printHelp(const std::string& programName) {
     std::cerr << "<mode>: dot / code" << std::endl;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc < 4) {
-        printHelp(argv[0]);
-        throw std::logic_error("Too few arguments provided");
+int main( int argc, char* argv[] ) {
+    if ( argc < 4 ) {
+        printHelp( argv[0] );
+        throw std::logic_error( "Too few arguments provided" );
     }
-    const std::string inputFilePath(argv[1]);
-    const std::string outputFilePath(argv[2]);
-    const std::string mode(argv[3]);
-    CBisonParser parser(inputFilePath);
+    const std::string inputFilePath( argv[1] );
+    const std::string outputFilePath( argv[2] );
+    const std::string mode( argv[3] );
+    CBisonParser parser( inputFilePath );
     std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
     std::string traversal;
-    if (mode == "code") {
+    if ( mode == "code" ) {
         traversal = AstToCode( astRoot.get(), false );
-    } else if (mode == "dot") {
+    } else if ( mode == "dot" ) {
         traversal = AstToDotLanguage( astRoot.get(), false );
-    } else if (mode == "errors") {
+    } else if ( mode == "errors" ) {
         CSymbolTableBuilderVisitor visitor( true );
         visitor.Visit( astRoot.get() );
         std::shared_ptr<const CSymbolTable> tablePtr = visitor.SymbolTable();
         std::shared_ptr<const std::vector<CCompilationError>> errors = visitor.Errors();
         std::cout << "Errors number: " << errors->size() << std::endl;
-        for(const CCompilationError& error : *errors) {
-        	std::cout << error.ToString() << error.Message() << std::endl;
+        for ( const CCompilationError& error : *errors ) {
+            std::cout << error.ToString() << error.Message() << std::endl;
         }
     } else {
-        printHelp(argv[0]);
-        throw std::logic_error("Wrong mode provided");
+        printHelp( argv[0] );
+        throw std::logic_error( "Wrong mode provided" );
     }
 
     std::ofstream outStream( outputFilePath );
