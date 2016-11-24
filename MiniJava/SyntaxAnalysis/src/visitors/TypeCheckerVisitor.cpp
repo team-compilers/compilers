@@ -69,7 +69,9 @@ void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
     onNodeEnter( nodeName );
 
     TTypeIdentifier operatorType; 
-    if ( expression->Operation() == TOperatorType::OT_LT ) {
+    if ( expression->Operation() == TOperatorType::OT_LT ||
+         expression->Operation() == TOperatorType::OT_And ||
+         expression->Operation() == TOperatorType::OT_Or ) {
         operatorType = TTypeIdentifier::Boolean;
     } else {
         operatorType = TTypeIdentifier::Int;
