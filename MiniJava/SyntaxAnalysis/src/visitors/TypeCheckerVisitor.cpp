@@ -328,7 +328,21 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
 void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
-    lastMethod = lastClass->GetMethodDefinition(declaration->MethodId()->Name());
+
+    std::string name = declaration->MethodId()->Name();
+    lastMethod = lastClass->GetMethodDefinition(name);
+
+    std::shared_ptr<const CClassDefinition> precedingClass = lastClass;
+
+    while (precedingClass->HasParent()) {
+    	precedingClass = symbolTablePtr->GetClassDefinition(precedingClass->GetParentName());
+    	if (precedingClass == nullptr) {
+    		break;
+    	} else if (precedingClass->GetMethodDefinition(name) != nullptr) {
+    		errors->push_back( CCompilationError( declaration->Location(), CCompilationError::METHOD_OVERLOADING ) );
+    		break;
+    	}
+    }
 
 	declaration->TypeModifier()->Accept( this );
 	declaration->MethodArguments()->Accept( this );
