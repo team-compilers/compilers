@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include <unordered_map>
-#include <memory>
 #include <cassert>
+#include <iostream>
+#include <memory>
+#include <unordered_map>
 #include <vector>
 
 // Predeclarations and general enum and classes declarations
@@ -26,6 +27,8 @@ enum class TTypeIdentifier {
 // Value to return if no valid variable type found
     NotFound
 };
+
+void PrintType( TTypeIdentifier type );
 
 // Type identifier class for other methods
 class CTypeIdentifier {

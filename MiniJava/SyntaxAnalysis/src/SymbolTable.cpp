@@ -1,5 +1,42 @@
 #include <SymbolTable.h>
 
+void PrintType( TTypeIdentifier type ) {
+    std::string string;
+    switch ( type ) {
+        case TTypeIdentifier::Int:
+        {
+            string = "int";
+            break;
+        }
+        case TTypeIdentifier::Boolean:
+        {
+            string = "boolean";
+            break;
+        }
+        case TTypeIdentifier::IntArray:
+        {
+            string = "array";
+            break;
+        }
+        case TTypeIdentifier::NotFound:
+        {
+            string = "notFound";
+            break;
+        }
+        case TTypeIdentifier::ClassId:
+        {
+            string = "classId";
+            break;
+        }
+        default:
+        {
+            string = "other";
+            break;
+        }
+    }
+    std::cout << string << std::endl;
+}
+
 bool CSymbolTable::AddClassDefinition( const std::string& name, std::shared_ptr<const CClassDefinition> classDefinition ) {
     bool ok = classes.insert( std::make_pair( name, std::shared_ptr<const CClassDefinition>( classDefinition ) ) ).second;
     return ok;

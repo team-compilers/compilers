@@ -4,42 +4,28 @@ std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckerVisitor::Error
     return errors;
 }
 
-static void printType( TTypeIdentifier type )
-{
-    std::string string;
-    switch( type )
-    {
-        case TTypeIdentifier::Int:
-        { 
-            string = "int";
+std::shared_ptr<const CMethodDefinition> CTypeCheckerVisitor::searchClassHierarchyForMethod( const std::string& methodName, std::shared_ptr<const CClassDefinition> baseClass) {
+    std::shared_ptr<const CMethodDefinition> methodDefinition = nullptr;
+    while ( baseClass != nullptr ) {
+        methodDefinition = baseClass->GetMethodDefinition( methodName );
+        if ( methodDefinition != nullptr ) {
             break;
         }
-        case TTypeIdentifier::Boolean:
-        {
-            string = "boolean";
-            break;
-        }
-        case TTypeIdentifier::IntArray:
-        {
-            string = "ARRAY";
-            break;
-        }
-        case TTypeIdentifier::NotFound: 
-        {
-            string = "NotFound";
-            break;
-        }
-        case TTypeIdentifier::ClassId:
-        {
-            string = "classId";
-            break;
-        }
-        default: {
-            string = "other";
-            break;
-        }
+        baseClass = baseClass->HasParent() ? symbolTablePtr->GetClassDefinition( baseClass->GetParentName() ) : nullptr;
     }
-    std::cout << string << std::endl;
+    return methodDefinition;
+}
+
+CTypeIdentifier CTypeCheckerVisitor::searchClassHierarchyForField( const std::string& fieldName, std::shared_ptr<const CClassDefinition> baseClass) {
+    CTypeIdentifier fieldType( TTypeIdentifier::NotFound );
+    while ( baseClass != nullptr ) {
+        fieldType = baseClass->GetFieldType( fieldName );
+        if ( fieldType.Type() != TTypeIdentifier::NotFound ) {
+            break;
+        }
+        baseClass = baseClass->HasParent() ? symbolTablePtr->GetClassDefinition( baseClass->GetParentName() ) : nullptr;
+    }
+    return fieldType;
 }
 
 /*__________ Access Modifiers __________*/
@@ -140,9 +126,9 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string name = expression->Name();
     CTypeIdentifier notFound(TTypeIdentifier::NotFound);
 
-    CTypeIdentifier fieldLurk = lastClass->GetFieldType(name);
+    CTypeIdentifier fieldLurk = searchClassHierarchyForField( name, lastClass );
     // TODO: do we really have to perform methodLurk?
-    std::shared_ptr<const CMethodDefinition> methodLurk = lastClass->GetMethodDefinition(name);
+    std::shared_ptr<const CMethodDefinition> methodLurk = searchClassHierarchyForMethod( name, lastClass );
     CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
     CTypeIdentifier argumentLurk = lastMethod->GetArgumentType(name);
 
