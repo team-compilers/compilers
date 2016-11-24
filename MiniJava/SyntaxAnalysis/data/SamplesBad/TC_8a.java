@@ -40,7 +40,7 @@ class QS{
 	t = 0 ;
 	if (left < right){
 	    v = number[right] ;
-	    i = cont01 - 1 ;
+	    i = cont01 - 1 ; // HERE
 	    j = right ;
 	    cont01 = true ;
 	    while (cont01){
