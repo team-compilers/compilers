@@ -67,16 +67,12 @@ void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
     expression->RightOperand()->Accept( this );
     TTypeIdentifier RightOperandType = lastType;
 
-    if ( leftOperandType != RightOperandType || leftOperandType != operatorType ) {
+    if ( leftOperandType != RightOperandType ) {
         errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
         lastType = TTypeIdentifier::NotFound;
     } else {
-        lastType = leftOperandType;
+        lastType = operatorType;
     }
-    //printType( leftOperandType );
-    //printType( RightOperandType );
-    //printType( operatorType );
-    //printType( lastType );
     onNodeExit( nodeName );
 }
 
@@ -114,9 +110,6 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
 
     std::string name = expression->Name();
     CTypeIdentifier notFound(TTypeIdentifier::NotFound);
-
-    std::cout<<lastClass->ClassName() << std::endl;
-    std::cout<<lastMethod->MethodName() << std::endl;
 
     CTypeIdentifier fieldLurk = lastClass->GetFieldType(name);
     CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
