@@ -245,16 +245,38 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     declaration->MethodId()->Accept( this ); // fills lastId.back()
 
-    lastMethodDefinition = std::make_shared<CMethodDefinition>( lastAccessModifier, lastId.back(), lastType,
-        localVariableTypes.at(localVariableTypes.size() - 2), localVariableTypes.back() );
+    lastMethodDefinition = std::make_shared<CMethodDefinition>( 
+        lastAccessModifier, lastId.back(), lastType,
+        localVariableTypes.at(localVariableTypes.size() - 2), localVariableTypes.back()
+    );
     
     onNodeExit( nodeName );
 }
 
-// ignored
 void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
+
+    lastId.clear();
+    mainClass->ClassName()->Accept( this ); // fills lastId[0]
+
+    methodDefinitions = std::shared_ptr<MethodNameToDefinitionMap>( new MethodNameToDefinitionMap() );
+    lastMethodDefinition = std::make_shared<CMethodDefinition>( 
+        TAccessModifier::Public,
+        "main",
+        CTypeIdentifier( TTypeIdentifier::Int ), // we do not have `void`, let it be `int`
+        std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ), // no arguments
+        std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) // no local variables
+    );
+    auto res = methodDefinitions->insert(
+        std::make_pair( lastMethodDefinition->MethodName(), lastMethodDefinition )
+    );
+    if ( !res.second ) {
+        errors->push_back( CCompilationError( mainClass->Location(), CCompilationError::REDEFINITION_METHOD ) );
+    }
+
+    std::shared_ptr<VarNameToTypeMap> localVariables( new VarNameToTypeMap() );
+    lastClassDefinition = std::make_shared<CClassDefinition>( lastId[0], methodDefinitions, localVariables );
 
     onNodeExit( nodeName );
 }
@@ -287,6 +309,12 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
 void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
+
+    program->MainClass()->Accept( this );
+    bool isAdded = table->AddClassDefinition( lastClassDefinition->ClassName(), lastClassDefinition );
+    if ( !isAdded ) {
+        errors->push_back( CCompilationError( program->MainClass()->Location(), CCompilationError::REDEFINITION_CLASS ) );
+    }
 
     program->ClassDeclarations()->Accept( this );
 

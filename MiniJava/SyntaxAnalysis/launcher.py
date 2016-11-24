@@ -1,42 +1,46 @@
 #!/usr/bin/python
 import argparse
-from os import system, listdir, unlink
-from os.path import splitext, join, isfile
+from os import system, listdir, unlink, mkdir
+from os.path import splitext, join, isfile, isdir, exists
 
-def generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = ''):
+def generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = '', verbose = True):
     for filename in listdir(dirpath_input):
         filepath_input = join(dirpath_input, filename)
+        if not isfile(filepath_input):
+            continue
+        if verbose:
+            print '\033[1;34m' + filepath_input + '\033[1;39m'
         filepath_output = splitext(join(dirpath_output, filename))[0] + fout_ext
         system(sys_command_f(filepath_input, filepath_output))
 
-DEF_DIR_IN_DOT = 'data/Samples/'
-DEF_DIR_OUT_DOT = 'results/SamplesGV/'
+DEF_DIR_IN_DOT = 'data/SamplesErroneous/'
+DEF_DIR_OUT_DOT = 'results/SamplesErroneousGV/'
 DEF_DIR_IN_IMGS = DEF_DIR_OUT_DOT
-DEF_DIR_OUT_IMGS = 'results/SamplesAST/'
+DEF_DIR_OUT_IMGS = 'results/SamplesErroneousAST/'
 DEF_DIR_IN_CODE = DEF_DIR_IN_DOT
-DEF_DIR_OUT_CODE = 'results/SamplesCode/'
-DEF_DIR_IN_ERRORS = 'data/SamplesBad/Lectors/'
+DEF_DIR_OUT_CODE = 'results/SamplesErroneousCode/'
+DEF_DIR_IN_ERRORS = 'data/SamplesCorrect/'
 DEF_DIR_OUT_ERRORS = '/dev/null'
 
-def generate_results_dot(dirpath_input = DEF_DIR_IN_DOT, dirpath_output = DEF_DIR_OUT_DOT):
+def generate_results_dot(dirpath_input = DEF_DIR_IN_DOT, dirpath_output = DEF_DIR_OUT_DOT, verbose = True):
     def sys_command_f(filepath_input, filepath_output):
         return './ast ' + filepath_input + ' ' + filepath_output + ' dot'
-    generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = '.gv')
+    generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = '.gv', verbose = verbose)
 
-def generate_results_images(dirpath_input = DEF_DIR_IN_IMGS, dirpath_output = DEF_DIR_OUT_IMGS):
+def generate_results_images(dirpath_input = DEF_DIR_IN_IMGS, dirpath_output = DEF_DIR_OUT_IMGS, verbose = True):
     def sys_command_f(filepath_input, filepath_output):
         return './generateImage.py ' + filepath_input + ' -o ' + filepath_output
-    generate_results(dirpath_input, dirpath_output, sys_command_f)
+    generate_results(dirpath_input, dirpath_output, sys_command_f, verbose = verbose)
 
-def generate_results_code(dirpath_input = DEF_DIR_IN_CODE, dirpath_output = DEF_DIR_OUT_CODE):
+def generate_results_code(dirpath_input = DEF_DIR_IN_CODE, dirpath_output = DEF_DIR_OUT_CODE, verbose = True):
     def sys_command_f(filepath_input, filepath_output):
         return './ast ' + filepath_input + ' ' + filepath_output + ' code'
-    generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = '.java')
+    generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = '.java', verbose = verbose)
 
-def generate_results_errors(dirpath_input = DEF_DIR_IN_ERRORS, dirpath_output = DEF_DIR_OUT_ERRORS):
+def generate_results_errors(dirpath_input = DEF_DIR_IN_ERRORS, dirpath_output = DEF_DIR_OUT_ERRORS, verbose = True):
     def sys_command_f(filepath_input, filepath_output):
         return './ast ' + filepath_input + ' ' + filepath_output + ' errors'
-    generate_results(dirpath_input, dirpath_output, sys_command_f)
+    generate_results(dirpath_input, dirpath_output, sys_command_f, verbose = verbose)
 
 def generate_results_all():
     generate_results_code()
