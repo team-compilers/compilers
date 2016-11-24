@@ -25,6 +25,8 @@ public:
     static const std::string METHOD_OVERLOADING;
     static const std::string CLASS_HAS_NO_METHOD;
     static const std::string INVALID_CALLER_EXPRESSION;
+    static const std::string ARGS_NUMBERS_NOT_MATCH;
+    static const std::string ARG_TYPE_NOT_MATCH;
 
 private:
     CLocation location;

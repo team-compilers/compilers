@@ -139,6 +139,7 @@ public:
     CTypeIdentifier GetLocalVariableType( const std::string& name ) const;
     CTypeIdentifier GetArgumentType( const std::string& name ) const;
     CTypeIdentifier GetArgumentType( int index ) const;
+    int GetArgumentsNumber() const;
 
 private:
     TAccessModifier accessModifier;

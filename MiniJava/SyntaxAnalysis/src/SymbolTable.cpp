@@ -66,3 +66,7 @@ CTypeIdentifier CMethodDefinition::GetArgumentType( int index ) const {
 		return CTypeIdentifier( TTypeIdentifier::NotFound );
 	}
 }
+
+int CMethodDefinition::GetArgumentsNumber() const {
+	return sortedArgumentsTypes->size();
+}

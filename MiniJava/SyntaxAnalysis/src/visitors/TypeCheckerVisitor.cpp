@@ -203,8 +203,14 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 	        methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
 	    } else {
     		expression->Arguments()->Accept( this );
-    		for(CTypeIdentifier type : lastType) {
-    			// TODO
+    		if( lastType.size() != methodDefinition->GetArgumentsNumber() ) {
+    			errors->emplace_back( expression->Location(), CCompilationError::ARGS_NUMBERS_NOT_MATCH );
+    		} else {
+    			for( int i = 0; i < lastType.size(); ++i ) {
+    				if (lastType[i] != methodDefinition->GetArgumentType(i) ) {
+    					errors->emplace_back( expression->Location(), CCompilationError::ARG_TYPE_NOT_MATCH );
+    				}
+    			}
     		}
 	    	methodReturnType = methodDefinition->ReturnType();
 	    }
