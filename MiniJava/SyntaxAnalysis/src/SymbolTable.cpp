@@ -58,3 +58,11 @@ CTypeIdentifier CMethodDefinition::GetArgumentType( const std::string& name ) co
         return CTypeIdentifier( TTypeIdentifier::NotFound );
     }
 }
+
+CTypeIdentifier CMethodDefinition::GetArgumentType( int index ) const {
+	if( index < sortedArgumentsTypes->size() ) {
+		return (*sortedArgumentsTypes)[index];
+	} else {
+		return CTypeIdentifier( TTypeIdentifier::NotFound );
+	}
+}

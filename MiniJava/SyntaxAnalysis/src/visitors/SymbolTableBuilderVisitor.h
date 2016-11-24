@@ -34,6 +34,7 @@
 
 using MethodNameToDefinitionMap = std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>>;
 using VarNameToTypeMap = std::unordered_map<std::string, CTypeIdentifier>;
+using ArgumentsTypesList = std::vector<CTypeIdentifier>;
 
 class CSymbolTableBuilderVisitor : public CVisitor {
 public:
@@ -99,6 +100,8 @@ private:
     std::shared_ptr<const CClassDefinition> lastClassDefinition;
     
     std::vector<std::shared_ptr<VarNameToTypeMap>> localVariableTypes;
+    std::shared_ptr<ArgumentsTypesList> sortedArgumentsTypes;
+
     std::shared_ptr<MethodNameToDefinitionMap> methodDefinitions;
     
     std::shared_ptr<CSymbolTable> table;

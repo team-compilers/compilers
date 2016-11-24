@@ -236,6 +236,8 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
     declaration->AccessModifier()->Accept( this ); // fills lastAccessModifier
 
     localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );
+    sortedArgumentsTypes = std::make_shared<ArgumentsTypesList>();
+
     declaration->MethodArguments()->Accept( this ); // fills localVariableTypes.back()
 
     localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );
@@ -247,8 +249,12 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     lastMethodDefinition = std::make_shared<CMethodDefinition>( 
         lastAccessModifier, lastId.back(), lastType,
-        localVariableTypes.at(localVariableTypes.size() - 2), localVariableTypes.back()
+        localVariableTypes.at(localVariableTypes.size() - 2), 
+        sortedArgumentsTypes,
+        localVariableTypes.back()
     );
+
+    sortedArgumentsTypes = nullptr;
     
     onNodeExit( nodeName );
 }
@@ -266,6 +272,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
         "main",
         CTypeIdentifier( TTypeIdentifier::Int ), // we do not have `void`, let it be `int`
         std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ), // no arguments
+        std::make_shared<ArgumentsTypesList>(),
         std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) // no local variables
     );
     auto res = methodDefinitions->insert(
@@ -362,6 +369,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this ); // fills lastId.back() and lastType
         auto res = localVariableTypes.back()->insert( std::make_pair( lastId.back(), lastType ) );
+        sortedArgumentsTypes->push_back(lastType);
         if ( !res.second ) {
             errors->push_back( CCompilationError( ( *it )->Location(), CCompilationError::REDEFINITION_LOCAL_VAR ) );
         }

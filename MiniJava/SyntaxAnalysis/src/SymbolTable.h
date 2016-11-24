@@ -115,27 +115,30 @@ private:
 class CMethodDefinition {
 public:
     using TNameToVarTypeMap = std::unordered_map<std::string, CTypeIdentifier>;
-
+    using ArgumentsTypesList = std::vector<CTypeIdentifier>;
     CMethodDefinition( 
             TAccessModifier _accessModifier,
             const std::string& _methodName,
             CTypeIdentifier _returnType,
             std::shared_ptr<TNameToVarTypeMap> _argumentTypes,
+            std::shared_ptr<ArgumentsTypesList> _sortedArgumentsTypes,
             std::shared_ptr<TNameToVarTypeMap> _localVariablesTypes
         ) : accessModifier( _accessModifier ),
             methodName( _methodName ),
             returnType( _returnType ),
-            localVariableTypes( _localVariablesTypes ),
-            argumentTypes( _argumentTypes ) {}
+            argumentTypes( _argumentTypes ),
+            sortedArgumentsTypes(_sortedArgumentsTypes),
+            localVariableTypes( _localVariablesTypes ) {}
     ~CMethodDefinition() {};
 
     TAccessModifier AccessModifier() const { return accessModifier; }
     const std::string& MethodName() const { return methodName; }
     CTypeIdentifier ReturnType() const { return returnType; }
 
-// Return NotFound in CTypeIdentifier if variable not found
+	// Return NotFound in CTypeIdentifier if variable not found
     CTypeIdentifier GetLocalVariableType( const std::string& name ) const;
     CTypeIdentifier GetArgumentType( const std::string& name ) const;
+    CTypeIdentifier GetArgumentType( int index ) const;
 
 private:
     TAccessModifier accessModifier;
@@ -143,4 +146,5 @@ private:
     CTypeIdentifier returnType;
     std::shared_ptr<TNameToVarTypeMap> argumentTypes;
     std::shared_ptr<TNameToVarTypeMap> localVariableTypes;
+    std::shared_ptr<ArgumentsTypesList> sortedArgumentsTypes;
 };

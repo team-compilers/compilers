@@ -175,8 +175,6 @@ void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
     expression->LengthTarget()->Accept ( this );
     lastType = { CTypeIdentifier( TTypeIdentifier::Int ) };
 
-    lastType = { CTypeIdentifier( TTypeIdentifier::Int ) };
-
     onNodeExit( nodeName );
 }
 
@@ -204,11 +202,14 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
 	        methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
 	    } else {
+    		expression->Arguments()->Accept( this );
+    		for(CTypeIdentifier type : lastType) {
+    			// TODO
+    		}
 	    	methodReturnType = methodDefinition->ReturnType();
 	    }
 	}
 
-    expression->Arguments()->Accept( this );
     lastType = { methodReturnType };
 
     onNodeExit( nodeName );
@@ -520,11 +521,15 @@ void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
+    std::vector<CTypeIdentifier> types;
+
     const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
     for ( auto it = expressions.rbegin(); it != expressions.rend(); ++it ) {
         ( *it )->Accept( this );
+        types.push_back(lastType.front());
     }
-    lastType = { CTypeIdentifier( TTypeIdentifier::NotFound ) };
+
+    lastType = types;
 
     onNodeExit( nodeName );
 }
