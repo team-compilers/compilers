@@ -125,7 +125,8 @@ public:
         ) : accessModifier( _accessModifier ),
             methodName( _methodName ),
             returnType( _returnType ),
-            localVariableTypes( _localVariablesTypes ) {}
+            localVariableTypes( _localVariablesTypes ),
+            argumentTypes( _argumentTypes ) {}
     ~CMethodDefinition() {};
 
     TAccessModifier AccessModifier() const { return accessModifier; }
