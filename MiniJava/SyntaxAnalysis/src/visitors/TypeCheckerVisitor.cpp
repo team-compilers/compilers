@@ -367,7 +367,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
 void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
-<<<<<<< HEAD
+
     std::string name = declaration->MethodId()->Name();
     lastMethod = lastClass->GetMethodDefinition(name);
     std::shared_ptr<const CClassDefinition> precedingClass = lastClass;
