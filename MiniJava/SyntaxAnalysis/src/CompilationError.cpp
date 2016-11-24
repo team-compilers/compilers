@@ -18,6 +18,7 @@ const std::string CCompilationError::CLASS_HAS_NO_METHOD = "Method is not define
 const std::string CCompilationError::INVALID_CALLER_EXPRESSION = "Invalid caller expression";
 const std::string CCompilationError::ARGS_NUMBERS_NOT_MATCH = "Arguments numbers do not match";
 const std::string CCompilationError::ARG_TYPE_NOT_MATCH = "Argument type does not match";
+const std::string CCompilationError::METHOD_IS_PRIVATE = "Calling a private method from a different class";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 

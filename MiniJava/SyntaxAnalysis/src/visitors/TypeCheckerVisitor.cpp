@@ -141,6 +141,7 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     CTypeIdentifier notFound(TTypeIdentifier::NotFound);
 
     CTypeIdentifier fieldLurk = lastClass->GetFieldType(name);
+    // TODO: do we really have to perform methodLurk?
     std::shared_ptr<const CMethodDefinition> methodLurk = lastClass->GetMethodDefinition(name);
     CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
     CTypeIdentifier argumentLurk = lastMethod->GetArgumentType(name);
@@ -202,6 +203,11 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
 	        methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
 	    } else {
+	    	if ( methodDefinition->AccessModifier() == TAccessModifier::Private &&
+	    		 callerClassDefinition != lastClass ) {
+	    		errors->emplace_back( expression->Location(), CCompilationError::METHOD_IS_PRIVATE );
+	    	}
+
     		expression->Arguments()->Accept( this );
     		if( lastType.size() != methodDefinition->GetArgumentsNumber() ) {
     			errors->emplace_back( expression->Location(), CCompilationError::ARGS_NUMBERS_NOT_MATCH );
