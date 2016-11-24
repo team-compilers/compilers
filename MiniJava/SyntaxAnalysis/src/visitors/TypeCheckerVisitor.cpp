@@ -19,6 +19,11 @@ static void printType( TTypeIdentifier type )
             string = "bool";
             break;
         }
+        case TTypeIdentifier::IntArray:
+        {
+            string = "ARRAY";
+            break;
+        }
         case TTypeIdentifier::NotFound: 
         {
             string = "NF";
@@ -109,9 +114,11 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     onNodeEnter( nodeName );
 
     std::string name = expression->Name();
+    //std::cout << name << std::endl;
     CTypeIdentifier notFound(TTypeIdentifier::NotFound);
 
     CTypeIdentifier fieldLurk = lastClass->GetFieldType(name);
+    std::shared_ptr<const CMethodDefinition> methodLurk = lastClass->GetMethodDefinition(name);
     CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
     CTypeIdentifier argumentLurk = lastMethod->GetArgumentType(name);
     //printType(fieldLurk.Type());
@@ -122,6 +129,9 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     // The latter wins.
     if (fieldLurk != notFound) {
     	lastType = fieldLurk.Type();
+    }
+    if( methodLurk != nullptr && methodLurk->ReturnType() != notFound) {
+        lastType = methodLurk->ReturnType().Type();
     }
     if (argumentLurk != notFound) {
     	lastType = argumentLurk.Type();
@@ -142,6 +152,7 @@ void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
     onNodeEnter( nodeName );
 
     expression->LengthTarget()->Accept ( this );
+    lastType = TTypeIdentifier::Int;
 
     onNodeExit( nodeName );
 }
@@ -152,6 +163,7 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 
     expression->CallerExpression()->Accept( this );
     expression->Arguments()->Accept( this );
+    expression->MethodId()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -171,7 +183,10 @@ void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
     expression->LengthExpression()->Accept( this );
 
     if ( lastType != TTypeIdentifier::Int ) {
+        lastType = TTypeIdentifier::NotFound;
         errors->push_back( CCompilationError( expression->Location(), CCompilationError::INVALID_LENGTH_TYPE ) );
+    } else {
+        lastType = TTypeIdentifier::IntArray;
     }
 
     onNodeExit( nodeName );
@@ -225,26 +240,17 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
 
+    statement->RightPart()->Accept( this );
+    TTypeIdentifier rightOperandType = lastType;
     statement->LeftPartId()->Accept( this );
-    if ( lastType != TTypeIdentifier::Int ) {
+    TTypeIdentifier leftOperandType = lastType;
+    if ( leftOperandType != TTypeIdentifier::Int ) {
         errors->push_back( CCompilationError( ( statement->LeftPartId() )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
     }
-
-    // how to get type of elements in array???
-    /*statement->LeftPart()->Accept( this );
-    TTypeIdentifier leftPartLocalType = lastType;
-
-
-    statement->RightPart()->Accept( this );
-    TTypeIdentifier rightPartLocalType = lastType;
-
-    if ( leftPartLocalType != rightPartLocalType ) {
-        errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
-        lastType = TTypeIdentifier::NotFound;
-    } else {
-        lastType = leftPartLocalType;
+    if ( rightOperandType != TTypeIdentifier::Int ) {
+        errors->push_back( CCompilationError( ( statement->RightPart() )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
     }
-    */
+
 
     onNodeExit( nodeName );
 }

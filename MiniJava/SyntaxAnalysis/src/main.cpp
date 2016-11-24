@@ -63,6 +63,7 @@ int main( int argc, char* argv[] ) {
         CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
         symbolTableBuilderVisitor.Visit( astRoot.get() );
         std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
+
         CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
         typeCheckerVisitor.Visit( astRoot.get() );
         extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
