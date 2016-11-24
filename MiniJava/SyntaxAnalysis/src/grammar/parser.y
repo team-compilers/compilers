@@ -82,14 +82,14 @@ CLocation ToCLocation( YYLTYPE yylloc ) {
 
 // Precedence and associativity of the operators
 // http://www.cs.bilkent.edu.tr/~guvenir/courses/CS101/op_precedence.html
-%left '[' '.' '('
-%right '!'
-%left '*' '/' '%'
-%left '+' '-'
-%left '<'
-%left AND
-%left OR
 %left '='
+%left OR
+%left AND
+%left '<'
+%left '+' '-'
+%left '*' '/' '%'
+%right '!'
+%left '[' '.' '('
 
 // define the constant-string tokens:
 %token AND

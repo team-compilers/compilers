@@ -43,7 +43,7 @@ void extractVisitorErrorsAndPrint( T* visitor ) {
 }
 
 void printErrorCount( int errorCount ) {
-    std::cout << "Found "  << errorCount << " errors:" << std::endl;
+    std::cout << "Found "  << errorCount << " errors." << std::endl;
 }
 
 int main( int argc, char* argv[] ) {
@@ -71,7 +71,7 @@ int main( int argc, char* argv[] ) {
 
         int errorCount = symbolTableBuilderVisitor.Errors()->size();
         if ( errorCount == 0 ) {
-            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
+            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, false );
             typeCheckerVisitor.Visit( astRoot.get() );
             errorCount += typeCheckerVisitor.Errors()->size();
             printErrorCount( errorCount );
