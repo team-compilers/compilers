@@ -44,21 +44,17 @@ static void printType( TTypeIdentifier type )
 
 /*__________ Access Modifiers __________*/
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
-
-    // TODO
-
     onNodeExit( nodeName );
 }
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
-
-    // TODO
-
     onNodeExit( nodeName );
 }
 
@@ -377,30 +373,24 @@ void CTypeCheckerVisitor::Visit( const CBracesStatement* statement ) {
 
 /*__________ Type Modifiers __________*/
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
-
-    // TODO
-
     onNodeExit( nodeName );
 }
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
-
-    // TODO
-
     onNodeExit( nodeName );
 }
 
+// ignored
 void CTypeCheckerVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
-
-    // TODO
-
     onNodeExit( nodeName );
 }
 
