@@ -27,9 +27,7 @@ enum class TOperatorType : char {
     OT_Mod,
     OT_LT,
     OT_And,
-    OT_Or,
-
-    OT_Count
+    OT_Or
 };
 
 class CBinaryExpression : public CExpression {
