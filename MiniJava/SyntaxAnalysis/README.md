@@ -10,19 +10,22 @@ __Пошаговая генерация результатов__:
 # генерирует парсер по грамматике, собирает решение
 make
 
-# парсит файлы из директории data/Samples/, строит AST, сохраняет в формате DOT в results/SamplesGV/
+# парсит файлы из директории data/SamplesCorrect/, строит AST, сохраняет в формате DOT в results/SamplesCorrectGV/
 python launcher.py dot
 
-# компилирует файлы в results/SamplesGV/ в картинки (SVG), сохраняет в results/SamplesAST/
+# компилирует файлы в results/SamplesCorrectGV/ в картинки (SVG), сохраняет в results/SamplesCorrectAST/
 python launcher.py images
 
-# генерирует код, аналогичный коду исходной программы, сохраняет в results/SamplesCode/
+# генерирует код, аналогичный коду исходной программы, сохраняет в results/SamplesCorrectCode/
+python launcher.py code
+
+# выводит на экран ошибки компилятора, запущенного на файлах из data/SamplesCorrect/
 python launcher.py code
 ```
 
 __Удаление всех сгенерированных файлов__:
 ```bash
-# удаляет все результаты из директорий results/SamplesGV/, results/SamplesAST/, results/SamplesCode/
+# удаляет все результаты из директорий results/SamplesCorrectGV/, results/SamplesCorrectAST/, results/SamplesCorrectCode/
 python launcher.py clean
 
 # удаляет все объектные и исполняемые файлы

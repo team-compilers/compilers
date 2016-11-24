@@ -9,16 +9,16 @@ def generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = ''
         if not isfile(filepath_input):
             continue
         if verbose:
-            print '\033[1;34m' + filepath_input + '\033[1;39m'
+            print '\033[1;34m' + filepath_input + '\033[0;39m'
         filepath_output = splitext(join(dirpath_output, filename))[0] + fout_ext
         system(sys_command_f(filepath_input, filepath_output))
 
-DEF_DIR_IN_DOT = 'data/SamplesErroneous/'
-DEF_DIR_OUT_DOT = 'results/SamplesErroneousGV/'
+DEF_DIR_IN_DOT = 'data/SamplesCorrect/'
+DEF_DIR_OUT_DOT = 'results/SamplesCorrectGV/'
 DEF_DIR_IN_IMGS = DEF_DIR_OUT_DOT
-DEF_DIR_OUT_IMGS = 'results/SamplesErroneousAST/'
+DEF_DIR_OUT_IMGS = 'results/SamplesCorrectAST/'
 DEF_DIR_IN_CODE = DEF_DIR_IN_DOT
-DEF_DIR_OUT_CODE = 'results/SamplesErroneousCode/'
+DEF_DIR_OUT_CODE = 'results/SamplesCorrectCode/'
 DEF_DIR_IN_ERRORS = 'data/SamplesCorrect/'
 DEF_DIR_OUT_ERRORS = '/dev/null'
 
