@@ -15,7 +15,7 @@ DEF_DIR_IN_IMGS = DEF_DIR_OUT_DOT
 DEF_DIR_OUT_IMGS = 'results/SamplesAST/'
 DEF_DIR_IN_CODE = DEF_DIR_IN_DOT
 DEF_DIR_OUT_CODE = 'results/SamplesCode/'
-DEF_DIR_IN_ERRORS = 'data/SamplesBad'
+DEF_DIR_IN_ERRORS = 'data/SamplesBad/Lectors/'
 DEF_DIR_OUT_ERRORS = '/dev/null'
 
 def generate_results_dot(dirpath_input = DEF_DIR_IN_DOT, dirpath_output = DEF_DIR_OUT_DOT):
