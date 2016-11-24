@@ -74,10 +74,19 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-// ignored
 void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
+
+    std::string name = expression->Name();
+    CTypeIdentifier notFound(TTypeIdentifier::NotFound);
+
+    if (lastClass->GetFieldType(name) == notFound &&
+    	lastMethod->GetLocalVariableType(name) == notFound &&
+    	lastMethod->GetArgumentType(name) == notFound) {
+    	errors->push_back( CCompilationError( expression->Location(), CCompilationError::VAR_UNDEFINED ) );
+    }
+
     onNodeExit( nodeName );
 }
 
@@ -300,6 +309,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
 void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
+    lastMethod = lastClass->GetMethodDefinition(declaration->MethodId()->Name());
 
 	declaration->TypeModifier()->Accept( this );
 	declaration->MethodArguments()->Accept( this );
@@ -307,6 +317,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     declaration->Statements()->Accept( this );
     declaration->ReturnExpression()->Accept( this );
 
+    lastMethod = nullptr;
     onNodeExit( nodeName );
 }
 
@@ -324,6 +335,7 @@ void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
     using TClassDefinition = std::shared_ptr<const CClassDefinition>;
 
     std::string thisClassName = declaration->ClassName()->Name();
+    lastClass = symbolTablePtr->GetClassDefinition(thisClassName);
 
     declaration->VarDeclarations()->Accept( this );
 	declaration->MethodDeclarations()->Accept( this );
@@ -346,6 +358,7 @@ void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
 		}
 	}
 
+	lastClass = nullptr;
     onNodeExit( nodeName );
 }
 

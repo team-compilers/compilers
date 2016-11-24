@@ -11,6 +11,7 @@ const std::string CCompilationError::INVALID_INDEX_TYPE = "Index should have int
 const std::string CCompilationError::CYCLIC_INHERITANCE = "Cyclic inheritance";
 const std::string CCompilationError::PARENT_CLASS_NOT_EXISTS = "Parent class does not exist";
 const std::string CCompilationError::TYPE_NOT_EXISTS = "Type does not exist";
+const std::string CCompilationError::VAR_UNDEFINED = "Variable was not defined";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 

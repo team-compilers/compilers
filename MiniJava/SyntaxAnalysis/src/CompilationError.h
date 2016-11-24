@@ -20,6 +20,7 @@ public:
     static const std::string CYCLIC_INHERITANCE;
     static const std::string PARENT_CLASS_NOT_EXISTS;
     static const std::string TYPE_NOT_EXISTS;
+    static const std::string VAR_UNDEFINED;
 
 private:
     CLocation location;

@@ -235,9 +235,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     declaration->AccessModifier()->Accept( this ); // fills lastAccessModifier
 
-    localVariableTypes = std::vector<std::shared_ptr<VarNameToTypeMap>> {
-        std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() )
-    };
+    localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );
     declaration->MethodArguments()->Accept( this ); // fills localVariableTypes.back()
 
     localVariableTypes.push_back( std::shared_ptr<VarNameToTypeMap>( new VarNameToTypeMap() ) );

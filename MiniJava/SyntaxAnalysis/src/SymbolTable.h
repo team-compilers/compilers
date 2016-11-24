@@ -40,6 +40,17 @@ public:
     TTypeIdentifier Type() const { return type; }
     const std::string& ClassName() const { return className; }
 
+    bool operator==(const CTypeIdentifier& other) const {
+    	if (type == other.type) {
+    		if (type == TTypeIdentifier::ClassId) {
+    			return className == other.className;
+    		} else {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+
 private:
     TTypeIdentifier type;
     // Valid if Type==TTypeIdentifier::ClassId
