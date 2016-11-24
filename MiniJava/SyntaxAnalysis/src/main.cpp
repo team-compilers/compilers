@@ -71,7 +71,7 @@ int main( int argc, char* argv[] ) {
 
         int errorCount = symbolTableBuilderVisitor.Errors()->size();
         if ( errorCount == 0 ) {
-            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, false );
+            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
             typeCheckerVisitor.Visit( astRoot.get() );
             errorCount += typeCheckerVisitor.Errors()->size();
             printErrorCount( errorCount );
