@@ -183,10 +183,24 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 
     expression->CallerExpression()->Accept( this );
 
-    // TODO: lastType
+    std::string methodName = expression->MethodId()->Name();
+    std::string className = lastType.ClassName();
+
+    std::shared_ptr<const CClassDefinition> callerClassDefinition =  
+        symbolTablePtr->GetClassDefinition( className );
+
+    assert( callerClassDefinition.get() != 0 );
+
+    std::shared_ptr<const CMethodDefinition> methodDefinition =
+        callerClassDefinition->GetMethodDefinition( methodName );
+
+    if( methodDefinition.get() == 0 ) {
+        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
+    }
 
     expression->Arguments()->Accept( this );
-    expression->MethodId()->Accept( this );
+
+    lastType = methodDefinition->ReturnType();
 
     onNodeExit( nodeName );
 }

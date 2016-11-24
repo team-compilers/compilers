@@ -86,4 +86,5 @@ private:
     std::shared_ptr<std::vector<CCompilationError>> errors;
     std::shared_ptr<const CClassDefinition> lastClass;
     std::shared_ptr<const CMethodDefinition> lastMethod;
+    std::string lastId;
 };
