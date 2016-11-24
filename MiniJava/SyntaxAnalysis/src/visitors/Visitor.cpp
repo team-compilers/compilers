@@ -25,7 +25,6 @@ std::string CVisitor::operatorName( const TOperatorType& type ) const {
         case TOperatorType::OT_LT: result = "Less"; break;
         case TOperatorType::OT_And: result = "And"; break;
         case TOperatorType::OT_Or: result = "Or"; break;
-        case TOperatorType::OT_Count: result = "Count"; break;
     }
     return result;
 }
@@ -41,7 +40,6 @@ std::string CVisitor::operatorChar( const TOperatorType& type ) const {
         case TOperatorType::OT_LT: result = "<"; break;
         case TOperatorType::OT_And: result = "&&"; break;
         case TOperatorType::OT_Or: result = "||"; break;
-        case TOperatorType::OT_Count: result = ".Count"; break;
     }
     return result;
 }
