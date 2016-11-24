@@ -379,22 +379,6 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
             errors->push_back( CCompilationError( declaration->Location(), CCompilationError::METHOD_OVERLOADING ) );
             break;
         }
-=======
-
-    std::string name = declaration->MethodId()->Name();
-    lastMethod = lastClass->GetMethodDefinition(name);
-
-    std::shared_ptr<const CClassDefinition> precedingClass = lastClass;
-
-    while (precedingClass->HasParent()) {
-    	precedingClass = symbolTablePtr->GetClassDefinition(precedingClass->GetParentName());
-    	if (precedingClass == nullptr) {
-    		break;
-    	} else if (precedingClass->GetMethodDefinition(name) != nullptr) {
-    		errors->push_back( CCompilationError( declaration->Location(), CCompilationError::METHOD_OVERLOADING ) );
-    		break;
-    	}
->>>>>>> ae503f2804e2ab2cc354abaacbfc8cdfbaa3e299
     }
 
 	declaration->TypeModifier()->Accept( this );
