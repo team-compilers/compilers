@@ -273,7 +273,7 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
 
     statement->RightPart()->Accept( this );
     TTypeIdentifier rightOperandType = lastType;
-    statement->LeftPartId()->Accept( this );
+    statement->LeftPartIndex()->Accept( this );
     TTypeIdentifier leftOperandType = lastType;
     if ( leftOperandType != TTypeIdentifier::Int ) {
         errors->push_back( CCompilationError( ( statement->LeftPartId() )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
