@@ -31,12 +31,12 @@ static void printType( TTypeIdentifier type )
         }
         case TTypeIdentifier::ClassId:
         {
-        	string = "classId";
-        	break;
+            string = "classId";
+            break;
         }
         default: {
-        	string = "other";
-        	break;
+            string = "other";
+            break;
         }
     }
     std::cout << string << std::endl;
@@ -75,16 +75,16 @@ void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
         operatorType = TTypeIdentifier::Int;
     }
     expression->LeftOperand()->Accept( this );
-    TTypeIdentifier leftOperandType = lastType;
+    TTypeIdentifier leftOperandType = lastType.Type();
 
     expression->RightOperand()->Accept( this );
-    TTypeIdentifier RightOperandType = lastType;
+    TTypeIdentifier RightOperandType = lastType.Type();
 
     if ( leftOperandType != RightOperandType ) {
         errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
-        lastType = TTypeIdentifier::NotFound;
+        lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
     } else {
-        lastType = operatorType;
+        lastType = CTypeIdentifier( operatorType );
     }
     onNodeExit( nodeName );
 }
@@ -96,15 +96,15 @@ void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
     expression->ContainerExpression()->Accept( this );
 
     TTypeIdentifier containerType;
-    if(lastType == TTypeIdentifier::IntArray) {
-    	containerType = TTypeIdentifier::Int;
+    if( lastType.Type() == TTypeIdentifier::IntArray ) {
+        containerType = TTypeIdentifier::Int;
     } else {
-    	containerType = TTypeIdentifier::NotFound;
+        containerType = TTypeIdentifier::NotFound;
     }
 
     expression->IndexExpression()->Accept( this );
 
-    lastType = containerType;
+    lastType = CTypeIdentifier( containerType );
 
     onNodeExit( nodeName );
 }
@@ -113,7 +113,7 @@ void CTypeCheckerVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
-    lastType = TTypeIdentifier::Int;
+    lastType = CTypeIdentifier( TTypeIdentifier::Int );
 
     onNodeExit( nodeName );
 }
@@ -122,7 +122,7 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
-    lastType = TTypeIdentifier::Boolean;
+    lastType = CTypeIdentifier( TTypeIdentifier::Boolean );
 
     onNodeExit( nodeName );
 }
@@ -142,24 +142,24 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     //printType(fieldLurk.Type());
     //printType(localLurk.Type());
     //printType(argumentLurk.Type());
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     // The latter wins.
-    if (fieldLurk != notFound) {
-    	lastType = fieldLurk.Type();
+    if ( fieldLurk != notFound ) {
+        lastType = fieldLurk;
     }
-    if( methodLurk != nullptr && methodLurk->ReturnType() != notFound) {
-        lastType = methodLurk->ReturnType().Type();
+    if ( methodLurk != nullptr && methodLurk->ReturnType() != notFound ) {
+        lastType = methodLurk->ReturnType();
     }
-    if (argumentLurk != notFound) {
-    	lastType = argumentLurk.Type();
+    if ( argumentLurk != notFound ) {
+        lastType = argumentLurk;
     }
-    if (localLurk != notFound) {
-    	lastType = localLurk.Type();
+    if ( localLurk != notFound ) {
+        lastType = localLurk;
     }
 
-    if (lastType == TTypeIdentifier::NotFound) {
-    	errors->push_back( CCompilationError( expression->Location(), CCompilationError::VAR_UNDEFINED ) );
+    if ( lastType.Type() == TTypeIdentifier::NotFound ) {
+        errors->push_back( CCompilationError( expression->Location(), CCompilationError::VAR_UNDEFINED ) );
     }
     //printType(lastType);
     onNodeExit( nodeName );
@@ -170,9 +170,9 @@ void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
     onNodeEnter( nodeName );
 
     expression->LengthTarget()->Accept ( this );
-    lastType = TTypeIdentifier::Int;
+    lastType = CTypeIdentifier( TTypeIdentifier::Int );
 
-    lastType = TTypeIdentifier::Int;
+    lastType = CTypeIdentifier( TTypeIdentifier::Int );
 
     onNodeExit( nodeName );
 }
@@ -197,7 +197,7 @@ void CTypeCheckerVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
 
-    lastType = TTypeIdentifier::ClassId;
+    lastType = CTypeIdentifier( lastClass->ClassName() );
 
     onNodeExit( nodeName );
 }
@@ -208,14 +208,14 @@ void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
 
     expression->LengthExpression()->Accept( this );
 
-    if ( lastType != TTypeIdentifier::Int ) {
-        lastType = TTypeIdentifier::NotFound;
+    if ( lastType.Type() != TTypeIdentifier::Int ) {
+        lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
         errors->push_back( CCompilationError( expression->Location(), CCompilationError::INVALID_LENGTH_TYPE ) );
     } else {
-        lastType = TTypeIdentifier::IntArray;
+        lastType = CTypeIdentifier( TTypeIdentifier::IntArray );
     }
 
-    lastType = TTypeIdentifier::IntArray;
+    lastType = CTypeIdentifier( TTypeIdentifier::IntArray );
 
     onNodeExit( nodeName );
 }
@@ -227,10 +227,10 @@ void CTypeCheckerVisitor::Visit( const CNewIdExpression* expression ) {
     std::string className = expression->TargetId()->Name();
 
     if ( symbolTablePtr->GetClassDefinition(className) == nullptr ) {
-    	errors->push_back( CCompilationError( expression->Location(), CCompilationError::TYPE_NOT_EXISTS ) );
+        errors->push_back( CCompilationError( expression->Location(), CCompilationError::TYPE_NOT_EXISTS ) );
     }
 
-    lastType = TTypeIdentifier::ClassId;
+    lastType = CTypeIdentifier( className );
 
     onNodeExit( nodeName );
 }
@@ -241,7 +241,7 @@ void CTypeCheckerVisitor::Visit( const CNegateExpression* expression ) {
 
     expression->TargetExpression()->Accept( this );
     // It should stay intact.
-    lastType = TTypeIdentifier::Boolean;
+    lastType = CTypeIdentifier( TTypeIdentifier::Boolean );
 
     onNodeExit( nodeName );
 }
@@ -254,15 +254,15 @@ void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->LeftPart()->Accept( this );
-    TTypeIdentifier leftPartLocalType = lastType;
+    TTypeIdentifier leftPartLocalType = lastType.Type();
 
     statement->RightPart()->Accept( this );
-    TTypeIdentifier rightPartLocalType = lastType;
+    TTypeIdentifier rightPartLocalType = lastType.Type();
 
     if ( leftPartLocalType != rightPartLocalType ) {
         errors->push_back( CCompilationError( ( statement->LeftPart() )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -272,9 +272,9 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
     onNodeEnter( nodeName );
 
     statement->RightPart()->Accept( this );
-    TTypeIdentifier rightOperandType = lastType;
+    TTypeIdentifier rightOperandType = lastType.Type();
     statement->LeftPartIndex()->Accept( this );
-    TTypeIdentifier leftOperandType = lastType;
+    TTypeIdentifier leftOperandType = lastType.Type();
     if ( leftOperandType != TTypeIdentifier::Int ) {
         errors->push_back( CCompilationError( ( statement->LeftPartId() )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
     }
@@ -282,7 +282,7 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
         errors->push_back( CCompilationError( ( statement->RightPart() )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
     }
 
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -293,10 +293,10 @@ void CTypeCheckerVisitor::Visit( const CPrintStatement* statement ) {
 
     statement->PrintTarget()->Accept( this );
 
-    if ( lastType != TTypeIdentifier::Int ) {
+    if ( lastType.Type() != TTypeIdentifier::Int ) {
         errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_PRINT_TYPE ) );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -306,10 +306,10 @@ void CTypeCheckerVisitor::Visit( const CConditionalStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->Condition()->Accept( this );
-    if ( lastType != TTypeIdentifier::Boolean ) {
+    if ( lastType.Type() != TTypeIdentifier::Boolean ) {
         errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_CONDITION_TYPE ) );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -319,10 +319,10 @@ void CTypeCheckerVisitor::Visit( const CWhileLoopStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->Condition()->Accept( this );
-    if ( lastType != TTypeIdentifier::Boolean ) {
+    if ( lastType.Type() != TTypeIdentifier::Boolean ) {
         errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_CONDITION_TYPE ) );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -332,7 +332,7 @@ void CTypeCheckerVisitor::Visit( const CBracesStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->List()->Accept( this );
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -373,10 +373,10 @@ void CTypeCheckerVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string className = typeModifier->TypeId()->Name();
 
     if ( symbolTablePtr->GetClassDefinition(className) == nullptr ) {
-    	errors->push_back( CCompilationError( typeModifier->Location(), CCompilationError::TYPE_NOT_EXISTS ) );
+        errors->push_back( CCompilationError( typeModifier->Location(), CCompilationError::TYPE_NOT_EXISTS ) );
     }
 
-    lastType = TTypeIdentifier::ClassId;
+    lastType = CTypeIdentifier( className );
 
     onNodeExit( nodeName );
 }
@@ -388,7 +388,7 @@ void CTypeCheckerVisitor::Visit( const CVarDeclaration* declaration ) {
     onNodeEnter( nodeName );
 
     declaration->Type()->Accept( this );
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -420,14 +420,14 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
         }
     }
 
-	declaration->TypeModifier()->Accept( this );
-	declaration->MethodArguments()->Accept( this );
+    declaration->TypeModifier()->Accept( this );
+    declaration->MethodArguments()->Accept( this );
     declaration->VarDeclarations()->Accept( this );
     declaration->Statements()->Accept( this );
     declaration->ReturnExpression()->Accept( this );
 
     lastMethod = nullptr;
-	lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -437,7 +437,7 @@ void CTypeCheckerVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
     
-	lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -452,28 +452,28 @@ void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
     lastClass = symbolTablePtr->GetClassDefinition(thisClassName);
 
     declaration->VarDeclarations()->Accept( this );
-	declaration->MethodDeclarations()->Accept( this );
+    declaration->MethodDeclarations()->Accept( this );
 
     if ( declaration->HasParent() ) {
-	    std::string parentName = declaration->ExtendsClassName()->Name();
-	    TClassDefinition parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
+        std::string parentName = declaration->ExtendsClassName()->Name();
+        TClassDefinition parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
 
-	    if ( parentClassDefinition == nullptr ) {
-	    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::PARENT_CLASS_NOT_EXISTS ) );
-	    } else {
-		    while ( parentClassDefinition != nullptr && parentClassDefinition->HasParent() && parentClassDefinition->ClassName() != thisClassName ) {
-		    	parentName = parentClassDefinition->GetParentName();
-		    	parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
-		    }
+        if ( parentClassDefinition == nullptr ) {
+            errors->push_back( CCompilationError( declaration->Location(), CCompilationError::PARENT_CLASS_NOT_EXISTS ) );
+        } else {
+            while ( parentClassDefinition != nullptr && parentClassDefinition->HasParent() && parentClassDefinition->ClassName() != thisClassName ) {
+                parentName = parentClassDefinition->GetParentName();
+                parentClassDefinition = symbolTablePtr->GetClassDefinition(parentName);
+            }
 
-		    if ( parentName == thisClassName ) {
-		    	errors->push_back( CCompilationError( declaration->Location(), CCompilationError::CYCLIC_INHERITANCE ) );
-		    }
-		}
-	}
+            if ( parentName == thisClassName ) {
+                errors->push_back( CCompilationError( declaration->Location(), CCompilationError::CYCLIC_INHERITANCE ) );
+            }
+        }
+    }
 
-	lastClass = nullptr;
-	lastType = TTypeIdentifier::NotFound;
+    lastClass = nullptr;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -483,7 +483,7 @@ void CTypeCheckerVisitor::Visit( const CProgram* program ) {
     onNodeEnter( nodeName );
 
     program->ClassDeclarations()->Accept( this );
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -498,7 +498,7 @@ void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
     for ( auto it = expressions.rbegin(); it != expressions.rend(); ++it ) {
         ( *it )->Accept( this );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -511,7 +511,7 @@ void CTypeCheckerVisitor::Visit( const CStatementList* list ) {
     for ( auto it = statements.rbegin(); it != statements.rend(); ++it ) {
         ( *it )->Accept( this );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -524,7 +524,7 @@ void CTypeCheckerVisitor::Visit( const CVarDeclarationList* list ) {
     for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {        
         ( *it )->Accept( this );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -537,7 +537,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgumentList* list ) {
     for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
         ( *it )->Accept( this );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -550,7 +550,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclarationList* list ) {
     for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
         ( *it )->Accept( this );   
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
@@ -563,7 +563,7 @@ void CTypeCheckerVisitor::Visit( const CClassDeclarationList* list ) {
     for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
         ( *it )->Accept( this );
     }
-    lastType = TTypeIdentifier::NotFound;
+    lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
 }
