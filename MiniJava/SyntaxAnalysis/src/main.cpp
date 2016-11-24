@@ -43,7 +43,7 @@ void extractVisitorErrorsAndPrint( T* visitor ) {
 }
 
 void printErrorCount( int errorCount ) {
-    std::cout << "Found "  << errorCount << " errors." << std::endl;
+    std::cout << "Found "  << errorCount << " errors:" << std::endl;
 }
 
 int main( int argc, char* argv[] ) {
@@ -64,13 +64,14 @@ int main( int argc, char* argv[] ) {
         traversal = AstToDotLanguage( astRoot.get(), false );
         printResultToFile( outputFilePath, traversal );
     } else if ( mode == "errors" ) {
+        std::cout << std::string( argv[1] ) << std::endl;
         CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
         symbolTableBuilderVisitor.Visit( astRoot.get() );
         std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
 
         int errorCount = symbolTableBuilderVisitor.Errors()->size();
         if ( errorCount == 0 ) {
-            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
+            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, false );
             typeCheckerVisitor.Visit( astRoot.get() );
             errorCount += typeCheckerVisitor.Errors()->size();
             printErrorCount( errorCount );
@@ -80,6 +81,7 @@ int main( int argc, char* argv[] ) {
             printErrorCount( errorCount );
             extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
         }
+        std::cout << std::endl;
     } else {
         printHelp( argv[0] );
         throw std::logic_error( "Wrong mode provided" );

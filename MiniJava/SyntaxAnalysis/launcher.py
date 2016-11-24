@@ -15,6 +15,8 @@ DEF_DIR_IN_IMGS = DEF_DIR_OUT_DOT
 DEF_DIR_OUT_IMGS = 'results/SamplesAST/'
 DEF_DIR_IN_CODE = DEF_DIR_IN_DOT
 DEF_DIR_OUT_CODE = 'results/SamplesCode/'
+DEF_DIR_IN_ERRORS = 'data/Samples'
+DEF_DIR_OUT_ERRORS = '/dev/null'
 
 def generate_results_dot(dirpath_input = DEF_DIR_IN_DOT, dirpath_output = DEF_DIR_OUT_DOT):
     def sys_command_f(filepath_input, filepath_output):
@@ -31,10 +33,16 @@ def generate_results_code(dirpath_input = DEF_DIR_IN_CODE, dirpath_output = DEF_
         return './ast ' + filepath_input + ' ' + filepath_output + ' code'
     generate_results(dirpath_input, dirpath_output, sys_command_f, fout_ext = '.java')
 
+def generate_results_errors(dirpath_input = DEF_DIR_IN_ERRORS, dirpath_output = DEF_DIR_OUT_ERRORS):
+    def sys_command_f(filepath_input, filepath_output):
+        return './ast ' + filepath_input + ' ' + filepath_output + ' errors'
+    generate_results(dirpath_input, dirpath_output, sys_command_f)
+
 def generate_results_all():
     generate_results_code()
     generate_results_dot()
     generate_results_images()
+    generate_results_errors()
 
 def remove_generated_data(dirpaths = [DEF_DIR_OUT_DOT, DEF_DIR_OUT_IMGS, DEF_DIR_OUT_CODE]):
     for dirpath in dirpaths:
@@ -52,6 +60,7 @@ mode_to_func = {
     'dot': generate_results_dot,
     'images': generate_results_images,
     'code': generate_results_code,
+    'errors': generate_results_errors,
     'clean': remove_generated_data
 }
 modes = mode_to_func.keys()
