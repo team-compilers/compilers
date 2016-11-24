@@ -29,13 +29,13 @@ void printResultToFile( const std::string& outputFilePath, const std::string& re
     outStream.close();
 }
 
-void printHelp(const std::string& programName) {
+void printHelp( const std::string& programName ) {
     std::cerr << programName << " <inputFilePath> <outputFilePath> <mode>" << std::endl;
     std::cerr << "<mode>: dot / code" << std::endl;
 }
 
 template<typename T>
-void extractVisitorErrorsAndPrint(T* visitor) {
+void extractVisitorErrorsAndPrint( T* visitor ) {
 	std::shared_ptr<const std::vector<CCompilationError>> errors = visitor->Errors();
     for ( const CCompilationError& error : *errors ) {
         std::cout << error.ToString() << std::endl;
@@ -65,8 +65,8 @@ int main( int argc, char* argv[] ) {
         std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
         CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
         typeCheckerVisitor.Visit( astRoot.get() );
-        extractVisitorErrorsAndPrint(&symbolTableBuilderVisitor);
-        extractVisitorErrorsAndPrint(&typeCheckerVisitor);
+        extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
+        extractVisitorErrorsAndPrint( &typeCheckerVisitor );
     } else {
         printHelp( argv[0] );
         throw std::logic_error( "Wrong mode provided" );
