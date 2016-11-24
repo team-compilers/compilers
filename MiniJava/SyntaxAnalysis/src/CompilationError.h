@@ -22,6 +22,7 @@ public:
     static const std::string PARENT_CLASS_NOT_EXISTS;
     static const std::string TYPE_NOT_EXISTS;
     static const std::string VAR_UNDEFINED;
+    static const std::string METHOD_OVERLOADING;
 
 private:
     CLocation location;

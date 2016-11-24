@@ -4,6 +4,31 @@ std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckerVisitor::Error
     return errors;
 }
 
+static void printType( TTypeIdentifier type )
+{
+    std::string string;
+    switch( type )
+    {
+        case TTypeIdentifier::Int:
+        { 
+            string = "int";
+            break;
+        }
+        case TTypeIdentifier::Boolean:
+        {
+            string = "bool";
+            break;
+        }
+        case TTypeIdentifier::NotFound: 
+        {
+            string = "NF";
+            break;
+        }
+        default: string = "beda";
+    }
+    std::cout << string << std::endl;
+}
+
 /*__________ Access Modifiers __________*/
 
 void CTypeCheckerVisitor::Visit( const CPublicAccessModifier* modifier ) {
@@ -30,19 +55,28 @@ void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
+    TTypeIdentifier operatorType; 
+    if ( expression->Operation() == TOperatorType::OT_LT ) {
+        operatorType = TTypeIdentifier::Boolean;
+    } else {
+        operatorType = TTypeIdentifier::Int;
+    }
     expression->LeftOperand()->Accept( this );
     TTypeIdentifier leftOperandType = lastType;
 
     expression->RightOperand()->Accept( this );
     TTypeIdentifier RightOperandType = lastType;
 
-    if ( leftOperandType != RightOperandType ) {
+    if ( leftOperandType != RightOperandType || leftOperandType != operatorType ) {
         errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::DIFFERENT_TYPES_OF_ARGUMENTS ) );
         lastType = TTypeIdentifier::NotFound;
     } else {
         lastType = leftOperandType;
     }
-
+    //printType( leftOperandType );
+    //printType( RightOperandType );
+    //printType( operatorType );
+    //printType( lastType );
     onNodeExit( nodeName );
 }
 
@@ -81,10 +115,15 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string name = expression->Name();
     CTypeIdentifier notFound(TTypeIdentifier::NotFound);
 
+    std::cout<<lastClass->ClassName() << std::endl;
+    std::cout<<lastMethod->MethodName() << std::endl;
+
     CTypeIdentifier fieldLurk = lastClass->GetFieldType(name);
     CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
     CTypeIdentifier argumentLurk = lastMethod->GetArgumentType(name);
-
+    //printType(fieldLurk.Type());
+    //printType(localLurk.Type());
+    //printType(argumentLurk.Type());
     lastType = TTypeIdentifier::NotFound;
 
     // The latter wins.
@@ -101,7 +140,7 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     if (lastType == TTypeIdentifier::NotFound) {
     	errors->push_back( CCompilationError( expression->Location(), CCompilationError::VAR_UNDEFINED ) );
     }
-
+    //printType(lastType);
     onNodeExit( nodeName );
 }
 
@@ -328,7 +367,18 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
 void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
-    lastMethod = lastClass->GetMethodDefinition(declaration->MethodId()->Name());
+    std::string name = declaration->MethodId()->Name();
+    lastMethod = lastClass->GetMethodDefinition(name);
+    std::shared_ptr<const CClassDefinition> precedingClass = lastClass;
+    while (precedingClass->HasParent()) {
+        precedingClass = symbolTablePtr->GetClassDefinition(precedingClass->GetParentName());
+        if (precedingClass == nullptr) {
+            break;
+        } else if (precedingClass->GetMethodDefinition(name) != nullptr) {
+            errors->push_back( CCompilationError( declaration->Location(), CCompilationError::METHOD_OVERLOADING ) );
+            break;
+        }
+    }
 
 	declaration->TypeModifier()->Accept( this );
 	declaration->MethodArguments()->Accept( this );
