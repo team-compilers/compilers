@@ -181,6 +181,7 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
+    CTypeIdentifier methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
     expression->CallerExpression()->Accept( this );
 
     std::string methodName = expression->MethodId()->Name();
@@ -192,18 +193,19 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 
     if( callerClassDefinition == nullptr ) {
         errors->emplace_back( expression->Location(), CCompilationError::INVALID_CALLER_EXPRESSION );
-    }
+    } else {
+	    std::shared_ptr<const CMethodDefinition> methodDefinition =
+	        callerClassDefinition->GetMethodDefinition( methodName );
 
-    std::shared_ptr<const CMethodDefinition> methodDefinition =
-        callerClassDefinition->GetMethodDefinition( methodName );
+	    if( methodDefinition.get() == 0 ) {
+	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
+	    }
 
-    if( methodDefinition.get() == 0 ) {
-        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
-    }
+	    methodReturnType = methodDefinition->ReturnType();
+	}
 
     expression->Arguments()->Accept( this );
-
-    lastType = methodDefinition->ReturnType();
+    lastType = methodReturnType;
 
     onNodeExit( nodeName );
 }
@@ -449,11 +451,11 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     onNodeExit( nodeName );
 }
 
-// ignored
 void CTypeCheckerVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
     
+    mainClass->Statements()->Accept( this );
     lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
@@ -499,6 +501,7 @@ void CTypeCheckerVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
+    program->MainClass()->Accept( this );
     program->ClassDeclarations()->Accept( this );
     lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
