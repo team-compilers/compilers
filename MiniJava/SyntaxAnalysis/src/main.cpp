@@ -42,6 +42,10 @@ void extractVisitorErrorsAndPrint( T* visitor ) {
     }
 }
 
+void printErrorCount( int errorCount ) {
+    std::cout << "Found "  << errorCount << " errors." << std::endl;
+}
+
 int main( int argc, char* argv[] ) {
     if ( argc < 4 ) {
         printHelp( argv[0] );
@@ -64,10 +68,18 @@ int main( int argc, char* argv[] ) {
         symbolTableBuilderVisitor.Visit( astRoot.get() );
         std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
 
-        CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
-        typeCheckerVisitor.Visit( astRoot.get() );
-        extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
-        extractVisitorErrorsAndPrint( &typeCheckerVisitor );
+        int errorCount = symbolTableBuilderVisitor.Errors()->size();
+        if ( errorCount == 0 ) {
+            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, true );
+            typeCheckerVisitor.Visit( astRoot.get() );
+            errorCount += typeCheckerVisitor.Errors()->size();
+            printErrorCount( errorCount );
+            extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
+            extractVisitorErrorsAndPrint( &typeCheckerVisitor );
+        } else {
+            printErrorCount( errorCount );
+            extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
+        }
     } else {
         printHelp( argv[0] );
         throw std::logic_error( "Wrong mode provided" );
