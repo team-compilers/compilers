@@ -104,6 +104,10 @@ void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
 
     expression->IndexExpression()->Accept( this );
 
+    if( lastType.Type() != TTypeIdentifier::Int ) {
+    	errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
+    }
+
     lastType = CTypeIdentifier( containerType );
 
     onNodeExit( nodeName );
@@ -328,6 +332,8 @@ void CTypeCheckerVisitor::Visit( const CConditionalStatement* statement ) {
     if ( lastType.Type() != TTypeIdentifier::Boolean ) {
         errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_CONDITION_TYPE ) );
     }
+    statement->PositiveTarget()->Accept( this );
+    statement->NegativeTarget()->Accept( this );
     lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );
@@ -341,6 +347,7 @@ void CTypeCheckerVisitor::Visit( const CWhileLoopStatement* statement ) {
     if ( lastType.Type() != TTypeIdentifier::Boolean ) {
         errors->push_back( CCompilationError( ( statement )->Location(), CCompilationError::INVALID_CONDITION_TYPE ) );
     }
+    statement->Body()->Accept( this );
     lastType = CTypeIdentifier( TTypeIdentifier::NotFound );
 
     onNodeExit( nodeName );

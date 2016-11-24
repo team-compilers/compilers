@@ -39,7 +39,7 @@ class QS{
 	int aux03 ;
 	t = 0 ;
 	if (left < right){
-	    v = number[cont01] ;
+	    v = number[cont01] ; // HERE
 	    i = left - 1 ;
 	    j = right ;
 	    cont01 = true ;
