@@ -23,6 +23,7 @@ public:
     static const std::string TYPE_NOT_EXISTS;
     static const std::string VAR_UNDEFINED;
     static const std::string METHOD_OVERLOADING;
+    static const std::string CLASS_HAS_NO_METHOD;
 
 private:
     CLocation location;

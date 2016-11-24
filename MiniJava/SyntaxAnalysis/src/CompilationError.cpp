@@ -14,6 +14,7 @@ const std::string CCompilationError::PARENT_CLASS_NOT_EXISTS = "Parent class doe
 const std::string CCompilationError::TYPE_NOT_EXISTS = "Type does not exist";
 const std::string CCompilationError::VAR_UNDEFINED = "Variable was not defined";
 const std::string CCompilationError::METHOD_OVERLOADING = "Method is being overloaded";
+const std::string CCompilationError::CLASS_HAS_NO_METHOD = "Method is not defined in caller-class";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 
