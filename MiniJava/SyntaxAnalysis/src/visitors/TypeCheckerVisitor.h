@@ -31,7 +31,7 @@ public:
     CTypeCheckerVisitor( std::shared_ptr<const CSymbolTable> _symbolTablePtr, bool _verbose = false ) : 
     CVisitor( _verbose ),
     symbolTablePtr( _symbolTablePtr ),
-    lastType( TTypeIdentifier::NotFound ),
+    lastType( { CTypeIdentifier(TTypeIdentifier::NotFound) } ),
     errors( new std::vector<CCompilationError>() )
     {}
 
@@ -81,7 +81,7 @@ public:
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
 private:
-    CTypeIdentifier lastType;
+    std::vector<CTypeIdentifier> lastType;
     std::shared_ptr<const CSymbolTable> symbolTablePtr;
     std::shared_ptr<std::vector<CCompilationError>> errors;
     std::shared_ptr<const CClassDefinition> lastClass;
