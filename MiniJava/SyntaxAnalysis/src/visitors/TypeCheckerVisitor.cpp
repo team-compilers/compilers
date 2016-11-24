@@ -201,11 +201,12 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 	    std::shared_ptr<const CMethodDefinition> methodDefinition =
 	        callerClassDefinition->GetMethodDefinition( methodName );
 
-	    if( methodDefinition.get() == 0 ) {
+	    if( methodDefinition == nullptr ) {
 	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
+	        methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
+	    } else {
+	    	methodReturnType = methodDefinition->ReturnType();
 	    }
-
-	    methodReturnType = methodDefinition->ReturnType();
 	}
 
     expression->Arguments()->Accept( this );
