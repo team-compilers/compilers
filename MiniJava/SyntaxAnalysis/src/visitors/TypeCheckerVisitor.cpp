@@ -184,7 +184,7 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
 	        methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
 	    } else {
-	    	if ( methodDefinition->AccessModifier() == TAccessModifier::Private &&
+	    	if( methodDefinition->AccessModifier() == TAccessModifier::Private &&
 	    		 callerClassDefinition != lastClass ) {
 	    		errors->emplace_back( expression->Location(), CCompilationError::METHOD_IS_PRIVATE );
 	    	}
@@ -194,8 +194,30 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
     			errors->emplace_back( expression->Location(), CCompilationError::ARGS_NUMBERS_NOT_MATCH );
     		} else {
     			for( int i = 0; i < lastType.size(); ++i ) {
-    				if (lastType[i] != methodDefinition->GetArgumentType(i) ) {
-    					errors->emplace_back( expression->Location(), CCompilationError::ARG_TYPE_NOT_MATCH );
+    				CTypeIdentifier expectedType = methodDefinition->GetArgumentType(i);
+    				if( lastType[i] != expectedType ) {
+    					bool canBeResolved = false;
+    					if( lastType[i].Type() == TTypeIdentifier::ClassId && 
+    						expectedType.Type() == TTypeIdentifier::ClassId) {
+    						
+    						std::shared_ptr<const CClassDefinition> ancestor = 
+    							symbolTablePtr->GetClassDefinition(lastType[i].ClassName());
+    						while( ancestor != nullptr ) {
+    							if( ancestor->ClassName() == expectedType.ClassName() ) {
+    								canBeResolved = true;
+    								break;
+    							}
+    							if( ancestor->HasParent() ) {
+	    							ancestor = symbolTablePtr->GetClassDefinition(ancestor->GetParentName());
+	    						} else {
+	    							ancestor = nullptr;
+	    						}
+    						}
+
+    					}
+    					if( !canBeResolved ) {
+    						errors->emplace_back( expression->Location(), CCompilationError::ARG_TYPE_NOT_MATCH );
+    					}
     				}
     			}
     		}
