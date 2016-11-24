@@ -190,7 +190,7 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 
     callerClassDefinition = symbolTablePtr->GetClassDefinition( className );
 
-    if( callerClassDefinition != nullptr ) {
+    if( callerClassDefinition == nullptr ) {
         errors->emplace_back( expression->Location(), CCompilationError::INVALID_CALLER_EXPRESSION );
     }
 
