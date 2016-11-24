@@ -81,9 +81,24 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     std::string name = expression->Name();
     CTypeIdentifier notFound(TTypeIdentifier::NotFound);
 
-    if (lastClass->GetFieldType(name) == notFound &&
-    	lastMethod->GetLocalVariableType(name) == notFound &&
-    	lastMethod->GetArgumentType(name) == notFound) {
+    CTypeIdentifier fieldLurk = lastClass->GetFieldType(name);
+    CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
+    CTypeIdentifier argumentLurk = lastMethod->GetArgumentType(name);
+
+    lastType = TTypeIdentifier::NotFound;
+
+    // The latter wins.
+    if (fieldLurk != notFound) {
+    	lastType = fieldLurk.Type();
+    }
+    if (argumentLurk != notFound) {
+    	lastType = argumentLurk.Type();
+    }
+    if (localLurk != notFound) {
+    	lastType = localLurk.Type();
+    }
+
+    if (lastType == TTypeIdentifier::NotFound) {
     	errors->push_back( CCompilationError( expression->Location(), CCompilationError::VAR_UNDEFINED ) );
     }
 
@@ -122,6 +137,10 @@ void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
     onNodeEnter( nodeName );
 
     expression->LengthExpression()->Accept( this );
+
+    if ( lastType != TTypeIdentifier::Int ) {
+        errors->push_back( CCompilationError( expression->Location(), CCompilationError::INVALID_LENGTH_TYPE ) );
+    }
 
     onNodeExit( nodeName );
 }

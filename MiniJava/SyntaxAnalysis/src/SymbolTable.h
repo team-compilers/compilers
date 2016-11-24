@@ -51,6 +51,10 @@ public:
     	return false;
     }
 
+    bool operator!=(const CTypeIdentifier& other) const {
+    	return !((*this) == other);
+    }
+
 private:
     TTypeIdentifier type;
     // Valid if Type==TTypeIdentifier::ClassId
