@@ -24,6 +24,7 @@ public:
     static const std::string VAR_UNDEFINED;
     static const std::string METHOD_OVERLOADING;
     static const std::string CLASS_HAS_NO_METHOD;
+    static const std::string INVALID_CALLER_EXPRESSION;
 
 private:
     CLocation location;

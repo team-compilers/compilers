@@ -15,6 +15,7 @@ const std::string CCompilationError::TYPE_NOT_EXISTS = "Type does not exist";
 const std::string CCompilationError::VAR_UNDEFINED = "Variable was not defined";
 const std::string CCompilationError::METHOD_OVERLOADING = "Method is being overloaded";
 const std::string CCompilationError::CLASS_HAS_NO_METHOD = "Method is not defined in caller-class";
+const std::string CCompilationError::INVALID_CALLER_EXPRESSION = "Invalid caller expression";
 
 CCompilationError::CCompilationError( const CLocation& _location, const std::string& _message ) 
     : location( _location ), message( _message ) 

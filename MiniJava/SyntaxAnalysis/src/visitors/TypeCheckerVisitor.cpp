@@ -186,10 +186,13 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
     std::string methodName = expression->MethodId()->Name();
     std::string className = lastType.ClassName();
 
-    std::shared_ptr<const CClassDefinition> callerClassDefinition =  
-        symbolTablePtr->GetClassDefinition( className );
+    std::shared_ptr<const CClassDefinition> callerClassDefinition;
 
-    assert( callerClassDefinition.get() != 0 );
+    callerClassDefinition = symbolTablePtr->GetClassDefinition( className );
+
+    if( callerClassDefinition != nullptr ) {
+        errors->emplace_back( expression->Location(), CCompilationError::INVALID_CALLER_EXPRESSION );
+    }
 
     std::shared_ptr<const CMethodDefinition> methodDefinition =
         callerClassDefinition->GetMethodDefinition( methodName );
