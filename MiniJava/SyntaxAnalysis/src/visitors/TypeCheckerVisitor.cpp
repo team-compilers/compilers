@@ -178,8 +178,7 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
     if( callerClassDefinition == nullptr ) {
         errors->emplace_back( expression->Location(), CCompilationError::INVALID_CALLER_EXPRESSION );
     } else {
-	    std::shared_ptr<const CMethodDefinition> methodDefinition =
-	        callerClassDefinition->GetMethodDefinition( methodName );
+	    std::shared_ptr<const CMethodDefinition> methodDefinition = searchClassHierarchyForMethod( methodName, callerClassDefinition );
 
 	    if( methodDefinition == nullptr ) {
 	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
