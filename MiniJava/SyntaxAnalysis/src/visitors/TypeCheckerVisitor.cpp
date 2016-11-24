@@ -512,7 +512,7 @@ void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
     std::vector<CTypeIdentifier> types;
 
     const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
-    for ( auto it = expressions.rbegin(); it != expressions.rend(); ++it ) {
+    for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
         ( *it )->Accept( this );
         types.push_back(lastType.front());
     }
