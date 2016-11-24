@@ -51,8 +51,8 @@ CTypeIdentifier CMethodDefinition::GetLocalVariableType( const std::string& name
 }
 
 CTypeIdentifier CMethodDefinition::GetArgumentType( const std::string& name ) const {
-    auto result = localVariableTypes->find( name );
-    if( result != localVariableTypes->end() ) {
+    auto result = argumentTypes->find( name );
+    if( result != argumentTypes->end() ) {
         return result->second;
     } else {
         return CTypeIdentifier( TTypeIdentifier::NotFound );
