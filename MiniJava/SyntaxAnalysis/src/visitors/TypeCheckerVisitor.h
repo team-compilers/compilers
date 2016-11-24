@@ -84,7 +84,6 @@ private:
     std::shared_ptr<const CMethodDefinition> searchClassHierarchyForMethod( const std::string& methodName, std::shared_ptr<const CClassDefinition> baseClass );
     CTypeIdentifier searchClassHierarchyForField( const std::string& fieldName, std::shared_ptr<const CClassDefinition> baseClass );
 
-    CTypeIdentifier lastType;
     std::vector<CTypeIdentifier> lastType;
     std::shared_ptr<const CSymbolTable> symbolTablePtr;
     std::shared_ptr<std::vector<CCompilationError>> errors;
