@@ -12,6 +12,8 @@
 #include <Expression.h>
 #include <StatementList.h>
 
+namespace AstTree {
+
 class CStatement : public CVisitorTarget {
 public:
     CStatement( const CLocation& _location ) : CVisitorTarget( _location ) {}
@@ -142,3 +144,5 @@ private:
 
     std::unique_ptr<const CStatementList> list;
 };
+
+}

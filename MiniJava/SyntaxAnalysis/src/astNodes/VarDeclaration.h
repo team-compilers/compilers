@@ -9,6 +9,8 @@
 #include <Expression.h>
 #include <TypeModifier.h>
 
+namespace AstTree {
+
 class CVarDeclaration : public CVisitorTarget {
 public:
 
@@ -24,3 +26,5 @@ private:
     std::unique_ptr<const CTypeModifier> type;
     std::unique_ptr<const CIdExpression> id;
 };
+
+}

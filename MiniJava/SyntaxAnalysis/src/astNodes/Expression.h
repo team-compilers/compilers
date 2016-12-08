@@ -11,6 +11,8 @@
 
 #include <ExpressionList.h>
 
+namespace AstTree {
+
 class CExpression : public CVisitorTarget {
 public:
     CExpression( const CLocation& _location ) : CVisitorTarget( _location ) {}
@@ -232,3 +234,5 @@ private:
 
     std::unique_ptr<const CExpression> targetExpression;
 };
+
+}

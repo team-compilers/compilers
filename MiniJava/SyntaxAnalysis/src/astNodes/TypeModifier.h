@@ -7,6 +7,8 @@
 
 #include <Expression.h>
 
+namespace AstTree {
+
 class CTypeModifier : public CVisitorTarget {
 public:
     CTypeModifier( const CLocation& _location ) : CVisitorTarget( _location ) {}
@@ -44,3 +46,5 @@ public:
 private:
     std::unique_ptr<const CIdExpression> typeId;
 };
+
+}

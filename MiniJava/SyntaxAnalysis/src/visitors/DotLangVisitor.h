@@ -31,6 +31,8 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
+namespace AstTree {
+
 class CDotLangVisitor : public CVisitor {
 public:
     CDotLangVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
@@ -93,3 +95,5 @@ private:
     // Adds edge (nodeFromName; nodeToName) to treeEdges.
     void addEdge( const std::string& nodeFromName, const std::string& nodeToName );
 };
+
+}

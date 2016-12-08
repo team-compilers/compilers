@@ -6,6 +6,8 @@
 #include <Visitor.h>
 #include <VisitorTarget.h>
 
+namespace AstTree {
+
 class CExpression;
 
 class CExpressionList : public CVisitorTarget {
@@ -26,3 +28,5 @@ public:
 private:
     std::vector< std::unique_ptr<const CExpression> > expressions;
 };
+
+}

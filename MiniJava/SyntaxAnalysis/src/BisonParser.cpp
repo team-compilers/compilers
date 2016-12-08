@@ -1,6 +1,8 @@
 #include "BisonParser.h"
 #include "parser.hpp"
 
+using namespace AstTree;
+
 std::unique_ptr<const CProgram> CBisonParser::buildAST( const std::string& inputFileName ) {
     CProgram* root;
 

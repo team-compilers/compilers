@@ -12,6 +12,8 @@
 #include <TypeModifier.h>
 #include <VarDeclarationList.h>
 
+namespace AstTree {
+
 class CMethodDeclaration : public CVisitorTarget {
 public:
 
@@ -47,3 +49,5 @@ private:
     std::unique_ptr<const CStatementList> statements;
     std::unique_ptr<const CExpression> returnExpression;
 };
+
+}

@@ -32,6 +32,8 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
+namespace AstTree {
+
 using MethodNameToDefinitionMap = std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>>;
 using VarNameToTypeMap = std::unordered_map<std::string, CTypeIdentifier>;
 using ArgumentsTypesList = std::vector<CTypeIdentifier>;
@@ -108,3 +110,5 @@ private:
 
     std::shared_ptr<std::vector<CCompilationError>> errors;
 };
+
+}

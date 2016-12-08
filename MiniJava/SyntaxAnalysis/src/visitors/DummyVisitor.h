@@ -23,6 +23,8 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
+namespace AstTree {
+
 class CDummyVisitor : public CVisitor {
 public:
     CDummyVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
@@ -70,3 +72,5 @@ public:
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
 };
+
+}

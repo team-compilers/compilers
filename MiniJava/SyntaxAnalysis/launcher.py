@@ -70,7 +70,7 @@ mode_to_func = {
 modes = mode_to_func.keys()
 mode_help = 'Possible values: {}'.format(', '.join(modes))
 
-parser = argparse.ArgumentParser(description='Compile images from GraphViz (DOT language) files.')
+parser = argparse.ArgumentParser(description='Launch MiniJava.')
 parser.add_argument('mode', type=str, help=mode_help)
 # parser.add_argument('-i', '--input', type=str, help='path to the input directory')
 # parser.add_argument('-o', '--output', type=str, help='path to the output directory')

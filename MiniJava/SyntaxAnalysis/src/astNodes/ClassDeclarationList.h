@@ -8,6 +8,8 @@
 
 #include <ClassDeclaration.h>
 
+namespace AstTree {
+
 class CClassDeclarationList : public CVisitorTarget {
 public:
     CClassDeclarationList( const CLocation& _location ) : CVisitorTarget( _location ) {}
@@ -22,3 +24,5 @@ public:
 private:
     std::vector< std::unique_ptr<const CClassDeclaration> > classes;
 };
+
+}

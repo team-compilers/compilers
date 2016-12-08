@@ -1,6 +1,8 @@
 #include <Visitor.h>
 #include <Expression.h>
 
+using namespace AstTree;
+
 int CVisitor::generateNodeNextIndex( const std::string& nodeType ) {
     int result = 0;
     auto insertResult = nodeTypeLastUsedIndex.insert( std::make_pair( nodeType, result ) );

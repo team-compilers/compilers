@@ -25,6 +25,7 @@
 #include <SymbolTable.h>
 #include <CompilationError.h>
 
+namespace AstTree {
 
 class CTypeCheckerVisitor : public CVisitor {
 public:
@@ -91,3 +92,5 @@ private:
     std::shared_ptr<const CMethodDefinition> lastMethod;
     std::string lastId;
 };
+
+}

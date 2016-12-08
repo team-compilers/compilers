@@ -11,6 +11,8 @@
 
 #include <BisonParser.h>
 
+using namespace AstTree;
+
 std::string AstToDotLanguage( const CProgram* root, bool verbose ) {
     CDotLangVisitor visitor( verbose );
     visitor.Visit( root );

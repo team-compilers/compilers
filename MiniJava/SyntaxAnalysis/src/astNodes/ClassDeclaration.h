@@ -9,6 +9,8 @@
 #include <MethodDeclarationList.h>
 #include <VarDeclarationList.h>
 
+namespace AstTree {
+
 class CClassDeclaration : public CVisitorTarget {
 public:
     CClassDeclaration( const CIdExpression* _className, const CVarDeclarationList* _varDelcs, 
@@ -43,3 +45,5 @@ private:
     bool hasParent;
     std::unique_ptr<const CIdExpression> extendsClassName;
 };
+
+}

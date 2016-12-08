@@ -1,5 +1,7 @@
 #include <AstNodeNames.h>
 
+using namespace AstTree;
+
 const std::string CAstNodeNames::ACCESS_MOD_PRIVATE = "AccessModPrivate";
 const std::string CAstNodeNames::ACCESS_MOD_PUBLIC = "AccessModPublic";
 const std::string CAstNodeNames::CLASS_DECL = "ClassDecl";

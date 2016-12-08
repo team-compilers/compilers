@@ -1,5 +1,7 @@
 #include <DotLangVisitor.h>
 
+using namespace AstTree;
+
 void CDotLangVisitor::addEdge( const std::string& nodeFromName, const std::string& nodeToName ) {
     treeEdges[nodeFromName].push_back( nodeToName );
 }

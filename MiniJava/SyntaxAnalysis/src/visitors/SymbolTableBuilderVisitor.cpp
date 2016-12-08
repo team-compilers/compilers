@@ -1,5 +1,7 @@
 #include <SymbolTableBuilderVisitor.h>
 
+using namespace AstTree;
+
 std::shared_ptr<const CSymbolTable> CSymbolTableBuilderVisitor::SymbolTable() const {
     return table;
 }

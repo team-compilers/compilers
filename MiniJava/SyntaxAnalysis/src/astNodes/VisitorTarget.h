@@ -5,6 +5,8 @@
 
 #include <Visitor.h>
 
+namespace AstTree {
+
 class IVisitorTarget {
 public:
     virtual ~IVisitorTarget() {}
@@ -29,3 +31,5 @@ public:
 private:
     CLocation location;
 };
+
+}

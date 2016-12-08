@@ -6,6 +6,8 @@
 #include <Visitor.h>
 #include <VisitorTarget.h>
 
+namespace AstTree {
+
 class CStatement;
 
 class CStatementList : public CVisitorTarget {
@@ -24,3 +26,5 @@ private:
     // must be reversed before being used
     std::vector< std::unique_ptr<const CStatement> > statements;
 };
+
+}

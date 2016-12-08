@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace AstTree {
+
 class CPublicAccessModifier;
 class CPrivateAccessModifier;
 
@@ -126,3 +128,5 @@ protected:
     const std::string nodeExitMarker = "out: ";
     std::string margin;
 };
+
+}

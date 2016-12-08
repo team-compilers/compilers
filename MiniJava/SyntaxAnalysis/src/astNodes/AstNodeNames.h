@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace AstTree {
+
 class CAstNodeNames {
 public:
     static const std::string ACCESS_MOD_PRIVATE;
@@ -40,3 +42,5 @@ public:
     static const std::string VAR_DECL;
     static const std::string VAR_DECL_LIST;
 };
+
+}

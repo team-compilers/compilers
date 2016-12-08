@@ -3,6 +3,8 @@
 #include <VisitorTarget.h>
 #include <Visitor.h>
 
+namespace AstTree {
+
 class CAccessModifier : public CVisitorTarget {
 public:
     CAccessModifier( const CLocation& _location ) : CVisitorTarget( _location ) {}
@@ -20,3 +22,5 @@ public:
     CPrivateAccessModifier( const CLocation& _location ) : CAccessModifier( _location ) {}
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
+
+}

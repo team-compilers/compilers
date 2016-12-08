@@ -9,6 +9,8 @@
 extern "C" int yylex();
 extern "C" FILE* yyin;
 
+using namespace AstTree;
+
 void yyerror( CProgram** root, const char* message ) {
     std::cout << "Parse error at line " << yylloc.first_line << ".  Message: " << message << std::endl;
 }
@@ -41,6 +43,7 @@ CLocation ToCLocation( YYLTYPE yylloc ) {
     #include <ClassDeclarationList.h>
     #include <Program.h>
     #include <VisitorTarget.h>
+    using namespace AstTree;
 }
 
 // Declare that one or more argument-declaration are additional yyparse arguments.

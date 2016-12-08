@@ -10,6 +10,8 @@
 #include <TypeModifier.h>
 #include <VarDeclaration.h>
 
+namespace AstTree {
+
 class CVarDeclarationList : public CVisitorTarget {
 public:
 
@@ -25,3 +27,5 @@ public:
 private:
     std::vector< std::unique_ptr<const CVarDeclaration> > varDeclarations;
 };
+
+}

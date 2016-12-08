@@ -1,5 +1,7 @@
 #include <PrintCodeVisitor.h>
 
+using namespace AstTree;
+
 void CPrintCodeVisitor::increaseCodeMargin() {
     codeMargin += "    ";
 }

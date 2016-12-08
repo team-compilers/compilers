@@ -32,6 +32,8 @@
 #include <ClassDeclarationList.h>
 #include <Program.h>
 
+namespace AstTree {
+
 class CPrintCodeVisitor : public CVisitor {
 public:
     CPrintCodeVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
@@ -88,3 +90,5 @@ private:
     void increaseCodeMargin();
     void decreaseCodeMargin();
 };
+
+}

@@ -10,6 +10,8 @@
 #include <MethodArgument.h>
 #include <TypeModifier.h>
 
+namespace AstTree {
+
 class CMethodArgumentList : public CVisitorTarget {
 public:
 
@@ -25,3 +27,5 @@ public:
 private:
     std::vector< std::unique_ptr<const CMethodArgument> > arguments;
 };
+
+}

@@ -8,6 +8,8 @@
 #include <Expression.h>
 #include <StatementList.h>
 
+namespace AstTree {
+
 class CMainClass : public CVisitorTarget {
 public:
     CMainClass( const CIdExpression* _className, const CIdExpression* _classArgsName, const CStatementList* _statements, const CLocation& _location )
@@ -27,3 +29,5 @@ private:
     std::unique_ptr<const CIdExpression> classArgsName;
     std::unique_ptr<const CStatementList> statements;
 };
+
+}

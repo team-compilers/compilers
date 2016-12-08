@@ -8,6 +8,8 @@
 #include <ClassDeclarationList.h>
 #include <MainClass.h>
 
+namespace AstTree {
+
 class CProgram : public CVisitorTarget {
 public:
 
@@ -26,3 +28,5 @@ private:
     std::unique_ptr<const CMainClass> mainClass;
     std::unique_ptr<const CClassDeclarationList> classDeclarations;
 };
+
+}

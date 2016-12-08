@@ -8,6 +8,8 @@
 
 #include <MethodDeclaration.h>
 
+namespace AstTree {
+
 class CMethodDeclarationList : public CVisitorTarget {
 public:
 
@@ -23,3 +25,5 @@ public:
 private:
     std::vector< std::unique_ptr<const CMethodDeclaration> > declarations;
 };
+
+}
