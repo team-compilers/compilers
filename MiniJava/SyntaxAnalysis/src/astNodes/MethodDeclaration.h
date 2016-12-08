@@ -3,14 +3,14 @@
 #include <memory>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
-#include <AccessModifier.h>
-#include <Expression.h>
-#include <MethodArgumentList.h>
-#include <StatementList.h>
-#include <TypeModifier.h>
-#include <VarDeclarationList.h>
+#include <astNodes/AccessModifier.h>
+#include <astNodes/Expression.h>
+#include <astNodes/MethodArgumentList.h>
+#include <astNodes/StatementList.h>
+#include <astNodes/TypeModifier.h>
+#include <astNodes/VarDeclarationList.h>
 
 namespace AstTree {
 

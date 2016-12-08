@@ -2,7 +2,7 @@
 /*__________ The C Declarations Section __________*/
 #include <iostream>
 #include <memory>
-#include <Program.h>
+#include <astNodes/Program.h>
 #include "parser.hpp"
 
 // used to prevent applying name-mangling to the yylex identifier
@@ -26,23 +26,23 @@ CLocation ToCLocation( YYLTYPE yylloc ) {
 // This is the best place to write dependency code required for YYSTYPE and YYLTYPE.
 // In other words, it’s the best place to define types referenced in %union directives.
 %code requires {
-    #include <AccessModifier.h>
-    #include <Expression.h>
-    #include <ExpressionList.h>
-    #include <Statement.h>
-    #include <StatementList.h>
-    #include <TypeModifier.h>
-    #include <VarDeclaration.h>
-    #include <VarDeclarationList.h>
-    #include <MethodArgument.h>
-    #include <MethodArgumentList.h>
-    #include <MethodDeclaration.h>
-    #include <MethodDeclarationList.h>
-    #include <MainClass.h>
-    #include <ClassDeclaration.h>
-    #include <ClassDeclarationList.h>
-    #include <Program.h>
-    #include <VisitorTarget.h>
+    #include <astNodes/AccessModifier.h>
+    #include <astNodes/Expression.h>
+    #include <astNodes/ExpressionList.h>
+    #include <astNodes/Statement.h>
+    #include <astNodes/StatementList.h>
+    #include <astNodes/TypeModifier.h>
+    #include <astNodes/VarDeclaration.h>
+    #include <astNodes/VarDeclarationList.h>
+    #include <astNodes/MethodArgument.h>
+    #include <astNodes/MethodArgumentList.h>
+    #include <astNodes/MethodDeclaration.h>
+    #include <astNodes/MethodDeclarationList.h>
+    #include <astNodes/MainClass.h>
+    #include <astNodes/ClassDeclaration.h>
+    #include <astNodes/ClassDeclarationList.h>
+    #include <astNodes/Program.h>
+    #include <astNodes/VisitorTarget.h>
     using namespace AstTree;
 }
 

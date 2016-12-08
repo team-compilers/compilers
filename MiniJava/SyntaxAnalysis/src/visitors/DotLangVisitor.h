@@ -11,25 +11,25 @@
 #include <utility>
 #include <vector>
 
-#include <AstNodeNames.h>
+#include <astNodes/AstNodeNames.h>
 #include <Visitor.h>
 
-#include <AccessModifier.h>
-#include <Expression.h>
-#include <ExpressionList.h>
-#include <Statement.h>
-#include <StatementList.h>
-#include <TypeModifier.h>
-#include <VarDeclaration.h>
-#include <VarDeclarationList.h>
-#include <MethodArgument.h>
-#include <MethodArgumentList.h>
-#include <MethodDeclaration.h>
-#include <MethodDeclarationList.h>
-#include <MainClass.h>
-#include <ClassDeclaration.h>
-#include <ClassDeclarationList.h>
-#include <Program.h>
+#include <astNodes/AccessModifier.h>
+#include <astNodes/Expression.h>
+#include <astNodes/ExpressionList.h>
+#include <astNodes/Statement.h>
+#include <astNodes/StatementList.h>
+#include <astNodes/TypeModifier.h>
+#include <astNodes/VarDeclaration.h>
+#include <astNodes/VarDeclarationList.h>
+#include <astNodes/MethodArgument.h>
+#include <astNodes/MethodArgumentList.h>
+#include <astNodes/MethodDeclaration.h>
+#include <astNodes/MethodDeclarationList.h>
+#include <astNodes/MainClass.h>
+#include <astNodes/ClassDeclaration.h>
+#include <astNodes/ClassDeclarationList.h>
+#include <astNodes/Program.h>
 
 namespace AstTree {
 

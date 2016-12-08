@@ -4,9 +4,9 @@
 #include <vector>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
-#include <MethodDeclaration.h>
+#include <astNodes/MethodDeclaration.h>
 
 namespace AstTree {
 

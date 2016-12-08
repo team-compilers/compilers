@@ -1,6 +1,6 @@
 #pragma once
 
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 #include <Visitor.h>
 
 namespace AstTree {

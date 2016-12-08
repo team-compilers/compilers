@@ -3,9 +3,9 @@
 #include <memory>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
-#include <Expression.h>
+#include <astNodes/Expression.h>
 
 namespace AstTree {
 

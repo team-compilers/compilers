@@ -12,7 +12,7 @@ MAIN=src/main.cpp
 
 TRG=ast
 # -lfl includes flex library
-FLAGS=-lfl -O2 -std=c++11 -I"src/astNodes" -I"src/grammar" -I"src/visitors" -I"src"
+FLAGS=-lfl -O2 -std=c++11 -I"src/" -I"src/grammar" -I"src/visitors" -I"src"
 SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/astNodes/AstNodeNames.cpp src/visitors/Visitor.cpp src/visitors/DotLangVisitor.cpp src/visitors/TypeCheckerVisitor.cpp src/visitors/PrintCodeVisitor.cpp src/visitors/SymbolTableBuilderVisitor.cpp src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp
 
 $(TRG): $(SRC)

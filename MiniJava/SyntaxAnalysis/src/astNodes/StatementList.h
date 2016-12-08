@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
 namespace AstTree {
 

@@ -7,9 +7,9 @@
 #include <string>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
-#include <ExpressionList.h>
+#include <astNodes/ExpressionList.h>
 
 namespace AstTree {
 

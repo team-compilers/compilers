@@ -7,10 +7,10 @@
 #include <vector>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
-#include <Expression.h>
-#include <StatementList.h>
+#include <astNodes/Expression.h>
+#include <astNodes/StatementList.h>
 
 namespace AstTree {
 

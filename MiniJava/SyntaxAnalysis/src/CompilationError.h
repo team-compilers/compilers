@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
 class CCompilationError {
 public:

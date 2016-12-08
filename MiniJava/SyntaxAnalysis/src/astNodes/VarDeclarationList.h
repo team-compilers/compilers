@@ -4,11 +4,11 @@
 #include <vector>
 
 #include <Visitor.h>
-#include <VisitorTarget.h>
+#include <astNodes/VisitorTarget.h>
 
-#include <Expression.h>
-#include <TypeModifier.h>
-#include <VarDeclaration.h>
+#include <astNodes/Expression.h>
+#include <astNodes/TypeModifier.h>
+#include <astNodes/VarDeclaration.h>
 
 namespace AstTree {
 
