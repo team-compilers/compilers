@@ -2,12 +2,12 @@
 #include <memory>
 #include <string>
 
-#include <astNodes/Program.h>
-#include <DotLangVisitor.h>
-#include <PrintCodeVisitor.h>
-#include <SymbolTableBuilderVisitor.h>
+#include <AST/astNodes/Program.h>
+#include <AST/visitors/DotLangVisitor.h>
+#include <AST/visitors/PrintCodeVisitor.h>
+#include <AST/visitors/SymbolTableBuilderVisitor.h>
 #include <SymbolTable.h>
-#include <TypeCheckerVisitor.h>
+#include <AST/visitors/TypeCheckerVisitor.h>
 
 #include <BisonParser.h>
 
