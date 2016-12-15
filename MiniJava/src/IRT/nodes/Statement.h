@@ -123,12 +123,20 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
+class CLabel {
+    // TODO
+};
+
 class CLabelStatement : CStatement {
 public:
-    CLabelStatement() {}
+    CLabelStatement( CLabel _label ) : label( _label ) {}
+
+    CLabel Label() const { return label; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+private:
+    CLabel label;
 };
 
 } // namespace IRTree
