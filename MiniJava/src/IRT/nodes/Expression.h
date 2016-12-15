@@ -3,8 +3,8 @@
 #include <memory>
 
 #include <IRT/nodes/ExpressionList.h>
-#include <IRT/nodes/Statement.h>
 #include <IRT/visitors/Visitor.h>
+#include <IRT/nodes/Statement.h>
 #include <IRT/nodes/VisitorTarget.h>
 
 namespace IRTree {
@@ -34,9 +34,9 @@ class CConstExpression : public CExpression {
 public:
     CConstExpression( int _value ) : value( _value ) {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
     int Value() { return value; }
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
     int value;
 };
@@ -47,9 +47,9 @@ class CNameExpression : public CExpression {
 public:
     CNameExpression( const CLabelStatement* _label ) : label( _label ) {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
     const CLabelStatement* Label() const { return label.get(); }
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CLabelStatement> label;
@@ -71,11 +71,11 @@ public:
     CBinaryExpression( TOperatorType _operation, const CExpression* left, const CExpression* right )
         : operation( _operation ), leftOperand( left ), rightOperand( right ) {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
     TOperatorType Operation() const { return operation; }
     const CExpression* LeftOperand() const { return leftOperand.get(); }
     const CExpression* RightOperand() const { return rightOperand.get(); }
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CExpression> leftOperand;
@@ -89,9 +89,9 @@ class CMemExpression : public CExpression {
 public:
     CMemExpression( const CExpression* _byteNumber ) : byteNumber( _byteNumber ) {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
     const CExpression* ByteNumber() const { return byteNumber.get(); }
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CExpression> byteNumber;
@@ -104,10 +104,10 @@ public:
     CCallExpression( const CExpression* func, const CExpressionList* args )
         : function( func ), arguments( args ) {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
     const CExpression* Function() const { return function.get(); }
     const CExpressionList* Arguments() const { return arguments.get(); }
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CExpression> function;
@@ -121,10 +121,10 @@ public:
     CEseqExpression( const CExpression* _expression, const CStatement* _statement )
         : expression( _expression ), statement( _statement ) {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
     const CExpression* Expression() const { return expression.get(); }
     const CStatement* Statement() const { return statement.get(); }
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
     std::unique_ptr<const CExpression> expression;

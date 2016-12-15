@@ -15,7 +15,15 @@ class CMemExpression;
 class CCallExpression;
 class CEseqExpression;
 
+class CExpStatement;
+class CJumpConditionalStatement;
+class CJumpStatement;
+class CLabelStatement;
+class CMoveStatement;
+class CSeqStatement;
+
 class CExpressionList;
+class CLabelList;
 
 class IVisitor {
 public:
@@ -29,7 +37,15 @@ public:
     virtual void Visit( const CCallExpression* expression ) = 0;
     virtual void Visit( const CEseqExpression* expression ) = 0;
 
+    virtual void Visit( const CExpStatement* expression ) = 0;
+    virtual void Visit( const CJumpConditionalStatement* expression ) = 0;
+    virtual void Visit( const CJumpStatement* expression ) = 0;
+    virtual void Visit( const CLabelStatement* expression ) = 0;
+    virtual void Visit( const CMoveStatement* expression ) = 0;
+    virtual void Visit( const CSeqStatement* expression ) = 0;
+
     virtual void Visit( const CExpressionList* list ) = 0;
+    virtual void Visit( const CLabelList* list ) = 0;
 };
 
 enum class TOperatorType : char;

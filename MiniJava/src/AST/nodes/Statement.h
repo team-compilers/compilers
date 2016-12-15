@@ -76,7 +76,6 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-
     std::unique_ptr<const CExpression> printTarget;
 };
 
