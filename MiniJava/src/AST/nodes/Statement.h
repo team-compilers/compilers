@@ -7,10 +7,10 @@
 #include <vector>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
-#include <AST/astNodes/Expression.h>
-#include <AST/astNodes/StatementList.h>
+#include <AST/nodes/Expression.h>
+#include <AST/nodes/StatementList.h>
 
 namespace AstTree {
 
@@ -45,8 +45,8 @@ private:
 class CAssignIdWithIndexStatement : public CStatement {
 public:
 
-    CAssignIdWithIndexStatement( const CIdExpression* _leftPartId, const CExpression* _leftPartIndex, 
-        const CExpression* _rightPart, const CLocation& _location ) 
+    CAssignIdWithIndexStatement( const CIdExpression* _leftPartId, const CExpression* _leftPartIndex,
+        const CExpression* _rightPart, const CLocation& _location )
         : CStatement( _location ),
           leftPartId( _leftPartId ),
           leftPartIndex( _leftPartIndex ),
@@ -68,8 +68,7 @@ private:
 
 class CPrintStatement : public CStatement {
 public:
-
-    CPrintStatement( const CExpression* _printTarget, const CLocation& _location ) 
+    CPrintStatement( const CExpression* _printTarget, const CLocation& _location )
         : CStatement( _location ), printTarget( _printTarget ) {}
 
     const CExpression* PrintTarget() const { return printTarget.get(); }
@@ -87,7 +86,7 @@ private:
 class CConditionalStatement : public CStatement {
 public:
 
-    CConditionalStatement( const CExpression* _condition, const CStatement* _positiveTarget, 
+    CConditionalStatement( const CExpression* _condition, const CStatement* _positiveTarget,
         const CStatement* _negativeTarget, const CLocation& _location )
         : CStatement( _location ),
           condition( _condition ),
@@ -112,7 +111,7 @@ private:
 class CWhileLoopStatement : public CStatement {
 public:
 
-    CWhileLoopStatement( const CExpression* _condition, const CStatement* _body, const CLocation& _location ) 
+    CWhileLoopStatement( const CExpression* _condition, const CStatement* _body, const CLocation& _location )
         : CStatement( _location ),
         condition( _condition ),
         body( _body ) {}

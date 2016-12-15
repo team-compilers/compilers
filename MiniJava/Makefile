@@ -10,10 +10,10 @@ BISON_TRG_HPP=src/grammar/parser.hpp
 BISON_TRG=$(BISON_TRG_HPP) $(BISON_TRG_CPP)
 MAIN=src/main.cpp
 
-TRG=ast
+TRG=minijava
 # -lfl includes flex library
 FLAGS=-lfl -O2 -std=c++11 -I"src/" -I"src/grammar"
-SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/AST/astNodes/AstNodeNames.cpp src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp src/AST/visitors/TypeCheckerVisitor.cpp src/AST/visitors/PrintCodeVisitor.cpp src/AST/visitors/SymbolTableBuilderVisitor.cpp src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp
+SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/AST/nodes/NodeNames.cpp src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp src/AST/visitors/TypeCheckerVisitor.cpp src/AST/visitors/PrintCodeVisitor.cpp src/AST/visitors/SymbolTableBuilderVisitor.cpp src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp src/IRT/nodes/NodeNames.cpp src/IRT/visitors/Visitor.cpp
 
 $(TRG): $(SRC)
 	$(CC) $(SRC) -o $(TRG) $(FLAGS)

@@ -1,4 +1,4 @@
-#include <AST/astNodes/AstNodeNames.h>
+#include <AST/nodes/NodeNames.h>
 
 using namespace AstTree;
 

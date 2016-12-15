@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
 namespace AstTree {
 
@@ -15,7 +15,7 @@ public:
 
     CStatementList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
-    void Add( const CStatement* statement ) 
+    void Add( const CStatement* statement )
         { statements.emplace_back( statement ); }
 
     const std::vector< std::unique_ptr<const CStatement> >& Statements() const { return statements; }

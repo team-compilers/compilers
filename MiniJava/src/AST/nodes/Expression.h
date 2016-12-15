@@ -7,9 +7,9 @@
 #include <string>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
-#include <AST/astNodes/ExpressionList.h>
+#include <AST/nodes/ExpressionList.h>
 
 namespace AstTree {
 
@@ -98,11 +98,11 @@ private:
 class CLogicExpression : public CExpression {
 public:
 
-    CLogicExpression( bool _value, const CLocation& _location ) 
+    CLogicExpression( bool _value, const CLocation& _location )
         : CExpression( _location ), value( _value ) {}
 
     bool Value() const { return value; }
-    
+
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
@@ -138,7 +138,7 @@ public:
         : CExpression( _location ), lengthTarget( _lengthTarget ) {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-    
+
     const CExpression* LengthTarget() const { return lengthTarget.get(); }
 
 private:
@@ -151,9 +151,9 @@ private:
 class CMethodExpression : public CExpression {
 public:
 
-    CMethodExpression( const CExpression* _callerExpression, 
+    CMethodExpression( const CExpression* _callerExpression,
             const CIdExpression* _methodId,
-            const CExpressionList* _arguments, const CLocation& _location ) 
+            const CExpressionList* _arguments, const CLocation& _location )
         : CExpression( _location ),
           callerExpression( _callerExpression ),
           methodId( _methodId ),

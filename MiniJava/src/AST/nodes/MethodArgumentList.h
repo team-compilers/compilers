@@ -4,11 +4,11 @@
 #include <vector>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
-#include <AST/astNodes/Expression.h>
-#include <AST/astNodes/MethodArgument.h>
-#include <AST/astNodes/TypeModifier.h>
+#include <AST/nodes/Expression.h>
+#include <AST/nodes/MethodArgument.h>
+#include <AST/nodes/TypeModifier.h>
 
 namespace AstTree {
 
@@ -17,7 +17,7 @@ public:
 
     CMethodArgumentList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
-    void Add( const CMethodArgument* argument ) 
+    void Add( const CMethodArgument* argument )
         { arguments.emplace_back( argument ); }
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& MethodArguments() const { return arguments; }

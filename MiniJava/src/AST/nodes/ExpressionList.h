@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
 namespace AstTree {
 
@@ -15,14 +15,14 @@ public:
 
     CExpressionList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
-    CExpressionList( const CExpression* expression, const CLocation& _location ) 
+    CExpressionList( const CExpression* expression, const CLocation& _location )
         : CVisitorTarget( _location ) { Add( expression ); }
 
-    void Add( const CExpression* expression ) 
+    void Add( const CExpression* expression )
         { expressions.emplace_back( expression ); }
 
     const std::vector< std::unique_ptr<const CExpression> >& Expressions() const { return expressions; }
-    
+
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:

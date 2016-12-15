@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 
-#include <AST/astNodes/Program.h>
+#include <AST/nodes/Program.h>
 #include <AST/visitors/DotLangVisitor.h>
 #include <AST/visitors/PrintCodeVisitor.h>
 #include <AST/visitors/SymbolTableBuilderVisitor.h>

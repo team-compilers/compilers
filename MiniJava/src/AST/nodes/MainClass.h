@@ -3,10 +3,10 @@
 #include <memory>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
-#include <AST/astNodes/Expression.h>
-#include <AST/astNodes/StatementList.h>
+#include <AST/nodes/Expression.h>
+#include <AST/nodes/StatementList.h>
 
 namespace AstTree {
 

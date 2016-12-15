@@ -1,6 +1,6 @@
 #include <memory>
 #include <string>
-#include <AST/astNodes/Program.h>
+#include <AST/nodes/Program.h>
 
 extern "C" FILE* yyin;
 extern "C" FILE* yyout;

@@ -12,25 +12,25 @@
 #include <utility>
 #include <vector>
 
-#include <AST/astNodes/AstNodeNames.h>
+#include <AST/nodes/NodeNames.h>
 #include <AST/visitors/Visitor.h>
 
-#include <AST/astNodes/AccessModifier.h>
-#include <AST/astNodes/Expression.h>
-#include <AST/astNodes/ExpressionList.h>
-#include <AST/astNodes/Statement.h>
-#include <AST/astNodes/StatementList.h>
-#include <AST/astNodes/TypeModifier.h>
-#include <AST/astNodes/VarDeclaration.h>
-#include <AST/astNodes/VarDeclarationList.h>
-#include <AST/astNodes/MethodArgument.h>
-#include <AST/astNodes/MethodArgumentList.h>
-#include <AST/astNodes/MethodDeclaration.h>
-#include <AST/astNodes/MethodDeclarationList.h>
-#include <AST/astNodes/MainClass.h>
-#include <AST/astNodes/ClassDeclaration.h>
-#include <AST/astNodes/ClassDeclarationList.h>
-#include <AST/astNodes/Program.h>
+#include <AST/nodes/AccessModifier.h>
+#include <AST/nodes/Expression.h>
+#include <AST/nodes/ExpressionList.h>
+#include <AST/nodes/Statement.h>
+#include <AST/nodes/StatementList.h>
+#include <AST/nodes/TypeModifier.h>
+#include <AST/nodes/VarDeclaration.h>
+#include <AST/nodes/VarDeclarationList.h>
+#include <AST/nodes/MethodArgument.h>
+#include <AST/nodes/MethodArgumentList.h>
+#include <AST/nodes/MethodDeclaration.h>
+#include <AST/nodes/MethodDeclarationList.h>
+#include <AST/nodes/MainClass.h>
+#include <AST/nodes/ClassDeclaration.h>
+#include <AST/nodes/ClassDeclarationList.h>
+#include <AST/nodes/Program.h>
 
 namespace AstTree {
 

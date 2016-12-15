@@ -1,3 +1,5 @@
+#pragma once
+
 namespace IRTree {
 
 class IVisitorTarget {

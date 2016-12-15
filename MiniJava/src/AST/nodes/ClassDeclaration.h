@@ -3,17 +3,17 @@
 #include <memory>
 
 #include <AST/visitors/Visitor.h>
-#include <AST/astNodes/VisitorTarget.h>
+#include <AST/nodes/VisitorTarget.h>
 
-#include <AST/astNodes/Expression.h>
-#include <AST/astNodes/MethodDeclarationList.h>
-#include <AST/astNodes/VarDeclarationList.h>
+#include <AST/nodes/Expression.h>
+#include <AST/nodes/MethodDeclarationList.h>
+#include <AST/nodes/VarDeclarationList.h>
 
 namespace AstTree {
 
 class CClassDeclaration : public CVisitorTarget {
 public:
-    CClassDeclaration( const CIdExpression* _className, const CVarDeclarationList* _varDelcs, 
+    CClassDeclaration( const CIdExpression* _className, const CVarDeclarationList* _varDelcs,
             const CMethodDeclarationList* _methodDecls, const CLocation& _location )
         : CVisitorTarget( _location ),
           className( _className ),
@@ -22,7 +22,7 @@ public:
           hasParent( false ) {}
 
     CClassDeclaration( const CIdExpression* _className, const CVarDeclarationList* _varDecls,
-            const CMethodDeclarationList* _methodDecls, const CIdExpression* parent, const CLocation& _location ) 
+            const CMethodDeclarationList* _methodDecls, const CIdExpression* parent, const CLocation& _location )
         : CVisitorTarget( _location ),
           className( _className ),
           varDecls( _varDecls ),
@@ -34,7 +34,7 @@ public:
     const CVarDeclarationList* VarDeclarations() const { return varDecls.get(); }
     const CMethodDeclarationList* MethodDeclarations() const { return methodDecls.get(); }
     bool HasParent() const { return hasParent; }
-    const CIdExpression* ExtendsClassName() const { return extendsClassName.get(); } 
+    const CIdExpression* ExtendsClassName() const { return extendsClassName.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 

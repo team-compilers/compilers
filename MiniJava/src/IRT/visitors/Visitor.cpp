@@ -1,7 +1,7 @@
-#include <AST/visitors/Visitor.h>
-#include <AST/nodes/Expression.h>
+#include <IRT/visitors/Visitor.h>
+#include <IRT/nodes/Expression.h>
 
-using namespace AstTree;
+using namespace IRTree;
 
 int CVisitor::generateNodeNextIndex( const std::string& nodeType ) {
     int result = 0;
@@ -23,8 +23,6 @@ std::string CVisitor::operatorName( const TOperatorType& type ) const {
         case TOperatorType::OT_Minus: result = "Minus"; break;
         case TOperatorType::OT_Times: result = "Times"; break;
         case TOperatorType::OT_Div: result = "Div"; break;
-        case TOperatorType::OT_Mod: result = "Mod"; break;
-        case TOperatorType::OT_LT: result = "Less"; break;
         case TOperatorType::OT_And: result = "And"; break;
         case TOperatorType::OT_Or: result = "Or"; break;
     }
@@ -38,8 +36,6 @@ std::string CVisitor::operatorChar( const TOperatorType& type ) const {
         case TOperatorType::OT_Minus: result = "-"; break;
         case TOperatorType::OT_Times: result = "*"; break;
         case TOperatorType::OT_Div: result = "/"; break;
-        case TOperatorType::OT_Mod: result = "%"; break;
-        case TOperatorType::OT_LT: result = "<"; break;
         case TOperatorType::OT_And: result = "&&"; break;
         case TOperatorType::OT_Or: result = "||"; break;
     }
