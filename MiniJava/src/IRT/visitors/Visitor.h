@@ -46,6 +46,7 @@ public:
     virtual void Visit( const CSeqStatement* expression ) = 0;
 
     virtual void Visit( const CExpressionList* list ) = 0;
+    virtual void Visit( const CStatementList* list ) = 0;
     virtual void Visit( const CLabelList* list ) = 0;
 };
 

@@ -20,6 +20,11 @@
 #include <AST/nodes/ClassDeclarationList.h>
 #include <AST/nodes/Program.h>
 
+#include <IRT/nodes/Expression.h>
+#include <IRT/nodes/ExpressionList.h>
+#include <IRT/nodes/Statement.h>
+#include <IRT/nodes/StatementList.h>
+
 namespace AstTree {
 
 class CIrtBuilderVisitor : public CVisitor {
