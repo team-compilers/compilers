@@ -23,6 +23,7 @@ class CMoveStatement;
 class CSeqStatement;
 
 class CExpressionList;
+class CStatementList;
 class CLabelList;
 
 class IVisitor {
