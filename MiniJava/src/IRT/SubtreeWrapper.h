@@ -15,32 +15,32 @@ public:
     virtual const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const = 0;
 };
 
-class CExpressionConverter : public ISubtreeWrapper {
+class CExpressionWrapper : public ISubtreeWrapper {
 public:
-    CExpressionConverter( const CExpression* _expression ) : expression( _expression ) {}
-    const CExpression* ToExpression() const { return expression; }
-    const CStatement* ToStatement() const { return new CExpStatement( expression ); }
-    const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const { /* TODO */ }
+    CExpressionWrapper( const CExpression* _expression ) : expression( _expression ) {}
+    virtual const CExpression* ToExpression() const { return expression; }
+    virtual const CStatement* ToStatement() const { return new CExpStatement( expression ); }
+    virtual const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const { /* TODO */ }
 private:
     const CExpression* expression;
 }
 
-class CStatementConverter : public ISubtreeWrapper {
+class CStatementWrapper : public ISubtreeWrapper {
 public:
-    CStatementConverter( const CStatement* _statement ) : statement( _statement ) {}
-    const CExpression* ToExpression() const { assert( false ); }
-    const CStatement* ToStatement() const { return statement; }
-    const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const { assert( false ); }
+    CStatementWrapper( const CStatement* _statement ) : statement( _statement ) {}
+    virtual const CExpression* ToExpression() const { assert( false ); }
+    virtual const CStatement* ToStatement() const { return statement; }
+    virtual const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const { assert( false ); }
 private:
     const CStatement* statement;
 }
 
-class CConditionalConverter : public ISubtreeWrapper {
+class CConditionalWrapper : public ISubtreeWrapper {
 public:
-    CConditionalConverter( const CStatement* _statement ) : statement( _statement ) {}
-    const CExpression* ToExpression() const { /* TODO */ }
-    const CStatement* ToStatement() const { /* TODO */ }
-    const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const { return conditional; }
+    CConditionalWrapper( const CStatement* _statement ) : statement( _statement ) {}
+    virtual const CExpression* ToExpression() const { /* return new CConstExpression( 0 or 1 ); */ }
+    virtual const CStatement* ToStatement() const { /* return conditional; */ }
+    virtual const CStatement* ToConditional( CLabel trueLabel, CLabel falseLabel ) const = 0;
 private:
     const CStatement* conditional;
 }
