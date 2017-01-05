@@ -25,6 +25,8 @@
 #include <IRT/nodes/Statement.h>
 #include <IRT/nodes/StatementList.h>
 
+#include <IRT/SubtreeWrapper.h>
+
 namespace AstTree {
 
 class CIrtBuilderVisitor : public CVisitor {
@@ -73,6 +75,11 @@ public:
     void Visit( const CMethodArgumentList* list ) override;
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
+
+private:
+    IRTree::TOperatorType operatorFromAstToIr( TOperatorType type ) const;
+
+    std::unique_ptr<IRTree::ISubtreeWrapper> subtreeWrapper;
 };
 
 }

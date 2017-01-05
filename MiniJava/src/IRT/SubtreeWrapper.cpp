@@ -17,6 +17,7 @@ const CStatement* CExpressionWrapper::ToConditional( CLabel labelTrue, CLabel la
 
 
 const CExpression* CStatementWrapper::ToExpression() const {
+    // such calls should never happen
     assert( false );
 }
 
@@ -25,6 +26,7 @@ const CStatement* CStatementWrapper::ToStatement() const {
 }
 
 const CStatement* CStatementWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
+    // such calls should never happen
     assert( false );
 }
 
@@ -52,7 +54,7 @@ const CExpression* CConditionalWrapper::ToExpression() const {
 }
 
 const CStatement* CConditionalWrapper::ToStatement() const {
-    /* return conditional; */
+    /* TODO; */
 }
 
 const CStatement* CRelativeConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {

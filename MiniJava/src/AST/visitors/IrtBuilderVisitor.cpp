@@ -1,6 +1,25 @@
 #include <AST/visitors/IrtBuilderVisitor.h>
 
 using namespace AstTree;
+
+IRTree::TOperatorType CIrtBuilderVisitor::operatorFromAstToIr( TOperatorType type ) const {
+    IRTree::TOperatorType typeResult;
+    switch ( type ) {
+        case TOperatorType::OT_Plus: typeResult = IRTree::TOperatorType::OT_Plus;
+        case TOperatorType::OT_Minus: typeResult = IRTree::TOperatorType::OT_Minus;
+        case TOperatorType::OT_Times: typeResult = IRTree::TOperatorType::OT_Times;
+        case TOperatorType::OT_Div: typeResult = IRTree::TOperatorType::OT_Div;
+        case TOperatorType::OT_Mod: typeResult = IRTree::TOperatorType::OT_Mod;
+        case TOperatorType::OT_And: typeResult = IRTree::TOperatorType::OT_And;
+        case TOperatorType::OT_Or: typeResult = IRTree::TOperatorType::OT_Or;
+        default: {
+            // such cases should never happen
+            assert( false ) ;
+        }
+    }
+    return typeResult;
+}
+
 /*__________ Access Modifiers __________*/
 
 void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
@@ -27,7 +46,20 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    if ( expression->Operation() == TOperatorType::OT_LT ) {
+        // TODO
+    } else {
+        IRTree::TOperatorType operatorType = operatorFromAstToIr( expression->Operation() );
+        expression->LeftOperand()->Accept( this );
+        const IRTree::CExpression* expressionLeft = subtreeWrapper->ToExpression();
+
+        expression->RightOperand()->Accept( this );
+        const IRTree::CExpression* expressionRight = subtreeWrapper->ToExpression();
+
+        subtreeWrapper = std::unique_ptr<IRTree::ISubtreeWrapper>( new IRTree::CExpressionWrapper(
+            new IRTree::CBinaryExpression( operatorType, expressionLeft, expressionRight )
+        ) );
+    }
 
     onNodeExit( nodeName );
 }
