@@ -46,15 +46,20 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
+    expression->LeftOperand()->Accept( this );
+    const IRTree::CExpression* expressionLeft = subtreeWrapper->ToExpression();
+
+    expression->RightOperand()->Accept( this );
+    const IRTree::CExpression* expressionRight = subtreeWrapper->ToExpression();
+
     if ( expression->Operation() == TOperatorType::OT_LT ) {
-        // TODO
+        subtreeWrapper = std::unique_ptr<IRTree::ISubtreeWrapper>( new IRTree::CRelativeConditionalWrapper(
+            IRTree::TLogicOperatorType::LOT_LT,
+            expressionLeft,
+            expressionRight
+        ) );
     } else {
         IRTree::TOperatorType operatorType = operatorFromAstToIr( expression->Operation() );
-        expression->LeftOperand()->Accept( this );
-        const IRTree::CExpression* expressionLeft = subtreeWrapper->ToExpression();
-
-        expression->RightOperand()->Accept( this );
-        const IRTree::CExpression* expressionRight = subtreeWrapper->ToExpression();
 
         subtreeWrapper = std::unique_ptr<IRTree::ISubtreeWrapper>( new IRTree::CExpressionWrapper(
             new IRTree::CBinaryExpression( operatorType, expressionLeft, expressionRight )
