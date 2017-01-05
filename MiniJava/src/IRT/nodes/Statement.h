@@ -9,13 +9,13 @@ namespace IRTree {
 
 class IStatement : public IVisitorTarget {
 public:
-    virtual ~IStatement() {}
+    virtual ~IStatement() = default;
 };
 
 class CStatement : public IStatement {
 public:
-    CStatement() {}
-    virtual ~CStatement() {}
+    CStatement() = default;
+    virtual ~CStatement() = default;
 };
 
 enum class TLogicOperatorType : char {
@@ -33,7 +33,7 @@ enum class TLogicOperatorType : char {
 
 //-----------------------------------------------------------------------------------------------//
 
-class CMoveStatement : CStatement {
+class CMoveStatement : public CStatement {
 public:
     CMoveStatement( const CExpression* _destination, const CExpression* _source )
         : destination( _destination ), source( _source ) {}
@@ -50,7 +50,7 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CExpStatement : CStatement {
+class CExpStatement : public CStatement {
 public:
     CExpStatement( const CExpression* _expression ) : expression( _expression ) {}
 
@@ -64,7 +64,7 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CJumpStatement : CStatement {
+class CJumpStatement : public CStatement {
 public:
     CJumpStatement( const CExpression* _expression, const CLabelList* _targets )
         : expression( _expression ), targets( _targets ) {}
@@ -81,18 +81,18 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CJumpConditionalStatement : CStatement {
+class CJumpConditionalStatement : public CStatement {
 public:
     CJumpConditionalStatement( TLogicOperatorType _operation,
         const CExpression* left, const CExpression* right,
-        const CLabelStatement* _trueLabel, const CLabelStatement* _falseLabel )
+        const CLabelStatement* _labelTrue, const CLabelStatement* _falseLabel )
             : leftOperand( left ), rightOperand( right ),
-            trueLabel( _trueLabel ), falseLabel( _falseLabel ), operation( _operation ) {}
+            labelTrue( _labelTrue ), labelFalse( _falseLabel ), operation( _operation ) {}
 
     const CExpression* LeftOperand() const { return leftOperand.get(); }
     const CExpression* RightOperand() const { return rightOperand.get(); }
-    const CLabelStatement* TrueLabel() const { return trueLabel.get(); }
-    const CLabelStatement* FalseLabel() const { return falseLabel.get(); }
+    const CLabelStatement* TrueLabel() const { return labelTrue.get(); }
+    const CLabelStatement* FalseLabel() const { return labelFalse.get(); }
     TLogicOperatorType Operation() const { return operation; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
@@ -100,14 +100,14 @@ public:
 private:
     std::unique_ptr<const CExpression> leftOperand;
     std::unique_ptr<const CExpression> rightOperand;
-    std::unique_ptr<const CLabelStatement> trueLabel;
-    std::unique_ptr<const CLabelStatement> falseLabel;
+    std::unique_ptr<const CLabelStatement> labelTrue;
+    std::unique_ptr<const CLabelStatement> labelFalse;
     TLogicOperatorType operation;
 };
 
 //-----------------------------------------------------------------------------------------------//
 
-class CSeqStatement : CStatement {
+class CSeqStatement : public CStatement {
 public:
     CSeqStatement( const CStatement* _left, const CStatement* _right )
         : leftStatement( _left ), rightStatement( _right ) {}
@@ -124,7 +124,7 @@ private:
 
 //-----------------------------------------------------------------------------------------------//
 
-class CLabelStatement : CStatement {
+class CLabelStatement : public CStatement {
 public:
     CLabelStatement( CLabel _label ) : label( _label ) {}
 

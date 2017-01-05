@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <IRT/Temporary.h>
+
 #include <IRT/nodes/ExpressionList.h>
 #include <IRT/visitors/Visitor.h>
 #include <IRT/nodes/Statement.h>
@@ -59,9 +61,13 @@ private:
 
 class CTempExpression : public CExpression {
 public:
-    CTempExpression() {}
+    CTempExpression( CTemp _temporary ) : temporary( _temporary ) {}
+
+    CTemp Temporary() const { return temporary; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+private:
+    CTemp temporary;
 };
 
 //-----------------------------------------------------------------------------------------------//
@@ -118,17 +124,17 @@ private:
 
 class CEseqExpression : public CExpression {
 public:
-    CEseqExpression( const CExpression* _expression, const CStatement* _statement )
-        : expression( _expression ), statement( _statement ) {}
+    CEseqExpression( const CStatement* _statement, const CExpression* _expression )
+        : statement( _statement ), expression( _expression ) {}
 
-    const CExpression* Expression() const { return expression.get(); }
     const CStatement* Statement() const { return statement.get(); }
+    const CExpression* Expression() const { return expression.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    std::unique_ptr<const CExpression> expression;
     std::unique_ptr<const CStatement> statement;
+    std::unique_ptr<const CExpression> expression;
 };
 
 } // namespace IRTree
