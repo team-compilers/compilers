@@ -79,7 +79,9 @@ public:
 private:
     IRTree::TOperatorType operatorFromAstToIr( TOperatorType type ) const;
 
-    std::unique_ptr<IRTree::ISubtreeWrapper> subtreeWrapper;
+    void updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew );
+
+    std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
 };
 
 }

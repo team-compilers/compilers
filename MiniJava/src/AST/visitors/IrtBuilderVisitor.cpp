@@ -20,6 +20,10 @@ IRTree::TOperatorType CIrtBuilderVisitor::operatorFromAstToIr( TOperatorType typ
     return typeResult;
 }
 
+void CIrtBuilderVisitor::updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew ) {
+    subtreeWrapper = std::unique_ptr<const IRTree::ISubtreeWrapper>( wrapperNew );
+}
+
 /*__________ Access Modifiers __________*/
 
 void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
@@ -53,7 +57,7 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     const IRTree::CExpression* expressionRight = subtreeWrapper->ToExpression();
 
     if ( expression->Operation() == TOperatorType::OT_LT ) {
-        subtreeWrapper = std::unique_ptr<IRTree::ISubtreeWrapper>( new IRTree::CRelativeConditionalWrapper(
+        updateSubtreeWrapper( new IRTree::CRelativeConditionalWrapper(
             IRTree::TLogicOperatorType::LOT_LT,
             expressionLeft,
             expressionRight
@@ -61,7 +65,7 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     } else {
         IRTree::TOperatorType operatorType = operatorFromAstToIr( expression->Operation() );
 
-        subtreeWrapper = std::unique_ptr<IRTree::ISubtreeWrapper>( new IRTree::CExpressionWrapper(
+        updateSubtreeWrapper( new IRTree::CExpressionWrapper(
             new IRTree::CBinaryExpression( operatorType, expressionLeft, expressionRight )
         ) );
     }
@@ -82,7 +86,9 @@ void CIrtBuilderVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CConstExpression( expression->Value() )
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -91,7 +97,9 @@ void CIrtBuilderVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CConstExpression( expression->Value() ? 1 : 0 )
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -154,7 +162,14 @@ void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName );
 
+    expression->TargetExpression()->Accept( this );
+    const IRTree::CExpression* expression = subtreeWrapper->ToExpression();
+
     // write your code here
+
+    // updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+    //     new IRTree::CBinaryExpression
+    // ) );
 
     onNodeExit( nodeName );
 }
@@ -193,6 +208,8 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     onNodeEnter( nodeName );
 
     // write your code here
+
+    
 
     onNodeExit( nodeName );
 }
