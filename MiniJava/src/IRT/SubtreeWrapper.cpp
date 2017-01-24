@@ -12,13 +12,21 @@ const CStatement* CExpressionWrapper::ToStatement() const {
 }
 
 const CStatement* CExpressionWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
-    /* TODO */
+    // TODO: check it
+    return new CJumpConditionalStatement(
+        TLogicOperatorType::LOT_NE,
+        expression,
+        new CConstExpression( 0 ),
+        new CLabelStatement( labelTrue ),
+        new CLabelStatement( labelFalse )
+    );
 }
 
 
 const CExpression* CStatementWrapper::ToExpression() const {
     // such calls should never happen
     assert( false );
+    return new CEseqExpression( statement, new CConstExpression( 0 ) );
 }
 
 const CStatement* CStatementWrapper::ToStatement() const {
@@ -55,6 +63,12 @@ const CExpression* CConditionalWrapper::ToExpression() const {
 
 const CStatement* CConditionalWrapper::ToStatement() const {
     /* TODO; */
+}
+
+const CStatement* CIfThenElseExpressionWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
+    return new CSeqStatement(
+        // LOL
+    );
 }
 
 const CStatement* CRelativeConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
