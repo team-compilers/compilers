@@ -65,19 +65,34 @@ const CStatement* CConditionalWrapper::ToStatement() const {
     /* TODO; */
 }
 
-const CStatement* CIfThenElseExpressionWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
-    return new CSeqStatement(
-        // LOL
-    );
-}
-
 const CStatement* CRelativeConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
     return new CJumpConditionalStatement(
         operatorType,
-        left,
-        right,
+        operandLeft,
+        operandRight,
         new CLabelStatement( labelTrue ),
         new CLabelStatement( labelFalse )
     );
 }
 
+const CStatement* CAndConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
+    CLabel labelMiddle;
+    return new CSeqStatement(
+        operandLeft.ToConditional( labelMiddle, labelFalse ),
+        new CSeqStatement(
+            new CLabelStatement( labelMiddle ),
+            operandRight.ToConditional( labelTrue, labelFalse )
+        )
+    );
+}
+
+const CStatement* COrConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
+    CLabel labelMiddle;
+    return new CSeqStatement(
+        operandLeft.ToConditional( labelTrue, labelMiddle ),
+        new CSeqStatement(
+            new CLabelStatement( labelMiddle ),
+            operandRight.ToConditional( labelTrue, labelFalse )
+        )
+    );
+}

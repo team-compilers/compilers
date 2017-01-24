@@ -53,22 +53,6 @@ public:
 
 // Specific Subtree Wrappers
 
-class CIfThenElseExpressionWrapper : public CExpressionWrapper {
-public:
-    CIfThenElseExpressionWrapper( const CExpression* _condition, const CExpression* _expressionTrue, const CExpression* _expressionFalse )
-        : condition( _condition ), expressionTrue( _expressionTrue ), _expressionFalse( expressionFalse ) {}
-
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
-private:
-    const CExpression* condition;
-    const CExpression* expressionTrue;
-    const CExpression* expressionFalse;
-
-    CLabel labelThen;
-    CLabel labelElse;
-    CLabel labelJoin;
-}
-
 class CRelativeConditionalWrapper : public CConditionalWrapper {
 public:
     CRelativeConditionalWrapper( TLogicOperatorType _operatorType, const CExpression* _left, const CExpression* _right )
@@ -77,8 +61,30 @@ public:
     virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
 private:
     TLogicOperatorType operatorType;
-    const CExpression* left;
-    const CExpression* right;
+    const CExpression* operandLeft;
+    const CExpression* operandRight;
+};
+
+class CAndConditionalWrapper : public CConditionalWrapper {
+public:
+    CAndConditionalWrapper( const ISubtreeWrapper* _leftOperand, const ISubtreeWrapper* _rightOperand )
+        : leftOperand( _leftOperand ), rightOperand( _rightOperand ) {}
+
+    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+private:
+    const ISubtreeWrapper* operandLeft;
+    const ISubtreeWrapper* operandRight;
+};
+
+class COrConditionalWrapper : public CConditionalWrapper {
+public:
+    COrConditionalWrapper( const ISubtreeWrapper* _leftOperand, const ISubtreeWrapper* _rightOperand )
+        : leftOperand( _leftOperand ), rightOperand( _rightOperand ) {}
+
+    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+private:
+    const ISubtreeWrapper* operandLeft;
+    const ISubtreeWrapper* operandRight;
 };
 
 }
