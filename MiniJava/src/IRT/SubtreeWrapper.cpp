@@ -96,3 +96,7 @@ const CStatement* COrConditionalWrapper::ToConditional( CLabel labelTrue, CLabel
         )
     );
 }
+
+const CStatement* CNegateConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
+    return wrapper.ToConditional( labelFalse, labelTrue ); // reversed order of arguments
+}

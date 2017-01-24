@@ -30,7 +30,8 @@ void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -39,7 +40,8 @@ void CIrtBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -144,7 +146,13 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->LengthExpression->Accept( this );
+
+    const IRTree::CExpression* expressionLength = subtreeWrapper->ToExpression();
+
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        frame.ExternalCall("initArray", new IRTree::CExpressionList( expressionLength ) );
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -153,7 +161,16 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const IRTree::CExpression* tempExpression = new IRTree::CTempExpression( CTemp() );
+
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CEseqExpression(
+            new IRTree::CMoveStatement(
+                tempExpression,
+                frame.ExternalCall("malloc", new IRTree::CExpressionList( IRTree::CConstExpression( /*TODO*/0 ) ))
+            )
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -163,13 +180,10 @@ void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
     onNodeEnter( nodeName );
 
     expression->TargetExpression()->Accept( this );
-    const IRTree::CExpression* expression = subtreeWrapper->ToExpression();
 
-    // write your code here
-
-    // updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-    //     new IRTree::CBinaryExpression
-    // ) );
+    updateSubtreeWrapper( new IRTree::CNegateConditionalWrapper(
+        subtreeWrapper
+    ) );
 
     onNodeExit( nodeName );
 }

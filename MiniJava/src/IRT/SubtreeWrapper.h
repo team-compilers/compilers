@@ -87,4 +87,14 @@ private:
     const ISubtreeWrapper* operandRight;
 };
 
+class CNegateConditionalWrapper : public CConditionalWrapper {
+public:
+    CNegateConditionalWrapper( const ISubtreeWrapper* _wrapper )
+        : wrapper( _wrapper ) {}
+
+    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+private:
+    const ISubtreeWrapper* wrapper;
+};
+
 }

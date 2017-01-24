@@ -33,12 +33,20 @@ class CFrame {
 public:
     CFrame() = default;
 
-    NewFrame( CLabel name );
+    // NewFrame( CLabel name ) {}
 
     CTemp FramePointer() const { return framePoiner; }
     int WordSize() const { return wordSize; }
 
-    virtual IAccess AllocateLocal();
+    virtual IAccess AllocateLocal() {}
+
+    const CExpression* ExternalCall( const std::string& functionName, const CExpressionList& args ) {
+        return new IRTree::CCallExpression(
+            new CNameExpression( CLabel( "initArray" ) ),
+            args
+        );
+    }
+
 private:
     CLabel name;
     std::vector<IAccess> formals;

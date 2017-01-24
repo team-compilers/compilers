@@ -27,6 +27,8 @@
 
 #include <IRT/SubtreeWrapper.h>
 
+#include <IRT/Frame.h>
+
 namespace AstTree {
 
 class CIrtBuilderVisitor : public CVisitor {
@@ -82,6 +84,7 @@ private:
     void updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew );
 
     std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
+    CFrame frame;
 };
 
 }

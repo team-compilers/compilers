@@ -48,14 +48,14 @@ private:
 
 class CNameExpression : public CExpression {
 public:
-    CNameExpression( const CLabelStatement* _label ) : label( _label ) {}
+    CNameExpression( CLabel _label ) : label( _label ) {}
 
-    const CLabelStatement* Label() const { return label.get(); }
+    const CLabel Label() const { return label; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    std::unique_ptr<const CLabelStatement> label;
+    Label label;
 };
 
 //-----------------------------------------------------------------------------------------------//
