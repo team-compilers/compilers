@@ -317,7 +317,8 @@ void CIrtBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -326,7 +327,8 @@ void CIrtBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -335,7 +337,8 @@ void CIrtBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -344,7 +347,8 @@ void CIrtBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -355,7 +359,8 @@ void CIrtBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -374,6 +379,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     onNodeEnter( nodeName );
 
     // write your code here
+    // create new frame
 
     onNodeExit( nodeName );
 }
@@ -391,7 +397,7 @@ void CIrtBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    declaration->MethodDeclarations()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -400,7 +406,8 @@ void CIrtBuilderVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    program->MainClass()->Accept( this );
+    program->ClassDeclarations()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -420,7 +427,29 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
+
+    // std::vector<std::unique_ptr<const IRTree::ISubtreeWrapper>> statementsTranslated;
+    // statementsTranslated.reserve( statements.size() );
+
+
+
+    // statements must be reversed before being used
+    // we'll actually iterate over it in reversed order (the last statement will be the first)
+    ( statements.front() )->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> resultOnSuffix = subtreeWrapper;
+    for ( it = std::next( statements.begin() ); it != statements.end(); ++it ) {
+        ( *it )->Accept( this );
+        std::unique_ptr<const IRTree::ISubtreeWrapper> resultCurrent = subtreeWrapper;
+        resultOnSuffix = std::unique_ptr< const IRTree::ISubtreeWrapper >( new IRTree::CStatementWrapper(
+            new IRTree::CSeqStatement(
+                resultCurrent->ToStatement(),
+                resultOnSuffix->ToStatement()
+            )
+        ) );
+    }
+
+    subtreeWrapper = resultOnSuffix;
 
     onNodeExit( nodeName );
 }
