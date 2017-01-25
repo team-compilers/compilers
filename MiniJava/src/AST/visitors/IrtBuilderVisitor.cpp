@@ -194,7 +194,17 @@ void CIrtBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftPart()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperLeftPart = subtreeWrapper;
+    statement->RightPart()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperRightPart = subtreeWrapper;
+
+    updateSubtreeWrapper( new IRTree::CStatementWrapper(
+        new CMoveStatement(
+            wrapperLeftPart.ToExpression(),
+            wrapperRightPart.ToExpression()
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -221,9 +231,39 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Condition()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = subtreeWrapper;
+    statement->PositiveTarget()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperTargetPositive = subtreeWrapper;
+    statement->NegativeTarget()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperTargetNegative = subtreeWrapper;
 
-    
+    IRTree::CLabel labelTrue;
+    IRTree::CLabel labelFalse;
+
+    const IRTree::CLabelStatement* labelStatementJoin = new IRTree::CLabelStatement( IRTree::CLabel() );
+
+    updateSubtreeWrapper( new IRTree::CStatementWrapper(
+        new IRTree::CSeqStatement(
+            wrapperCondition->ToCondition( labelTrue, labelFalse ),
+            new IRTree::CSeqStatement(
+                new IRTree::CLabelStatement( labelTrue ),
+                new IRTree::CSeqStatement(
+                    wrapperTargetPositive->ToStatement(),
+                    new IRTree::CSeqStatement(
+                        new IRTree::CJumpStatement( labelStatementJoin ),
+                        new IRTree::CSeqStatement(
+                            new IRTree::CLabelStatement( labelFalse ),
+                            new IRTree::CSeqStatement(
+                                wrapperTargetNegative->ToStatement(),
+                                labelStatementJoin
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    ) );
 
     onNodeExit( nodeName );
 }

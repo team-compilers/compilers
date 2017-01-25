@@ -66,17 +66,15 @@ private:
 
 class CJumpStatement : public CStatement {
 public:
-    CJumpStatement( const CExpression* _expression, const CLabelList* _targets )
-        : expression( _expression ), targets( _targets ) {}
+    CJumpStatement( CLabel _target )
+        : target( _target ) {}
 
-    const CExpression* Expression() const { return expression.get(); }
-    const CLabelList* Targets() const { return targets.get(); }
+    CLabel Target() const { return target; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    std::unique_ptr<const CExpression> expression;
-    std::unique_ptr<const CLabelList> targets;
+    CLabel target;
 };
 
 //-----------------------------------------------------------------------------------------------//
