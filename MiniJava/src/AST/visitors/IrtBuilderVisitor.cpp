@@ -240,8 +240,7 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
 
     IRTree::CLabel labelTrue;
     IRTree::CLabel labelFalse;
-
-    const IRTree::CLabelStatement* labelStatementJoin = new IRTree::CLabelStatement( IRTree::CLabel() );
+    IRTree::CLabel labelJoin;
 
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CSeqStatement(
@@ -251,12 +250,12 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
                 new IRTree::CSeqStatement(
                     wrapperTargetPositive->ToStatement(),
                     new IRTree::CSeqStatement(
-                        new IRTree::CJumpStatement( labelStatementJoin ),
+                        new IRTree::CJumpStatement( labelJoin ),
                         new IRTree::CSeqStatement(
                             new IRTree::CLabelStatement( labelFalse ),
                             new IRTree::CSeqStatement(
                                 wrapperTargetNegative->ToStatement(),
-                                labelStatementJoin
+                                new IRTree::CLabelStatement( IRTree::CLabel() )
                             )
                         )
                     )
@@ -272,7 +271,33 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Condition()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = subtreeWrapper;
+    statement->Body()->Accept( this );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperBody = subtreeWrapper;
+
+    IRTree::CLabel labelLoop;
+    IRTree::CLabel labelBody;
+    IRTree::CLabel labelDone;
+
+    updateSubtreeWrapper( new IRTree::CStatementWrapper(
+        new IRTree::CSeqStatement(
+            new IRTree::CLabelStatement( labelLoop ),
+            new IRTree::CSeqStatement(
+                wrapperCondition->ToCondition( labelBody, labelDone ),
+                new IRTree::CSeqStatement(
+                    new IRTree::CLabelStatement( labelBody ),
+                    new IRTree::CSeqStatement(
+                        wrapperBody->ToStatement(),
+                        new IRTree::CSeqStatement(
+                            new IRTree::CJumpStatement( labelLoop ),
+                            new IRTree::CLabelStatement( labelDone )
+                        )
+                    )
+                )
+            )
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
