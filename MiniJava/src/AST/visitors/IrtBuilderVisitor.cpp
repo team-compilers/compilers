@@ -306,7 +306,7 @@ void CIrtBuilderVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_BRACES );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->List()->Accept( this );
 
     onNodeExit( nodeName );
 }
