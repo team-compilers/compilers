@@ -2,11 +2,12 @@
 #include <memory>
 #include <string>
 
+#include <SymbolTable.h>
 #include <AST/nodes/Program.h>
 #include <AST/visitors/DotLangVisitor.h>
 #include <AST/visitors/PrintCodeVisitor.h>
 #include <AST/visitors/SymbolTableBuilderVisitor.h>
-#include <SymbolTable.h>
+#include <AST/visitors/IrtBuilderVisitor.h>
 #include <AST/visitors/TypeCheckerVisitor.h>
 
 #include <BisonParser.h>
@@ -58,6 +59,11 @@ int main( int argc, char* argv[] ) {
     const std::string mode( argv[3] );
     CBisonParser parser( inputFilePath );
     std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
+
+    CIrtBuilderVisitor irtBuilderVisitor;
+    irtBuilderVisitor.Visit( astRoot.get() );
+    return 0;
+
     std::string traversal;
     if ( mode == "code" ) {
         traversal = AstToCode( astRoot.get(), false );

@@ -2,6 +2,10 @@
 
 using namespace AstTree;
 
+const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>& CIrtBuilderVisitor::MethodTrees() const {
+    return methodTrees;
+}
+
 IRTree::TOperatorType CIrtBuilderVisitor::operatorFromAstToIr( TOperatorType type ) const {
     IRTree::TOperatorType typeResult;
     switch ( type ) {

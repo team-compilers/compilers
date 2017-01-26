@@ -36,7 +36,8 @@ namespace AstTree {
 class CIrtBuilderVisitor : public CVisitor {
 public:
     CIrtBuilderVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
-    ~CIrtBuilderVisitor() {}
+
+    const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>& MethodTrees() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
