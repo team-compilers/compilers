@@ -458,7 +458,8 @@ void CIrtBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -467,7 +468,8 @@ void CIrtBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -476,7 +478,12 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    auto methods = list->MethodDeclarations();
+
+    for (int i = 0; i < methods.size(); ++i) {
+        methods[i]->Accept( this );
+        methodTrees["C$M" + std::to_string( i )] = subtreeWrapper->ToStatement();
+    }
 
     onNodeExit( nodeName );
 }
@@ -485,7 +492,11 @@ void CIrtBuilderVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    const std::vector< std::unique_ptr<const CClassDeclaration> >& classes = list->ClassDeclarations();
+
+    for (int i = 0; i < classes.size(); ++i) {
+        classes[i]->Accept( this );
+    }
 
     onNodeExit( nodeName );
 }

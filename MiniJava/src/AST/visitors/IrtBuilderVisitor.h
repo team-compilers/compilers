@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_map>
+
 #include <AST/nodes/NodeNames.h>
 #include <AST/visitors/Visitor.h>
 
@@ -84,6 +86,9 @@ private:
     void updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew );
 
     std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
+
+    std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
+
     CFrame frame;
 };
 
