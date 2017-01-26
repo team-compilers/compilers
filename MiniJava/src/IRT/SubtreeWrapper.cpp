@@ -78,10 +78,10 @@ const CStatement* CRelativeConditionalWrapper::ToConditional( CLabel labelTrue, 
 const CStatement* CAndConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
     CLabel labelMiddle;
     return new CSeqStatement(
-        operandLeft.ToConditional( labelMiddle, labelFalse ),
+        operandLeft->ToConditional( labelMiddle, labelFalse ),
         new CSeqStatement(
             new CLabelStatement( labelMiddle ),
-            operandRight.ToConditional( labelTrue, labelFalse )
+            operandRight->ToConditional( labelTrue, labelFalse )
         )
     );
 }
@@ -89,14 +89,14 @@ const CStatement* CAndConditionalWrapper::ToConditional( CLabel labelTrue, CLabe
 const CStatement* COrConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
     CLabel labelMiddle;
     return new CSeqStatement(
-        operandLeft.ToConditional( labelTrue, labelMiddle ),
+        operandLeft->ToConditional( labelTrue, labelMiddle ),
         new CSeqStatement(
             new CLabelStatement( labelMiddle ),
-            operandRight.ToConditional( labelTrue, labelFalse )
+            operandRight->ToConditional( labelTrue, labelFalse )
         )
     );
 }
 
 const CStatement* CNegateConditionalWrapper::ToConditional( CLabel labelTrue, CLabel labelFalse ) const {
-    return wrapper.ToConditional( labelFalse, labelTrue ); // reversed order of arguments
+    return wrapper->ToConditional( labelFalse, labelTrue ); // reversed order of arguments
 }

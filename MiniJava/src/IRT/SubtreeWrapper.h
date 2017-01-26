@@ -55,8 +55,8 @@ public:
 
 class CRelativeConditionalWrapper : public CConditionalWrapper {
 public:
-    CRelativeConditionalWrapper( TLogicOperatorType _operatorType, const CExpression* _left, const CExpression* _right )
-        : operatorType( _operatorType ), left( _left ), right( _right ) {}
+    CRelativeConditionalWrapper( TLogicOperatorType _operatorType, const CExpression* _operandLeft, const CExpression* _operandRight )
+        : operatorType( _operatorType ), operandLeft( _operandLeft ), operandRight( _operandRight ) {}
 
     virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
 private:
@@ -67,8 +67,8 @@ private:
 
 class CAndConditionalWrapper : public CConditionalWrapper {
 public:
-    CAndConditionalWrapper( const ISubtreeWrapper* _leftOperand, const ISubtreeWrapper* _rightOperand )
-        : leftOperand( _leftOperand ), rightOperand( _rightOperand ) {}
+    CAndConditionalWrapper( const ISubtreeWrapper* _operandLeft, const ISubtreeWrapper* _operandRight )
+        : operandLeft( _operandLeft ), operandRight( _operandRight ) {}
 
     virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
 private:
@@ -78,8 +78,8 @@ private:
 
 class COrConditionalWrapper : public CConditionalWrapper {
 public:
-    COrConditionalWrapper( const ISubtreeWrapper* _leftOperand, const ISubtreeWrapper* _rightOperand )
-        : leftOperand( _leftOperand ), rightOperand( _rightOperand ) {}
+    COrConditionalWrapper( const ISubtreeWrapper* _operandLeft, const ISubtreeWrapper* _operandRight )
+        : operandLeft( _operandLeft ), operandRight( _operandRight ) {}
 
     virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
 private:

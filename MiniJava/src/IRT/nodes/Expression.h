@@ -55,7 +55,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    Label label;
+    CLabel label;
 };
 
 //-----------------------------------------------------------------------------------------------//

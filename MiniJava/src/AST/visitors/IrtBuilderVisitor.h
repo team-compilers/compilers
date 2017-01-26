@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <utility>
 
 #include <AST/nodes/NodeNames.h>
 #include <AST/visitors/Visitor.h>
@@ -90,7 +91,7 @@ private:
 
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
 
-    CFrame frame;
+    IRTree::CFrame frame;
 };
 
 }

@@ -150,12 +150,12 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName );
 
-    expression->LengthExpression->Accept( this );
+    expression->LengthExpression()->Accept( this );
 
     const IRTree::CExpression* expressionLength = subtreeWrapper->ToExpression();
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        frame.ExternalCall("initArray", new IRTree::CExpressionList( expressionLength ) );
+        frame.ExternalCall("initArray", new IRTree::CExpressionList( expressionLength ) )
     ) );
 
     onNodeExit( nodeName );
@@ -165,16 +165,16 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
-    const IRTree::CExpression* tempExpression = new IRTree::CTempExpression( CTemp() );
+    const IRTree::CExpression* tempExpression = new IRTree::CTempExpression( IRTree::CTemp() );
 
-    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        new IRTree::CEseqExpression(
-            new IRTree::CMoveStatement(
-                tempExpression,
-                frame.ExternalCall("malloc", new IRTree::CExpressionList( IRTree::CConstExpression( /*TODO*/0 ) ))
-            )
-        )
-    ) );
+    // updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+    //     new IRTree::CEseqExpression(
+    //         new IRTree::CMoveStatement(
+    //             tempExpression,
+    //             frame.ExternalCall("malloc", new IRTree::CExpressionList( new IRTree::CConstExpression( /*TODO*/0 ) ))
+    //         )
+    //     )
+    // ) );
 
     onNodeExit( nodeName );
 }
@@ -186,7 +186,7 @@ void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
     expression->TargetExpression()->Accept( this );
 
     updateSubtreeWrapper( new IRTree::CNegateConditionalWrapper(
-        subtreeWrapper
+        subtreeWrapper.get()
     ) );
 
     onNodeExit( nodeName );
@@ -199,14 +199,14 @@ void CIrtBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->LeftPart()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperLeftPart = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperLeftPart = std::move( subtreeWrapper );
     statement->RightPart()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperRightPart = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperRightPart = std::move( subtreeWrapper );
 
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
-        new CMoveStatement(
-            wrapperLeftPart.ToExpression(),
-            wrapperRightPart.ToExpression()
+        new IRTree::CMoveStatement(
+            wrapperLeftPart->ToExpression(),
+            wrapperRightPart->ToExpression()
         )
     ) );
 
@@ -236,11 +236,11 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->Condition()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = std::move( subtreeWrapper );
     statement->PositiveTarget()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperTargetPositive = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperTargetPositive = std::move( subtreeWrapper );
     statement->NegativeTarget()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperTargetNegative = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperTargetNegative = std::move( subtreeWrapper );
 
     IRTree::CLabel labelTrue;
     IRTree::CLabel labelFalse;
@@ -248,7 +248,7 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
 
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CSeqStatement(
-            wrapperCondition->ToCondition( labelTrue, labelFalse ),
+            wrapperCondition->ToConditional( labelTrue, labelFalse ),
             new IRTree::CSeqStatement(
                 new IRTree::CLabelStatement( labelTrue ),
                 new IRTree::CSeqStatement(
@@ -276,9 +276,9 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     onNodeEnter( nodeName );
 
     statement->Condition()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = std::move( subtreeWrapper );
     statement->Body()->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperBody = subtreeWrapper;
+    std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperBody = std::move( subtreeWrapper );
 
     IRTree::CLabel labelLoop;
     IRTree::CLabel labelBody;
@@ -288,7 +288,7 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
         new IRTree::CSeqStatement(
             new IRTree::CLabelStatement( labelLoop ),
             new IRTree::CSeqStatement(
-                wrapperCondition->ToCondition( labelBody, labelDone ),
+                wrapperCondition->ToConditional( labelBody, labelDone ),
                 new IRTree::CSeqStatement(
                     new IRTree::CLabelStatement( labelBody ),
                     new IRTree::CSeqStatement(
@@ -441,10 +441,10 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
     // statements must be reversed before being used
     // we'll actually iterate over it in reversed order (the last statement will be the first)
     ( statements.front() )->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> resultOnSuffix = subtreeWrapper;
-    for ( it = std::next( statements.begin() ); it != statements.end(); ++it ) {
+    std::unique_ptr<const IRTree::ISubtreeWrapper> resultOnSuffix = std::move( subtreeWrapper );
+    for ( auto it = std::next( statements.begin() ); it != statements.end(); ++it ) {
         ( *it )->Accept( this );
-        std::unique_ptr<const IRTree::ISubtreeWrapper> resultCurrent = subtreeWrapper;
+        std::unique_ptr<const IRTree::ISubtreeWrapper> resultCurrent = std::move( subtreeWrapper );
         resultOnSuffix = std::unique_ptr< const IRTree::ISubtreeWrapper >( new IRTree::CStatementWrapper(
             new IRTree::CSeqStatement(
                 resultCurrent->ToStatement(),
@@ -453,7 +453,7 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
         ) );
     }
 
-    subtreeWrapper = resultOnSuffix;
+    subtreeWrapper = std::move( resultOnSuffix );
 
     onNodeExit( nodeName );
 }
@@ -482,11 +482,12 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
-    auto methods = list->MethodDeclarations();
+    const std::vector< std::unique_ptr<const CMethodDeclaration> >& methods = list->MethodDeclarations();
 
-    for (int i = 0; i < methods.size(); ++i) {
-        methods[i]->Accept( this );
-        methodTrees["C$M" + std::to_string( i )] = subtreeWrapper->ToStatement();
+    int i = 0;
+    for ( auto it = methods.begin(); it != methods.end(); ++it ) {
+        ( *it )->Accept( this );
+        methodTrees["C$M" + std::to_string( i++ )] = std::unique_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
     }
 
     onNodeExit( nodeName );
@@ -498,8 +499,8 @@ void CIrtBuilderVisitor::Visit( const CClassDeclarationList* list ) {
 
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classes = list->ClassDeclarations();
 
-    for (int i = 0; i < classes.size(); ++i) {
-        classes[i]->Accept( this );
+    for ( auto it = classes.begin(); it != classes.end(); ++it ) {
+        ( *it )->Accept( this );
     }
 
     onNodeExit( nodeName );

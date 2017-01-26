@@ -1,4 +1,4 @@
-#pragma once;
+#pragma once
 
 #include <vector>
 
@@ -35,12 +35,12 @@ public:
 
     // NewFrame( CLabel name ) {}
 
-    CTemp FramePointer() const { return framePoiner; }
+    CTemp FramePointer() const { return framePointer; }
     int WordSize() const { return wordSize; }
 
     virtual IAccess AllocateLocal() {}
 
-    const CExpression* ExternalCall( const std::string& functionName, const CExpressionList& args ) {
+    const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) {
         return new IRTree::CCallExpression(
             new CNameExpression( CLabel( "initArray" ) ),
             args
