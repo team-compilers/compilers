@@ -9,13 +9,13 @@ const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>
 IRTree::TOperatorType CIrtBuilderVisitor::operatorFromAstToIr( TOperatorType type ) const {
     IRTree::TOperatorType typeResult;
     switch ( type ) {
-        case TOperatorType::OT_Plus: typeResult = IRTree::TOperatorType::OT_Plus;
-        case TOperatorType::OT_Minus: typeResult = IRTree::TOperatorType::OT_Minus;
-        case TOperatorType::OT_Times: typeResult = IRTree::TOperatorType::OT_Times;
-        case TOperatorType::OT_Div: typeResult = IRTree::TOperatorType::OT_Div;
-        case TOperatorType::OT_Mod: typeResult = IRTree::TOperatorType::OT_Mod;
-        case TOperatorType::OT_And: typeResult = IRTree::TOperatorType::OT_And;
-        case TOperatorType::OT_Or: typeResult = IRTree::TOperatorType::OT_Or;
+        case TOperatorType::OT_Plus: typeResult = IRTree::TOperatorType::OT_Plus; break;
+        case TOperatorType::OT_Minus: typeResult = IRTree::TOperatorType::OT_Minus; break;
+        case TOperatorType::OT_Times: typeResult = IRTree::TOperatorType::OT_Times; break;
+        case TOperatorType::OT_Div: typeResult = IRTree::TOperatorType::OT_Div; break;
+        case TOperatorType::OT_Mod: typeResult = IRTree::TOperatorType::OT_Mod; break;
+        case TOperatorType::OT_And: typeResult = IRTree::TOperatorType::OT_And; break;
+        case TOperatorType::OT_Or: typeResult = IRTree::TOperatorType::OT_Or; break;
         default: {
             // such cases should never happen
             assert( false ) ;
@@ -114,7 +114,15 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CMemExpression(
+            new IRTree::CBinaryExpression(
+                IRTree::TOperatorType::OT_Plus,
+                new IRTree::CTempExpression( frame.FramePointer() ),
+                new IRTree::CConstExpression( 0 ) // TODO take this constant from frame
+            )
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -384,6 +392,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
 
     // write your code here
     // create new frame
+    declaration->Statements()->Accept( this );
 
     onNodeExit( nodeName );
 }
@@ -436,8 +445,6 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
     // std::vector<std::unique_ptr<const IRTree::ISubtreeWrapper>> statementsTranslated;
     // statementsTranslated.reserve( statements.size() );
 
-
-
     // statements must be reversed before being used
     // we'll actually iterate over it in reversed order (the last statement will be the first)
     ( statements.front() )->Accept( this );
@@ -487,6 +494,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     int i = 0;
     for ( auto it = methods.begin(); it != methods.end(); ++it ) {
         ( *it )->Accept( this );
+        subtreeWrapper->ToStatement();
         methodTrees["C$M" + std::to_string( i++ )] = std::unique_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
     }
 

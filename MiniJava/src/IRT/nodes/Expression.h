@@ -94,14 +94,14 @@ private:
 
 class CMemExpression : public CExpression {
 public:
-    CMemExpression( const CExpression* _byteNumber ) : byteNumber( _byteNumber ) {}
+    CMemExpression( const CExpression* _address ) : address( _address ) {}
 
-    const CExpression* ByteNumber() const { return byteNumber.get(); }
+    const CExpression* Address() const { return address.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    std::unique_ptr<const CExpression> byteNumber;
+    std::unique_ptr<const CExpression> address;
 };
 
 //-----------------------------------------------------------------------------------------------//

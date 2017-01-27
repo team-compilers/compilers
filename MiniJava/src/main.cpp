@@ -60,7 +60,7 @@ int main( int argc, char* argv[] ) {
     CBisonParser parser( inputFilePath );
     std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
 
-    CIrtBuilderVisitor irtBuilderVisitor;
+    CIrtBuilderVisitor irtBuilderVisitor( true );
     irtBuilderVisitor.Visit( astRoot.get() );
     return 0;
 
