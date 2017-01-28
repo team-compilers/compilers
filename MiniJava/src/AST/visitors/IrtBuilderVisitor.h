@@ -89,9 +89,9 @@ private:
 
     std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
 
+    std::unordered_map<std::string, std::unique_ptr<const IRTree::CFrame>> frames;
+    std::unique_ptr<const IRTree::CFrame> frameCurrent;
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
-
-    IRTree::CFrame frame;
 };
 
 }

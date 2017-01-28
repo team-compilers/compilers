@@ -118,8 +118,8 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
         new IRTree::CMemExpression(
             new IRTree::CBinaryExpression(
                 IRTree::TOperatorType::OT_Plus,
-                new IRTree::CTempExpression( frame.FramePointer() ),
-                new IRTree::CConstExpression( 0 ) // TODO take this constant from frame
+                new IRTree::CTempExpression( frameCurrent->FramePointer() ),
+                new IRTree::CConstExpression( 0 ) // TODO take this constant from frameCurrent
             )
         )
     ) );
@@ -163,7 +163,7 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
     const IRTree::CExpression* expressionLength = subtreeWrapper->ToExpression();
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        frame.ExternalCall("initArray", new IRTree::CExpressionList( expressionLength ) )
+        frameCurrent->ExternalCall("initArray", new IRTree::CExpressionList( expressionLength ) )
     ) );
 
     onNodeExit( nodeName );
@@ -179,7 +179,7 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     //     new IRTree::CEseqExpression(
     //         new IRTree::CMoveStatement(
     //             tempExpression,
-    //             frame.ExternalCall("malloc", new IRTree::CExpressionList( new IRTree::CConstExpression( /*TODO*/0 ) ))
+    //             frameCurrent->ExternalCall("malloc", new IRTree::CExpressionList( new IRTree::CConstExpression( /*TODO*/0 ) ))
     //         )
     //     )
     // ) );
@@ -391,7 +391,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     onNodeEnter( nodeName );
 
     // write your code here
-    // create new frame
+    // create new frameCurrent
     declaration->Statements()->Accept( this );
 
     onNodeExit( nodeName );

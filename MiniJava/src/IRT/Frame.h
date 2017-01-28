@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 
 #include <IRT/nodes/Expression.h>
@@ -8,51 +9,51 @@
 
 namespace IRTree {
 
-class IAccess {
+class IAddress {
 public:
-    virtual const CExpression* Expression( const CExpression* framePointer ); 
+    virtual ~IAddress() {}
+    virtual const CExpression* Expression( const CExpression* framePointer ) const = 0;
 };
 
 /**
 Indicates a memory location at offset X from the frame pointer.
 */
-class CAccessInFrame : public IAccess {
+class CAddressInFrame : public IAddress {
+public:
+    const CExpression* Expression( const CExpression* framePointer ) const override;
 private:
     int offset;
 };
 
 /**
-CAccessInRegister (T84) indicates that it will be held in "register" T84
+CAddressInRegister (T84) indicates that it will be held in "register" T84
 */
-class CAccessInRegister : public IAccess {
+class CAddressInRegister : public IAddress {
+public:
+    const CExpression* Expression( const CExpression* framePointer ) const override;
 private:
     CTemp temp;
 };
 
 class CFrame {
 public:
-    CFrame() = default;
+    CFrame( CLabel _name ) : name( _name ) {}
 
-    // NewFrame( CLabel name ) {}
+    CTemp FramePointer() const;
+    int WordSize() const;
 
-    CTemp FramePointer() const { return framePointer; }
-    int WordSize() const { return wordSize; }
+    void AddAddress( const std::string& varName, const IAddress* address );
 
-    virtual IAccess AllocateLocal() {}
-
-    const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) {
-        return new IRTree::CCallExpression(
-            new CNameExpression( CLabel( "initArray" ) ),
-            args
-        );
-    }
+    const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) const;
 
 private:
     CLabel name;
-    std::vector<IAccess> formals;
+    std::unordered_map<std::string, std::unique_ptr<const IAddress>> addresses;
 
     CTemp framePointer;
     int wordSize;
+
+    int maxOffset;
 };
 
 
