@@ -401,6 +401,20 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
 
     std::string methodFullName = makeMethodFullName( classCurrentName, declaration->MethodId()->Name() );
 
+    frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( methodFullName ) );
+
+    std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( classCurrentName );
+    auto fields = classDefinition->Fields();
+
+    for ( auto field : fields ) {
+        frameCurrent->AddField( field.first );
+    }
+
+    const std::vector<std::unique_ptr<const CMethodArgument>>& arguments = declaration->MethodArguments()->MethodArguments();
+    for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
+        frameCurrent->AddArgument( ( *it )->Id()->Name() );
+    }
+
     declaration->Statements()->Accept( this );
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CSeqStatement(
@@ -410,7 +424,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     ) );
 
     // save new frame for future use
-    frames.emplace( methodFullName, std::move(frameCurrent) );
+    frames.emplace( methodFullName, std::move( frameCurrent ) );
 
     onNodeExit( nodeName );
 }

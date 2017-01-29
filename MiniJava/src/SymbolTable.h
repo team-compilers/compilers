@@ -103,6 +103,7 @@ public:
 
     // Get field definition by name. NotFount if not exists
     CTypeIdentifier GetFieldType( const std::string& name ) const;
+    const std::unordered_map<std::string, CTypeIdentifier>& Fields() const;
     bool HasParent() const { return hasParent; }
     std::string GetParentName() const { return parentName; }
 private:

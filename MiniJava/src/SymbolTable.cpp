@@ -59,7 +59,7 @@ const std::string& CClassDefinition::ClassName() const {
 
 std::shared_ptr<const CMethodDefinition> CClassDefinition::GetMethodDefinition( const std::string& name ) const {
     auto result = methods->find( name );
-    if( result != methods->end() ) {
+    if ( result != methods->end() ) {
         return result->second;
     } else {
         return nullptr;
@@ -68,11 +68,15 @@ std::shared_ptr<const CMethodDefinition> CClassDefinition::GetMethodDefinition( 
 
 CTypeIdentifier CClassDefinition::GetFieldType( const std::string& name ) const {
     auto result = fields->find( name );
-    if( result != fields->end() ) {
+    if ( result != fields->end() ) {
         return result->second;
     } else {
         return CTypeIdentifier( TTypeIdentifier::NotFound );
     }
+}
+
+const std::unordered_map<std::string, CTypeIdentifier>& CClassDefinition::Fields() const {
+    return *fields;
 }
 
 ////////////////////////////////////////////////////

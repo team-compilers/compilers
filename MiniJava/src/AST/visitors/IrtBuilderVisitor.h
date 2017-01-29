@@ -99,7 +99,7 @@ private:
 
     std::string classCurrentName;
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CFrame>> frames;
-    std::unique_ptr<const IRTree::CFrame> frameCurrent;
+    std::unique_ptr<IRTree::CFrame> frameCurrent;
 
     // result
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
