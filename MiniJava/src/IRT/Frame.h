@@ -20,9 +20,15 @@ Indicates a memory location at offset X from the frame pointer.
 */
 class CAddressInFrame : public IAddress {
 public:
-    const CExpression* Expression( const CExpression* framePointer ) const override;
-private:
+    virtual ~CAddressInFrame() {}
+    virtual const CExpression* Expression( const CExpression* framePointer ) const override;
+protected:
     int offset;
+};
+
+class CAddressOfField : public CAddressInFrame {
+public:
+    const CExpression* Expression( const CExpression* thisPointer ) const override;
 };
 
 /**
@@ -43,6 +49,8 @@ public:
     int WordSize() const;
 
     void AddAddress( const std::string& varName, const IAddress* address );
+
+    const IAddress* Address( const std::string& varName ) const;
 
     const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) const;
 

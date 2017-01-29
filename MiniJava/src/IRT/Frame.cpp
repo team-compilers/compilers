@@ -11,6 +11,14 @@ const CExpression* CAddressInFrame::Expression( const CExpression* framePointer 
     );
 }
 
+const CExpression* CAddressOfField::Expression( const CExpression* thisPointer ) const {
+    return new CBinaryExpression(
+        TOperatorType::OT_Plus,
+        thisPointer,
+        new CConstExpression( offset )
+    );
+}
+
 const CExpression* CAddressInRegister::Expression( const CExpression* framePointer ) const {
     return new CTempExpression( temp );
 }
@@ -27,6 +35,10 @@ void CFrame::AddAddress( const std::string& varName, const IAddress* address ) {
     auto result = addresses.emplace( varName, std::unique_ptr<const IAddress>( address ) );
     // overwriting should not happen
     assert( result.second );
+}
+
+const IAddress* CFrame::Address( const std::string& varName ) const {
+    return addresses.at( varName ).get();
 }
 
 const CExpression* CFrame::ExternalCall( const std::string& functionName, const CExpressionList* args ) const {

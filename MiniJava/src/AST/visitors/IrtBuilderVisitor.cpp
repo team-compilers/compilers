@@ -1,4 +1,5 @@
 #include <AST/visitors/IrtBuilderVisitor.h>
+#include <IRT/Label.h>
 
 using namespace AstTree;
 
@@ -26,6 +27,10 @@ IRTree::TOperatorType CIrtBuilderVisitor::operatorFromAstToIr( TOperatorType typ
 
 void CIrtBuilderVisitor::updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew ) {
     subtreeWrapper = std::unique_ptr<const IRTree::ISubtreeWrapper>( wrapperNew );
+}
+
+std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className, const std::string& methodName ) {
+    return className + "$" + methodName;
 }
 
 /*__________ Access Modifiers __________*/
@@ -116,10 +121,8 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
         new IRTree::CMemExpression(
-            new IRTree::CBinaryExpression(
-                IRTree::TOperatorType::OT_Plus,
-                new IRTree::CTempExpression( frameCurrent->FramePointer() ),
-                new IRTree::CConstExpression( 0 ) // TODO take this constant from frameCurrent
+            frameCurrent->Address( expression->Name() )->Expression(
+                new IRTree::CTempExpression( frameCurrent->FramePointer() )
             )
         )
     ) );
@@ -140,7 +143,13 @@ void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->Arguments()->Accept( this );
+    // TODO: move all arguments (incl. this) to the stack
+
+    // updateSubtreeWrapper( new CStatementWrapper(
+    //     new CJumpStatement( CLabel( makeMethodFullName( expression->, expression->MethodId()->Name() ) ) )
+    // ) );
+
 
     onNodeExit( nodeName );
 }
@@ -390,9 +399,18 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
-    // write your code here
-    // create new frameCurrent
+    std::string methodFullName = makeMethodFullName( classCurrentName, declaration->MethodId()->Name() );
+
     declaration->Statements()->Accept( this );
+    updateSubtreeWrapper( new IRTree::CStatementWrapper(
+        new IRTree::CSeqStatement(
+            new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
+            subtreeWrapper->ToStatement()
+        )
+    ) );
+
+    // save new frame for future use
+    frames.emplace( methodFullName, std::move(frameCurrent) );
 
     onNodeExit( nodeName );
 }
@@ -410,6 +428,7 @@ void CIrtBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
+    classCurrentName = declaration->ClassName()->Name();
     declaration->MethodDeclarations()->Accept( this );
 
     onNodeExit( nodeName );

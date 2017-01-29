@@ -60,7 +60,11 @@ int main( int argc, char* argv[] ) {
     CBisonParser parser( inputFilePath );
     std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
 
-    CIrtBuilderVisitor irtBuilderVisitor( true );
+    CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
+    symbolTableBuilderVisitor.Visit( astRoot.get() );
+    std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
+
+    CIrtBuilderVisitor irtBuilderVisitor( tablePtr, true );
     irtBuilderVisitor.Visit( astRoot.get() );
     return 0;
 

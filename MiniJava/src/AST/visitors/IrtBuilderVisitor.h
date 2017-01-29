@@ -32,11 +32,14 @@
 
 #include <IRT/Frame.h>
 
+#include <SymbolTable.h>
+
 namespace AstTree {
 
 class CIrtBuilderVisitor : public CVisitor {
 public:
-    CIrtBuilderVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    CIrtBuilderVisitor( std::shared_ptr<const CSymbolTable> table, bool _verbose = false )
+        : CVisitor( _verbose ), symbolTable( table ) {}
 
     const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>& MethodTrees() const;
 
@@ -87,10 +90,18 @@ private:
 
     void updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew );
 
+    std::string makeMethodFullName( const std::string& className, const std::string& methodName );
+
     std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
 
+    // frame
+    std::shared_ptr<const CSymbolTable> symbolTable;
+
+    std::string classCurrentName;
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CFrame>> frames;
     std::unique_ptr<const IRTree::CFrame> frameCurrent;
+
+    // result
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
 };
 
