@@ -10,6 +10,8 @@
 #include <AST/visitors/IrtBuilderVisitor.h>
 #include <AST/visitors/TypeCheckerVisitor.h>
 
+#include <IRT/visitors/DotLangVisitor.h>
+
 #include <BisonParser.h>
 
 using namespace AstTree;
@@ -64,8 +66,13 @@ int main( int argc, char* argv[] ) {
     symbolTableBuilderVisitor.Visit( astRoot.get() );
     std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
 
-    CIrtBuilderVisitor irtBuilderVisitor( tablePtr, true );
+    CIrtBuilderVisitor irtBuilderVisitor( tablePtr, false );
     irtBuilderVisitor.Visit( astRoot.get() );
+    auto irtTrees = irtBuilderVisitor.MethodTrees();
+    std::shared_ptr<const IRTree::CStatement> irtRootMain = irtTrees.begin()->second;
+
+    IRTree::CDotLangVisitor irtVisitor( true );
+    irtRootMain->Accept( &irtVisitor );
     return 0;
 
     std::string traversal;

@@ -1,6 +1,6 @@
-#include <AST/visitors/DotLangVisitor.h>
+#include <IRT/visitors/DotLangVisitor.h>
 
-using namespace AstTree;
+using namespace IRTree;
 
 void CDotLangVisitor::addEdge( const std::string& nodeFromName, const std::string& nodeToName ) {
     treeEdges[nodeFromName].push_back( nodeToName );
@@ -27,62 +27,11 @@ void CDotLangVisitor::Clear() {
     visitedNodeStack.clear();
 }
 
-/*__________ Access Modifiers __________*/
-
-void CDotLangVisitor::Visit( const CPublicAccessModifier* modifier ) {
-    std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PUBLIC );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CPrivateAccessModifier* modifier ) {
-    std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PRIVATE );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    onNodeExit( nodeName );
-}
 
 /*__________ Expressions __________*/
 
-void CDotLangVisitor::Visit( const CBinaryExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    expression->LeftOperand()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    addEdge( nodeName,  generateNodeName( operatorName( expression->Operation() ) ) );
-
-    expression->RightOperand()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CBracketExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    expression->ContainerExpression()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    expression->IndexExpression()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CNumberExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
+void CDotLangVisitor::Visit( const CConstExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_CONST );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
@@ -93,99 +42,87 @@ void CDotLangVisitor::Visit( const CNumberExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CLogicExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
+void CDotLangVisitor::Visit( const CNameExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NAME );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    std::string valueNodeName = "\"" + generateNodeName( "Value" ) + ": ";
-    valueNodeName += std::string( expression->Value() ? "true" : "false" ) + '\"';
+    std::string valueNodeName = "\"" + generateNodeName( "Label" ) + ": ";
+    valueNodeName += expression->Label().ToString() + "\"";
     addEdge( nodeName, valueNodeName );
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CIdExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
+void CDotLangVisitor::Visit( const CTempExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_TEMP );
     onNodeEnter( nodeName );
+
     visitedNodeStack.push_back( nodeName );
 
-    std::string valueNodeName = "\"" + generateNodeName( "Id" ) + ": " + expression->Name() + "\"";
+    std::string valueNodeName = "\"" + generateNodeName( "Temp" ) + ": ";
+    valueNodeName += expression->Temporary().ToString() + "\"";
     addEdge( nodeName, valueNodeName );
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CLengthExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
+void CDotLangVisitor::Visit( const CBinaryExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    expression->LengthTarget()->Accept( this );
+    expression->LeftOperand()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
+
+    addEdge( nodeName, generateNodeName( operatorName( expression->Operation() ) ) );
+
+    expression->RightOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CMethodExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
+void CDotLangVisitor::Visit( const CMemExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_MEM );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    expression->CallerExpression()->Accept( this );
+    expression->Address()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    expression->MethodId()->Accept( this );
+    onNodeExit( nodeName );
+}
+
+void CDotLangVisitor::Visit( const CCallExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_CALL );
+    onNodeEnter( nodeName );
+    visitedNodeStack.push_back( nodeName );
+
+    expression->Function()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
     expression->Arguments()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+    visitedNodeStack.pop_back();    
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CThisExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
+void CDotLangVisitor::Visit( const CEseqExpression* expression ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_ESEQ );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CNewArrayExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    expression->LengthExpression()->Accept( this );
+    expression->Statement()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CNewIdExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    expression->TargetId()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CNegateExpression* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    expression->TargetExpression()->Accept( this );
+    expression->Expression()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
@@ -194,269 +131,86 @@ void CDotLangVisitor::Visit( const CNegateExpression* expression ) {
 
 /*__________ Statements __________*/
 
-void CDotLangVisitor::Visit( const CAssignIdStatement* statement ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
+void CDotLangVisitor::Visit( const CExpStatement* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::STAT_EXP );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    statement->LeftPart()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    statement->RightPart()->Accept( this );
+    statement->Expression()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
+void CDotLangVisitor::Visit( const CJumpConditionalStatement* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::STAT_CJUMP );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    statement->LeftPartId()->Accept( this );
+    statement->LeftOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    statement->LeftPartIndex()->Accept( this );
+    statement->RightOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    statement->RightPart()->Accept( this );
+    statement->TrueLabel()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
+
+    statement->FalseLabel()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CPrintStatement* statement ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
+void CDotLangVisitor::Visit( const CJumpStatement* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::STAT_JUMP );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    statement->PrintTarget()->Accept( this );
+    std::string valueNodeName = "\"" + generateNodeName( "Label" ) + ": ";
+    valueNodeName += statement->Target().ToString() + "\"";
+    addEdge( nodeName, valueNodeName );
+
+    onNodeExit( nodeName );
+}
+
+void CDotLangVisitor::Visit( const CLabelStatement* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::STAT_LABEL );
+    onNodeEnter( nodeName );
+    visitedNodeStack.push_back( nodeName );
+
+    std::string valueNodeName = "\"" + generateNodeName( "Label" ) + ": ";
+    valueNodeName += statement->Label().ToString() + "\"";
+    addEdge( nodeName, valueNodeName );
+
+    onNodeExit( nodeName );
+}
+
+void CDotLangVisitor::Visit( const CMoveStatement* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::STAT_MOVE );
+    onNodeEnter( nodeName );
+    visitedNodeStack.push_back( nodeName );
+
+    statement->Destination()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
+
+    statement->Source()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
     onNodeExit( nodeName );
 }
 
-void CDotLangVisitor::Visit( const CConditionalStatement* statement ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
+void CDotLangVisitor::Visit( const CSeqStatement* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    statement->Condition()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    statement->PositiveTarget()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    statement->NegativeTarget()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CWhileLoopStatement* statement ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    statement->Condition()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    statement->Body()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CBracesStatement* statement ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    statement->List()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-/*__________ Type Modifiers __________*/
-
-void CDotLangVisitor::Visit( const CIntTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_BOOL );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT_ARRAY );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CIdTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_ID );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    typeModifier->TypeId()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-/*__________ Other (except lists) __________*/
-
-void CDotLangVisitor::Visit( const CVarDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CNodeNames::VAR_DECL );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    declaration->Type()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->Id()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CMethodArgument* argument ) {
-    std::string nodeName = generateNodeName( CNodeNames::METH_ARG );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    argument->Type()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    argument->Id()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CMethodDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CNodeNames::METH_DECL );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    declaration->AccessModifier()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->TypeModifier()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->MethodId()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->MethodArguments()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->VarDeclarations()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->Statements()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->ReturnExpression()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CMainClass* mainClass ) {
-    std::string nodeName = generateNodeName( CNodeNames::MAIN_CLASS );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    mainClass->ClassName()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    mainClass->ClassArgsName()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    mainClass->Statements()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CClassDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    declaration->ClassName()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->VarDeclarations()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    declaration->MethodDeclarations()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    if ( declaration->HasParent() ) {
-        declaration->ExtendsClassName()->Accept( this );
-
-        addEdge( nodeName, visitedNodeStack.back() );
-        visitedNodeStack.pop_back();
-    }
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CProgram* program ) {
-    std::string nodeName = generateNodeName( CNodeNames::PROGRAM );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    program->MainClass()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    program->ClassDeclarations()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+    
 
     onNodeExit( nodeName );
 }
@@ -468,7 +222,7 @@ void CDotLangVisitor::Visit( const CExpressionList* list ) {
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
-    const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
+    const std::vector<std::unique_ptr<const CExpression>>& expressions = list->Expressions();
     for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
         ( *it )->Accept( this );
 
@@ -482,75 +236,11 @@ void CDotLangVisitor::Visit( const CExpressionList* list ) {
 void CDotLangVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
+
     visitedNodeStack.push_back( nodeName );
 
     const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
-    // must be reversed before being used
-    for ( auto rit = statements.rbegin(); rit != statements.rend(); ++rit ) {
-        ( *rit )->Accept( this );
-
-        addEdge( nodeName, visitedNodeStack.back() );
-        visitedNodeStack.pop_back();
-    }
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CVarDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::VAR_DECL_LIST );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
-    for ( auto it = varDeclarations.begin(); it != varDeclarations.end(); ++it ) {
-        ( *it )->Accept( this );
-
-        addEdge( nodeName, visitedNodeStack.back() );
-        visitedNodeStack.pop_back();
-    }
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CMethodArgumentList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::METH_ARG_LIST );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
-    for ( auto it = methodArguments.begin(); it != methodArguments.end(); ++it ) {
-        ( *it )->Accept( this );
-
-        addEdge( nodeName, visitedNodeStack.back() );
-        visitedNodeStack.pop_back();
-    }
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CMethodDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::METH_DECL_LIST );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
-    for ( auto it = methodDeclarations.begin(); it != methodDeclarations.end(); ++it ) {
-        ( *it )->Accept( this );
-
-        addEdge( nodeName, visitedNodeStack.back() );
-        visitedNodeStack.pop_back();
-    }
-
-    onNodeExit( nodeName );
-}
-
-void CDotLangVisitor::Visit( const CClassDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL_LIST );
-    onNodeEnter( nodeName );
-    visitedNodeStack.push_back( nodeName );
-
-    const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();
-    for ( auto it = classDeclarations.begin(); it != classDeclarations.end(); ++it ) {
+    for ( auto it = statements.begin(); it != statements.end(); ++it ) {
         ( *it )->Accept( this );
 
         addEdge( nodeName, visitedNodeStack.back() );

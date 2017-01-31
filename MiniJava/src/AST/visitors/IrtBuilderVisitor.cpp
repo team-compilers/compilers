@@ -3,7 +3,7 @@
 
 using namespace AstTree;
 
-const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>& CIrtBuilderVisitor::MethodTrees() const {
+const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>& CIrtBuilderVisitor::MethodTrees() const {
     return methodTrees;
 }
 
@@ -689,7 +689,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         ( *it )->Accept( this );
         subtreeWrapper->ToStatement();
         std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
-        methodTrees[methodFullName] = std::unique_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
+        methodTrees[methodFullName] = std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
     }
 
     onNodeExit( nodeName );

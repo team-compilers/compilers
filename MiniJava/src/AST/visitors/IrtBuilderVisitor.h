@@ -41,7 +41,7 @@ public:
     CIrtBuilderVisitor( std::shared_ptr<const CSymbolTable> table, bool _verbose = false )
         : CVisitor( _verbose ), symbolTable( table ) {}
 
-    const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>& MethodTrees() const;
+    const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>& MethodTrees() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -107,7 +107,7 @@ private:
     std::string methodCallerClassName;
 
     // result
-    std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
+    std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>> methodTrees;
 };
 
 }

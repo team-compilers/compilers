@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <IRT/Label.h>
-#include <IRT/nodes/LabelList.h>
 #include <IRT/nodes/VisitorTarget.h>
 
 namespace IRTree {

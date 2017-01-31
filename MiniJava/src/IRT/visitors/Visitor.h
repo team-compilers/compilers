@@ -24,7 +24,6 @@ class CSeqStatement;
 
 class CExpressionList;
 class CStatementList;
-class CLabelList;
 
 class IVisitor {
 public:
@@ -47,7 +46,6 @@ public:
 
     virtual void Visit( const CExpressionList* list ) = 0;
     virtual void Visit( const CStatementList* list ) = 0;
-    virtual void Visit( const CLabelList* list ) = 0;
 };
 
 enum class TOperatorType : char;

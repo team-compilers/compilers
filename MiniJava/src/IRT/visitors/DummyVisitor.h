@@ -36,7 +36,6 @@ public:
 
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
-    void Visit( const CLabelList* list ) override;
 };
 
 }

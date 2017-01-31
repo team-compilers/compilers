@@ -69,7 +69,7 @@ void CDummyVisitor::Visit( const CEseqExpression* expression ) {
 
 /*__________ Statements __________*/
 
-void CDummyVisitor::Visit( const CExpStatement* expression ) {
+void CDummyVisitor::Visit( const CExpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_EXP );
     onNodeEnter( nodeName );
 
@@ -78,7 +78,7 @@ void CDummyVisitor::Visit( const CExpStatement* expression ) {
     onNodeExit( nodeName );
 }
 
-void CDummyVisitor::Visit( const CJumpConditionalStatement* expression ) {
+void CDummyVisitor::Visit( const CJumpConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_CJUMP );
     onNodeEnter( nodeName );
 
@@ -87,7 +87,7 @@ void CDummyVisitor::Visit( const CJumpConditionalStatement* expression ) {
     onNodeExit( nodeName );
 }
 
-void CDummyVisitor::Visit( const CJumpStatement* expression ) {
+void CDummyVisitor::Visit( const CJumpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_JUMP );
     onNodeEnter( nodeName );
 
@@ -96,7 +96,7 @@ void CDummyVisitor::Visit( const CJumpStatement* expression ) {
     onNodeExit( nodeName );
 }
 
-void CDummyVisitor::Visit( const CLabelStatement* expression ) {
+void CDummyVisitor::Visit( const CLabelStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LABEL );
     onNodeEnter( nodeName );
 
@@ -105,7 +105,7 @@ void CDummyVisitor::Visit( const CLabelStatement* expression ) {
     onNodeExit( nodeName );
 }
 
-void CDummyVisitor::Visit( const CMoveStatement* expression ) {
+void CDummyVisitor::Visit( const CMoveStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_MOVE );
     onNodeEnter( nodeName );
 
@@ -114,7 +114,7 @@ void CDummyVisitor::Visit( const CMoveStatement* expression ) {
     onNodeExit( nodeName );
 }
 
-void CDummyVisitor::Visit( const CSeqStatement* expression ) {
+void CDummyVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
 
@@ -136,15 +136,6 @@ void CDummyVisitor::Visit( const CExpressionList* list ) {
 
 void CDummyVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
-    onNodeEnter( nodeName );
-
-    // write your code here
-
-    onNodeExit( nodeName );
-}
-
-void CDummyVisitor::Visit( const CLabelList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::LABEL_LIST );
     onNodeEnter( nodeName );
 
     // write your code here

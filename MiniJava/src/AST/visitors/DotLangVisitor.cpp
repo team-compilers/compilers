@@ -56,7 +56,7 @@ void CDotLangVisitor::Visit( const CBinaryExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    addEdge( nodeName,  generateNodeName( operatorName( expression->Operation() ) ) );
+    addEdge( nodeName, generateNodeName( operatorName( expression->Operation() ) ) );
 
     expression->RightOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );

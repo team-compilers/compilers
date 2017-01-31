@@ -37,7 +37,7 @@ class CConstExpression : public CExpression {
 public:
     CConstExpression( int _value ) : value( _value ) {}
 
-    int Value() { return value; }
+    int Value() const { return value; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
