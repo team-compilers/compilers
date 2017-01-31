@@ -33,29 +33,47 @@ std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className
     return className + "$" + methodName;
 }
 
+void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std::string& methodName,
+        const std::vector<std::string>& arguments, const std::vector<std::string>& locals ) {
+    frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( className, methodName ) );
+
+    frameCurrent->AddThis();
+    for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
+        frameCurrent->AddArgument( *it );
+    }
+    frameCurrent->AddReturn();
+    for ( auto it = locals.begin(); it != locals.end(); ++it ) {
+        frameCurrent->AddLocal( *it );
+    }
+
+    std::string methodFullName = makeMethodFullName( className, methodName );
+    frames.emplace( methodFullName, frameCurrent );
+}
+
 void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) {
     std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( classCurrentName );
     std::shared_ptr<const CMethodDefinition> methodDefinition = classDefinition->GetMethodDefinition( declaration->MethodId()->Name() );
 
-    frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( classCurrentName, declaration->MethodId()->Name() ) );
-
-    frameCurrent->AddThis();
-
     const std::vector<std::unique_ptr<const CMethodArgument>>& arguments = declaration->MethodArguments()->MethodArguments();
+    std::vector<std::string> argumentsNames;
+    argumentsNames.reserve( arguments.size() );
     for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
-        frameCurrent->AddArgument( ( *it )->Id()->Name() );
+        argumentsNames.push_back( ( *it )->Id()->Name() );
     }
-
-    frameCurrent->AddReturn();
 
     auto locals = methodDefinition->LocalVariables();
+    std::vector<std::string> localsNames;
+    localsNames.reserve( locals->size() );
     for ( auto it = locals->begin(); it != locals->end(); ++it ) {
-        frameCurrent->AddLocal( it->first );
+        localsNames.push_back( it->first );
     }
 
-    // save new frame for future use
-    std::string methodFullName = makeMethodFullName( classCurrentName, declaration->MethodId()->Name() );
-    frames.emplace( methodFullName, std::move( frameCurrent ) );
+    buildNewFrame( classCurrentName, declaration->MethodId()->Name(), argumentsNames, localsNames );
+}
+
+void CIrtBuilderVisitor::buildNewFrame( const CMainClass* mainClass ) {
+    std::vector<std::string> emptyVector;
+    buildNewFrame( mainClass->ClassName()->Name(), "main", emptyVector, emptyVector );
 }
 
 /*__________ Access Modifiers __________*/
@@ -482,7 +500,16 @@ void CIrtBuilderVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
 
-    // write your code here
+    buildNewFrame( mainClass );
+    std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
+
+    mainClass->Statements()->Accept( this );
+    updateSubtreeWrapper( new IRTree::CStatementWrapper(
+        new IRTree::CSeqStatement(
+            new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
+            subtreeWrapper->ToStatement()
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
