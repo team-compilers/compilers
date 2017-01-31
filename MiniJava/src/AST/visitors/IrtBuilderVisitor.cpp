@@ -34,10 +34,15 @@ std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className
 }
 
 void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std::string& methodName,
-        const std::vector<std::string>& arguments, const std::vector<std::string>& locals ) {
+        const std::vector<std::string>& arguments, const std::vector<std::string>& locals,
+        const std::vector<std::string>& fields ) {
     frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( className, methodName ) );
 
+
     frameCurrent->AddThis();
+    for ( auto it = fields.begin(); it != fields.end(); ++it ) {
+        frameCurrent->AddField( *it );
+    }
     for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
         frameCurrent->AddArgument( *it );
     }
@@ -68,12 +73,19 @@ void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) 
         localsNames.push_back( it->first );
     }
 
-    buildNewFrame( classCurrentName, declaration->MethodId()->Name(), argumentsNames, localsNames );
+    auto fields = classDefinition->Fields();
+    std::vector<std::string> fieldsNames;
+    fieldsNames.reserve( fields.size() );
+    for ( auto it = fields.begin(); it != fields.end(); ++it ) {
+        fieldsNames.push_back( it->first );
+    }
+
+    buildNewFrame( classCurrentName, declaration->MethodId()->Name(), argumentsNames, localsNames, fieldsNames );
 }
 
 void CIrtBuilderVisitor::buildNewFrame( const CMainClass* mainClass ) {
     std::vector<std::string> emptyVector;
-    buildNewFrame( mainClass->ClassName()->Name(), "main", emptyVector, emptyVector );
+    buildNewFrame( mainClass->ClassName()->Name(), "main", emptyVector, emptyVector, emptyVector );
 }
 
 /*__________ Access Modifiers __________*/
@@ -248,7 +260,20 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
     const IRTree::CExpression* expressionLength = subtreeWrapper->ToExpression();
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        frameCurrent->ExternalCall("initArray", new IRTree::CExpressionList( expressionLength ) )
+        frameCurrent->ExternalCall(
+            "malloc",
+            new IRTree::CExpressionList(
+                new IRTree::CBinaryExpression(
+                    IRTree::TOperatorType::OT_Times,
+                    new IRTree::CBinaryExpression(
+                        IRTree::TOperatorType::OT_Plus,
+                        expressionLength,
+                        new IRTree::CConstExpression( 1 )
+                    ),
+                    new IRTree::CConstExpression( frameCurrent->WordSize() )
+                )
+            )
+        )
     ) );
 
     onNodeExit( nodeName );

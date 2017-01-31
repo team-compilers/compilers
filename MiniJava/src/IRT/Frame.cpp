@@ -62,12 +62,12 @@ void CFrame::AddArgument( const std::string& name ) {
 }
 
 void CFrame::AddLocal( const std::string& name ) {
-    const CAddressInFrame* address = new CAddressInFrame( nextFreeAddressOffset() );
+    const CAddressInFrame* address = new CAddressInFrame( nextOffsetFromFramePointer() );
     addAddress( name, address );
 }
 
 void CFrame::AddField( const std::string& name ) {
-    const CAddressOfField* address = new CAddressOfField( nextFreeAddressOffset() );
+    const CAddressOfField* address = new CAddressOfField( nextOffsetFromThis() );
     addAddress( name, address );
 }
 
@@ -97,9 +97,14 @@ const CExpression* CFrame::ExternalCall( const std::string& functionName, const 
     );
 }
 
-int CFrame::nextFreeAddressOffset() {
-    freeOffset += wordSize;
-    return freeOffset;
+int CFrame::nextOffsetFromFramePointer() {
+    maxOffsetFramePointer += wordSize;
+    return maxOffsetFramePointer;
+}
+
+int CFrame::nextOffsetFromThis() {
+    maxOffsetThis += wordSize;
+    return maxOffsetThis;
 }
 
 void CFrame::addAddress( const std::string& name, const IAddress* address ) {

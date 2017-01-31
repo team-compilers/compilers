@@ -47,10 +47,10 @@ private:
 
 class CFrame {
 public:
-    // CFrame( CLabel _name ) : name( _name ), freeOffset( 0 ) {}
+    // CFrame( CLabel _name ) : name( _name ), maxOffsetFramePointer( 0 ) {}
     CFrame( const std::string& _className, const std::string& _methodName )
         : className( _className ), methodName( _methodName ),
-          name( className + "$" + methodName ), freeOffset( 0 ) {}
+          name( className + "$" + methodName ), maxOffsetFramePointer( 0 ), maxOffsetThis( 0 ) {}
 
     CTemp FramePointer() const;
     int WordSize() const;
@@ -71,7 +71,8 @@ public:
 
     const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) const;
 private:
-    int nextFreeAddressOffset();
+    int nextOffsetFromFramePointer();
+    int nextOffsetFromThis();
     void addAddress( const std::string& name, const IAddress* address );
 
     std::string className;
@@ -84,7 +85,8 @@ private:
     static const std::string thisName;
     static const std::string returnName;
 
-    int freeOffset;
+    int maxOffsetFramePointer;
+    int maxOffsetThis;
 };
 
 
