@@ -33,6 +33,31 @@ std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className
     return className + "$" + methodName;
 }
 
+void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) {
+    std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( classCurrentName );
+    std::shared_ptr<const CMethodDefinition> methodDefinition = classDefinition->GetMethodDefinition( declaration->MethodId()->Name() );
+
+    frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( classCurrentName, declaration->MethodId()->Name() ) );
+
+    frameCurrent->AddThis();
+
+    const std::vector<std::unique_ptr<const CMethodArgument>>& arguments = declaration->MethodArguments()->MethodArguments();
+    for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
+        frameCurrent->AddArgument( ( *it )->Id()->Name() );
+    }
+
+    frameCurrent->AddReturn();
+
+    auto locals = methodDefinition->LocalVariables();
+    for ( auto it = locals->begin(); it != locals->end(); ++it ) {
+        frameCurrent->AddLocal( it->first );
+    }
+
+    // save new frame for future use
+    std::string methodFullName = makeMethodFullName( classCurrentName, declaration->MethodId()->Name() );
+    frames.emplace( methodFullName, std::move( frameCurrent ) );
+}
+
 /*__________ Access Modifiers __________*/
 
 void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
@@ -119,13 +144,28 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
-    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        new IRTree::CMemExpression(
-            frameCurrent->Address( expression->Name() )->Expression(
-                new IRTree::CTempExpression( frameCurrent->FramePointer() )
+    const IRTree::IAddress* address = frameCurrent->GetAddress( expression->Name() );
+
+    if ( address ) {
+        // expression is a name of local var / argument / field
+        updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+            new IRTree::CMemExpression(
+                address->ToExpression(
+                    new IRTree::CTempExpression( frameCurrent->FramePointer() )
+                )
             )
-        )
-    ) );
+        ) );
+
+        std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( frameCurrent->GetClassName() );
+        std::shared_ptr<const CMethodDefinition> methodDefinition = classDefinition->GetMethodDefinition( frameCurrent->GetMethodName() );
+        CTypeIdentifier type = methodDefinition->GetVariableType( expression->Name() );
+        if ( type.Type() == TTypeIdentifier::NotFound ) {
+            type = classDefinition->GetFieldType( expression->Name() );
+        }
+        if ( type.Type() == TTypeIdentifier::ClassId ) {
+            methodCallerClassName = type.ClassName();
+        }
+    }
 
     onNodeExit( nodeName );
 }
@@ -143,13 +183,31 @@ void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
-    expression->Arguments()->Accept( this );
-    // TODO: move all arguments (incl. this) to the stack
+    expression->CallerExpression()->Accept( this );
+    std::string methodCaller = methodCallerClassName;
 
-    // updateSubtreeWrapper( new CStatementWrapper(
-    //     new CJumpStatement( CLabel( makeMethodFullName( expression->, expression->MethodId()->Name() ) ) )
-    // ) );
+    IRTree::CExpressionList* expressionListIrt = new IRTree::CExpressionList();
+    const std::vector< std::unique_ptr<const CExpression> >& expressionsAst = expression->Arguments()->Expressions();
+    for ( auto it = expressionsAst.begin(); it != expressionsAst.end(); ++it ) {
+        ( *it )->Accept( this );
+        expressionListIrt->Add( subtreeWrapper->ToExpression() );
+    }
 
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CCallExpression(
+            new IRTree::CNameExpression(
+                IRTree::CLabel( makeMethodFullName( methodCaller, expression->MethodId()->Name() ) )
+            ),
+            expressionListIrt
+        )
+    ) );
+
+    std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( methodCaller );
+    std::shared_ptr<const CMethodDefinition> methodDefinition = classDefinition->GetMethodDefinition( expression->MethodId()->Name() );
+    CTypeIdentifier type = methodDefinition->ReturnType();
+    if ( type.Type() == TTypeIdentifier::ClassId ) {
+        methodCallerClassName = type.ClassName();
+    }
 
     onNodeExit( nodeName );
 }
@@ -159,6 +217,7 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
     onNodeEnter( nodeName );
 
     // write your code here
+    methodCallerClassName = classCurrentName;
 
     onNodeExit( nodeName );
 }
@@ -192,6 +251,8 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     //         )
     //     )
     // ) );
+
+    methodCallerClassName = expression->TargetId()->Name();
 
     onNodeExit( nodeName );
 }
@@ -243,7 +304,11 @@ void CIrtBuilderVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_PRINT );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->PrintTarget()->Accept( this );
+
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        frameCurrent->ExternalCall("print", new IRTree::CExpressionList( subtreeWrapper->ToExpression() ) )
+    ) );
 
     onNodeExit( nodeName );
 }
@@ -399,21 +464,8 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
-    std::string methodFullName = makeMethodFullName( classCurrentName, declaration->MethodId()->Name() );
-
-    frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( methodFullName ) );
-
-    std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( classCurrentName );
-    auto fields = classDefinition->Fields();
-
-    for ( auto field : fields ) {
-        frameCurrent->AddField( field.first );
-    }
-
-    const std::vector<std::unique_ptr<const CMethodArgument>>& arguments = declaration->MethodArguments()->MethodArguments();
-    for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
-        frameCurrent->AddArgument( ( *it )->Id()->Name() );
-    }
+    buildNewFrame( declaration );
+    std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
 
     declaration->Statements()->Accept( this );
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
@@ -422,9 +474,6 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
             subtreeWrapper->ToStatement()
         )
     ) );
-
-    // save new frame for future use
-    frames.emplace( methodFullName, std::move( frameCurrent ) );
 
     onNodeExit( nodeName );
 }

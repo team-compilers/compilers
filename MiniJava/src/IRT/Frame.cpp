@@ -3,7 +3,7 @@
 
 using namespace IRTree;
 
-const CExpression* CAddressInFrame::Expression( const CExpression* framePointer ) const {
+const CExpression* CAddressInFrame::ToExpression( const CExpression* framePointer ) const {
     return new CBinaryExpression(
         TOperatorType::OT_Plus,
         framePointer,
@@ -11,7 +11,7 @@ const CExpression* CAddressInFrame::Expression( const CExpression* framePointer 
     );
 }
 
-const CExpression* CAddressOfField::Expression( const CExpression* thisPointer ) const {
+const CExpression* CAddressOfField::ToExpression( const CExpression* thisPointer ) const {
     return new CBinaryExpression(
         TOperatorType::OT_Plus,
         thisPointer,
@@ -19,12 +19,14 @@ const CExpression* CAddressOfField::Expression( const CExpression* thisPointer )
     );
 }
 
-const CExpression* CAddressInRegister::Expression( const CExpression* framePointer ) const {
+const CExpression* CAddressInRegister::ToExpression( const CExpression* framePointer ) const {
     return new CTempExpression( temp );
 }
 
 
 const int CFrame::wordSize = 4;
+const std::string CFrame::thisName = "$this";
+const std::string CFrame::returnName = "$return";
 
 CTemp CFrame::FramePointer() const {
     return framePointer;
@@ -34,11 +36,32 @@ int CFrame::WordSize() const {
     return wordSize;
 }
 
-void CFrame::AddArgument( const std::string& name ) {
-    AddLocalVariable( name );
+CLabel CFrame::GetName() const {
+    return name;
 }
 
-void CFrame::AddLocalVariable( const std::string& name ) {
+const std::string& CFrame::GetClassName() const {
+    return className;
+}
+
+const std::string& CFrame::GetMethodName() const {
+    return methodName;
+}
+
+
+void CFrame::AddThis() {
+    AddArgument( thisName );
+}
+
+void CFrame::AddReturn() {
+    AddArgument( returnName );
+}
+
+void CFrame::AddArgument( const std::string& name ) {
+    AddLocal( name );
+}
+
+void CFrame::AddLocal( const std::string& name ) {
     const CAddressInFrame* address = new CAddressInFrame( nextFreeAddressOffset() );
     addAddress( name, address );
 }
@@ -48,8 +71,23 @@ void CFrame::AddField( const std::string& name ) {
     addAddress( name, address );
 }
 
-const IAddress* CFrame::Address( const std::string& varName ) const {
-    return addresses.at( varName ).get();
+const IAddress* CFrame::GetAddress( const std::string& varName ) const {
+    auto addressIt = addresses.find( varName );
+    const IAddress* res;
+    if ( addressIt == addresses.end() ) {
+        res = nullptr;
+    } else {
+        res = (*addressIt).second.get();
+    }
+    return res;
+}
+
+const IAddress* CFrame::GetThis() const {
+    GetAddress( thisName );
+}
+
+const IAddress* CFrame::GetReturn() const {
+    GetAddress( returnName );
 }
 
 const CExpression* CFrame::ExternalCall( const std::string& functionName, const CExpressionList* args ) const {

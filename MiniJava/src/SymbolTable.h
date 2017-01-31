@@ -143,7 +143,10 @@ public:
     CTypeIdentifier GetLocalVariableType( const std::string& name ) const;
     CTypeIdentifier GetArgumentType( const std::string& name ) const;
     CTypeIdentifier GetArgumentType( int index ) const;
+    CTypeIdentifier GetVariableType( const std::string& name ) const;
     int GetArgumentsNumber() const;
+
+    std::shared_ptr<TNameToVarTypeMap> LocalVariables() const;
 
 private:
     TAccessModifier accessModifier;

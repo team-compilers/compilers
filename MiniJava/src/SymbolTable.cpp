@@ -108,6 +108,18 @@ CTypeIdentifier CMethodDefinition::GetArgumentType( int index ) const {
 	}
 }
 
+CTypeIdentifier CMethodDefinition::GetVariableType( const std::string& name ) const {
+    CTypeIdentifier type = GetLocalVariableType( name );
+    if ( type.Type() == TTypeIdentifier::NotFound ) {
+        type = GetArgumentType( name );
+    }
+    return type;
+}
+
 int CMethodDefinition::GetArgumentsNumber() const {
 	return sortedArgumentsTypes->size();
+}
+
+std::shared_ptr<std::unordered_map<std::string, CTypeIdentifier>> CMethodDefinition::LocalVariables() const {
+    return localVariableTypes;
 }

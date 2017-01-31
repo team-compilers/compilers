@@ -12,7 +12,6 @@ class CExpression;
 
 class CExpressionList : public CVisitorTarget {
 public:
-
     CExpressionList( const CLocation& _location ) : CVisitorTarget( _location ) {}
 
     CExpressionList( const CExpression* expression, const CLocation& _location )

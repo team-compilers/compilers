@@ -87,10 +87,9 @@ public:
 
 private:
     IRTree::TOperatorType operatorFromAstToIr( TOperatorType type ) const;
-
     void updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew );
-
     std::string makeMethodFullName( const std::string& className, const std::string& methodName );
+    void buildNewFrame( const CMethodDeclaration* declaration );
 
     std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
 
@@ -98,8 +97,11 @@ private:
     std::shared_ptr<const CSymbolTable> symbolTable;
 
     std::string classCurrentName;
-    std::unordered_map<std::string, std::unique_ptr<const IRTree::CFrame>> frames;
-    std::unique_ptr<IRTree::CFrame> frameCurrent;
+    std::unordered_map<std::string, std::shared_ptr<const IRTree::CFrame>> frames;
+    std::shared_ptr<IRTree::CFrame> frameCurrent;
+
+    // used when translating expr.methodName() to determine the name of the class of expr
+    std::string methodCallerClassName;
 
     // result
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>> methodTrees;
