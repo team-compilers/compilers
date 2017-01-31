@@ -337,7 +337,35 @@ void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftPartId()->Accept( this );
+    const IRTree::CExpression* leftPartExpression = subtreeWrapper->ToExpression();
+
+    statement->RightPart()->Accept( this );
+    const IRTree::CExpression* rightPartExpression = subtreeWrapper->ToExpression();
+
+    statement->LeftPartIndex()->Accept( this );
+    const IRTree::CExpression* indexExpression = subtreeWrapper->ToExpression();
+
+    updateSubtreeWrapper( new IRTree::CStatementWrapper(
+        new IRTree::CMoveStatement(
+            new IRTree::CMemExpression(
+                new IRTree::CBinaryExpression(
+                    IRTree::TOperatorType::OT_Plus,
+                    leftPartExpression,
+                    new IRTree::CBinaryExpression(
+                        IRTree::TOperatorType::OT_Times,
+                        new IRTree::CBinaryExpression(
+                            IRTree::TOperatorType::OT_Plus,
+                            indexExpression,
+                            new IRTree::CConstExpression( 1 )
+                        ),
+                        new IRTree::CConstExpression( frameCurrent->WordSize() )
+                    )
+                )
+            ),
+            rightPartExpression
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
