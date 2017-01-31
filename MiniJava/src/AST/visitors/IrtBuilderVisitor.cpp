@@ -312,16 +312,21 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
-    const IRTree::CExpression* tempExpression = new IRTree::CTempExpression( IRTree::CTemp() );
+    std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( expression->TargetId()->Name() );
+    int fieldCount = classDefinition->Fields().size();
 
-    // updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-    //     new IRTree::CEseqExpression(
-    //         new IRTree::CMoveStatement(
-    //             tempExpression,
-    //             frameCurrent->ExternalCall("malloc", new IRTree::CExpressionList( new IRTree::CConstExpression( /*TODO*/0 ) ))
-    //         )
-    //     )
-    // ) );
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        frameCurrent->ExternalCall(
+            "malloc",
+            new IRTree::CExpressionList(
+                new IRTree::CBinaryExpression(
+                    IRTree::TOperatorType::OT_Times,
+                    new IRTree::CConstExpression( fieldCount ),
+                    new IRTree::CConstExpression( frameCurrent->WordSize() )
+                )
+            )
+        )
+    ) );
 
     methodCallerClassName = expression->TargetId()->Name();
 
