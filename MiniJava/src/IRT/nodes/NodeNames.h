@@ -22,6 +22,7 @@ public:
     static const std::string STAT_SEQ;
 
     static const std::string EXP_LIST;
+    static const std::string STAT_LIST;
     static const std::string LABEL_LIST;
 };
 

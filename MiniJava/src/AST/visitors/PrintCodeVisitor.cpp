@@ -17,7 +17,7 @@ std::string CPrintCodeVisitor::GetCode() const {
 /*__________ Access Modifiers __________*/
 
 void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
+    std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
     sstream << "public ";
 
@@ -25,7 +25,7 @@ void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
 }
 
 void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
+    std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
     sstream << "private ";
 
@@ -35,7 +35,7 @@ void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 /*__________ Expressions __________*/
 
 void CPrintCodeVisitor::Visit( const CBinaryExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
     expression->LeftOperand()->Accept( this );
@@ -46,7 +46,7 @@ void CPrintCodeVisitor::Visit( const CBinaryExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CBracketExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_BRACKET );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName );
 
     expression->ContainerExpression()->Accept( this );
@@ -58,7 +58,7 @@ void CPrintCodeVisitor::Visit( const CBracketExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CNumberExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
     sstream << expression->Value();
@@ -67,7 +67,7 @@ void CPrintCodeVisitor::Visit( const CNumberExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CLogicExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
     sstream << (expression->Value() ? "true" : "false");
@@ -76,7 +76,7 @@ void CPrintCodeVisitor::Visit( const CLogicExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CIdExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
     sstream << expression->Name();
@@ -85,7 +85,7 @@ void CPrintCodeVisitor::Visit( const CIdExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CLengthExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_LENGTH );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName );
 
     expression->LengthTarget()->Accept( this );
@@ -95,7 +95,7 @@ void CPrintCodeVisitor::Visit( const CLengthExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CMethodExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
     expression->CallerExpression()->Accept( this );
@@ -111,7 +111,7 @@ void CPrintCodeVisitor::Visit( const CMethodExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CThisExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
 
     sstream << "this";
@@ -120,7 +120,7 @@ void CPrintCodeVisitor::Visit( const CThisExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CNewArrayExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ARRAY );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName );
 
     sstream << "new int[";
@@ -131,7 +131,7 @@ void CPrintCodeVisitor::Visit( const CNewArrayExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
     sstream << "new ";
@@ -142,7 +142,7 @@ void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
 }
 
 void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEGATE );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName );
 
     sstream << "!(";
@@ -155,7 +155,7 @@ void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
 /*__________ Statements __________*/
 
 void CPrintCodeVisitor::Visit( const CAssignIdStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
 
     sstream << codeMargin;
@@ -168,7 +168,7 @@ void CPrintCodeVisitor::Visit( const CAssignIdStatement* statement ) {
 }
 
 void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
 
     sstream << codeMargin;
@@ -183,7 +183,7 @@ void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
 }
 
 void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_PRINT );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
     onNodeEnter( nodeName );
 
     sstream << codeMargin << "System.out.println(";
@@ -194,7 +194,7 @@ void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
 }
 
 void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_CONDITIONAL );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName );
 
     sstream << codeMargin << "if (";
@@ -212,7 +212,7 @@ void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
 }
 
 void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_WHILE_LOOP );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName );
 
     sstream << codeMargin << "while (";
@@ -227,7 +227,7 @@ void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
 }
 
 void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_BRACES );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
     onNodeEnter( nodeName );
 
     sstream << codeMargin << '{' << std::endl;
@@ -242,7 +242,7 @@ void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
 /*__________ Type Modifiers __________*/
 
 void CPrintCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
     
     sstream << "int ";
@@ -251,7 +251,7 @@ void CPrintCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
 }
 
 void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
 
     sstream << "boolean ";
@@ -260,7 +260,7 @@ void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
 }
 
 void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
 
     sstream << "int[] ";
@@ -269,7 +269,7 @@ void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
 }
 
 void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_ID );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName );
 
     typeModifier->TypeId()->Accept( this );
@@ -281,7 +281,7 @@ void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 /*__________ Other (except lists) __________*/
 
 void CPrintCodeVisitor::Visit( const CVarDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
+    std::string nodeName = generateNodeName( CNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
     sstream << codeMargin;
@@ -293,7 +293,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclaration* declaration ) {
 }
 
 void CPrintCodeVisitor::Visit( const CMethodArgument* argument ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
+    std::string nodeName = generateNodeName( CNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
     argument->Type()->Accept( this );
@@ -303,7 +303,7 @@ void CPrintCodeVisitor::Visit( const CMethodArgument* argument ) {
 }
 
 void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
+    std::string nodeName = generateNodeName( CNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
     sstream << codeMargin;
@@ -326,7 +326,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
 }
 
 void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
+    std::string nodeName = generateNodeName( CNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
 
     sstream << codeMargin << "class ";
@@ -348,7 +348,7 @@ void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
 }
 
 void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
+    std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
     sstream << codeMargin << "class ";
@@ -371,7 +371,7 @@ void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
 }
 
 void CPrintCodeVisitor::Visit( const CProgram* program ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
+    std::string nodeName = generateNodeName( CNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
     program->MainClass()->Accept( this );
@@ -384,7 +384,7 @@ void CPrintCodeVisitor::Visit( const CProgram* program ) {
 /*__________  Lists __________*/
 
 void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
@@ -400,7 +400,7 @@ void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CPrintCodeVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
@@ -413,7 +413,7 @@ void CPrintCodeVisitor::Visit( const CStatementList* list ) {
 }
 
 void CPrintCodeVisitor::Visit( const CVarDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
@@ -425,7 +425,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclarationList* list ) {
 }
 
 void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
@@ -441,7 +441,7 @@ void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
 }
 
 void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
@@ -454,7 +454,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
 }
 
 void CPrintCodeVisitor::Visit( const CClassDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();

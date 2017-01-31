@@ -34,14 +34,14 @@ CTypeIdentifier CTypeCheckerVisitor::searchClassHierarchyForField( const std::st
 
 // ignored
 void CTypeCheckerVisitor::Visit( const CPublicAccessModifier* modifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PUBLIC );
+    std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName );
     onNodeExit( nodeName );
 }
 
 // ignored
 void CTypeCheckerVisitor::Visit( const CPrivateAccessModifier* modifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::ACCESS_MOD_PRIVATE );
+    std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName );
     onNodeExit( nodeName );
 }
@@ -49,7 +49,7 @@ void CTypeCheckerVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 /*__________ Expressions __________*/
 
 void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_BINARY );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
     TTypeIdentifier operatorType; 
@@ -76,7 +76,7 @@ void CTypeCheckerVisitor::Visit( const CBinaryExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_BRACKET );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName );
 
     expression->ContainerExpression()->Accept( this );
@@ -100,7 +100,7 @@ void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CNumberExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NUMBER );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName );
 
     lastType = { CTypeIdentifier( TTypeIdentifier::Int ) };
@@ -109,7 +109,7 @@ void CTypeCheckerVisitor::Visit( const CNumberExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_LOGIC );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName );
 
     lastType = { CTypeIdentifier( TTypeIdentifier::Boolean ) };
@@ -118,7 +118,7 @@ void CTypeCheckerVisitor::Visit( const CLogicExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_ID );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
     onNodeEnter( nodeName );
 
     std::string name = expression->Name();
@@ -154,7 +154,7 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_LENGTH );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName );
 
     expression->LengthTarget()->Accept ( this );
@@ -164,7 +164,7 @@ void CTypeCheckerVisitor::Visit( const CLengthExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_METHOD );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
     onNodeEnter( nodeName );
 
     CTypeIdentifier methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
@@ -235,7 +235,7 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 
 // ignored
 void CTypeCheckerVisitor::Visit( const CThisExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
 
     lastType = { CTypeIdentifier( lastClass->ClassName() ) };
@@ -244,7 +244,7 @@ void CTypeCheckerVisitor::Visit( const CThisExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ARRAY );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName );
 
     expression->LengthExpression()->Accept( this );
@@ -262,7 +262,7 @@ void CTypeCheckerVisitor::Visit( const CNewArrayExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CNewIdExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEW_ID );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName );
 
     std::string className = expression->TargetId()->Name();
@@ -277,7 +277,7 @@ void CTypeCheckerVisitor::Visit( const CNewIdExpression* expression ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CNegateExpression* expression ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_NEGATE );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName );
 
     expression->TargetExpression()->Accept( this );
@@ -290,7 +290,7 @@ void CTypeCheckerVisitor::Visit( const CNegateExpression* expression ) {
 /*__________ Statements __________*/
 
 void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName );
 
     statement->LeftPart()->Accept( this );
@@ -308,7 +308,7 @@ void CTypeCheckerVisitor::Visit( const CAssignIdStatement* statement ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName );
 
     statement->RightPart()->Accept( this );
@@ -328,7 +328,7 @@ void CTypeCheckerVisitor::Visit( const CAssignIdWithIndexStatement* statement ) 
 }
 
 void CTypeCheckerVisitor::Visit( const CPrintStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_PRINT );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
     onNodeEnter( nodeName );
 
     statement->PrintTarget()->Accept( this );
@@ -342,7 +342,7 @@ void CTypeCheckerVisitor::Visit( const CPrintStatement* statement ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CConditionalStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_CONDITIONAL );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName );
 
     statement->Condition()->Accept( this );
@@ -357,7 +357,7 @@ void CTypeCheckerVisitor::Visit( const CConditionalStatement* statement ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CWhileLoopStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_WHILE_LOOP );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName );
 
     statement->Condition()->Accept( this );
@@ -371,7 +371,7 @@ void CTypeCheckerVisitor::Visit( const CWhileLoopStatement* statement ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CBracesStatement* statement ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_BRACES );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
     onNodeEnter( nodeName );
 
     statement->List()->Accept( this );
@@ -384,27 +384,27 @@ void CTypeCheckerVisitor::Visit( const CBracesStatement* statement ) {
 
 // ignored
 void CTypeCheckerVisitor::Visit( const CIntTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName );
     onNodeExit( nodeName );
 }
 
 // ignored
 void CTypeCheckerVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_BOOL );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName );
     onNodeExit( nodeName );
 }
 
 // ignored
 void CTypeCheckerVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_INT_ARRAY );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName );
     onNodeExit( nodeName );
 }
 
 void CTypeCheckerVisitor::Visit( const CIdTypeModifier* typeModifier ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::TYPE_MOD_ID );
+    std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName );
 
     std::string className = typeModifier->TypeId()->Name();
@@ -421,7 +421,7 @@ void CTypeCheckerVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 /*__________ Other (except lists) __________*/
 
 void CTypeCheckerVisitor::Visit( const CVarDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL );
+    std::string nodeName = generateNodeName( CNodeNames::VAR_DECL );
     onNodeEnter( nodeName );
 
     declaration->Type()->Accept( this );
@@ -431,7 +431,7 @@ void CTypeCheckerVisitor::Visit( const CVarDeclaration* declaration ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
+    std::string nodeName = generateNodeName( CNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
     argument->Type()->Accept( this );
@@ -441,7 +441,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgument* argument ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL );
+    std::string nodeName = generateNodeName( CNodeNames::METH_DECL );
     onNodeEnter( nodeName );
 
     std::string name = declaration->MethodId()->Name();
@@ -470,7 +470,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CMainClass* mainClass ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::MAIN_CLASS );
+    std::string nodeName = generateNodeName( CNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName );
     
     mainClass->Statements()->Accept( this );
@@ -480,7 +480,7 @@ void CTypeCheckerVisitor::Visit( const CMainClass* mainClass ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL );
+    std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL );
     onNodeEnter( nodeName );
 
     using TClassDefinition = std::shared_ptr<const CClassDefinition>;
@@ -516,7 +516,7 @@ void CTypeCheckerVisitor::Visit( const CClassDeclaration* declaration ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CProgram* program ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::PROGRAM );
+    std::string nodeName = generateNodeName( CNodeNames::PROGRAM );
     onNodeEnter( nodeName );
 
     program->MainClass()->Accept( this );
@@ -529,7 +529,7 @@ void CTypeCheckerVisitor::Visit( const CProgram* program ) {
 /*__________  Lists __________*/
 
 void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
     std::vector<CTypeIdentifier> types;
@@ -546,7 +546,7 @@ void CTypeCheckerVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
@@ -559,7 +559,7 @@ void CTypeCheckerVisitor::Visit( const CStatementList* list ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CVarDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::VAR_DECL_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CVarDeclaration> >& varDeclarations = list->VarDeclarations();
@@ -572,7 +572,7 @@ void CTypeCheckerVisitor::Visit( const CVarDeclarationList* list ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CMethodArgumentList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodArgument> >& methodArguments = list->MethodArguments();
@@ -585,7 +585,7 @@ void CTypeCheckerVisitor::Visit( const CMethodArgumentList* list ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CMethodDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::METH_DECL_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methodDeclarations = list->MethodDeclarations();
@@ -598,7 +598,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclarationList* list ) {
 }
 
 void CTypeCheckerVisitor::Visit( const CClassDeclarationList* list ) {
-    std::string nodeName = generateNodeName( CAstNodeNames::CLASS_DECL_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classDeclarations = list->ClassDeclarations();

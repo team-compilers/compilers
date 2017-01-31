@@ -4,7 +4,7 @@
 
 namespace AstTree {
 
-class CAstNodeNames {
+class CNodeNames {
 public:
     static const std::string ACCESS_MOD_PRIVATE;
     static const std::string ACCESS_MOD_PUBLIC;
