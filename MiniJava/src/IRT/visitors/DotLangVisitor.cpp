@@ -210,7 +210,15 @@ void CDotLangVisitor::Visit( const CMoveStatement* statement ) {
 void CDotLangVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
-    
+    visitedNodeStack.push_back( nodeName );
+
+    statement->LeftStatement()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
+
+    statement->RightStatement()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
 
     onNodeExit( nodeName );
 }
