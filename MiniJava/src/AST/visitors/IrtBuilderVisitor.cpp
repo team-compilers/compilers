@@ -234,7 +234,6 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_THIS );
     onNodeEnter( nodeName );
 
-    // write your code here
     methodCallerClassName = classCurrentName;
 
     onNodeExit( nodeName );
@@ -473,7 +472,8 @@ void CIrtBuilderVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CAstNodeNames::METH_ARG );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -540,7 +540,8 @@ void CIrtBuilderVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
@@ -550,9 +551,6 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
     onNodeEnter( nodeName );
 
     const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
-
-    // std::vector<std::unique_ptr<const IRTree::ISubtreeWrapper>> statementsTranslated;
-    // statementsTranslated.reserve( statements.size() );
 
     // statements must be reversed before being used
     // we'll actually iterate over it in reversed order (the last statement will be the first)
@@ -600,11 +598,11 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
 
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methods = list->MethodDeclarations();
 
-    int i = 0;
     for ( auto it = methods.begin(); it != methods.end(); ++it ) {
         ( *it )->Accept( this );
         subtreeWrapper->ToStatement();
-        methodTrees["C$M" + std::to_string( i++ )] = std::unique_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
+        std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
+        methodTrees[methodFullName] = std::unique_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
     }
 
     onNodeExit( nodeName );
