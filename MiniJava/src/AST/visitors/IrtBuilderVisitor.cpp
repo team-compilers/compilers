@@ -143,7 +143,29 @@ void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->ContainerExpression()->Accept( this );
+    const IRTree::CExpression* containerExpression = subtreeWrapper->ToExpression();
+
+    expression->IndexExpression()->Accept( this );
+    const IRTree::CExpression* indexExpression = subtreeWrapper->ToExpression();
+
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CMemExpression(
+            new IRTree::CBinaryExpression(
+                IRTree::TOperatorType::OT_Plus,
+                containerExpression,
+                new IRTree::CBinaryExpression(
+                    IRTree::TOperatorType::OT_Times,
+                    new IRTree::CBinaryExpression(
+                        IRTree::TOperatorType::OT_Plus,
+                        indexExpression,
+                        new IRTree::CConstExpression( 1 )
+                    ),
+                    new IRTree::CConstExpression( frameCurrent->WordSize() )
+                )
+            )
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
