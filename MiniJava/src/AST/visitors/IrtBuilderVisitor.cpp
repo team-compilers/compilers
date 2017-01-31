@@ -226,7 +226,14 @@ void CIrtBuilderVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CAstNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->LengthTarget()->Accept( this );
+    const IRTree::CExpression* targetExpression = subtreeWrapper->ToExpression();
+
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        new IRTree::CMemExpression(
+            targetExpression
+        )
+    ) );
 
     onNodeExit( nodeName );
 }
