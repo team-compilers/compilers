@@ -52,13 +52,13 @@ void printErrorCount( int errorCount ) {
 }
 
 int main( int argc, char* argv[] ) {
-    if ( argc < 4 ) {
+    if ( argc < 3 ) {
         printHelp( argv[0] );
         throw std::logic_error( "Too few arguments provided" );
     }
     const std::string inputFilePath( argv[1] );
     const std::string outputFilePath( argv[2] );
-    const std::string mode( argv[3] );
+    // const std::string mode( argv[3] );
     CBisonParser parser( inputFilePath );
     std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
 
@@ -69,42 +69,44 @@ int main( int argc, char* argv[] ) {
     CIrtBuilderVisitor irtBuilderVisitor( tablePtr, false );
     irtBuilderVisitor.Visit( astRoot.get() );
     auto irtTrees = irtBuilderVisitor.MethodTrees();
-    std::shared_ptr<const IRTree::CStatement> irtRootMain = irtTrees.begin()->second;
+    std::shared_ptr<const IRTree::CStatement> irtRootSomeMethod = irtTrees.begin()->second;
 
-    IRTree::CDotLangVisitor irtVisitor( true );
-    irtRootMain->Accept( &irtVisitor );
+    IRTree::CDotLangVisitor irtVisitor( false );
+    irtRootSomeMethod->Accept( &irtVisitor );
+    std::string traversal = irtVisitor.GetTraversalInDotLanguage();
+    printResultToFile( outputFilePath, traversal );
     return 0;
 
-    std::string traversal;
-    if ( mode == "code" ) {
-        traversal = AstToCode( astRoot.get(), false );
-        printResultToFile( outputFilePath, traversal );
-    } else if ( mode == "dot" ) {
-        traversal = AstToDotLanguage( astRoot.get(), false );
-        printResultToFile( outputFilePath, traversal );
-    } else if ( mode == "errors" ) {
-        std::cout << std::string( argv[1] ) << std::endl;
-        CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
-        symbolTableBuilderVisitor.Visit( astRoot.get() );
-        std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
+    // std::string traversal;
+    // if ( mode == "code" ) {
+    //     traversal = AstToCode( astRoot.get(), false );
+    //     printResultToFile( outputFilePath, traversal );
+    // } else if ( mode == "dot" ) {
+    //     traversal = AstToDotLanguage( astRoot.get(), false );
+    //     printResultToFile( outputFilePath, traversal );
+    // } else if ( mode == "errors" ) {
+    //     std::cout << std::string( argv[1] ) << std::endl;
+    //     CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
+    //     symbolTableBuilderVisitor.Visit( astRoot.get() );
+    //     std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
 
-        int errorCount = symbolTableBuilderVisitor.Errors()->size();
-        if ( errorCount == 0 ) {
-            CTypeCheckerVisitor typeCheckerVisitor( tablePtr, false );
-            typeCheckerVisitor.Visit( astRoot.get() );
-            errorCount += typeCheckerVisitor.Errors()->size();
-            printErrorCount( errorCount );
-            extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
-            extractVisitorErrorsAndPrint( &typeCheckerVisitor );
-        } else {
-            printErrorCount( errorCount );
-            extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
-        }
-        std::cout << std::endl;
-    } else {
-        printHelp( argv[0] );
-        throw std::logic_error( "Wrong mode provided" );
-    }
+    //     int errorCount = symbolTableBuilderVisitor.Errors()->size();
+    //     if ( errorCount == 0 ) {
+    //         CTypeCheckerVisitor typeCheckerVisitor( tablePtr, false );
+    //         typeCheckerVisitor.Visit( astRoot.get() );
+    //         errorCount += typeCheckerVisitor.Errors()->size();
+    //         printErrorCount( errorCount );
+    //         extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
+    //         extractVisitorErrorsAndPrint( &typeCheckerVisitor );
+    //     } else {
+    //         printErrorCount( errorCount );
+    //         extractVisitorErrorsAndPrint( &symbolTableBuilderVisitor );
+    //     }
+    //     std::cout << std::endl;
+    // } else {
+    //     printHelp( argv[0] );
+    //     throw std::logic_error( "Wrong mode provided" );
+    // }
 
     return 0;
 }
