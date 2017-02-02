@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace AstTree {
+namespace ASTree {
 
 class CPublicAccessModifier;
 class CPrivateAccessModifier;

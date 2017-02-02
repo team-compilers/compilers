@@ -5,7 +5,7 @@
 
 #include <AST/visitors/Visitor.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class IVisitorTarget {
 public:

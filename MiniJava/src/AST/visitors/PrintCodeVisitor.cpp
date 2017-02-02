@@ -1,6 +1,6 @@
 #include <AST/visitors/PrintCodeVisitor.h>
 
-using namespace AstTree;
+using namespace ASTree;
 
 void CPrintCodeVisitor::increaseCodeMargin() {
     codeMargin += "    ";

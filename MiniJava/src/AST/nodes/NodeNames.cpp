@@ -1,6 +1,6 @@
 #include <AST/nodes/NodeNames.h>
 
-using namespace AstTree;
+using namespace ASTree;
 
 const std::string CNodeNames::ACCESS_MOD_PRIVATE = "AccessModPrivate";
 const std::string CNodeNames::ACCESS_MOD_PUBLIC = "AccessModPublic";

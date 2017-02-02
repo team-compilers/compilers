@@ -8,7 +8,7 @@
 #include <AST/nodes/Expression.h>
 #include <AST/nodes/StatementList.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CMainClass : public CVisitorTarget {
 public:

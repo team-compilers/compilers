@@ -5,8 +5,8 @@
 
 class CCompilationError {
 public:
-    CCompilationError( const AstTree::CLocation& _location, const std::string& _message );
-    const AstTree::CLocation& Location() const;
+    CCompilationError( const ASTree::CLocation& _location, const std::string& _message );
+    const ASTree::CLocation& Location() const;
     const std::string& Message() const;
     std::string ToString() const;
 
@@ -30,6 +30,6 @@ public:
     static const std::string METHOD_IS_PRIVATE;
 
 private:
-    AstTree::CLocation location;
+    ASTree::CLocation location;
     std::string message;
 };

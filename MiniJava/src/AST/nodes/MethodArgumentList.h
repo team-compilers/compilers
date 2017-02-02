@@ -10,7 +10,7 @@
 #include <AST/nodes/MethodArgument.h>
 #include <AST/nodes/TypeModifier.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CMethodArgumentList : public CVisitorTarget {
 public:

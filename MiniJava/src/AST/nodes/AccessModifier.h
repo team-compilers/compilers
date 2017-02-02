@@ -3,7 +3,7 @@
 #include <AST/nodes/VisitorTarget.h>
 #include <AST/visitors/Visitor.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CAccessModifier : public CVisitorTarget {
 public:

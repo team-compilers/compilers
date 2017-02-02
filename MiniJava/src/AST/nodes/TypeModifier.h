@@ -7,7 +7,7 @@
 
 #include <AST/nodes/Expression.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CTypeModifier : public CVisitorTarget {
 public:

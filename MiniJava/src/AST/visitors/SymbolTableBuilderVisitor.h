@@ -32,7 +32,7 @@
 #include <AST/nodes/ClassDeclarationList.h>
 #include <AST/nodes/Program.h>
 
-namespace AstTree {
+namespace ASTree {
 
 using MethodNameToDefinitionMap = std::unordered_map<std::string, std::shared_ptr<const CMethodDefinition>>;
 using VarNameToTypeMap = std::unordered_map<std::string, CTypeIdentifier>;

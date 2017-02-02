@@ -1,9 +1,11 @@
 #include <AST/visitors/IrtBuilderVisitor.h>
 #include <IRT/Label.h>
 
-using namespace AstTree;
+using namespace ASTree;
 
-const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>& CIrtBuilderVisitor::MethodTrees() const {
+using TMethodToIRTMap = std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>;
+
+std::shared_ptr<TMethodToIRTMap> CIrtBuilderVisitor::MethodTrees() const {
     return methodTrees;
 }
 
@@ -689,7 +691,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         ( *it )->Accept( this );
         subtreeWrapper->ToStatement();
         std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
-        methodTrees[methodFullName] = std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
+        methodTrees->at( methodFullName ) = std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
     }
 
     onNodeExit( nodeName );

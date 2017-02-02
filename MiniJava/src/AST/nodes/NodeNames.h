@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace AstTree {
+namespace ASTree {
 
 class CNodeNames {
 public:

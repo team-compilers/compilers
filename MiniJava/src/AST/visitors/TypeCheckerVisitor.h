@@ -25,7 +25,7 @@
 #include <SymbolTable.h>
 #include <CompilationError.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CTypeCheckerVisitor : public CVisitor {
 public:

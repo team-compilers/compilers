@@ -8,7 +8,7 @@
 
 #include <AST/nodes/MethodDeclaration.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CMethodDeclarationList : public CVisitorTarget {
 public:

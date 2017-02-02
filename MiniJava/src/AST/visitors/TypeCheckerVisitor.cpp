@@ -1,6 +1,6 @@
 #include <AST/visitors/TypeCheckerVisitor.h>
 
-using namespace AstTree;
+using namespace ASTree;
 
 std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckerVisitor::Errors() const {
     return errors;

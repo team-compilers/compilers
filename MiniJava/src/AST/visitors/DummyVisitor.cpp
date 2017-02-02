@@ -1,6 +1,6 @@
 #include <AST/visitors/DummyVisitor.h>
 
-using namespace AstTree;
+using namespace ASTree;
 /*__________ Access Modifiers __________*/
 
 void CDummyVisitor::Visit( const CPublicAccessModifier* modifier ) {

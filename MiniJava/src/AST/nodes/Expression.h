@@ -11,7 +11,7 @@
 
 #include <AST/nodes/ExpressionList.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CExpression : public CVisitorTarget {
 public:

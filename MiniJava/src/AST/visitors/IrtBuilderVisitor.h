@@ -34,14 +34,16 @@
 
 #include <SymbolTable.h>
 
-namespace AstTree {
+namespace ASTree {
+
+using TMethodToIRTMap = std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>;
 
 class CIrtBuilderVisitor : public CVisitor {
 public:
     CIrtBuilderVisitor( std::shared_ptr<const CSymbolTable> table, bool _verbose = false )
-        : CVisitor( _verbose ), symbolTable( table ) {}
+        : CVisitor( _verbose ), symbolTable( table ), methodTrees( new TMethodToIRTMap() ) {}
 
-    const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>& MethodTrees() const;
+    std::shared_ptr<TMethodToIRTMap> MethodTrees() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -107,7 +109,7 @@ private:
     std::string methodCallerClassName;
 
     // result
-    std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>> methodTrees;
+    std::shared_ptr<TMethodToIRTMap> methodTrees;
 };
 
 }

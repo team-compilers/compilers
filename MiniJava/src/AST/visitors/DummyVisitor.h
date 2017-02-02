@@ -23,7 +23,7 @@
 #include <AST/nodes/ClassDeclarationList.h>
 #include <AST/nodes/Program.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CDummyVisitor : public CVisitor {
 public:

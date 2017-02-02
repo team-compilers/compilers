@@ -9,7 +9,7 @@
 #include <AST/nodes/MethodDeclarationList.h>
 #include <AST/nodes/VarDeclarationList.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CClassDeclaration : public CVisitorTarget {
 public:

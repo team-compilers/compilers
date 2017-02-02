@@ -1,7 +1,7 @@
 #include <CompilationError.h>
 #include <sstream>
 
-using namespace AstTree;
+using namespace ASTree;
 
 const std::string CCompilationError::REDEFINITION_LOCAL_VAR = "Local variable redefined";
 const std::string CCompilationError::REDEFINITION_CLASS = "Class redefined";

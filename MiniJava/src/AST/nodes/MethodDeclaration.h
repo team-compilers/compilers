@@ -12,7 +12,7 @@
 #include <AST/nodes/TypeModifier.h>
 #include <AST/nodes/VarDeclarationList.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CMethodDeclaration : public CVisitorTarget {
 public:

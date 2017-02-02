@@ -6,7 +6,7 @@
 #include <AST/visitors/Visitor.h>
 #include <AST/nodes/VisitorTarget.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CStatement;
 

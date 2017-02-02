@@ -13,7 +13,7 @@ MAIN=src/main.cpp
 TRG=minijava
 # -lfl includes flex library
 FLAGS=-lfl -O2 -std=c++11 -I"src/" -I"src/grammar"
-SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/AST/nodes/NodeNames.cpp src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp src/AST/visitors/TypeCheckerVisitor.cpp src/AST/visitors/PrintCodeVisitor.cpp src/AST/visitors/SymbolTableBuilderVisitor.cpp src/AST/visitors/IrtBuilderVisitor.cpp src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp src/IRT/nodes/NodeNames.cpp src/IRT/SubtreeWrapper.cpp src/IRT/Label.cpp src/IRT/Temporary.cpp src/IRT/Frame.cpp src/IRT/visitors/Visitor.cpp src/IRT/visitors/DotLangVisitor.cpp
+SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) src/Compilator.cpp src/CompilationPhase.cpp src/AST/nodes/NodeNames.cpp src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp src/AST/visitors/TypeCheckerVisitor.cpp src/AST/visitors/PrintCodeVisitor.cpp src/AST/visitors/SymbolTableBuilderVisitor.cpp src/AST/visitors/IrtBuilderVisitor.cpp src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp src/IRT/nodes/NodeNames.cpp src/IRT/SubtreeWrapper.cpp src/IRT/Label.cpp src/IRT/Temporary.cpp src/IRT/Frame.cpp src/IRT/visitors/Visitor.cpp src/IRT/visitors/DotLangVisitor.cpp
 
 $(TRG): $(SRC)
 	$(CC) $(SRC) -o $(TRG) $(FLAGS)

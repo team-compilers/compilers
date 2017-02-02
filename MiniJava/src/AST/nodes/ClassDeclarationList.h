@@ -8,7 +8,7 @@
 
 #include <AST/nodes/ClassDeclaration.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CClassDeclarationList : public CVisitorTarget {
 public:

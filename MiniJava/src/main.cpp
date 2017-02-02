@@ -1,81 +1,57 @@
-#include <fstream>
+#include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
-#include <SymbolTable.h>
-#include <AST/nodes/Program.h>
-#include <AST/visitors/DotLangVisitor.h>
-#include <AST/visitors/PrintCodeVisitor.h>
-#include <AST/visitors/SymbolTableBuilderVisitor.h>
-#include <AST/visitors/IrtBuilderVisitor.h>
-#include <AST/visitors/TypeCheckerVisitor.h>
+#include <Compilator.h>
 
-#include <IRT/visitors/DotLangVisitor.h>
+// std::string AstToCode( const CProgram* root, bool verbose ) {
+//     CPrintCodeVisitor visitor( verbose );
+//     visitor.Visit( root );
+//     return visitor.GetCode();
+// }
 
-#include <BisonParser.h>
-
-using namespace AstTree;
-
-std::string AstToDotLanguage( const CProgram* root, bool verbose ) {
-    CDotLangVisitor visitor( verbose );
-    visitor.Visit( root );
-    return visitor.GetTraversalInDotLanguage();
-}
-
-std::string AstToCode( const CProgram* root, bool verbose ) {
-    CPrintCodeVisitor visitor( verbose );
-    visitor.Visit( root );
-    return visitor.GetCode();
-}
-
-void printResultToFile( const std::string& outputFilePath, const std::string& result ) {
-    std::ofstream outStream( outputFilePath );
-    outStream << result;
-    outStream.close();
-}
+// void printResultToFile( const std::string& outputFilePath, const std::string& result ) {
+//     std::ofstream outStream( outputFilePath );
+//     outStream << result;
+//     outStream.close();
+// }
 
 void printHelp( const std::string& programName ) {
-    std::cerr << programName << " <inputFilePath> <outputFilePath> <mode>" << std::endl;
-    std::cerr << "<mode>: dot / code" << std::endl;
+    std::cerr << programName << " <inputFilePath> <outputDirPath>" << std::endl;
 }
 
-template<typename T>
-void extractVisitorErrorsAndPrint( T* visitor ) {
-	std::shared_ptr<const std::vector<CCompilationError>> errors = visitor->Errors();
-    for ( const CCompilationError& error : *errors ) {
-        std::cout << error.ToString() << std::endl;
-    }
-}
+// template<typename T>
+// void extractVisitorErrorsAndPrint( T* visitor ) {
+//     std::shared_ptr<const std::vector<CCompilationError>> errors = visitor->Errors();
+//     for ( const CCompilationError& error : *errors ) {
+//         std::cout << error.ToString() << std::endl;
+//     }
+// }
 
-void printErrorCount( int errorCount ) {
-    std::cout << "Found "  << errorCount << " errors." << std::endl;
-}
+// void printErrorCount( int errorCount ) {
+//     std::cout << "Found "  << errorCount << " errors." << std::endl;
+// }
 
 int main( int argc, char* argv[] ) {
     if ( argc < 3 ) {
         printHelp( argv[0] );
         throw std::logic_error( "Too few arguments provided" );
     }
-    const std::string inputFilePath( argv[1] );
-    const std::string outputFilePath( argv[2] );
-    // const std::string mode( argv[3] );
-    CBisonParser parser( inputFilePath );
-    std::unique_ptr<const CProgram> astRoot = parser.buildAST( inputFilePath );
+    const std::string pathInputFile( argv[1] );
+    const std::string pathOutputDir( argv[2] );
 
-    CSymbolTableBuilderVisitor symbolTableBuilderVisitor( false );
-    symbolTableBuilderVisitor.Visit( astRoot.get() );
-    std::shared_ptr<const CSymbolTable> tablePtr = symbolTableBuilderVisitor.SymbolTable();
+    CCompilator compilator( pathInputFile, pathOutputDir );
+    // CIrtBuilderVisitor irtBuilderVisitor( tablePtr, false );
+    // irtBuilderVisitor.Visit( astRoot.get() );
+    // auto irtTrees = irtBuilderVisitor.MethodTrees();
+    // std::shared_ptr<const IRTree::CStatement> irtRootSomeMethod = irtTrees.begin()->second;
 
-    CIrtBuilderVisitor irtBuilderVisitor( tablePtr, false );
-    irtBuilderVisitor.Visit( astRoot.get() );
-    auto irtTrees = irtBuilderVisitor.MethodTrees();
-    std::shared_ptr<const IRTree::CStatement> irtRootSomeMethod = irtTrees.begin()->second;
-
-    IRTree::CDotLangVisitor irtVisitor( false );
-    irtRootSomeMethod->Accept( &irtVisitor );
-    std::string traversal = irtVisitor.GetTraversalInDotLanguage();
-    printResultToFile( outputFilePath, traversal );
-    return 0;
+    // IRTree::CDotLangVisitor irtVisitor( false );
+    // irtRootSomeMethod->Accept( &irtVisitor );
+    // std::string traversal = irtVisitor.GetTraversalInDotLanguage();
+    // printResultToFile( outputFilePath, traversal );
+    // return 0;
 
     // std::string traversal;
     // if ( mode == "code" ) {

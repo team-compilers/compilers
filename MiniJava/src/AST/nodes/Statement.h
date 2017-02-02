@@ -12,7 +12,7 @@
 #include <AST/nodes/Expression.h>
 #include <AST/nodes/StatementList.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CStatement : public CVisitorTarget {
 public:

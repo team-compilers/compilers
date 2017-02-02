@@ -32,7 +32,7 @@
 #include <AST/nodes/ClassDeclarationList.h>
 #include <AST/nodes/Program.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CPrintCodeVisitor : public CVisitor {
 public:

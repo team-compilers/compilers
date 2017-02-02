@@ -9,7 +9,7 @@
 #include <AST/nodes/Expression.h>
 #include <AST/nodes/TypeModifier.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CVarDeclaration : public CVisitorTarget {
 public:

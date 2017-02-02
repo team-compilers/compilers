@@ -10,7 +10,7 @@
 #include <AST/nodes/TypeModifier.h>
 #include <AST/nodes/VarDeclaration.h>
 
-namespace AstTree {
+namespace ASTree {
 
 class CVarDeclarationList : public CVisitorTarget {
 public:

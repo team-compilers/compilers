@@ -1,7 +1,7 @@
 #include <AST/visitors/Visitor.h>
 #include <AST/nodes/Expression.h>
 
-using namespace AstTree;
+using namespace ASTree;
 
 int CVisitor::generateNodeNextIndex( const std::string& nodeType ) {
     int result = 0;
