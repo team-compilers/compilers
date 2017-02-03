@@ -1,2 +1,1 @@
 77:12: Variable was not defined
-77:12: Variable was not defined

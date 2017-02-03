@@ -1,4 +1,2 @@
 43:13: Different types of left and right part
 43:9: Different types of left and right part
-43:13: Different types of left and right part
-43:9: Different types of left and right part

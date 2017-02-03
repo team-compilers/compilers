@@ -1,4 +1,2 @@
 3:24: Method is not defined in caller-class
 3:5: Can't print not Int expression
-3:24: Method is not defined in caller-class
-3:5: Can't print not Int expression

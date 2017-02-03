@@ -1,2 +1,1 @@
 42:13: Index should have integer type
-42:13: Index should have integer type

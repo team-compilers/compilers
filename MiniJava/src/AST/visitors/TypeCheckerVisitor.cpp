@@ -445,20 +445,7 @@ void CTypeCheckerVisitor::Visit( const CMethodDeclaration* declaration ) {
     onNodeEnter( nodeName );
 
     std::string name = declaration->MethodId()->Name();
-    lastMethod = lastClass->GetMethodDefinition(name);
-    std::shared_ptr<const CClassDefinition> precedingClass = lastClass;
-
-    // // This check is not needed. If B is a child of A and both have a method f,
-    // // then class B can "hide" A's method (this is not overriding)
-    // while (precedingClass->HasParent()) {
-    //     precedingClass = symbolTablePtr->GetClassDefinition(precedingClass->GetParentName());
-    //     if (precedingClass == nullptr) {
-    //         break;
-    //     } else if (precedingClass->GetMethodDefinition( name ) != nullptr) {
-    //         errors->push_back( CCompilationError( declaration->Location(), CCompilationError::METHOD_OVERLOADING ) );
-    //         break;
-    //     }
-    // }
+    lastMethod = lastClass->GetMethodDefinition( name );
 
     declaration->TypeModifier()->Accept( this );
     declaration->MethodArguments()->Accept( this );
