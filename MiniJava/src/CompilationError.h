@@ -22,7 +22,7 @@ public:
     static const std::string PARENT_CLASS_NOT_EXISTS;
     static const std::string TYPE_NOT_EXISTS;
     static const std::string VAR_UNDEFINED;
-    static const std::string METHOD_OVERLOADING;
+    // static const std::string METHOD_OVERLOADING;
     static const std::string CLASS_HAS_NO_METHOD;
     static const std::string INVALID_CALLER_EXPRESSION;
     static const std::string ARGS_NUMBERS_NOT_MATCH;
