@@ -1,0 +1,39 @@
+digraph {
+	ordering = out;
+	ExpId9 -> "Id9: Random";
+	ExpId6 -> "Id6: CircleA";
+	ClassDecl2 -> ExpId6;
+	ClassDecl2 -> VarDeclList2;
+	ClassDecl2 -> MethDeclList2;
+	ClassDecl2 -> ExpId7;
+	ExpId5 -> "Id5: CircleB";
+	ExpId1 -> "Id1: args";
+	Program0 -> MainClass0;
+	Program0 -> ClassDeclList0;
+	MainClass0 -> ExpId0;
+	MainClass0 -> ExpId1;
+	MainClass0 -> StatList0;
+	ClassDecl3 -> ExpId8;
+	ClassDecl3 -> VarDeclList3;
+	ClassDecl3 -> MethDeclList3;
+	ClassDecl3 -> ExpId9;
+	ExpId0 -> "Id0: Main";
+	ClassDeclList0 -> ClassDecl0;
+	ClassDeclList0 -> ClassDecl1;
+	ClassDeclList0 -> ClassDecl2;
+	ClassDeclList0 -> ClassDecl3;
+	ExpId4 -> "Id4: CircleC";
+	ExpId8 -> "Id8: CircleA";
+	ClassDecl0 -> ExpId2;
+	ClassDecl0 -> VarDeclList0;
+	ClassDecl0 -> MethDeclList0;
+	ClassDecl0 -> ExpId3;
+	ExpId7 -> "Id7: CircleC";
+	ExpId3 -> "Id3: CircleA";
+	ExpId2 -> "Id2: CircleB";
+	ClassDecl1 -> ExpId4;
+	ClassDecl1 -> VarDeclList1;
+	ClassDecl1 -> MethDeclList1;
+	ClassDecl1 -> ExpId5;
+}
+

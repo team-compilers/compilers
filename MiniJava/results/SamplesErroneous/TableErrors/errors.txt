@@ -1,0 +1,4 @@
+14:5: Method redefined
+31:32: Local variable redefined
+33:9: Local variable redefined
+30:1: Class redefined

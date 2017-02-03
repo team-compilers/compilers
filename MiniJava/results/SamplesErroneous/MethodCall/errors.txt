@@ -1,0 +1,8 @@
+33:13: Calling a private method from a different class
+37:13: Arguments numbers do not match
+38:13: Arguments numbers do not match
+39:13: Argument type does not match
+33:13: Calling a private method from a different class
+37:13: Arguments numbers do not match
+38:13: Arguments numbers do not match
+39:13: Argument type does not match

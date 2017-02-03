@@ -1,0 +1,40 @@
+digraph {
+	ordering = out;
+	MethDeclList0 -> MethDecl0;
+	ExpId6 -> "Id6: Random";
+	ExpId5 -> "Id5: x";
+	MethArg1 -> TypeModBool0;
+	MethArg1 -> ExpId5;
+	ExpId1 -> "Id1: args";
+	ClassDeclList0 -> ClassDecl0;
+	ExpId0 -> "Id0: Main";
+	MethDecl0 -> AccessModPublic0;
+	MethDecl0 -> TypeModInt0;
+	MethDecl0 -> ExpId3;
+	MethDecl0 -> MethArgList0;
+	MethDecl0 -> VarDeclList1;
+	MethDecl0 -> StatList1;
+	MethDecl0 -> ExpNumber0;
+	Program0 -> MainClass0;
+	Program0 -> ClassDeclList0;
+	MainClass0 -> ExpId0;
+	MainClass0 -> ExpId1;
+	MainClass0 -> StatList0;
+	TypeModId0 -> ExpId6;
+	ExpId2 -> "Id2: C";
+	MethArg2 -> TypeModId0;
+	MethArg2 -> ExpId7;
+	ExpId4 -> "Id4: x";
+	ClassDecl0 -> ExpId2;
+	ClassDecl0 -> VarDeclList0;
+	ClassDecl0 -> MethDeclList0;
+	ExpNumber0 -> "Value0: 0";
+	ExpId7 -> "Id7: r";
+	ExpId3 -> "Id3: f";
+	MethArgList0 -> MethArg0;
+	MethArgList0 -> MethArg1;
+	MethArgList0 -> MethArg2;
+	MethArg0 -> TypeModInt1;
+	MethArg0 -> ExpId4;
+}
+

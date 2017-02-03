@@ -2,13 +2,15 @@
 
 #include <string>
 
+#include <CompilationPhase.h>
+
 class CCompilator {
 public:
-    CCompilator( const std::string& _fileNameInput, const std::string& _dirNameOutput )
-        : fileNameInput( _fileNameInput ), dirNameOutput( _dirNameOutput ) {}
+    CCompilator( const std::string& _pathInputFile, const std::string& _pathOutputDir )
+        : pathInputFile( _pathInputFile ), pathOutputDir( _pathOutputDir ) {}
 
     void Run();
 private:
-    std::string fileNameInput;
-    std::string dirNameOutput;
+    std::string pathInputFile;
+    std::string pathOutputDir;
 };

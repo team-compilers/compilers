@@ -42,6 +42,7 @@ int main( int argc, char* argv[] ) {
     const std::string pathOutputDir( argv[2] );
 
     CCompilator compilator( pathInputFile, pathOutputDir );
+    compilator.Run();
     // CIrtBuilderVisitor irtBuilderVisitor( tablePtr, false );
     // irtBuilderVisitor.Visit( astRoot.get() );
     // auto irtTrees = irtBuilderVisitor.MethodTrees();

@@ -1,0 +1,2 @@
+97:14: Array length must have integer type
+97:14: Array length must have integer type

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <memory>
 #include <string>
 
@@ -19,6 +20,8 @@ public:
     virtual ~CCompilationPhase() = default;
 
     virtual void Run() = 0;
+    virtual void PrintResults( const std::string& pathOutputFile,
+        const std::ios_base::openmode& openMode = std::fstream::out ) = 0;
 protected:
     bool verbose;
 };
@@ -29,6 +32,8 @@ public:
         : CCompilationPhase( _verbose ), pathInputFile( _pathInputFile ) {}
 
     virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     std::shared_ptr<const ASTree::CProgram> GetAstRoot() const;
     std::string ToDotLanguage();
@@ -46,6 +51,8 @@ public:
         : CCompilationPhase( _verbose ), symbolTableBuilderVisitor( _verbose ), astRoot( _astRoot ) {}
 
     virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     std::shared_ptr<const CSymbolTable> GetSymbolTable() const;
     std::shared_ptr<const std::vector<CCompilationError>> GetErrors() const;
@@ -62,6 +69,8 @@ public:
         : CCompilationPhase( _verbose ), typeCheckerVisitor( _symbolTable, _verbose ), astRoot( _astRoot ) {}
 
     virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     std::shared_ptr<const std::vector<CCompilationError>> GetErrors() const;
 private:
@@ -77,6 +86,8 @@ public:
     : CCompilationPhase( _verbose ), irtBuilderVisitor( _symbolTable, _verbose ), astRoot( _astRoot ) {}
 
     virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     std::shared_ptr<const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>> MethodTrees() const;
 

@@ -1,0 +1,2 @@
+8:5: Local variable redefined
+12:9: Local variable redefined

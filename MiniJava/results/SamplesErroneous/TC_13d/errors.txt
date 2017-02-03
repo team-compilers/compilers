@@ -1,0 +1,2 @@
+3:24: Calling a private method from a different class
+3:24: Calling a private method from a different class

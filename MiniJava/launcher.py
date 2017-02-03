@@ -2,25 +2,28 @@
 import argparse
 from os import system, listdir, unlink, mkdir
 from os.path import splitext, join, isfile, isdir, exists
+import shutil
 
 DEF_DIRS_IN = ['data/SamplesCorrect/', 'data/SamplesErroneous/']
 DEF_DIRS_OUT = ['results/SamplesCorrect/', 'results/SamplesErroneous']
 
-def generate_results_images(dirpaths_input = DEF_DIRS_OUT, dirpaths_output = DEF_DIRS_OUT, verbose = True):
+def generate_images(dirpath, verbose = True):
     def sys_command_f(path_input, path_output):
         return ' '.join(['./generateImage.py', path_input, '-o', path_output])
-    
-    for dirpath_input, dirpath_output in zip(dirpaths_input, dirpaths_output):
-        # generate_results(dirpath_input, dirpath_output, sys_command_f)
-        for filename in listdir(dirpath_input):
-            filepath_input = join(dirpath_input, filename)
-            if not isfile(filepath_input) or splitext(filepath_input)[1] != 'gv':
-                continue
+
+    for filename in listdir(dirpath):
+        filepath_input = join(dirpath, filename)
+        if isfile(filepath_input) and splitext(filepath_input)[1] == '.gv':
             if verbose:
                 print '\033[1;34m' + filepath_input + '\033[0;39m'
-
-            filepath_output = splitext(join(dirpath_output, filename))[0] + '.svg'
+            filepath_output = splitext(filepath_input)[0] + '.svg'
             system(sys_command_f(filepath_input, filepath_output))
+        elif isdir(filepath_input):
+            generate_images(filepath_input)
+
+def generate_results_images(dirpaths_input = DEF_DIRS_OUT, verbose = True):
+    for dirpath_input in dirpaths_input:
+        generate_images(dirpath_input, verbose)
 
 def generate_results_run(dirpaths_input = DEF_DIRS_IN, dirpaths_output = DEF_DIRS_OUT, verbose = True):
     def sys_command_f(path_input, path_output):
@@ -50,11 +53,12 @@ def remove_generated_data(dirpaths = DEF_DIRS_OUT):
             try:
                 if isfile(filepath):
                     unlink(filepath)
-                else:
-                    print 'Not a file:', filepath
-                #elif os.path.isdir(filepath): shutil.rmtree(filepath)
+                # else:
+                #     print 'Not a file:', filepath
+                elif isdir(filepath):
+                    shutil.rmtree(filepath)
             except Exception as e:
-                print(e)
+                print e
 
 mode_to_func = {
     'all': generate_results_all,

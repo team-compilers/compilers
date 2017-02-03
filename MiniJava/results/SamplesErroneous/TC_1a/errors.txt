@@ -1,0 +1,4 @@
+21:1: Cyclic inheritance
+25:1: Cyclic inheritance
+21:1: Cyclic inheritance
+25:1: Cyclic inheritance

@@ -1,0 +1,2 @@
+24:12: Type does not exist
+24:12: Type does not exist

@@ -1,5 +1,8 @@
 #include <CompilationPhase.h>
 
+#include <iostream>
+#include <fstream>
+
 #include <BisonParser.h>
 
 void CAstBuildingPhase::Run() {
@@ -7,11 +10,20 @@ void CAstBuildingPhase::Run() {
     astRoot = std::shared_ptr<const ASTree::CProgram>( parser.buildAST( pathInputFile ) );
 }
 
+void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+    std::fstream outputStream( pathOutputFile, openMode );
+
+    outputStream << ToDotLanguage() << std::endl;
+
+    outputStream.close();
+}
+
 std::shared_ptr<const ASTree::CProgram> CAstBuildingPhase::GetAstRoot() const {
     return astRoot;
 }
 
 std::string CAstBuildingPhase::ToDotLanguage() {
+    assert( astRoot != nullptr );
     if ( dotLangTraversal.empty() ) {
         astRoot->Accept( &dotLangVisitor );
         dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
@@ -21,6 +33,17 @@ std::string CAstBuildingPhase::ToDotLanguage() {
 
 void CSymbolTableBuildingPhase::Run() {
     symbolTableBuilderVisitor.Visit( astRoot.get() );
+}
+
+void CSymbolTableBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+    std::shared_ptr<const std::vector<CCompilationError>> errors = GetErrors();
+    if ( !errors->empty() ) {
+        std::fstream outputStream( pathOutputFile, openMode );
+        for ( auto it = errors->begin(); it != errors->end(); ++it ) {
+            outputStream << it->ToString() << std::endl;
+        }
+        outputStream.close();
+    }
 }
 
 std::shared_ptr<const CSymbolTable> CSymbolTableBuildingPhase::GetSymbolTable() const {
@@ -35,6 +58,17 @@ void CTypeCheckingPhase::Run() {
     typeCheckerVisitor.Visit( astRoot.get() );
 }
 
+void CTypeCheckingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+    std::shared_ptr<const std::vector<CCompilationError>> errors = GetErrors();
+    if ( !errors->empty() ) {
+        std::fstream outputStream( pathOutputFile, openMode );
+        for ( auto it = errors->begin(); it != errors->end(); ++it ) {
+            outputStream << it->ToString() << std::endl;
+        }
+        outputStream.close();
+    }
+}
+
 std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckingPhase::GetErrors() const {
     return typeCheckerVisitor.Errors();
 }
@@ -42,6 +76,12 @@ std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckingPhase::GetErr
 void CIrtBuildingPhase::Run() {
     irtBuilderVisitor.Visit( astRoot.get() );
     methodTrees = irtBuilderVisitor.MethodTrees();
+}
+
+void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+    std::fstream outputStream( pathOutputFile, openMode );
+
+    outputStream.close();
 }
 
 std::shared_ptr<const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>> CIrtBuildingPhase::MethodTrees() const {
