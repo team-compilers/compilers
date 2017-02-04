@@ -6,30 +6,6 @@ std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckerVisitor::Error
     return errors;
 }
 
-std::shared_ptr<const CMethodDefinition> CTypeCheckerVisitor::searchClassHierarchyForMethod( const std::string& methodName, std::shared_ptr<const CClassDefinition> baseClass) {
-    std::shared_ptr<const CMethodDefinition> methodDefinition = nullptr;
-    while ( baseClass != nullptr ) {
-        methodDefinition = baseClass->GetMethodDefinition( methodName );
-        if ( methodDefinition != nullptr ) {
-            break;
-        }
-        baseClass = baseClass->HasParent() ? symbolTablePtr->GetClassDefinition( baseClass->GetParentName() ) : nullptr;
-    }
-    return methodDefinition;
-}
-
-CTypeIdentifier CTypeCheckerVisitor::searchClassHierarchyForField( const std::string& fieldName, std::shared_ptr<const CClassDefinition> baseClass) {
-    CTypeIdentifier fieldType( TTypeIdentifier::NotFound );
-    while ( baseClass != nullptr ) {
-        fieldType = baseClass->GetFieldType( fieldName );
-        if ( fieldType.Type() != TTypeIdentifier::NotFound ) {
-            break;
-        }
-        baseClass = baseClass->HasParent() ? symbolTablePtr->GetClassDefinition( baseClass->GetParentName() ) : nullptr;
-    }
-    return fieldType;
-}
-
 /*__________ Access Modifiers __________*/
 
 // ignored
@@ -82,7 +58,7 @@ void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
     expression->ContainerExpression()->Accept( this );
 
     TTypeIdentifier containerType;
-    if( lastType.front().Type() == TTypeIdentifier::IntArray ) {
+    if ( lastType.front().Type() == TTypeIdentifier::IntArray ) {
         containerType = TTypeIdentifier::Int;
     } else {
         containerType = TTypeIdentifier::NotFound;
@@ -90,8 +66,8 @@ void CTypeCheckerVisitor::Visit( const CBracketExpression* expression ) {
 
     expression->IndexExpression()->Accept( this );
 
-    if( lastType.front().Type() != TTypeIdentifier::Int ) {
-    	errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
+    if ( lastType.front().Type() != TTypeIdentifier::Int ) {
+        errors->push_back( CCompilationError( ( expression )->Location(), CCompilationError::INVALID_INDEX_TYPE ) );
     }
 
     lastType = { CTypeIdentifier( containerType ) };
@@ -122,11 +98,11 @@ void CTypeCheckerVisitor::Visit( const CIdExpression* expression ) {
     onNodeEnter( nodeName );
 
     std::string name = expression->Name();
-    CTypeIdentifier notFound(TTypeIdentifier::NotFound);
+    CTypeIdentifier notFound( TTypeIdentifier::NotFound );
 
-    CTypeIdentifier fieldLurk = searchClassHierarchyForField( name, lastClass );
+    CTypeIdentifier fieldLurk = symbolTablePtr->SearchClassHierarchyForField( name, lastClass );
     // TODO: do we really have to perform methodLurk?
-    std::shared_ptr<const CMethodDefinition> methodLurk = searchClassHierarchyForMethod( name, lastClass );
+    std::shared_ptr<const CMethodDefinition> methodLurk = symbolTablePtr->SearchClassHierarchyForMethod( name, lastClass );
     CTypeIdentifier localLurk = lastMethod->GetLocalVariableType(name);
     CTypeIdentifier argumentLurk = lastMethod->GetArgumentType(name);
 
@@ -177,55 +153,55 @@ void CTypeCheckerVisitor::Visit( const CMethodExpression* expression ) {
 
     callerClassDefinition = symbolTablePtr->GetClassDefinition( className );
 
-    if( callerClassDefinition == nullptr ) {
+    if ( callerClassDefinition == nullptr ) {
         errors->emplace_back( expression->Location(), CCompilationError::INVALID_CALLER_EXPRESSION );
     } else {
-	    std::shared_ptr<const CMethodDefinition> methodDefinition = searchClassHierarchyForMethod( methodName, callerClassDefinition );
+        std::shared_ptr<const CMethodDefinition> methodDefinition = symbolTablePtr->SearchClassHierarchyForMethod( methodName, callerClassDefinition );
 
-	    if( methodDefinition == nullptr ) {
-	        errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
-	        methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
-	    } else {
-	    	if( methodDefinition->AccessModifier() == TAccessModifier::Private &&
-	    		 callerClassDefinition != lastClass ) {
-	    		errors->emplace_back( expression->Location(), CCompilationError::METHOD_IS_PRIVATE );
-	    	}
+        if ( methodDefinition == nullptr ) {
+            errors->emplace_back( expression->Location(), CCompilationError::CLASS_HAS_NO_METHOD );
+            methodReturnType = CTypeIdentifier( TTypeIdentifier::NotFound );
+        } else {
+            if ( methodDefinition->AccessModifier() == TAccessModifier::Private &&
+                 callerClassDefinition != lastClass ) {
+                errors->emplace_back( expression->Location(), CCompilationError::METHOD_IS_PRIVATE );
+            }
 
-    		expression->Arguments()->Accept( this );
-    		if( lastType.size() != methodDefinition->GetArgumentsNumber() ) {
-    			errors->emplace_back( expression->Location(), CCompilationError::ARGS_NUMBERS_NOT_MATCH );
-    		} else {
-    			for( int i = 0; i < lastType.size(); ++i ) {
-    				CTypeIdentifier expectedType = methodDefinition->GetArgumentType(i);
-    				if( lastType[i] != expectedType ) {
-    					bool canBeResolved = false;
-    					if( lastType[i].Type() == TTypeIdentifier::ClassId && 
-    						expectedType.Type() == TTypeIdentifier::ClassId) {
-    						
-    						std::shared_ptr<const CClassDefinition> ancestor = 
-    							symbolTablePtr->GetClassDefinition(lastType[i].ClassName());
-    						while( ancestor != nullptr ) {
-    							if( ancestor->ClassName() == expectedType.ClassName() ) {
-    								canBeResolved = true;
-    								break;
-    							}
-    							if( ancestor->HasParent() ) {
-	    							ancestor = symbolTablePtr->GetClassDefinition(ancestor->GetParentName());
-	    						} else {
-	    							ancestor = nullptr;
-	    						}
-    						}
+            expression->Arguments()->Accept( this );
+            if ( lastType.size() != methodDefinition->GetArgumentsNumber() ) {
+                errors->emplace_back( expression->Location(), CCompilationError::ARGS_NUMBERS_NOT_MATCH );
+            } else {
+                for ( int i = 0; i < lastType.size(); ++i ) {
+                    CTypeIdentifier expectedType = methodDefinition->GetArgumentType(i);
+                    if ( lastType[i] != expectedType ) {
+                        bool canBeResolved = false;
+                        if ( lastType[i].Type() == TTypeIdentifier::ClassId &&
+                            expectedType.Type() == TTypeIdentifier::ClassId) {
 
-    					}
-    					if( !canBeResolved ) {
-    						errors->emplace_back( expression->Location(), CCompilationError::ARG_TYPE_NOT_MATCH );
-    					}
-    				}
-    			}
-    		}
-	    	methodReturnType = methodDefinition->ReturnType();
-	    }
-	}
+                            std::shared_ptr<const CClassDefinition> ancestor =
+                                symbolTablePtr->GetClassDefinition(lastType[i].ClassName());
+                            while ( ancestor != nullptr ) {
+                                if ( ancestor->ClassName() == expectedType.ClassName() ) {
+                                    canBeResolved = true;
+                                    break;
+                                }
+                                if ( ancestor->HasParent() ) {
+                                    ancestor = symbolTablePtr->GetClassDefinition(ancestor->GetParentName());
+                                } else {
+                                    ancestor = nullptr;
+                                }
+                            }
+
+                        }
+                        if ( !canBeResolved ) {
+                            errors->emplace_back( expression->Location(), CCompilationError::ARG_TYPE_NOT_MATCH );
+                        }
+                    }
+                }
+            }
+            methodReturnType = methodDefinition->ReturnType();
+        }
+    }
 
     lastType = { methodReturnType };
 

@@ -691,7 +691,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         ( *it )->Accept( this );
         subtreeWrapper->ToStatement();
         std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
-        methodTrees->at( methodFullName ) = std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() );
+        methodTrees->emplace( methodFullName, std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() ) );
     }
 
     onNodeExit( nodeName );

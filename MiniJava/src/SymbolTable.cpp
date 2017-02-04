@@ -51,6 +51,32 @@ std::shared_ptr<const CClassDefinition> CSymbolTable::GetClassDefinition( const 
 	}
 }
 
+std::shared_ptr<const CMethodDefinition> CSymbolTable::SearchClassHierarchyForMethod( const std::string& methodName,
+        std::shared_ptr<const CClassDefinition> baseClass ) const {
+    std::shared_ptr<const CMethodDefinition> methodDefinition = nullptr;
+    while ( baseClass != nullptr ) {
+        methodDefinition = baseClass->GetMethodDefinition( methodName );
+        if ( methodDefinition != nullptr ) {
+            break;
+        }
+        baseClass = baseClass->HasParent() ? GetClassDefinition( baseClass->GetParentName() ) : nullptr;
+    }
+    return methodDefinition;
+}
+
+CTypeIdentifier CSymbolTable::SearchClassHierarchyForField( const std::string& fieldName,
+        std::shared_ptr<const CClassDefinition> baseClass ) const {
+    CTypeIdentifier fieldType( TTypeIdentifier::NotFound );
+    while ( baseClass != nullptr ) {
+        fieldType = baseClass->GetFieldType( fieldName );
+        if ( fieldType.Type() != TTypeIdentifier::NotFound ) {
+            break;
+        }
+        baseClass = baseClass->HasParent() ? GetClassDefinition( baseClass->GetParentName() ) : nullptr;
+    }
+    return fieldType;
+}
+
 //////////////////////////////////////////
 
 const std::string& CClassDefinition::ClassName() const {

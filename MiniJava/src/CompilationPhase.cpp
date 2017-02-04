@@ -12,9 +12,7 @@ void CAstBuildingPhase::Run() {
 
 void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
     std::fstream outputStream( pathOutputFile, openMode );
-
     outputStream << ToDotLanguage() << std::endl;
-
     outputStream.close();
 }
 
@@ -80,7 +78,7 @@ void CIrtBuildingPhase::Run() {
 
 void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
     std::fstream outputStream( pathOutputFile, openMode );
-
+    // outputStream << ToDotLanguage(  ) << std::endl;
     outputStream.close();
 }
 

@@ -74,6 +74,9 @@ public:
     bool AddClassDefinition( const std::string& name, std::shared_ptr<const CClassDefinition> classDefinition );
     // Get class definition by name. Returns zero pointer if it doesn't exist
     std::shared_ptr<const CClassDefinition> GetClassDefinition( const std::string& name ) const;
+
+    std::shared_ptr<const CMethodDefinition> SearchClassHierarchyForMethod( const std::string& methodName, std::shared_ptr<const CClassDefinition> baseClass ) const;
+    CTypeIdentifier SearchClassHierarchyForField( const std::string& fieldName, std::shared_ptr<const CClassDefinition> baseClass ) const;
 private:
     std::unordered_map<std::string, std::shared_ptr<const CClassDefinition>> classes;
 };

@@ -22,4 +22,8 @@ void CCompilator::Run() {
     if ( !typeChecking.GetErrors()->empty() ) {
         return;
     }
+
+    // CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable(), false );
+    // irtBuilding.Run();
+    // irtBuilding.PrintResults( pathOutputDir + "/irt.gv" );
 }
