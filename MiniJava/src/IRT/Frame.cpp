@@ -32,6 +32,10 @@ CTemp CFrame::FramePointer() const {
     return framePointer;
 }
 
+CTemp CFrame::ReturnValueTemp() const {
+    return returnValueTemp;
+}
+
 int CFrame::WordSize() const {
     return wordSize;
 }

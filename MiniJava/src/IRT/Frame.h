@@ -53,7 +53,9 @@ public:
           name( className + "$" + methodName ), maxOffsetFramePointer( 0 ), maxOffsetThis( 0 ) {}
 
     CTemp FramePointer() const;
+    CTemp ReturnValueTemp() const;
     int WordSize() const;
+
     CLabel GetName() const;
     const std::string& GetClassName() const;
     const std::string& GetMethodName() const;
@@ -81,6 +83,7 @@ private:
     std::unordered_map<std::string, std::unique_ptr<const IAddress>> addresses;
 
     CTemp framePointer;
+    CTemp returnValueTemp;
     static const int wordSize;
     static const std::string thisName;
     static const std::string returnName;

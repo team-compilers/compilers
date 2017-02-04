@@ -37,7 +37,7 @@ std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className
 
 void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std::string& methodName,
         const std::vector<std::string>& arguments, const std::vector<std::string>& locals,
-        const std::vector<std::string>& fields ) {
+        const std::unordered_set<std::string>& fields ) {
     frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( className, methodName ) );
 
 
@@ -75,11 +75,14 @@ void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) 
         localsNames.push_back( it->first );
     }
 
-    auto fields = classDefinition->Fields();
-    std::vector<std::string> fieldsNames;
-    fieldsNames.reserve( fields.size() );
-    for ( auto it = fields.begin(); it != fields.end(); ++it ) {
-        fieldsNames.push_back( it->first );
+    std::unordered_set<std::string> fieldsNames;
+    std::shared_ptr<const CClassDefinition> baseClass = classDefinition;
+    while ( baseClass ) {
+        auto fields = baseClass->Fields();
+        for ( auto it = fields.begin(); it != fields.end(); ++it ) {
+            fieldsNames.insert( it->first );
+        }
+        baseClass = baseClass->HasParent() ? symbolTable->GetClassDefinition( baseClass->GetParentName() ) : nullptr;
     }
 
     buildNewFrame( classCurrentName, declaration->MethodId()->Name(), argumentsNames, localsNames, fieldsNames );
@@ -87,7 +90,8 @@ void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) 
 
 void CIrtBuilderVisitor::buildNewFrame( const CMainClass* mainClass ) {
     std::vector<std::string> emptyVector;
-    buildNewFrame( mainClass->ClassName()->Name(), "main", emptyVector, emptyVector, emptyVector );
+    std::unordered_set<std::string> emptySet;
+    buildNewFrame( mainClass->ClassName()->Name(), "main", emptyVector, emptyVector, emptySet );
 }
 
 /*__________ Access Modifiers __________*/
@@ -264,7 +268,7 @@ void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
     ) );
 
     std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( methodCaller );
-    std::shared_ptr<const CMethodDefinition> methodDefinition = classDefinition->GetMethodDefinition( expression->MethodId()->Name() );
+    std::shared_ptr<const CMethodDefinition> methodDefinition = symbolTable->SearchClassHierarchyForMethod( expression->MethodId()->Name(), classDefinition );
     CTypeIdentifier type = methodDefinition->ReturnType();
     if ( type.Type() == TTypeIdentifier::ClassId ) {
         methodCallerClassName = type.ClassName();
@@ -575,12 +579,35 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
 
     declaration->Statements()->Accept( this );
-    updateSubtreeWrapper( new IRTree::CStatementWrapper(
-        new IRTree::CSeqStatement(
-            new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
-            subtreeWrapper->ToStatement()
-        )
-    ) );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> statementListWrapper = std::move( subtreeWrapper );
+
+    declaration->ReturnExpression()->Accept( this );
+    const IRTree::CExpression* expressionReturn = subtreeWrapper->ToExpression();
+
+    if ( statementListWrapper ) {
+        updateSubtreeWrapper( new IRTree::CStatementWrapper(
+            new IRTree::CSeqStatement(
+                new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
+                new IRTree::CSeqStatement(
+                    statementListWrapper->ToStatement(),
+                    new IRTree::CMoveStatement(
+                        new IRTree::CTempExpression( frameCurrent->ReturnValueTemp() ),
+                        expressionReturn
+                    )
+                )
+            )
+        ) );
+    } else {
+        updateSubtreeWrapper( new IRTree::CStatementWrapper(
+            new IRTree::CSeqStatement(
+                new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
+                new IRTree::CMoveStatement(
+                    new IRTree::CTempExpression( frameCurrent->ReturnValueTemp() ),
+                    expressionReturn
+                )
+            )
+        ) );
+    }
 
     onNodeExit( nodeName );
 }
@@ -641,19 +668,22 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
 
     const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
 
-    // statements must be reversed before being used
-    // we'll actually iterate over it in reversed order (the last statement will be the first)
-    ( statements.front() )->Accept( this );
-    std::unique_ptr<const IRTree::ISubtreeWrapper> resultOnSuffix = std::move( subtreeWrapper );
-    for ( auto it = std::next( statements.begin() ); it != statements.end(); ++it ) {
-        ( *it )->Accept( this );
-        std::unique_ptr<const IRTree::ISubtreeWrapper> resultCurrent = std::move( subtreeWrapper );
-        resultOnSuffix = std::unique_ptr< const IRTree::ISubtreeWrapper >( new IRTree::CStatementWrapper(
-            new IRTree::CSeqStatement(
-                resultCurrent->ToStatement(),
-                resultOnSuffix->ToStatement()
-            )
-        ) );
+    std::unique_ptr<const IRTree::ISubtreeWrapper> resultOnSuffix = nullptr;
+    if ( !statements.empty() ) {
+        // statements must be reversed before being used
+        // we'll actually iterate over them in reversed order (the last statement will be the first)
+        ( statements.front() )->Accept( this );
+        resultOnSuffix = std::move( subtreeWrapper );
+        for ( auto it = std::next( statements.begin() ); it != statements.end(); ++it ) {
+            ( *it )->Accept( this );
+            std::unique_ptr<const IRTree::ISubtreeWrapper> resultCurrent = std::move( subtreeWrapper );
+            resultOnSuffix = std::unique_ptr<const IRTree::ISubtreeWrapper>( new IRTree::CStatementWrapper(
+                new IRTree::CSeqStatement(
+                    resultCurrent->ToStatement(),
+                    resultOnSuffix->ToStatement()
+                )
+            ) );
+        }
     }
 
     subtreeWrapper = std::move( resultOnSuffix );
