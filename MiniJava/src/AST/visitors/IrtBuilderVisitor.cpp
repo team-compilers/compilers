@@ -103,7 +103,7 @@ void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
@@ -113,7 +113,7 @@ void CIrtBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 /*__________ Expressions __________*/
@@ -142,7 +142,7 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
         ) );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
@@ -173,7 +173,7 @@ void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CNumberExpression* expression ) {
@@ -184,7 +184,7 @@ void CIrtBuilderVisitor::Visit( const CNumberExpression* expression ) {
         new IRTree::CConstExpression( expression->Value() )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CLogicExpression* expression ) {
@@ -195,7 +195,7 @@ void CIrtBuilderVisitor::Visit( const CLogicExpression* expression ) {
         new IRTree::CConstExpression( expression->Value() ? 1 : 0 )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
@@ -225,7 +225,7 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CLengthExpression* expression ) {
@@ -241,7 +241,7 @@ void CIrtBuilderVisitor::Visit( const CLengthExpression* expression ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
@@ -274,7 +274,7 @@ void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
         methodCallerClassName = type.ClassName();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
@@ -283,7 +283,7 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
 
     methodCallerClassName = classCurrentName;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
@@ -311,7 +311,7 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
@@ -336,7 +336,7 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
 
     methodCallerClassName = expression->TargetId()->Name();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
@@ -349,7 +349,7 @@ void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
         std::move( subtreeWrapper )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 /*__________ Statements __________*/
@@ -370,7 +370,7 @@ void CIrtBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
@@ -407,7 +407,7 @@ void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CPrintStatement* statement ) {
@@ -420,7 +420,7 @@ void CIrtBuilderVisitor::Visit( const CPrintStatement* statement ) {
         frameCurrent->ExternalCall("print", new IRTree::CExpressionList( subtreeWrapper->ToExpression() ) )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
@@ -460,7 +460,7 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
@@ -495,7 +495,7 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CBracesStatement* statement ) {
@@ -504,7 +504,7 @@ void CIrtBuilderVisitor::Visit( const CBracesStatement* statement ) {
 
     statement->List()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 /*__________ Type Modifiers __________*/
@@ -516,7 +516,7 @@ void CIrtBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
@@ -526,7 +526,7 @@ void CIrtBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
@@ -536,7 +536,7 @@ void CIrtBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
@@ -546,7 +546,7 @@ void CIrtBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 /*__________ Other (except lists) __________*/
@@ -558,7 +558,7 @@ void CIrtBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CMethodArgument* argument ) {
@@ -568,7 +568,7 @@ void CIrtBuilderVisitor::Visit( const CMethodArgument* argument ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, argument->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
@@ -609,7 +609,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
         ) );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CMainClass* mainClass ) {
@@ -627,7 +627,7 @@ void CIrtBuilderVisitor::Visit( const CMainClass* mainClass ) {
         )
     ) );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, mainClass->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
@@ -637,7 +637,7 @@ void CIrtBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     classCurrentName = declaration->ClassName()->Name();
     declaration->MethodDeclarations()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CProgram* program ) {
@@ -647,7 +647,7 @@ void CIrtBuilderVisitor::Visit( const CProgram* program ) {
     program->MainClass()->Accept( this );
     program->ClassDeclarations()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, program->Location() );
 }
 
 /*__________  Lists __________*/
@@ -659,7 +659,7 @@ void CIrtBuilderVisitor::Visit( const CExpressionList* list ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
@@ -688,7 +688,7 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
 
     subtreeWrapper = std::move( resultOnSuffix );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CVarDeclarationList* list ) {
@@ -698,7 +698,7 @@ void CIrtBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CMethodArgumentList* list ) {
@@ -708,7 +708,7 @@ void CIrtBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     // such calls should never happen
     assert( false );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
@@ -724,7 +724,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         methodTrees->emplace( methodFullName, std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() ) );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CIrtBuilderVisitor::Visit( const CClassDeclarationList* list ) {
@@ -737,5 +737,5 @@ void CIrtBuilderVisitor::Visit( const CClassDeclarationList* list ) {
         ( *it )->Accept( this );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }

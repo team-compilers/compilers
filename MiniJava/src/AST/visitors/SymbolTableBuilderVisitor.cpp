@@ -18,7 +18,7 @@ void CSymbolTableBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) 
 
     lastAccessModifier = TAccessModifier::Public;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
@@ -27,7 +27,7 @@ void CSymbolTableBuilderVisitor::Visit( const CPrivateAccessModifier* modifier )
 
     lastAccessModifier = TAccessModifier::Private;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 /*__________ Expressions __________*/
@@ -37,7 +37,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -45,7 +45,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -53,7 +53,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -61,7 +61,7 @@ void CSymbolTableBuilderVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CIdExpression* expression ) {
@@ -70,7 +70,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIdExpression* expression ) {
 
     lastId.push_back( expression->Name() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -78,7 +78,7 @@ void CSymbolTableBuilderVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -86,7 +86,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -94,7 +94,7 @@ void CSymbolTableBuilderVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -102,7 +102,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNewArrayExpression* expression ) 
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -110,7 +110,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 // ignored
@@ -118,7 +118,7 @@ void CSymbolTableBuilderVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName, expression->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 /*__________ Statements __________*/
@@ -128,7 +128,7 @@ void CSymbolTableBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName, statement->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 // ignored
@@ -136,7 +136,7 @@ void CSymbolTableBuilderVisitor::Visit( const CAssignIdWithIndexStatement* state
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName, statement->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 // ignored
@@ -144,7 +144,7 @@ void CSymbolTableBuilderVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
     onNodeEnter( nodeName, statement->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 // ignored
@@ -152,7 +152,7 @@ void CSymbolTableBuilderVisitor::Visit( const CConditionalStatement* statement )
     std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName, statement->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 // ignored
@@ -160,7 +160,7 @@ void CSymbolTableBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName, statement->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 // ignored
@@ -168,7 +168,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
     onNodeEnter( nodeName, statement->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 /*__________ Type Modifiers __________*/
@@ -179,7 +179,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
 
     lastType = CTypeIdentifier( TTypeIdentifier::Int );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
@@ -188,7 +188,7 @@ void CSymbolTableBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier
 
     lastType = CTypeIdentifier( TTypeIdentifier::Boolean );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
@@ -197,7 +197,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifie
 
     lastType = CTypeIdentifier( TTypeIdentifier::IntArray );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
@@ -206,7 +206,7 @@ void CSymbolTableBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
     lastType = CTypeIdentifier( typeModifier->TypeId()->Name() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 /*__________ Other (except lists) __________*/
@@ -218,7 +218,7 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     declaration->Type()->Accept( this ); // fills lastType
     declaration->Id()->Accept( this ); // fills lastId.back()
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CMethodArgument* argument ) {
@@ -228,7 +228,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgument* argument ) {
     argument->Type()->Accept( this ); // fills lastType
     argument->Id()->Accept( this ); // fills lastId.back()
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, argument->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
@@ -258,7 +258,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclaration* declaration ) 
 
     sortedArgumentsTypes = nullptr;
     
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
@@ -287,7 +287,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMainClass* mainClass ) {
     std::shared_ptr<VarNameToTypeMap> localVariables( new VarNameToTypeMap() );
     lastClassDefinition = std::make_shared<CClassDefinition>( lastId[0], methodDefinitions, localVariables );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, mainClass->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
@@ -312,7 +312,7 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
         lastClassDefinition = std::make_shared<CClassDefinition>( lastId[0], methodDefinitions, localVariableTypes[0] );
     }
     
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
@@ -327,7 +327,7 @@ void CSymbolTableBuilderVisitor::Visit( const CProgram* program ) {
 
     program->ClassDeclarations()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, program->Location() );
 }
 
 /*__________  Lists __________*/
@@ -336,7 +336,7 @@ void CSymbolTableBuilderVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName, list->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 // ignored
@@ -344,7 +344,7 @@ void CSymbolTableBuilderVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName, list->Location() );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
@@ -360,7 +360,7 @@ void CSymbolTableBuilderVisitor::Visit( const CVarDeclarationList* list ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
@@ -377,7 +377,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodArgumentList* list ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
@@ -395,7 +395,7 @@ void CSymbolTableBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
@@ -411,5 +411,5 @@ void CSymbolTableBuilderVisitor::Visit( const CClassDeclarationList* list ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }

@@ -21,7 +21,7 @@ void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
     onNodeEnter( nodeName, modifier->Location() );
     sstream << "public ";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
@@ -29,7 +29,7 @@ void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     onNodeEnter( nodeName, modifier->Location() );
     sstream << "private ";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 /*__________ Expressions __________*/
@@ -42,7 +42,7 @@ void CPrintCodeVisitor::Visit( const CBinaryExpression* expression ) {
     sstream << ' ' << operatorChar( expression->Operation() ) << ' ';
     expression->RightOperand()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CBracketExpression* expression ) {
@@ -54,7 +54,7 @@ void CPrintCodeVisitor::Visit( const CBracketExpression* expression ) {
     expression->IndexExpression()->Accept( this );
     sstream << ']';
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CNumberExpression* expression ) {
@@ -63,7 +63,7 @@ void CPrintCodeVisitor::Visit( const CNumberExpression* expression ) {
 
     sstream << expression->Value();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CLogicExpression* expression ) {
@@ -72,7 +72,7 @@ void CPrintCodeVisitor::Visit( const CLogicExpression* expression ) {
 
     sstream << (expression->Value() ? "true" : "false");
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CIdExpression* expression ) {
@@ -81,7 +81,7 @@ void CPrintCodeVisitor::Visit( const CIdExpression* expression ) {
 
     sstream << expression->Name();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CLengthExpression* expression ) {
@@ -91,7 +91,7 @@ void CPrintCodeVisitor::Visit( const CLengthExpression* expression ) {
     expression->LengthTarget()->Accept( this );
     sstream << ".length";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CMethodExpression* expression ) {
@@ -107,7 +107,7 @@ void CPrintCodeVisitor::Visit( const CMethodExpression* expression ) {
     expression->Arguments()->Accept( this );
     sstream << ')';
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CThisExpression* expression ) {
@@ -116,7 +116,7 @@ void CPrintCodeVisitor::Visit( const CThisExpression* expression ) {
 
     sstream << "this";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CNewArrayExpression* expression ) {
@@ -127,7 +127,7 @@ void CPrintCodeVisitor::Visit( const CNewArrayExpression* expression ) {
     expression->LengthExpression()->Accept( this );
     sstream << "]";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
@@ -138,7 +138,7 @@ void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
     expression->TargetId()->Accept( this );
     sstream << "()";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
@@ -149,7 +149,7 @@ void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
     expression->TargetExpression()->Accept( this );
     sstream << ')';
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 /*__________ Statements __________*/
@@ -164,7 +164,7 @@ void CPrintCodeVisitor::Visit( const CAssignIdStatement* statement ) {
     statement->RightPart()->Accept( this );
     sstream << ';' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
@@ -179,7 +179,7 @@ void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     statement->RightPart()->Accept( this );
     sstream << ';' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
@@ -190,7 +190,7 @@ void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
     statement->PrintTarget()->Accept( this );
     sstream << ')' << ';' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
@@ -208,7 +208,7 @@ void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
     statement->NegativeTarget()->Accept( this );
     decreaseCodeMargin();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
@@ -223,7 +223,7 @@ void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
     statement->Body()->Accept( this );
     decreaseCodeMargin();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
@@ -236,7 +236,7 @@ void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
     decreaseCodeMargin();
     sstream << codeMargin << '}' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 /*__________ Type Modifiers __________*/
@@ -247,7 +247,7 @@ void CPrintCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     
     sstream << "int ";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
@@ -256,7 +256,7 @@ void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
 
     sstream << "boolean ";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
@@ -265,7 +265,7 @@ void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
 
     sstream << "int[] ";
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
@@ -275,7 +275,7 @@ void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     typeModifier->TypeId()->Accept( this );
     sstream << ' ';
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 /*__________ Other (except lists) __________*/
@@ -289,7 +289,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclaration* declaration ) {
     declaration->Id()->Accept( this );
     sstream << ';' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CMethodArgument* argument ) {
@@ -299,7 +299,7 @@ void CPrintCodeVisitor::Visit( const CMethodArgument* argument ) {
     argument->Type()->Accept( this );
     argument->Id()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, argument->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
@@ -322,7 +322,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
     decreaseCodeMargin();
     sstream << codeMargin << '}' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
@@ -344,7 +344,7 @@ void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
     decreaseCodeMargin();
     sstream << codeMargin << '}' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, mainClass->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
@@ -367,7 +367,7 @@ void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
     decreaseCodeMargin();
     sstream << codeMargin << '}' << std::endl;
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CProgram* program ) {
@@ -378,7 +378,7 @@ void CPrintCodeVisitor::Visit( const CProgram* program ) {
     sstream << std::endl;
     program->ClassDeclarations()->Accept( this );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, program->Location() );
 }
 
 /*__________  Lists __________*/
@@ -396,7 +396,7 @@ void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CStatementList* list ) {
@@ -409,7 +409,7 @@ void CPrintCodeVisitor::Visit( const CStatementList* list ) {
         ( *rit )->Accept( this );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CVarDeclarationList* list ) {
@@ -421,7 +421,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclarationList* list ) {
         ( *it )->Accept( this );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
@@ -437,7 +437,7 @@ void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
         }
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
@@ -450,7 +450,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
         sstream << std::endl;
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CPrintCodeVisitor::Visit( const CClassDeclarationList* list ) {
@@ -462,5 +462,5 @@ void CPrintCodeVisitor::Visit( const CClassDeclarationList* list ) {
         ( *it )->Accept( this );
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }

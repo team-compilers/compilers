@@ -9,7 +9,7 @@ void CDummyVisitor::Visit( const CPublicAccessModifier* modifier ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 void CDummyVisitor::Visit( const CPrivateAccessModifier* modifier ) {
@@ -18,7 +18,7 @@ void CDummyVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 /*__________ Expressions __________*/
@@ -29,7 +29,7 @@ void CDummyVisitor::Visit( const CBinaryExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CBracketExpression* expression ) {
@@ -38,7 +38,7 @@ void CDummyVisitor::Visit( const CBracketExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CNumberExpression* expression ) {
@@ -47,7 +47,7 @@ void CDummyVisitor::Visit( const CNumberExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CLogicExpression* expression ) {
@@ -56,7 +56,7 @@ void CDummyVisitor::Visit( const CLogicExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CIdExpression* expression ) {
@@ -65,7 +65,7 @@ void CDummyVisitor::Visit( const CIdExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CLengthExpression* expression ) {
@@ -74,7 +74,7 @@ void CDummyVisitor::Visit( const CLengthExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CMethodExpression* expression ) {
@@ -83,7 +83,7 @@ void CDummyVisitor::Visit( const CMethodExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CThisExpression* expression ) {
@@ -92,7 +92,7 @@ void CDummyVisitor::Visit( const CThisExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CNewArrayExpression* expression ) {
@@ -101,7 +101,7 @@ void CDummyVisitor::Visit( const CNewArrayExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CNewIdExpression* expression ) {
@@ -110,7 +110,7 @@ void CDummyVisitor::Visit( const CNewIdExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDummyVisitor::Visit( const CNegateExpression* expression ) {
@@ -119,7 +119,7 @@ void CDummyVisitor::Visit( const CNegateExpression* expression ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 /*__________ Statements __________*/
@@ -130,7 +130,7 @@ void CDummyVisitor::Visit( const CAssignIdStatement* statement ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDummyVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
@@ -139,7 +139,7 @@ void CDummyVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDummyVisitor::Visit( const CPrintStatement* statement ) {
@@ -148,7 +148,7 @@ void CDummyVisitor::Visit( const CPrintStatement* statement ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDummyVisitor::Visit( const CConditionalStatement* statement ) {
@@ -157,7 +157,7 @@ void CDummyVisitor::Visit( const CConditionalStatement* statement ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDummyVisitor::Visit( const CWhileLoopStatement* statement ) {
@@ -166,7 +166,7 @@ void CDummyVisitor::Visit( const CWhileLoopStatement* statement ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDummyVisitor::Visit( const CBracesStatement* statement ) {
@@ -175,7 +175,7 @@ void CDummyVisitor::Visit( const CBracesStatement* statement ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 /*__________ Type Modifiers __________*/
@@ -186,7 +186,7 @@ void CDummyVisitor::Visit( const CIntTypeModifier* typeModifier ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CDummyVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
@@ -195,7 +195,7 @@ void CDummyVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CDummyVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
@@ -204,7 +204,7 @@ void CDummyVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CDummyVisitor::Visit( const CIdTypeModifier* typeModifier ) {
@@ -213,7 +213,7 @@ void CDummyVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 /*__________ Other (except lists) __________*/
@@ -224,7 +224,7 @@ void CDummyVisitor::Visit( const CVarDeclaration* declaration ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CDummyVisitor::Visit( const CMethodArgument* argument ) {
@@ -233,7 +233,7 @@ void CDummyVisitor::Visit( const CMethodArgument* argument ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, argument->Location() );
 }
 
 void CDummyVisitor::Visit( const CMethodDeclaration* declaration ) {
@@ -242,7 +242,7 @@ void CDummyVisitor::Visit( const CMethodDeclaration* declaration ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CDummyVisitor::Visit( const CMainClass* mainClass ) {
@@ -251,7 +251,7 @@ void CDummyVisitor::Visit( const CMainClass* mainClass ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, mainClass->Location() );
 }
 
 void CDummyVisitor::Visit( const CClassDeclaration* declaration ) {
@@ -260,7 +260,7 @@ void CDummyVisitor::Visit( const CClassDeclaration* declaration ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CDummyVisitor::Visit( const CProgram* program ) {
@@ -269,7 +269,7 @@ void CDummyVisitor::Visit( const CProgram* program ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, program->Location() );
 }
 
 /*__________  Lists __________*/
@@ -280,7 +280,7 @@ void CDummyVisitor::Visit( const CExpressionList* list ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDummyVisitor::Visit( const CStatementList* list ) {
@@ -289,7 +289,7 @@ void CDummyVisitor::Visit( const CStatementList* list ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDummyVisitor::Visit( const CVarDeclarationList* list ) {
@@ -298,7 +298,7 @@ void CDummyVisitor::Visit( const CVarDeclarationList* list ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDummyVisitor::Visit( const CMethodArgumentList* list ) {
@@ -307,7 +307,7 @@ void CDummyVisitor::Visit( const CMethodArgumentList* list ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDummyVisitor::Visit( const CMethodDeclarationList* list ) {
@@ -316,7 +316,7 @@ void CDummyVisitor::Visit( const CMethodDeclarationList* list ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDummyVisitor::Visit( const CClassDeclarationList* list ) {
@@ -325,5 +325,5 @@ void CDummyVisitor::Visit( const CClassDeclarationList* list ) {
 
     // write your code here
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }

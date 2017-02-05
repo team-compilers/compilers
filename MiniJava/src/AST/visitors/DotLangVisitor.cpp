@@ -34,7 +34,7 @@ void CDotLangVisitor::Visit( const CPublicAccessModifier* modifier ) {
     onNodeEnter( nodeName, modifier->Location() );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 void CDotLangVisitor::Visit( const CPrivateAccessModifier* modifier ) {
@@ -42,7 +42,7 @@ void CDotLangVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     onNodeEnter( nodeName, modifier->Location() );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, modifier->Location() );
 }
 
 /*__________ Expressions __________*/
@@ -62,7 +62,7 @@ void CDotLangVisitor::Visit( const CBinaryExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CBracketExpression* expression ) {
@@ -78,7 +78,7 @@ void CDotLangVisitor::Visit( const CBracketExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CNumberExpression* expression ) {
@@ -90,7 +90,7 @@ void CDotLangVisitor::Visit( const CNumberExpression* expression ) {
     valueNodeName += std::to_string( expression->Value() ) + "\"";
     addEdge( nodeName, valueNodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CLogicExpression* expression ) {
@@ -102,7 +102,7 @@ void CDotLangVisitor::Visit( const CLogicExpression* expression ) {
     valueNodeName += std::string( expression->Value() ? "true" : "false" ) + '\"';
     addEdge( nodeName, valueNodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CIdExpression* expression ) {
@@ -113,7 +113,7 @@ void CDotLangVisitor::Visit( const CIdExpression* expression ) {
     std::string valueNodeName = "\"" + generateNodeName( "Id" ) + ": " + expression->Name() + "\"";
     addEdge( nodeName, valueNodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CLengthExpression* expression ) {
@@ -125,7 +125,7 @@ void CDotLangVisitor::Visit( const CLengthExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CMethodExpression* expression ) {
@@ -145,7 +145,7 @@ void CDotLangVisitor::Visit( const CMethodExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CThisExpression* expression ) {
@@ -153,7 +153,7 @@ void CDotLangVisitor::Visit( const CThisExpression* expression ) {
     onNodeEnter( nodeName, expression->Location() );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CNewArrayExpression* expression ) {
@@ -165,7 +165,7 @@ void CDotLangVisitor::Visit( const CNewArrayExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CNewIdExpression* expression ) {
@@ -177,7 +177,7 @@ void CDotLangVisitor::Visit( const CNewIdExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 void CDotLangVisitor::Visit( const CNegateExpression* expression ) {
@@ -189,7 +189,7 @@ void CDotLangVisitor::Visit( const CNegateExpression* expression ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, expression->Location() );
 }
 
 /*__________ Statements __________*/
@@ -207,7 +207,7 @@ void CDotLangVisitor::Visit( const CAssignIdStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDotLangVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
@@ -227,7 +227,7 @@ void CDotLangVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDotLangVisitor::Visit( const CPrintStatement* statement ) {
@@ -239,7 +239,7 @@ void CDotLangVisitor::Visit( const CPrintStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDotLangVisitor::Visit( const CConditionalStatement* statement ) {
@@ -259,7 +259,7 @@ void CDotLangVisitor::Visit( const CConditionalStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDotLangVisitor::Visit( const CWhileLoopStatement* statement ) {
@@ -275,7 +275,7 @@ void CDotLangVisitor::Visit( const CWhileLoopStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 void CDotLangVisitor::Visit( const CBracesStatement* statement ) {
@@ -287,7 +287,7 @@ void CDotLangVisitor::Visit( const CBracesStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, statement->Location() );
 }
 
 /*__________ Type Modifiers __________*/
@@ -297,7 +297,7 @@ void CDotLangVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     onNodeEnter( nodeName, typeModifier->Location() );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CDotLangVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
@@ -305,7 +305,7 @@ void CDotLangVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     onNodeEnter( nodeName, typeModifier->Location() );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CDotLangVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
@@ -313,7 +313,7 @@ void CDotLangVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     onNodeEnter( nodeName, typeModifier->Location() );
     visitedNodeStack.push_back( nodeName );
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 void CDotLangVisitor::Visit( const CIdTypeModifier* typeModifier ) {
@@ -325,7 +325,7 @@ void CDotLangVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, typeModifier->Location() );
 }
 
 /*__________ Other (except lists) __________*/
@@ -343,7 +343,7 @@ void CDotLangVisitor::Visit( const CVarDeclaration* declaration ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CDotLangVisitor::Visit( const CMethodArgument* argument ) {
@@ -359,7 +359,7 @@ void CDotLangVisitor::Visit( const CMethodArgument* argument ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, argument->Location() );
 }
 
 void CDotLangVisitor::Visit( const CMethodDeclaration* declaration ) {
@@ -395,7 +395,7 @@ void CDotLangVisitor::Visit( const CMethodDeclaration* declaration ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CDotLangVisitor::Visit( const CMainClass* mainClass ) {
@@ -415,7 +415,7 @@ void CDotLangVisitor::Visit( const CMainClass* mainClass ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, mainClass->Location() );
 }
 
 void CDotLangVisitor::Visit( const CClassDeclaration* declaration ) {
@@ -442,7 +442,7 @@ void CDotLangVisitor::Visit( const CClassDeclaration* declaration ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, declaration->Location() );
 }
 
 void CDotLangVisitor::Visit( const CProgram* program ) {
@@ -458,7 +458,7 @@ void CDotLangVisitor::Visit( const CProgram* program ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, program->Location() );
 }
 
 /*__________  Lists __________*/
@@ -476,7 +476,7 @@ void CDotLangVisitor::Visit( const CExpressionList* list ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDotLangVisitor::Visit( const CStatementList* list ) {
@@ -493,7 +493,7 @@ void CDotLangVisitor::Visit( const CStatementList* list ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDotLangVisitor::Visit( const CVarDeclarationList* list ) {
@@ -509,7 +509,7 @@ void CDotLangVisitor::Visit( const CVarDeclarationList* list ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDotLangVisitor::Visit( const CMethodArgumentList* list ) {
@@ -525,7 +525,7 @@ void CDotLangVisitor::Visit( const CMethodArgumentList* list ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDotLangVisitor::Visit( const CMethodDeclarationList* list ) {
@@ -541,7 +541,7 @@ void CDotLangVisitor::Visit( const CMethodDeclarationList* list ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }
 
 void CDotLangVisitor::Visit( const CClassDeclarationList* list ) {
@@ -557,5 +557,5 @@ void CDotLangVisitor::Visit( const CClassDeclarationList* list ) {
         visitedNodeStack.pop_back();
     }
 
-    onNodeExit( nodeName );
+    onNodeExit( nodeName, list->Location() );
 }

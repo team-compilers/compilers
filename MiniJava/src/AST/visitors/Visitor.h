@@ -113,7 +113,7 @@ protected:
     // Is called every time a visitor enters a node
     virtual void onNodeEnter( const std::string& nodeName, const CLocation& location );
     // Is called every time a visitor is about to exit a node
-    virtual void onNodeExit( const std::string& nodeName );
+    virtual void onNodeExit( const std::string& nodeName, const CLocation& location );
 
     // Maps each TOperatorType to a string with its name.
     std::string operatorName( const TOperatorType& type ) const;

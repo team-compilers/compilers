@@ -55,10 +55,11 @@ void CVisitor::onNodeEnter( const std::string& nodeName, const CLocation& locati
     }
 }
 
-void CVisitor::onNodeExit( const std::string& nodeName ) {
+void CVisitor::onNodeExit( const std::string& nodeName, const CLocation& location ) {
     if ( verbose ) {
         margin.erase( margin.size() - 2 );
         // margin.pop_back();
-        std::cout << margin << nodeExitMarker << nodeName << std::endl;
+        std::cout << margin << nodeExitMarker << nodeName;
+        std::cout << " (" << location.lastLine << " : " << location.lastColumn << ")" << std::endl;
     }
 }
