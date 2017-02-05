@@ -51,6 +51,8 @@ class CMethodArgumentList;
 class CMethodDeclarationList;
 class CClassDeclarationList;
 
+class CLocation;
+
 class IVisitor {
 public:
     virtual ~IVisitor() {}
@@ -108,10 +110,10 @@ protected:
     // Generates full node name based on the node type and a unique id assigned to the node.
     std::string generateNodeName( const std::string& nodeTypeName );
 
-    // Is called every time visitor enters a node
-    void onNodeEnter( const std::string& nodeName );
-    // Is called every time visitor is about to exit a node
-    void onNodeExit( const std::string& nodeName );
+    // Is called every time a visitor enters a node
+    virtual void onNodeEnter( const std::string& nodeName, const CLocation& location );
+    // Is called every time a visitor is about to exit a node
+    virtual void onNodeExit( const std::string& nodeName );
 
     // Maps each TOperatorType to a string with its name.
     std::string operatorName( const TOperatorType& type ) const;

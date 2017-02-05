@@ -46,9 +46,10 @@ std::string CVisitor::operatorChar( const TOperatorType& type ) const {
     return result;
 }
 
-void CVisitor::onNodeEnter( const std::string& nodeName ) {
+void CVisitor::onNodeEnter( const std::string& nodeName, const CLocation& location ) {
     if ( verbose ) {
-        std::cout << margin << nodeEnterMarker << nodeName << std::endl;
+        std::cout << margin << nodeEnterMarker << nodeName;
+        std::cout << " (" << location.firstLine << " : " << location.firstColumn << ")" << std::endl;
         // margin.push_back( '\t' );
         margin.append( "  " );
     }

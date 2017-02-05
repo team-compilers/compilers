@@ -98,7 +98,7 @@ void CIrtBuilderVisitor::buildNewFrame( const CMainClass* mainClass ) {
 
 void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PUBLIC );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, modifier->Location() );
 
     // such calls should never happen
     assert( false );
@@ -108,7 +108,7 @@ void CIrtBuilderVisitor::Visit( const CPublicAccessModifier* modifier ) {
 
 void CIrtBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PRIVATE );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, modifier->Location() );
 
     // such calls should never happen
     assert( false );
@@ -120,7 +120,7 @@ void CIrtBuilderVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 
 void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     expression->LeftOperand()->Accept( this );
     const IRTree::CExpression* expressionLeft = subtreeWrapper->ToExpression();
@@ -147,7 +147,7 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     expression->ContainerExpression()->Accept( this );
     const IRTree::CExpression* containerExpression = subtreeWrapper->ToExpression();
@@ -178,7 +178,7 @@ void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
         new IRTree::CConstExpression( expression->Value() )
@@ -189,7 +189,7 @@ void CIrtBuilderVisitor::Visit( const CNumberExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
         new IRTree::CConstExpression( expression->Value() ? 1 : 0 )
@@ -200,7 +200,7 @@ void CIrtBuilderVisitor::Visit( const CLogicExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     const IRTree::IAddress* address = frameCurrent->GetAddress( expression->Name() );
 
@@ -230,7 +230,7 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     expression->LengthTarget()->Accept( this );
     const IRTree::CExpression* targetExpression = subtreeWrapper->ToExpression();
@@ -246,7 +246,7 @@ void CIrtBuilderVisitor::Visit( const CLengthExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     expression->CallerExpression()->Accept( this );
     std::string methodCaller = methodCallerClassName;
@@ -279,7 +279,7 @@ void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     methodCallerClassName = classCurrentName;
 
@@ -288,7 +288,7 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     expression->LengthExpression()->Accept( this );
 
@@ -316,7 +316,7 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( expression->TargetId()->Name() );
     int fieldCount = classDefinition->Fields().size();
@@ -341,12 +341,12 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     expression->TargetExpression()->Accept( this );
 
     updateSubtreeWrapper( new IRTree::CNegateConditionalWrapper(
-        subtreeWrapper.get()
+        std::move( subtreeWrapper )
     ) );
 
     onNodeExit( nodeName );
@@ -356,7 +356,7 @@ void CIrtBuilderVisitor::Visit( const CNegateExpression* expression ) {
 
 void CIrtBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     statement->LeftPart()->Accept( this );
     std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperLeftPart = std::move( subtreeWrapper );
@@ -375,7 +375,7 @@ void CIrtBuilderVisitor::Visit( const CAssignIdStatement* statement ) {
 
 void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     statement->LeftPartId()->Accept( this );
     const IRTree::CExpression* leftPartExpression = subtreeWrapper->ToExpression();
@@ -412,7 +412,7 @@ void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
 
 void CIrtBuilderVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     statement->PrintTarget()->Accept( this );
 
@@ -425,7 +425,7 @@ void CIrtBuilderVisitor::Visit( const CPrintStatement* statement ) {
 
 void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     statement->Condition()->Accept( this );
     std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = std::move( subtreeWrapper );
@@ -465,7 +465,7 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
 
 void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     statement->Condition()->Accept( this );
     std::unique_ptr<const IRTree::ISubtreeWrapper> wrapperCondition = std::move( subtreeWrapper );
@@ -500,7 +500,7 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
 
 void CIrtBuilderVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     statement->List()->Accept( this );
 
@@ -511,7 +511,7 @@ void CIrtBuilderVisitor::Visit( const CBracesStatement* statement ) {
 
 void CIrtBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // such calls should never happen
     assert( false );
@@ -521,7 +521,7 @@ void CIrtBuilderVisitor::Visit( const CIntTypeModifier* typeModifier ) {
 
 void CIrtBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_BOOL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // such calls should never happen
     assert( false );
@@ -531,7 +531,7 @@ void CIrtBuilderVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
 
 void CIrtBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT_ARRAY );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // such calls should never happen
     assert( false );
@@ -541,7 +541,7 @@ void CIrtBuilderVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
 
 void CIrtBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // such calls should never happen
     assert( false );
@@ -553,7 +553,7 @@ void CIrtBuilderVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
 void CIrtBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::VAR_DECL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, declaration->Location() );
 
     // such calls should never happen
     assert( false );
@@ -563,7 +563,7 @@ void CIrtBuilderVisitor::Visit( const CVarDeclaration* declaration ) {
 
 void CIrtBuilderVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_ARG );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, argument->Location() );
 
     // such calls should never happen
     assert( false );
@@ -573,7 +573,7 @@ void CIrtBuilderVisitor::Visit( const CMethodArgument* argument ) {
 
 void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_DECL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, declaration->Location() );
 
     buildNewFrame( declaration );
     std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
@@ -614,7 +614,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
 
 void CIrtBuilderVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CNodeNames::MAIN_CLASS );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, mainClass->Location() );
 
     buildNewFrame( mainClass );
     std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
@@ -632,7 +632,7 @@ void CIrtBuilderVisitor::Visit( const CMainClass* mainClass ) {
 
 void CIrtBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, declaration->Location() );
 
     classCurrentName = declaration->ClassName()->Name();
     declaration->MethodDeclarations()->Accept( this );
@@ -642,7 +642,7 @@ void CIrtBuilderVisitor::Visit( const CClassDeclaration* declaration ) {
 
 void CIrtBuilderVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CNodeNames::PROGRAM );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, program->Location() );
 
     program->MainClass()->Accept( this );
     program->ClassDeclarations()->Accept( this );
@@ -654,7 +654,7 @@ void CIrtBuilderVisitor::Visit( const CProgram* program ) {
 
 void CIrtBuilderVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // such calls should never happen
     assert( false );
@@ -664,7 +664,7 @@ void CIrtBuilderVisitor::Visit( const CExpressionList* list ) {
 
 void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
 
@@ -693,7 +693,7 @@ void CIrtBuilderVisitor::Visit( const CStatementList* list ) {
 
 void CIrtBuilderVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::VAR_DECL_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // such calls should never happen
     assert( false );
@@ -703,7 +703,7 @@ void CIrtBuilderVisitor::Visit( const CVarDeclarationList* list ) {
 
 void CIrtBuilderVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_ARG_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // such calls should never happen
     assert( false );
@@ -713,7 +713,7 @@ void CIrtBuilderVisitor::Visit( const CMethodArgumentList* list ) {
 
 void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_DECL_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     const std::vector< std::unique_ptr<const CMethodDeclaration> >& methods = list->MethodDeclarations();
 
@@ -729,7 +729,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
 
 void CIrtBuilderVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     const std::vector< std::unique_ptr<const CClassDeclaration> >& classes = list->ClassDeclarations();
 

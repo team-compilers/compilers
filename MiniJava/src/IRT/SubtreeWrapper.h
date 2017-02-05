@@ -89,12 +89,12 @@ private:
 
 class CNegateConditionalWrapper : public CConditionalWrapper {
 public:
-    CNegateConditionalWrapper( const ISubtreeWrapper* _wrapper )
-        : wrapper( _wrapper ) {}
+    CNegateConditionalWrapper( std::unique_ptr<const ISubtreeWrapper>&& _wrapper )
+        : wrapper( std::move( _wrapper ) ) {}
 
     virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
 private:
-    const ISubtreeWrapper* wrapper;
+    std::unique_ptr<const ISubtreeWrapper> wrapper;
 };
 
 }

@@ -5,7 +5,7 @@ using namespace ASTree;
 
 void CDummyVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PUBLIC );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, modifier->Location() );
 
     // write your code here
 
@@ -14,7 +14,7 @@ void CDummyVisitor::Visit( const CPublicAccessModifier* modifier ) {
 
 void CDummyVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PRIVATE );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, modifier->Location() );
 
     // write your code here
 
@@ -25,7 +25,7 @@ void CDummyVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 
 void CDummyVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -34,7 +34,7 @@ void CDummyVisitor::Visit( const CBinaryExpression* expression ) {
 
 void CDummyVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -43,7 +43,7 @@ void CDummyVisitor::Visit( const CBracketExpression* expression ) {
 
 void CDummyVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -52,7 +52,7 @@ void CDummyVisitor::Visit( const CNumberExpression* expression ) {
 
 void CDummyVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -61,7 +61,7 @@ void CDummyVisitor::Visit( const CLogicExpression* expression ) {
 
 void CDummyVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -70,7 +70,7 @@ void CDummyVisitor::Visit( const CIdExpression* expression ) {
 
 void CDummyVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -79,7 +79,7 @@ void CDummyVisitor::Visit( const CLengthExpression* expression ) {
 
 void CDummyVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -88,7 +88,7 @@ void CDummyVisitor::Visit( const CMethodExpression* expression ) {
 
 void CDummyVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -97,7 +97,7 @@ void CDummyVisitor::Visit( const CThisExpression* expression ) {
 
 void CDummyVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -106,7 +106,7 @@ void CDummyVisitor::Visit( const CNewArrayExpression* expression ) {
 
 void CDummyVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -115,7 +115,7 @@ void CDummyVisitor::Visit( const CNewIdExpression* expression ) {
 
 void CDummyVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, expression->Location() );
 
     // write your code here
 
@@ -126,7 +126,7 @@ void CDummyVisitor::Visit( const CNegateExpression* expression ) {
 
 void CDummyVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     // write your code here
 
@@ -135,7 +135,7 @@ void CDummyVisitor::Visit( const CAssignIdStatement* statement ) {
 
 void CDummyVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     // write your code here
 
@@ -144,7 +144,7 @@ void CDummyVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
 
 void CDummyVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     // write your code here
 
@@ -153,7 +153,7 @@ void CDummyVisitor::Visit( const CPrintStatement* statement ) {
 
 void CDummyVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     // write your code here
 
@@ -162,7 +162,7 @@ void CDummyVisitor::Visit( const CConditionalStatement* statement ) {
 
 void CDummyVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     // write your code here
 
@@ -171,7 +171,7 @@ void CDummyVisitor::Visit( const CWhileLoopStatement* statement ) {
 
 void CDummyVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, statement->Location() );
 
     // write your code here
 
@@ -182,7 +182,7 @@ void CDummyVisitor::Visit( const CBracesStatement* statement ) {
 
 void CDummyVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // write your code here
 
@@ -191,7 +191,7 @@ void CDummyVisitor::Visit( const CIntTypeModifier* typeModifier ) {
 
 void CDummyVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_BOOL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // write your code here
 
@@ -200,7 +200,7 @@ void CDummyVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
 
 void CDummyVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT_ARRAY );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // write your code here
 
@@ -209,7 +209,7 @@ void CDummyVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
 
 void CDummyVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_ID );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, typeModifier->Location() );
 
     // write your code here
 
@@ -220,7 +220,7 @@ void CDummyVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
 void CDummyVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::VAR_DECL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, declaration->Location() );
 
     // write your code here
 
@@ -229,7 +229,7 @@ void CDummyVisitor::Visit( const CVarDeclaration* declaration ) {
 
 void CDummyVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_ARG );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, argument->Location() );
 
     // write your code here
 
@@ -238,7 +238,7 @@ void CDummyVisitor::Visit( const CMethodArgument* argument ) {
 
 void CDummyVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_DECL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, declaration->Location() );
 
     // write your code here
 
@@ -247,7 +247,7 @@ void CDummyVisitor::Visit( const CMethodDeclaration* declaration ) {
 
 void CDummyVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CNodeNames::MAIN_CLASS );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, mainClass->Location() );
 
     // write your code here
 
@@ -256,7 +256,7 @@ void CDummyVisitor::Visit( const CMainClass* mainClass ) {
 
 void CDummyVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, declaration->Location() );
 
     // write your code here
 
@@ -265,7 +265,7 @@ void CDummyVisitor::Visit( const CClassDeclaration* declaration ) {
 
 void CDummyVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CNodeNames::PROGRAM );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, program->Location() );
 
     // write your code here
 
@@ -276,7 +276,7 @@ void CDummyVisitor::Visit( const CProgram* program ) {
 
 void CDummyVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // write your code here
 
@@ -285,7 +285,7 @@ void CDummyVisitor::Visit( const CExpressionList* list ) {
 
 void CDummyVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // write your code here
 
@@ -294,7 +294,7 @@ void CDummyVisitor::Visit( const CStatementList* list ) {
 
 void CDummyVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::VAR_DECL_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // write your code here
 
@@ -303,7 +303,7 @@ void CDummyVisitor::Visit( const CVarDeclarationList* list ) {
 
 void CDummyVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_ARG_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // write your code here
 
@@ -312,7 +312,7 @@ void CDummyVisitor::Visit( const CMethodArgumentList* list ) {
 
 void CDummyVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_DECL_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // write your code here
 
@@ -321,7 +321,7 @@ void CDummyVisitor::Visit( const CMethodDeclarationList* list ) {
 
 void CDummyVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL_LIST );
-    onNodeEnter( nodeName );
+    onNodeEnter( nodeName, list->Location() );
 
     // write your code here
 
