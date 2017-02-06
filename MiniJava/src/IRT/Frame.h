@@ -67,9 +67,9 @@ public:
     void AddLocal( const std::string& name );
     void AddField( const std::string& name );
 
-    const IAddress* GetAddress( const std::string& varName ) const;
-    const IAddress* GetThis() const;
-    const IAddress* GetReturn() const;
+    std::shared_ptr<const IAddress> GetAddress( const std::string& varName ) const;
+    std::shared_ptr<const IAddress> GetThis() const;
+    std::shared_ptr<const IAddress> GetReturn() const;
 
     const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) const;
 private:
@@ -80,7 +80,7 @@ private:
     std::string className;
     std::string methodName;
     CLabel name;
-    std::unordered_map<std::string, std::unique_ptr<const IAddress>> addresses;
+    std::unordered_map<std::string, std::shared_ptr<const IAddress>> addresses;
 
     CTemp framePointer;
     CTemp returnValueTemp;

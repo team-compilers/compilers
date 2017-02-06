@@ -75,23 +75,23 @@ void CFrame::AddField( const std::string& name ) {
     addAddress( name, address );
 }
 
-const IAddress* CFrame::GetAddress( const std::string& varName ) const {
+std::shared_ptr<const IAddress> CFrame::GetAddress( const std::string& varName ) const {
     auto addressIt = addresses.find( varName );
-    const IAddress* res;
+    std::shared_ptr<const IAddress> res;
     if ( addressIt == addresses.end() ) {
         res = nullptr;
     } else {
-        res = (*addressIt).second.get();
+        res = addressIt->second;
     }
     return res;
 }
 
-const IAddress* CFrame::GetThis() const {
-    GetAddress( thisName );
+std::shared_ptr<const IAddress> CFrame::GetThis() const {
+    return GetAddress( thisName );
 }
 
-const IAddress* CFrame::GetReturn() const {
-    GetAddress( returnName );
+std::shared_ptr<const IAddress> CFrame::GetReturn() const {
+    return GetAddress( returnName );
 }
 
 const CExpression* CFrame::ExternalCall( const std::string& functionName, const CExpressionList* args ) const {
@@ -112,7 +112,7 @@ int CFrame::nextOffsetFromThis() {
 }
 
 void CFrame::addAddress( const std::string& name, const IAddress* address ) {
-    auto result = addresses.emplace( name, std::unique_ptr<const IAddress>( address ) );
+    auto result = addresses.emplace( name, std::shared_ptr<const IAddress>( address ) );
     // overwriting should not happen
     assert( result.second );
 }

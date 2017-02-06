@@ -202,7 +202,7 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
     onNodeEnter( nodeName, expression->Location() );
 
-    const IRTree::IAddress* address = frameCurrent->GetAddress( expression->Name() );
+    std::shared_ptr<const IRTree::IAddress> address = frameCurrent->GetAddress( expression->Name() );
 
     if ( address ) {
         // expression is a name of local var / argument / field
@@ -281,6 +281,11 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
     onNodeEnter( nodeName, expression->Location() );
 
+    updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+        frameCurrent->GetThis()->ToExpression(
+            new IRTree::CTempExpression( frameCurrent->FramePointer() )
+        )
+    ) );
     methodCallerClassName = classCurrentName;
 
     onNodeExit( nodeName, expression->Location() );
