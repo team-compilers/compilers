@@ -6,14 +6,15 @@
 #include <AST/visitors/Visitor.h>
 #include <AST/nodes/VisitorTarget.h>
 
-namespace ASTree {
+#include <AST/nodes/Statement.h>
 
-class CStatement;
+namespace ASTree {
 
 class CStatementList : public CVisitorTarget {
 public:
 
     CStatementList( const CLocation& _location ) : CVisitorTarget( _location ) {}
+    ~CStatementList() {}
 
     void Add( const CStatement* statement )
         { statements.emplace_back( statement ); }

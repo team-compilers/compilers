@@ -3,11 +3,19 @@
 #include <iostream>
 #include <fstream>
 
+#include <AST/visitors/DotLangVisitor.h>
+#include <AST/visitors/PrintCodeVisitor.h>
+#include <AST/visitors/SymbolTableBuilderVisitor.h>
+#include <AST/visitors/IrtBuilderVisitor.h>
+#include <AST/visitors/TypeCheckerVisitor.h>
+
+// #include <IRT/visitors/DotLangVisitor.h>
+
 #include <BisonParser.h>
 
 void CAstBuildingPhase::Run() {
     CBisonParser parser( pathInputFile );
-    astRoot = std::shared_ptr<const ASTree::CProgram>( parser.buildAST( pathInputFile ) );
+    astRoot = std::unique_ptr<const ASTree::CProgram>( parser.buildAST( pathInputFile ) );
 }
 
 void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
@@ -16,13 +24,14 @@ void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const s
     outputStream.close();
 }
 
-std::shared_ptr<const ASTree::CProgram> CAstBuildingPhase::GetAstRoot() const {
-    return astRoot;
+const ASTree::CProgram* CAstBuildingPhase::GetAstRoot() const {
+    return astRoot.get();
 }
 
 std::string CAstBuildingPhase::ToDotLanguage() {
-    assert( astRoot != nullptr );
+    assert( astRoot );
     if ( dotLangTraversal.empty() ) {
+        ASTree::CDotLangVisitor dotLangVisitor( verbose );
         astRoot->Accept( &dotLangVisitor );
         dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
     }
@@ -30,11 +39,14 @@ std::string CAstBuildingPhase::ToDotLanguage() {
 }
 
 void CSymbolTableBuildingPhase::Run() {
-    symbolTableBuilderVisitor.Visit( astRoot.get() );
+    ASTree::CSymbolTableBuilderVisitor symbolTableBuilderVisitor( verbose );
+    symbolTableBuilderVisitor.Visit( astRoot );
+    symbolTable = std::unique_ptr<const CSymbolTable>( symbolTableBuilderVisitor.SymbolTable() );
+    errors = std::unique_ptr<const std::vector<CCompilationError>>( symbolTableBuilderVisitor.Errors() );
 }
 
 void CSymbolTableBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
-    std::shared_ptr<const std::vector<CCompilationError>> errors = GetErrors();
+    assert( errors );
     if ( !errors->empty() ) {
         std::fstream outputStream( pathOutputFile, openMode );
         for ( auto it = errors->begin(); it != errors->end(); ++it ) {
@@ -44,20 +56,24 @@ void CSymbolTableBuildingPhase::PrintResults( const std::string& pathOutputFile,
     }
 }
 
-std::shared_ptr<const CSymbolTable> CSymbolTableBuildingPhase::GetSymbolTable() const {
-    return symbolTableBuilderVisitor.SymbolTable();
+const CSymbolTable* CSymbolTableBuildingPhase::GetSymbolTable() const {
+    assert( symbolTable );
+    return symbolTable.get();
 }
 
-std::shared_ptr<const std::vector<CCompilationError>> CSymbolTableBuildingPhase::GetErrors() const {
-    return symbolTableBuilderVisitor.Errors();
+const std::vector<CCompilationError>* CSymbolTableBuildingPhase::GetErrors() const {
+    assert( errors );
+    return errors.get();
 }
 
 void CTypeCheckingPhase::Run() {
-    typeCheckerVisitor.Visit( astRoot.get() );
+    ASTree::CTypeCheckerVisitor typeCheckerVisitor( symbolTable, verbose );
+    typeCheckerVisitor.Visit( astRoot );
+    errors = std::unique_ptr<const std::vector<CCompilationError>>( typeCheckerVisitor.GetErrors() );
 }
 
 void CTypeCheckingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
-    std::shared_ptr<const std::vector<CCompilationError>> errors = GetErrors();
+    assert( errors );
     if ( !errors->empty() ) {
         std::fstream outputStream( pathOutputFile, openMode );
         for ( auto it = errors->begin(); it != errors->end(); ++it ) {
@@ -67,29 +83,36 @@ void CTypeCheckingPhase::PrintResults( const std::string& pathOutputFile, const 
     }
 }
 
-std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckingPhase::GetErrors() const {
-    return typeCheckerVisitor.Errors();
+const std::vector<CCompilationError>* CTypeCheckingPhase::GetErrors() const {
+    assert( errors );
+    return errors.get();
 }
 
-void CIrtBuildingPhase::Run() {
-    irtBuilderVisitor.Visit( astRoot.get() );
-    methodTrees = irtBuilderVisitor.MethodTrees();
-}
+// void CIrtBuildingPhase::Run() {
+//     ASTree::CIrtBuilderVisitor irtBuilderVisitor( symbolTable, verbose );
+//     irtBuilderVisitor.Visit( astRoot );
+//     methodTrees = std::unique_ptr<const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>>(
+//         irtBuilderVisitor.MethodTrees()
+//     );
+// }
 
-void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
-    std::fstream outputStream( pathOutputFile, openMode );
-    // outputStream << ToDotLanguage(  ) << std::endl;
-    outputStream.close();
-}
+// void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+//     std::fstream outputStream( pathOutputFile, openMode );
+//     // outputStream << ToDotLanguage(  ) << std::endl;
+//     outputStream.close();
+// }
 
-std::shared_ptr<const std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>> CIrtBuildingPhase::MethodTrees() const {
-    return methodTrees;
-}
+// const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>* CIrtBuildingPhase::MethodTrees() const {
+//     assert( methodTrees );
+//     return methodTrees;
+// }
 
-std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
-    if ( dotLangTraversal.empty() ) {
-        methodTrees->at( methodName )->Accept( &dotLangVisitor );
-        dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
-    }
-    return dotLangTraversal;
-}
+// std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
+//     assert( methodTrees );
+//     if ( dotLangTraversal.empty() ) {
+//         IRTree::CDotLangVisitor dotLangVisitor( verbose );
+//         methodTrees->at( methodName )->Accept( &dotLangVisitor );
+//         dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
+//     }
+//     return dotLangTraversal;
+// }

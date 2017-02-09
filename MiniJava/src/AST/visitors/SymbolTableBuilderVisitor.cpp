@@ -2,11 +2,11 @@
 
 using namespace ASTree;
 
-std::shared_ptr<const CSymbolTable> CSymbolTableBuilderVisitor::SymbolTable() const {
+const CSymbolTable* CSymbolTableBuilderVisitor::SymbolTable() const {
     return table;
 }
 
-std::shared_ptr<const std::vector<CCompilationError>> CSymbolTableBuilderVisitor::Errors() const {
+const std::vector<CCompilationError>* CSymbolTableBuilderVisitor::Errors() const {
     return errors;
 }
 

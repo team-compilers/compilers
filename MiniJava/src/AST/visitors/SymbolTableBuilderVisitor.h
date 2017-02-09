@@ -48,8 +48,8 @@ public:
 
     ~CSymbolTableBuilderVisitor() {}
 
-    std::shared_ptr<const CSymbolTable> SymbolTable() const;
-    std::shared_ptr<const std::vector<CCompilationError>> Errors() const;
+    const CSymbolTable* SymbolTable() const;
+    const std::vector<CCompilationError>* Errors() const;
 
     // Visitors for different node types
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -106,9 +106,8 @@ private:
 
     std::shared_ptr<MethodNameToDefinitionMap> methodDefinitions;
     
-    std::shared_ptr<CSymbolTable> table;
-
-    std::shared_ptr<std::vector<CCompilationError>> errors;
+    CSymbolTable* table;
+    std::vector<CCompilationError>* errors;
 };
 
 }

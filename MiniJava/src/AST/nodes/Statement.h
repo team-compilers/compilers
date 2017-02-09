@@ -10,7 +10,6 @@
 #include <AST/nodes/VisitorTarget.h>
 
 #include <AST/nodes/Expression.h>
-#include <AST/nodes/StatementList.h>
 
 namespace ASTree {
 
@@ -20,6 +19,7 @@ public:
     virtual ~CStatement() {}
 };
 
+class CStatementList;
 //-----------------------------------------------------------------------------------------------//
 
 class CAssignIdStatement : public CStatement {

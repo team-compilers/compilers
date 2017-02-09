@@ -29,16 +29,15 @@ namespace ASTree {
 
 class CTypeCheckerVisitor : public CVisitor {
 public:
-    CTypeCheckerVisitor( std::shared_ptr<const CSymbolTable> _symbolTablePtr, bool _verbose = false ) : 
+    CTypeCheckerVisitor( const CSymbolTable* _symbolTablePtr, bool _verbose = false ) :
     CVisitor( _verbose ),
     symbolTablePtr( _symbolTablePtr ),
     lastType( { CTypeIdentifier(TTypeIdentifier::NotFound) } ),
-    errors( new std::vector<CCompilationError>() )
-    {}
+    errors( new std::vector<CCompilationError>() ) {}
 
     ~CTypeCheckerVisitor() {}
 
-    std::shared_ptr<const std::vector<CCompilationError>> Errors() const;
+    const std::vector<CCompilationError>* GetErrors() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -82,12 +81,14 @@ public:
     void Visit( const CMethodDeclarationList* list ) override;
     void Visit( const CClassDeclarationList* list ) override;
 private:
+    const CSymbolTable* symbolTablePtr;
+
     std::vector<CTypeIdentifier> lastType;
-    std::shared_ptr<const CSymbolTable> symbolTablePtr;
-    std::shared_ptr<std::vector<CCompilationError>> errors;
     std::shared_ptr<const CClassDefinition> lastClass;
     std::shared_ptr<const CMethodDefinition> lastMethod;
     std::string lastId;
+
+    std::vector<CCompilationError>* errors;
 };
 
 }

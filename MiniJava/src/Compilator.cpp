@@ -23,7 +23,7 @@ void CCompilator::Run() {
         return;
     }
 
-    CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable(), true );
-    irtBuilding.Run();
-    irtBuilding.PrintResults( pathOutputDir + "/irt.gv" );
+    // CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable(), false );
+    // irtBuilding.Run();
+    // irtBuilding.PrintResults( pathOutputDir + "/irt.gv" );
 }

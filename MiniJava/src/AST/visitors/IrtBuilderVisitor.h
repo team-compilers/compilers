@@ -41,10 +41,10 @@ using TMethodToIRTMap = std::unordered_map<std::string, std::shared_ptr<const IR
 
 class CIrtBuilderVisitor : public CVisitor {
 public:
-    CIrtBuilderVisitor( std::shared_ptr<const CSymbolTable> table, bool _verbose = false )
+    CIrtBuilderVisitor( const CSymbolTable* table, bool _verbose = false )
         : CVisitor( _verbose ), symbolTable( table ), methodTrees( new TMethodToIRTMap() ) {}
 
-    std::shared_ptr<TMethodToIRTMap> MethodTrees() const;
+    const TMethodToIRTMap* MethodTrees() const;
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -100,18 +100,18 @@ private:
 
     std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
 
-    // frame
-    std::shared_ptr<const CSymbolTable> symbolTable;
+    const CSymbolTable* symbolTable;
 
+    // frame
     std::string classCurrentName;
-    std::unordered_map<std::string, std::shared_ptr<const IRTree::CFrame>> frames;
-    std::shared_ptr<IRTree::CFrame> frameCurrent;
+    std::unordered_map<std::string, std::unique_ptr<const IRTree::CFrame>> frames;
+    std::unique_ptr<IRTree::CFrame> frameCurrent;
 
     // used when translating expr.methodName() to determine the name of the class of expr
     std::string methodCallerClassName;
 
     // result
-    std::shared_ptr<TMethodToIRTMap> methodTrees;
+    TMethodToIRTMap* methodTrees;
 };
 
 }

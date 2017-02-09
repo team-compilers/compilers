@@ -2,7 +2,7 @@
 
 using namespace ASTree;
 
-std::shared_ptr<const std::vector<CCompilationError>> CTypeCheckerVisitor::Errors() const {
+const std::vector<CCompilationError>* CTypeCheckerVisitor::GetErrors() const {
     return errors;
 }
 

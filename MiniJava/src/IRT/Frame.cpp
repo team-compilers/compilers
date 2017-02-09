@@ -3,23 +3,23 @@
 
 using namespace IRTree;
 
-const CExpression* CAddressInFrame::ToExpression( const CExpression* framePointer ) const {
+const CExpression* CAddressInFrame::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
     return new CBinaryExpression(
         TOperatorType::OT_Plus,
-        framePointer,
-        new CConstExpression( offset )
+        std::move( framePointer ),
+        std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
     );
 }
 
-const CExpression* CAddressOfField::ToExpression( const CExpression* thisPointer ) const {
+const CExpression* CAddressOfField::ToExpression( std::unique_ptr<const CExpression> thisPointer ) const {
     return new CBinaryExpression(
         TOperatorType::OT_Plus,
-        thisPointer,
-        new CConstExpression( offset )
+        std::move( thisPointer ),
+        std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
     );
 }
 
-const CExpression* CAddressInRegister::ToExpression( const CExpression* framePointer ) const {
+const CExpression* CAddressInRegister::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
     return new CTempExpression( temp );
 }
 
@@ -75,7 +75,7 @@ void CFrame::AddField( const std::string& name ) {
     addAddress( name, address );
 }
 
-std::shared_ptr<const IAddress> CFrame::GetAddress( const std::string& varName ) const {
+const IAddress* CFrame::GetAddress( const std::string& varName ) const {
     auto addressIt = addresses.find( varName );
     std::shared_ptr<const IAddress> res;
     if ( addressIt == addresses.end() ) {
@@ -83,14 +83,14 @@ std::shared_ptr<const IAddress> CFrame::GetAddress( const std::string& varName )
     } else {
         res = addressIt->second;
     }
-    return res;
+    return res.get();
 }
 
-std::shared_ptr<const IAddress> CFrame::GetThis() const {
+const IAddress* CFrame::GetThis() const {
     return GetAddress( thisName );
 }
 
-std::shared_ptr<const IAddress> CFrame::GetReturn() const {
+const IAddress* CFrame::GetReturn() const {
     return GetAddress( returnName );
 }
 

@@ -36,6 +36,7 @@ enum class TOperatorType : char {
 class CConstExpression : public CExpression {
 public:
     CConstExpression( int _value ) : value( _value ) {}
+    ~CConstExpression() {}
 
     int Value() const { return value; }
 
@@ -49,6 +50,7 @@ private:
 class CNameExpression : public CExpression {
 public:
     CNameExpression( CLabel _label ) : label( _label ) {}
+    ~CNameExpression() {}
 
     const CLabel Label() const { return label; }
 
@@ -63,6 +65,7 @@ private:
 class CTempExpression : public CExpression {
 public:
     CTempExpression( CTemp _temporary ) : temporary( _temporary ) {}
+    ~CTempExpression() {}
 
     CTemp Temporary() const { return temporary; }
 
@@ -77,6 +80,10 @@ class CBinaryExpression : public CExpression {
 public:
     CBinaryExpression( TOperatorType _operation, const CExpression* left, const CExpression* right )
         : operation( _operation ), leftOperand( left ), rightOperand( right ) {}
+
+    CBinaryExpression( TOperatorType _operation, std::unique_ptr<const CExpression> left, std::unique_ptr<const CExpression> right )
+        : operation( _operation ), leftOperand( std::move( left ) ), rightOperand( std::move( right ) ) {}
+    ~CBinaryExpression() {}
 
     TOperatorType Operation() const { return operation; }
     const CExpression* LeftOperand() const { return leftOperand.get(); }
@@ -95,6 +102,7 @@ private:
 class CMemExpression : public CExpression {
 public:
     CMemExpression( const CExpression* _address ) : address( _address ) {}
+    ~CMemExpression() {}
 
     const CExpression* Address() const { return address.get(); }
 
@@ -110,6 +118,7 @@ class CCallExpression : public CExpression {
 public:
     CCallExpression( const CExpression* func, const CExpressionList* args )
         : function( func ), arguments( args ) {}
+    ~CCallExpression() {}
 
     const CExpression* Function() const { return function.get(); }
     const CExpressionList* Arguments() const { return arguments.get(); }
@@ -122,11 +131,11 @@ private:
 };
 
 //-----------------------------------------------------------------------------------------------//
-
 class CEseqExpression : public CExpression {
 public:
     CEseqExpression( const CStatement* _statement, const CExpression* _expression )
         : statement( _statement ), expression( _expression ) {}
+    ~CEseqExpression() {}
 
     const CStatement* Statement() const { return statement.get(); }
     const CExpression* Expression() const { return expression.get(); }

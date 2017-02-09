@@ -12,7 +12,7 @@ namespace IRTree {
 class IAddress {
 public:
     virtual ~IAddress() {}
-    virtual const CExpression* ToExpression( const CExpression* framePointer ) const = 0;
+    virtual const CExpression* ToExpression( std::unique_ptr<const CExpression> framePointer ) const = 0;
 };
 
 /**
@@ -23,7 +23,7 @@ public:
     CAddressInFrame( int _offset ) : offset( _offset ) {}
 
     virtual ~CAddressInFrame() {}
-    virtual const CExpression* ToExpression( const CExpression* framePointer ) const override;
+    virtual const CExpression* ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
 protected:
     int offset;
 };
@@ -31,7 +31,7 @@ protected:
 class CAddressOfField : public CAddressInFrame {
 public:
     CAddressOfField( int _offset ) : CAddressInFrame( _offset ) {}
-    const CExpression* ToExpression( const CExpression* thisPointer ) const override;
+    const CExpression* ToExpression( std::unique_ptr<const CExpression> thisPointer ) const override;
 };
 
 /**
@@ -40,7 +40,7 @@ CAddressInRegister (T84) indicates that it will be held in "register" T84
 class CAddressInRegister : public IAddress {
 public:
     CAddressInRegister( const CTemp& _temp ) : temp( _temp ) {}
-    const CExpression* ToExpression( const CExpression* framePointer ) const override;
+    const CExpression* ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
 private:
     CTemp temp;
 };
@@ -67,9 +67,9 @@ public:
     void AddLocal( const std::string& name );
     void AddField( const std::string& name );
 
-    std::shared_ptr<const IAddress> GetAddress( const std::string& varName ) const;
-    std::shared_ptr<const IAddress> GetThis() const;
-    std::shared_ptr<const IAddress> GetReturn() const;
+    const IAddress* GetAddress( const std::string& varName ) const;
+    const IAddress* GetThis() const;
+    const IAddress* GetReturn() const;
 
     const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) const;
 private:

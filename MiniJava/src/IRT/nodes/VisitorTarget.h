@@ -1,5 +1,7 @@
 #pragma once
 
+#include <IRT/visitors/Visitor.h>
+
 namespace IRTree {
 
 class IVisitorTarget {

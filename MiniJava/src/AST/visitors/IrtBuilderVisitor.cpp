@@ -5,7 +5,7 @@ using namespace ASTree;
 
 using TMethodToIRTMap = std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>;
 
-std::shared_ptr<TMethodToIRTMap> CIrtBuilderVisitor::MethodTrees() const {
+const TMethodToIRTMap* CIrtBuilderVisitor::MethodTrees() const {
     return methodTrees;
 }
 
@@ -202,14 +202,16 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
     onNodeEnter( nodeName, expression->Location() );
 
-    std::shared_ptr<const IRTree::IAddress> address = frameCurrent->GetAddress( expression->Name() );
+    const IRTree::IAddress* address = frameCurrent->GetAddress( expression->Name() );
 
     if ( address ) {
         // expression is a name of local var / argument / field
         updateSubtreeWrapper( new IRTree::CExpressionWrapper(
             new IRTree::CMemExpression(
                 address->ToExpression(
-                    new IRTree::CTempExpression( frameCurrent->FramePointer() )
+                    std::move( std::unique_ptr<IRTree::CExpression>(
+                        new IRTree::CTempExpression( frameCurrent->FramePointer() )
+                    ) )
                 )
             )
         ) );
@@ -283,7 +285,9 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
         frameCurrent->GetThis()->ToExpression(
-            new IRTree::CTempExpression( frameCurrent->FramePointer() )
+            std::move( std::unique_ptr<const IRTree::CExpression>(
+                new IRTree::CTempExpression( frameCurrent->FramePointer() )
+            ) )
         )
     ) );
     methodCallerClassName = classCurrentName;
@@ -726,7 +730,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclarationList* list ) {
         ( *it )->Accept( this );
         subtreeWrapper->ToStatement();
         std::string methodFullName = makeMethodFullName( frameCurrent->GetClassName(), frameCurrent->GetMethodName() );
-        methodTrees->emplace( methodFullName, std::shared_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() ) );
+        methodTrees->emplace( methodFullName, std::unique_ptr<const IRTree::CStatement>( subtreeWrapper->ToStatement() ) );
     }
 
     onNodeExit( nodeName, list->Location() );
