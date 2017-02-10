@@ -144,7 +144,7 @@ LEX_COMMENT \/\/(.)*\n
 
 {LEX_ID} {
     // we have to copy because we can't rely on text not changing underneath us:
-    yylval.sval = strdup( yytext );
+    yylval.sval = strdup( yytext ); // this approach can produce memory leaks if the memory is not freed manually
     return ID;
 }
 

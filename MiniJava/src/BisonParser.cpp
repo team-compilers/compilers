@@ -1,5 +1,5 @@
-#include "BisonParser.h"
-#include "parser.hpp"
+#include <BisonParser.h>
+#include <grammar/parser.hpp>
 
 using namespace ASTree;
 

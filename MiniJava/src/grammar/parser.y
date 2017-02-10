@@ -156,6 +156,8 @@ MainClass:
                 $15,
                 ToCLocation( @$ )
             );
+            free( $2 );
+            free( $12 );
         }
     ;
 
@@ -168,7 +170,10 @@ ClassDeclarations:
 
 ClassDeclaration:
       CLASS ID '{' VarDeclarations MethodDeclarations '}'
-        { $$ = new CClassDeclaration( new CIdExpression( $2, ToCLocation( @2 ) ), $4, $5, ToCLocation( @$ ) ); }
+        {
+            $$ = new CClassDeclaration( new CIdExpression( $2, ToCLocation( @2 ) ), $4, $5, ToCLocation( @$ ) );
+            free( $2 );
+        }
     | CLASS ID EXTENDS ID '{' VarDeclarations MethodDeclarations '}'
         {
             $$ = new CClassDeclaration(
@@ -178,6 +183,8 @@ ClassDeclaration:
                 new CIdExpression( $4, ToCLocation( @4 ) ),
                 ToCLocation( @$ )
             );
+            free( $2 );
+            free( $4 );
         }
     ;
 
@@ -201,6 +208,7 @@ MethodDeclaration:
                 $11,
                 ToCLocation( @$ )
             );
+            free( $3 );
         }
     ;
 
@@ -213,7 +221,10 @@ VarDeclarations:
 
 VarDeclaration:
       Type ID ';'
-        { $$ = new CVarDeclaration( $1, new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) ); }
+        {
+            $$ = new CVarDeclaration( $1, new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) );
+            free( $2 );
+        }
     ;
 
 Type:
@@ -224,7 +235,10 @@ Type:
     | INT
         { $$ = new CIntTypeModifier( ToCLocation( @$ ) ); }
     | ID
-        { $$ = new CIdTypeModifier( new CIdExpression( $1, ToCLocation( @1 ) ), ToCLocation( @$ ) ); }
+        {
+            $$ = new CIdTypeModifier( new CIdExpression( $1, ToCLocation( @1 ) ), ToCLocation( @$ ) );
+            free( $1 );
+        }
     ;
 
 AccessModifier:
@@ -250,7 +264,10 @@ MethodArgumentsNonEmpty:
 
 MethodArgument:
       Type ID
-        { $$ = new CMethodArgument( $1, new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) ); }
+        {
+            $$ = new CMethodArgument( $1, new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) );
+            free( $2 );
+        }
     ;
 
 // statements have to be reversed in every visitor
@@ -271,9 +288,15 @@ Statement:
     | SOUT '(' Expression ')' ';'
         { $$ = new CPrintStatement( $3, ToCLocation( @$ ) ); }
     | ID '=' Expression ';'
-        { $$ = new CAssignIdStatement( new CIdExpression( $1, ToCLocation( @$ ) ), $3, ToCLocation( @$ ) ); }
+        {
+            $$ = new CAssignIdStatement( new CIdExpression( $1, ToCLocation( @$ ) ), $3, ToCLocation( @$ ) );
+            free( $1 );
+        }
     | ID '[' Expression ']' '=' Expression ';'
-        { $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1, ToCLocation( @$ ) ), $3, $6, ToCLocation( @$ )); }
+        {
+            $$ = new CAssignIdWithIndexStatement( new CIdExpression( $1, ToCLocation( @$ ) ), $3, $6, ToCLocation( @$ ));
+            free( $1 );
+        }
     ;
 
 Expressions:
@@ -313,20 +336,29 @@ Expression:
     | Expression '.' LENGTH
         { $$ = new CLengthExpression( $1, ToCLocation( @$ ) ); }
     | Expression '.' ID '(' Expressions ')'
-        { $$ = new CMethodExpression( $1, new CIdExpression( $3, ToCLocation( @3 ) ), $5, ToCLocation( @$ ) ); }
+        {
+            $$ = new CMethodExpression( $1, new CIdExpression( $3, ToCLocation( @3 ) ), $5, ToCLocation( @$ ) );
+            free( $3 );
+        }
 
     | IntegerLiteral
         { $$ = new CNumberExpression( $1, ToCLocation( @$ ) ); }
     | LOGIC_LITERAL
         { $$ = new CLogicExpression( $1, ToCLocation( @$ ) ); }
     | ID
-        { $$ = new CIdExpression( $1, ToCLocation( @$ ) ); }
+        {
+            $$ = new CIdExpression( $1, ToCLocation( @$ ) );
+            free( $1 );
+        }
     | THIS
         { $$ = new CThisExpression( ToCLocation( @$ ) ); }
     | NEW INT '[' Expression ']'
         { $$ = new CNewArrayExpression( $4, ToCLocation( @$ ) ); }
     | NEW ID '(' ')'
-        { $$ = new CNewIdExpression( new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) ); }
+        {
+            $$ = new CNewIdExpression( new CIdExpression( $2, ToCLocation( @2 ) ), ToCLocation( @$ ) );
+            free( $2 );
+        }
     | '!' Expression
         { $$ = new CNegateExpression( $2, ToCLocation( @$ ) ); }
     | '(' Expression ')'
