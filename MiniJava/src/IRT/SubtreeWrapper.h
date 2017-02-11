@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <memory>
 #include <IRT/Label.h>
 #include <IRT/nodes/Expression.h>
 #include <IRT/nodes/Statement.h>
@@ -12,33 +13,38 @@ namespace IRTree {
 class ISubtreeWrapper {
 public:
     virtual ~ISubtreeWrapper() = default;
-    virtual const CExpression* ToExpression() const = 0;
-    virtual const CStatement* ToStatement() const = 0;
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const = 0;
+    virtual std::unique_ptr<const CExpression> ToExpression() = 0;
+    virtual std::unique_ptr<const CStatement> ToStatement() = 0;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) = 0;
 };
 
 class CExpressionWrapper : public ISubtreeWrapper {
 public:
-    explicit CExpressionWrapper( const CExpression* _expression ) : expression( _expression ) {}
+    explicit CExpressionWrapper( const CExpression* _expression )
+        : expression( _expression ) {}
+    explicit CExpressionWrapper( std::unique_ptr<const CExpression> _expression )
+        : expression( std::move( _expression ) ) {}
     virtual ~CExpressionWrapper() = default;
 
-    virtual const CExpression* ToExpression() const override;
-    virtual const CStatement* ToStatement() const override;
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+    virtual std::unique_ptr<const CExpression> ToExpression() override;
+    virtual std::unique_ptr<const CStatement> ToStatement() override;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override;
 private:
-    const CExpression* expression;
+    std::unique_ptr<const CExpression> expression;
 };
 
 class CStatementWrapper : public ISubtreeWrapper {
 public:
-    explicit CStatementWrapper( const CStatement* _statement ) : statement( _statement ) {}
+    explicit CStatementWrapper( const CStatement* _statement )
+        : statement( _statement ) {}
+    explicit CStatementWrapper( std::unique_ptr<const CStatement> _statement ) : statement( std::move( _statement ) ) {}
     virtual ~CStatementWrapper() = default;
 
-    virtual const CExpression* ToExpression() const override;
-    virtual const CStatement* ToStatement() const override;
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+    virtual std::unique_ptr<const CExpression> ToExpression() override;
+    virtual std::unique_ptr<const CStatement> ToStatement() override;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override;
 private:
-    const CStatement* statement;
+    std::unique_ptr<const CStatement> statement;
 };
 
 class CConditionalWrapper : public ISubtreeWrapper {
@@ -46,55 +52,68 @@ public:
     CConditionalWrapper() = default;
     virtual ~CConditionalWrapper() = default;
 
-    virtual const CExpression* ToExpression() const override;
-    virtual const CStatement* ToStatement() const override;
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const = 0;
+    virtual std::unique_ptr<const CExpression> ToExpression() override;
+    virtual std::unique_ptr<const CStatement> ToStatement() override;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) = 0;
 };
 
 // Specific Subtree Wrappers
 
 class CRelativeConditionalWrapper : public CConditionalWrapper {
 public:
-    CRelativeConditionalWrapper( TLogicOperatorType _operatorType, const CExpression* _operandLeft, const CExpression* _operandRight )
-        : operatorType( _operatorType ), operandLeft( _operandLeft ), operandRight( _operandRight ) {}
+    CRelativeConditionalWrapper(
+        TLogicOperatorType _operatorType,
+        const CExpression* _operandLeft,
+        const CExpression* _operandRight
+    ) : operatorType( _operatorType ),
+        operandLeft( _operandLeft ),
+        operandRight( _operandRight ) {}
 
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+    CRelativeConditionalWrapper(
+        TLogicOperatorType _operatorType,
+        std::unique_ptr<const CExpression> _operandLeft,
+        std::unique_ptr<const CExpression> _operandRight
+    ) : operatorType( _operatorType ),
+        operandLeft( std::move( _operandLeft ) ),
+        operandRight( std::move( _operandRight ) ) {}
+
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override;
 private:
     TLogicOperatorType operatorType;
-    const CExpression* operandLeft;
-    const CExpression* operandRight;
+    std::unique_ptr<const CExpression> operandLeft;
+    std::unique_ptr<const CExpression> operandRight;
 };
 
 class CAndConditionalWrapper : public CConditionalWrapper {
 public:
-    CAndConditionalWrapper( const ISubtreeWrapper* _operandLeft, const ISubtreeWrapper* _operandRight )
-        : operandLeft( _operandLeft ), operandRight( _operandRight ) {}
+    CAndConditionalWrapper( std::unique_ptr<ISubtreeWrapper> _operandLeft, std::unique_ptr<ISubtreeWrapper> _operandRight )
+        : operandLeft( std::move( _operandLeft ) ), operandRight( std::move( _operandRight ) ) {}
 
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override;
 private:
-    const ISubtreeWrapper* operandLeft;
-    const ISubtreeWrapper* operandRight;
+    std::unique_ptr<ISubtreeWrapper> operandLeft;
+    std::unique_ptr<ISubtreeWrapper> operandRight;
 };
 
 class COrConditionalWrapper : public CConditionalWrapper {
 public:
-    COrConditionalWrapper( const ISubtreeWrapper* _operandLeft, const ISubtreeWrapper* _operandRight )
-        : operandLeft( _operandLeft ), operandRight( _operandRight ) {}
+    COrConditionalWrapper( std::unique_ptr<ISubtreeWrapper> _operandLeft, std::unique_ptr<ISubtreeWrapper> _operandRight )
+        : operandLeft( std::move( _operandLeft ) ), operandRight( std::move( _operandRight ) ) {}
 
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override;
 private:
-    const ISubtreeWrapper* operandLeft;
-    const ISubtreeWrapper* operandRight;
+    std::unique_ptr<ISubtreeWrapper> operandLeft;
+    std::unique_ptr<ISubtreeWrapper> operandRight;
 };
 
 class CNegateConditionalWrapper : public CConditionalWrapper {
 public:
-    CNegateConditionalWrapper( std::unique_ptr<const ISubtreeWrapper>&& _wrapper )
+    CNegateConditionalWrapper( std::unique_ptr<ISubtreeWrapper> _wrapper )
         : wrapper( std::move( _wrapper ) ) {}
 
-    virtual const CStatement* ToConditional( CLabel labelTrue, CLabel labelFalse ) const override;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override;
 private:
-    std::unique_ptr<const ISubtreeWrapper> wrapper;
+    std::unique_ptr<ISubtreeWrapper> wrapper;
 };
 
 }

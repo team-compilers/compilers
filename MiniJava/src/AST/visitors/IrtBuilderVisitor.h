@@ -90,7 +90,8 @@ public:
 
 private:
     IRTree::TOperatorType operatorFromAstToIr( TOperatorType type ) const;
-    void updateSubtreeWrapper( const IRTree::ISubtreeWrapper* wrapperNew );
+    void updateSubtreeWrapper( IRTree::ISubtreeWrapper* wrapperNew );
+    void updateSubtreeWrapper( std::unique_ptr<IRTree::ISubtreeWrapper> wrapperNew );
     std::string makeMethodFullName( const std::string& className, const std::string& methodName );
     void buildNewFrame( const std::string& className, const std::string& methodName,
         const std::vector<std::string>& arguments, const std::vector<std::string>& locals,
@@ -98,7 +99,7 @@ private:
     void buildNewFrame( const CMethodDeclaration* declaration );
     void buildNewFrame( const CMainClass* mainClass );
 
-    std::unique_ptr<const IRTree::ISubtreeWrapper> subtreeWrapper;
+    std::unique_ptr<IRTree::ISubtreeWrapper> subtreeWrapper;
 
     const CSymbolTable* symbolTable;
 

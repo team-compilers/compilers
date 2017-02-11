@@ -36,6 +36,7 @@ class CExpression;
 class CMoveStatement : public CStatement {
 public:
     CMoveStatement( const CExpression* _destination, const CExpression* _source );
+    CMoveStatement( std::unique_ptr<const CExpression> _destination, std::unique_ptr<const CExpression> _source );
     ~CMoveStatement();
 
     const CExpression* Destination() const { return destination.get(); }
@@ -53,6 +54,7 @@ private:
 class CExpStatement : public CStatement {
 public:
     CExpStatement( const CExpression* _expression );
+    CExpStatement( std::unique_ptr<const CExpression> _expression );
     ~CExpStatement();
 
     const CExpression* Expression() const { return expression.get(); }
@@ -84,7 +86,10 @@ class CJumpConditionalStatement : public CStatement {
 public:
     CJumpConditionalStatement( TLogicOperatorType _operation,
         const CExpression* left, const CExpression* right,
-        const CLabelStatement* _labelTrue, const CLabelStatement* _falseLabel );
+        const CLabelStatement* _labelTrue, const CLabelStatement* _labelFalse );
+    CJumpConditionalStatement( TLogicOperatorType _operation,
+    std::unique_ptr<const CExpression> left, std::unique_ptr<const CExpression> right,
+    std::unique_ptr<const CLabelStatement> _labelTrue, std::unique_ptr<const CLabelStatement> _labelFalse );
     ~CJumpConditionalStatement();
 
     const CExpression* LeftOperand() const { return leftOperand.get(); }
@@ -108,6 +113,7 @@ private:
 class CSeqStatement : public CStatement {
 public:
     CSeqStatement( const CStatement* _left, const CStatement* _right );
+    CSeqStatement( std::unique_ptr<const CStatement> _left, std::unique_ptr<const CStatement> _right );
     ~CSeqStatement();
 
     const CStatement* LeftStatement() const { return leftStatement.get(); }

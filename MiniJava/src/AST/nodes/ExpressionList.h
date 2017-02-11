@@ -20,6 +20,9 @@ public:
     void Add( const CExpression* expression )
         { expressions.emplace_back( expression ); }
 
+    void Add( std::unique_ptr<const CExpression> expression )
+        { expressions.push_back( std::move( expression ) ); }
+
     const std::vector< std::unique_ptr<const CExpression> >& Expressions() const { return expressions; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }

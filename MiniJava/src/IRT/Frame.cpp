@@ -3,24 +3,30 @@
 
 using namespace IRTree;
 
-const CExpression* CAddressInFrame::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
-    return new CBinaryExpression(
-        TOperatorType::OT_Plus,
-        std::move( framePointer ),
-        std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
-    );
+std::unique_ptr<const CExpression> CAddressInFrame::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
+    return std::move( std::unique_ptr<const CBinaryExpression>(
+        new CBinaryExpression(
+            TOperatorType::OT_Plus,
+            std::move( framePointer ),
+            std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
+        )
+    ) );
 }
 
-const CExpression* CAddressOfField::ToExpression( std::unique_ptr<const CExpression> thisPointer ) const {
-    return new CBinaryExpression(
-        TOperatorType::OT_Plus,
-        std::move( thisPointer ),
-        std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
-    );
+std::unique_ptr<const CExpression> CAddressOfField::ToExpression( std::unique_ptr<const CExpression> thisPointer ) const {
+    return std::move( std::unique_ptr<const CBinaryExpression>(
+        new CBinaryExpression(
+            TOperatorType::OT_Plus,
+            std::move( thisPointer ),
+            std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
+        )
+    ) );
 }
 
-const CExpression* CAddressInRegister::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
-    return new CTempExpression( temp );
+std::unique_ptr<const CExpression> CAddressInRegister::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
+    return std::move( std::unique_ptr<const CTempExpression>(
+        new CTempExpression( temp )
+    ) );
 }
 
 
@@ -77,13 +83,11 @@ void CFrame::AddField( const std::string& name ) {
 
 const IAddress* CFrame::GetAddress( const std::string& varName ) const {
     auto addressIt = addresses.find( varName );
-    std::shared_ptr<const IAddress> res;
-    if ( addressIt == addresses.end() ) {
-        res = nullptr;
-    } else {
-        res = addressIt->second;
+    const IAddress* res = nullptr;
+    if ( addressIt != addresses.end() ) {
+        res = addressIt->second.get();
     }
-    return res.get();
+    return res;
 }
 
 const IAddress* CFrame::GetThis() const {
@@ -94,11 +98,15 @@ const IAddress* CFrame::GetReturn() const {
     return GetAddress( returnName );
 }
 
-const CExpression* CFrame::ExternalCall( const std::string& functionName, const CExpressionList* args ) const {
-    return new IRTree::CCallExpression(
-        new CNameExpression( CLabel( functionName ) ),
-        args
-    );
+std::unique_ptr<const CExpression> CFrame::ExternalCall( const std::string& functionName, std::unique_ptr<const CExpressionList> args ) const {
+    return std::move( std::unique_ptr<const IRTree::CCallExpression>(
+        new IRTree::CCallExpression(
+            std::move( std::unique_ptr<const CNameExpression>(
+                new CNameExpression( CLabel( functionName ) )
+            ) ),
+            std::move( args )
+        )
+    ) );
 }
 
 int CFrame::nextOffsetFromFramePointer() {
@@ -112,7 +120,7 @@ int CFrame::nextOffsetFromThis() {
 }
 
 void CFrame::addAddress( const std::string& name, const IAddress* address ) {
-    auto result = addresses.emplace( name, std::shared_ptr<const IAddress>( address ) );
+    auto result = addresses.emplace( name, std::unique_ptr<const IAddress>( address ) );
     // overwriting should not happen
     assert( result.second );
 }

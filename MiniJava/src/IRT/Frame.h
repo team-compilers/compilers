@@ -12,7 +12,7 @@ namespace IRTree {
 class IAddress {
 public:
     virtual ~IAddress() {}
-    virtual const CExpression* ToExpression( std::unique_ptr<const CExpression> framePointer ) const = 0;
+    virtual std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> framePointer ) const = 0;
 };
 
 /**
@@ -23,7 +23,7 @@ public:
     CAddressInFrame( int _offset ) : offset( _offset ) {}
 
     virtual ~CAddressInFrame() {}
-    virtual const CExpression* ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
+    virtual std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
 protected:
     int offset;
 };
@@ -31,7 +31,7 @@ protected:
 class CAddressOfField : public CAddressInFrame {
 public:
     CAddressOfField( int _offset ) : CAddressInFrame( _offset ) {}
-    const CExpression* ToExpression( std::unique_ptr<const CExpression> thisPointer ) const override;
+    std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> thisPointer ) const override;
 };
 
 /**
@@ -40,7 +40,7 @@ CAddressInRegister (T84) indicates that it will be held in "register" T84
 class CAddressInRegister : public IAddress {
 public:
     CAddressInRegister( const CTemp& _temp ) : temp( _temp ) {}
-    const CExpression* ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
+    std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
 private:
     CTemp temp;
 };
@@ -71,7 +71,7 @@ public:
     const IAddress* GetThis() const;
     const IAddress* GetReturn() const;
 
-    const CExpression* ExternalCall( const std::string& functionName, const CExpressionList* args ) const;
+    std::unique_ptr<const CExpression> ExternalCall( const std::string& functionName, std::unique_ptr<const CExpressionList> args ) const;
 private:
     int nextOffsetFromFramePointer();
     int nextOffsetFromThis();
@@ -80,7 +80,7 @@ private:
     std::string className;
     std::string methodName;
     CLabel name;
-    std::unordered_map<std::string, std::shared_ptr<const IAddress>> addresses;
+    std::unordered_map<std::string, std::unique_ptr<const IAddress>> addresses;
 
     CTemp framePointer;
     CTemp returnValueTemp;

@@ -101,6 +101,7 @@ private:
 class CMemExpression : public CExpression {
 public:
     CMemExpression( const CExpression* _address );
+    CMemExpression( std::unique_ptr<const CExpression> _address );
     ~CMemExpression();
 
     const CExpression* Address() const { return address.get(); }
@@ -116,6 +117,7 @@ private:
 class CCallExpression : public CExpression {
 public:
     CCallExpression( const CExpression* func, const CExpressionList* args );
+    CCallExpression( std::unique_ptr<const CExpression> func, std::unique_ptr<const CExpressionList> args );
     ~CCallExpression();
 
     const CExpression* Function() const { return function.get(); }

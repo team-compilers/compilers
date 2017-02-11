@@ -25,10 +25,7 @@ def generate_results_images(dirpaths_input = DEF_DIRS_OUT, verbose = True):
     for dirpath_input in dirpaths_input:
         generate_images(dirpath_input, verbose)
 
-def generate_results_run(dirpaths_input = DEF_DIRS_IN, dirpaths_output = DEF_DIRS_OUT, verbose = True):
-    def sys_command_f(path_input, path_output):
-        return ' '.join(['./minijava', path_input, path_output])
-    
+def generate_results(sys_command_f, dirpaths_input = DEF_DIRS_IN, dirpaths_output = DEF_DIRS_OUT, verbose = True):
     for dirpath_input, dirpath_output in zip(dirpaths_input, dirpaths_output):
         for filename in listdir(dirpath_input):
             filepath_input = join(dirpath_input, filename)
@@ -41,6 +38,17 @@ def generate_results_run(dirpaths_input = DEF_DIRS_IN, dirpaths_output = DEF_DIR
             if not exists(filepath_output_dir):
                 mkdir(filepath_output_dir)
             system(sys_command_f(filepath_input, filepath_output_dir))
+
+def generate_results_run(dirpaths_input = DEF_DIRS_IN, dirpaths_output = DEF_DIRS_OUT, verbose = True):
+    def sys_command_f(path_input, path_output):
+        return ' '.join(['./minijava', path_input, path_output])
+    generate_results(sys_command_f, dirpaths_input, dirpaths_output, verbose)
+
+
+def generate_results_valgrind(dirpaths_input = DEF_DIRS_IN, dirpaths_output = DEF_DIRS_OUT, verbose = True):
+    def sys_command_f(path_input, path_output):
+        return ' '.join(['valgrind', '--leak-check=full', './minijava', path_input, path_output])
+    generate_results(sys_command_f, dirpaths_input, dirpaths_output, verbose)
 
 def generate_results_all():
     generate_results_run()
@@ -63,6 +71,7 @@ def remove_generated_data(dirpaths = DEF_DIRS_OUT):
 mode_to_func = {
     'all': generate_results_all,
     'run': generate_results_run,
+    'valgrind': generate_results_valgrind,
     'images': generate_results_images,
     'clean': remove_generated_data
 }
