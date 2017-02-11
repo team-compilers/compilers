@@ -37,14 +37,14 @@
 
 namespace ASTree {
 
-using TMethodToIRTMap = std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>;
+using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
 
 class CIrtBuilderVisitor : public CVisitor {
 public:
     CIrtBuilderVisitor( const CSymbolTable* table, bool _verbose = false )
         : CVisitor( _verbose ), symbolTable( table ), methodTrees( new TMethodToIRTMap() ) {}
 
-    const TMethodToIRTMap* MethodTrees() const;
+    std::unique_ptr<const TMethodToIRTMap> MethodTrees();
 
     // Visitors for different node types.
     void Visit( const CPublicAccessModifier* modifier ) override;
@@ -105,13 +105,13 @@ private:
     // frame
     std::string classCurrentName;
     std::unordered_map<std::string, std::unique_ptr<const IRTree::CFrame>> frames;
-    std::unique_ptr<IRTree::CFrame> frameCurrent;
+    IRTree::CFrame* frameCurrent;
 
     // used when translating expr.methodName() to determine the name of the class of expr
     std::string methodCallerClassName;
 
     // result
-    TMethodToIRTMap* methodTrees;
+    std::unique_ptr<TMethodToIRTMap> methodTrees;
 };
 
 }

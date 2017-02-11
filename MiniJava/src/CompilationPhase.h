@@ -7,7 +7,7 @@
 #include <AST/nodes/Program.h>
 #include <CompilationError.h>
 #include <SymbolTable.h>
-// #include <IRT/nodes/Statement.h>
+#include <IRT/nodes/Statement.h>
 
 class CCompilationPhase {
 public:
@@ -82,26 +82,28 @@ private:
     std::unique_ptr<const std::vector<CCompilationError>> errors;
 };
 
-// class CIrtBuildingPhase : public CCompilationPhase {
-// public:
-//     CIrtBuildingPhase( const ASTree::CProgram* _astRoot,
-//             const CSymbolTable* _symbolTable,
-//             bool _verbose = false )
-//     : CCompilationPhase( _verbose ), astRoot( _astRoot ), symbolTable( _symbolTable ) {}
+class CIrtBuildingPhase : public CCompilationPhase {
+public:
+    using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
 
-//     virtual void Run() override;
-//     virtual void PrintResults( const std::string& pathOutputFile,
-//         const std::ios_base::openmode& openMode = std::fstream::out ) override;
+    CIrtBuildingPhase( const ASTree::CProgram* _astRoot,
+            const CSymbolTable* _symbolTable,
+            bool _verbose = false )
+    : CCompilationPhase( _verbose ), astRoot( _astRoot ), symbolTable( _symbolTable ) {}
 
-//     const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>* MethodTrees() const;
+    virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
-//     std::string ToDotLanguage( const std::string& methodName );
-// private:
-//     //parameters
-//     const ASTree::CProgram* astRoot;
-//     const CSymbolTable* symbolTable;
+    const TMethodToIRTMap* MethodTrees() const;
 
-//     // results
-//     std::unique_ptr<const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>> methodTrees;
-//     std::string dotLangTraversal;
-// };
+    std::string ToDotLanguage( const std::string& methodName );
+private:
+    //parameters
+    const ASTree::CProgram* astRoot;
+    const CSymbolTable* symbolTable;
+
+    // results
+    std::unique_ptr<const TMethodToIRTMap> methodTrees;
+    // std::string dotLangTraversal;
+};

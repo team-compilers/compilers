@@ -3,10 +3,10 @@
 
 using namespace ASTree;
 
-using TMethodToIRTMap = std::unordered_map<std::string, std::shared_ptr<const IRTree::CStatement>>;
+using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
 
-const TMethodToIRTMap* CIrtBuilderVisitor::MethodTrees() const {
-    return methodTrees;
+std::unique_ptr<const TMethodToIRTMap> CIrtBuilderVisitor::MethodTrees() {
+    return std::unique_ptr<const TMethodToIRTMap>( methodTrees.release() );
 }
 
 IRTree::TOperatorType CIrtBuilderVisitor::operatorFromAstToIr( TOperatorType type ) const {
@@ -38,8 +38,9 @@ std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className
 void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std::string& methodName,
         const std::vector<std::string>& arguments, const std::vector<std::string>& locals,
         const std::unordered_set<std::string>& fields ) {
-    frameCurrent = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( className, methodName ) );
+    std::unique_ptr<IRTree::CFrame> frameNew = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( className, methodName ) );
 
+    frameCurrent = frameNew.get();
 
     frameCurrent->AddThis();
     for ( auto it = fields.begin(); it != fields.end(); ++it ) {
@@ -54,7 +55,7 @@ void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std:
     }
 
     std::string methodFullName = makeMethodFullName( className, methodName );
-    frames.emplace( methodFullName, frameCurrent );
+    frames.emplace( methodFullName, std::move( frameNew ) );
 }
 
 void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) {

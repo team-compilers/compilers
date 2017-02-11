@@ -88,31 +88,33 @@ const std::vector<CCompilationError>* CTypeCheckingPhase::GetErrors() const {
     return errors.get();
 }
 
-// void CIrtBuildingPhase::Run() {
-//     ASTree::CIrtBuilderVisitor irtBuilderVisitor( symbolTable, verbose );
-//     irtBuilderVisitor.Visit( astRoot );
-//     methodTrees = std::unique_ptr<const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>>(
-//         irtBuilderVisitor.MethodTrees()
-//     );
-// }
+using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
 
-// void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
-//     std::fstream outputStream( pathOutputFile, openMode );
-//     // outputStream << ToDotLanguage(  ) << std::endl;
-//     outputStream.close();
-// }
+void CIrtBuildingPhase::Run() {
+    ASTree::CIrtBuilderVisitor irtBuilderVisitor( symbolTable, verbose );
+    irtBuilderVisitor.Visit( astRoot );
+    // std::unique_ptr<const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>> methodTrees(
+    //     irtBuilderVisitor.MethodTrees()
+    // );
+}
 
-// const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>* CIrtBuildingPhase::MethodTrees() const {
-//     assert( methodTrees );
-//     return methodTrees;
-// }
+void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+    std::fstream outputStream( pathOutputFile, openMode );
+    // outputStream << ToDotLanguage(  ) << std::endl;
+    outputStream.close();
+}
 
-// std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
-//     assert( methodTrees );
-//     if ( dotLangTraversal.empty() ) {
-//         IRTree::CDotLangVisitor dotLangVisitor( verbose );
-//         methodTrees->at( methodName )->Accept( &dotLangVisitor );
-//         dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
-//     }
-//     return dotLangTraversal;
-// }
+const TMethodToIRTMap* CIrtBuildingPhase::MethodTrees() const {
+    assert( methodTrees );
+    return methodTrees.get();
+}
+
+std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
+    // assert( methodTrees );
+    // if ( dotLangTraversal.empty() ) {
+    //     IRTree::CDotLangVisitor dotLangVisitor( verbose );
+    //     methodTrees->at( methodName )->Accept( &dotLangVisitor );
+    //     dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
+    // }
+    // return dotLangTraversal;
+}

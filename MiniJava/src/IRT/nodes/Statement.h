@@ -8,13 +8,13 @@ namespace IRTree {
 
 class IStatement : public IVisitorTarget {
 public:
-    virtual ~IStatement() = default;
+    virtual ~IStatement();
 };
 
 class CStatement : public IStatement {
 public:
-    CStatement() = default;
-    virtual ~CStatement() {};
+    CStatement();
+    virtual ~CStatement();
 };
 
 enum class TLogicOperatorType : char {
@@ -35,9 +35,8 @@ class CExpression;
 
 class CMoveStatement : public CStatement {
 public:
-    CMoveStatement( const CExpression* _destination, const CExpression* _source )
-        : destination( _destination ), source( _source ) {}
-    ~CMoveStatement() {}
+    CMoveStatement( const CExpression* _destination, const CExpression* _source );
+    ~CMoveStatement();
 
     const CExpression* Destination() const { return destination.get(); }
     const CExpression* Source() const { return source.get(); }
@@ -53,8 +52,8 @@ private:
 
 class CExpStatement : public CStatement {
 public:
-    CExpStatement( const CExpression* _expression ) : expression( _expression ) {}
-    ~CExpStatement() {}
+    CExpStatement( const CExpression* _expression );
+    ~CExpStatement();
 
     const CExpression* Expression() const { return expression.get(); }
 
@@ -68,9 +67,8 @@ private:
 
 class CJumpStatement : public CStatement {
 public:
-    CJumpStatement( CLabel _target )
-        : target( _target ) {}
-    ~CJumpStatement() {}
+    CJumpStatement( CLabel _target );
+    ~CJumpStatement();
 
     CLabel Target() const { return target; }
 
@@ -86,10 +84,8 @@ class CJumpConditionalStatement : public CStatement {
 public:
     CJumpConditionalStatement( TLogicOperatorType _operation,
         const CExpression* left, const CExpression* right,
-        const CLabelStatement* _labelTrue, const CLabelStatement* _falseLabel )
-            : leftOperand( left ), rightOperand( right ),
-            labelTrue( _labelTrue ), labelFalse( _falseLabel ), operation( _operation ) {}
-    ~CJumpConditionalStatement() {}
+        const CLabelStatement* _labelTrue, const CLabelStatement* _falseLabel );
+    ~CJumpConditionalStatement();
 
     const CExpression* LeftOperand() const { return leftOperand.get(); }
     const CExpression* RightOperand() const { return rightOperand.get(); }
@@ -111,9 +107,8 @@ private:
 
 class CSeqStatement : public CStatement {
 public:
-    CSeqStatement( const CStatement* _left, const CStatement* _right )
-        : leftStatement( _left ), rightStatement( _right ) {}
-    ~CSeqStatement() {}
+    CSeqStatement( const CStatement* _left, const CStatement* _right );
+    ~CSeqStatement();
 
     const CStatement* LeftStatement() const { return leftStatement.get(); }
     const CStatement* RightStatement() const { return rightStatement.get(); }
@@ -129,8 +124,8 @@ private:
 
 class CLabelStatement : public CStatement {
 public:
-    CLabelStatement( CLabel _label ) : label( _label ) {}
-    ~CLabelStatement() {}
+    CLabelStatement( CLabel _label );
+    ~CLabelStatement();
 
     CLabel Label() const { return label; }
 
