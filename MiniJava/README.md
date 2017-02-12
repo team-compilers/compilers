@@ -1,4 +1,4 @@
-### Построение AST (Abstract Syntax Tree)  
+### Компилятор языка MiniJava на C++
 
 __Быстрая сборка и генерация результатов__:
 ```bash
@@ -7,38 +7,30 @@ make && python launcher.py all
 
 __Пошаговая генерация результатов__:
 ```bash
-# генерирует парсер по грамматике, собирает решение
+# сборка решения
 make
 
-# парсит файлы из директории data/SamplesCorrect/, строит AST, сохраняет в формате DOT в results/SamplesCorrectGV/
-python launcher.py dot
+# компиляция файлов из директории data/, генерация результатов в директории results/
+python launcher.py run
 
-# компилирует файлы в results/SamplesCorrectGV/ в картинки (SVG), сохраняет в results/SamplesCorrectAST/
+# генерация изображений в директории results/ на основе graphviz-файлов (.gv)
 python launcher.py images
-
-# генерирует код, аналогичный коду исходной программы, сохраняет в results/SamplesCorrectCode/
-python launcher.py code
-
-# выводит на экран ошибки компилятора, запущенного на файлах из data/SamplesCorrect/
-python launcher.py code
 ```
 
-__Удаление всех сгенерированных файлов__:
+__Очистка директории__:
 ```bash
-# удаляет все результаты из директорий results/SamplesCorrectGV/, results/SamplesCorrectAST/, results/SamplesCorrectCode/
+# удаление всех результатов из директории results/
 python launcher.py clean
 
-# удаляет все объектные и исполняемые файлы
+# удаление всех объектных и исполняемых файлов
 make clean
 ```  
 
 __Дополнения__:
+```bash
+# последовательный запуск утилиты valgrind на всех файлах из директории data/
+python launcher.py valgrind
+```  
 
-При желании можно включить подробный вывод у визиторов. Для этого замените в вызовах `AstToCode` и `AstToDotLanguage` второй аргумент с `false` на `true`:
-```c++
-traversal = AstToCode( astRoot.get(), true );
-// ...
-traversal = AstToDotLanguage( astRoot.get(), true );
-```    
-
+__Ссылки__:  
 Качать актуальную версию flex отсюда: https://sourceforge.net/projects/flex/files/
