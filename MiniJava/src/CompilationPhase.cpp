@@ -4,7 +4,7 @@
 #include <fstream>
 
 #include <AST/visitors/DotLangVisitor.h>
-#include <AST/visitors/PrintCodeVisitor.h>
+#include <AST/visitors/GenerateCodeVisitor.h>
 #include <AST/visitors/SymbolTableBuilderVisitor.h>
 #include <AST/visitors/IrtBuilderVisitor.h>
 #include <AST/visitors/TypeCheckerVisitor.h>
@@ -25,6 +25,13 @@ void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const s
     outputStream.close();
 }
 
+void CAstBuildingPhase::PrintCodeGenerated( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
+    std::fstream outputStream( pathOutputFile + extension, openMode );
+    outputStream << ToCode() << std::endl;
+    outputStream.close();
+}
+
 const ASTree::CProgram* CAstBuildingPhase::GetAstRoot() const {
     return astRoot.get();
 }
@@ -37,6 +44,16 @@ std::string CAstBuildingPhase::ToDotLanguage() {
         dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
     }
     return dotLangTraversal;
+}
+
+std::string CAstBuildingPhase::ToCode() {
+    assert( astRoot );
+    if ( codeGenerated.empty() ) {
+        ASTree::CGenerateCodeVisitor generateCodeVisitor( verbose );
+        astRoot->Accept( &generateCodeVisitor );
+        codeGenerated = generateCodeVisitor.GetCode();
+    }
+    return codeGenerated;
 }
 
 void CSymbolTableBuildingPhase::Run() {

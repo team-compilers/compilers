@@ -34,10 +34,10 @@
 
 namespace ASTree {
 
-class CPrintCodeVisitor : public CVisitor {
+class CGenerateCodeVisitor : public CVisitor {
 public:
-    CPrintCodeVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
-    ~CPrintCodeVisitor() {}
+    CGenerateCodeVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    ~CGenerateCodeVisitor() {}
     // Returns code generated on the base of the AST traversed.
     std::string GetCode() const;
 

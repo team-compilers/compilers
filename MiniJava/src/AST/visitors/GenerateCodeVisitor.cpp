@@ -1,22 +1,22 @@
-#include <AST/visitors/PrintCodeVisitor.h>
+#include <AST/visitors/GenerateCodeVisitor.h>
 
 using namespace ASTree;
 
-void CPrintCodeVisitor::increaseCodeMargin() {
+void CGenerateCodeVisitor::increaseCodeMargin() {
     codeMargin += "    ";
 }
 
-void CPrintCodeVisitor::decreaseCodeMargin() {
+void CGenerateCodeVisitor::decreaseCodeMargin() {
     codeMargin.erase( codeMargin.size() - 4 );
 }
 
-std::string CPrintCodeVisitor::GetCode() const {
+std::string CGenerateCodeVisitor::GetCode() const {
     return sstream.str();
 }
 
 /*__________ Access Modifiers __________*/
 
-void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
+void CGenerateCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PUBLIC );
     onNodeEnter( nodeName, modifier->Location() );
     sstream << "public ";
@@ -24,7 +24,7 @@ void CPrintCodeVisitor::Visit( const CPublicAccessModifier* modifier ) {
     onNodeExit( nodeName, modifier->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
+void CGenerateCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
     std::string nodeName = generateNodeName( CNodeNames::ACCESS_MOD_PRIVATE );
     onNodeEnter( nodeName, modifier->Location() );
     sstream << "private ";
@@ -34,7 +34,7 @@ void CPrintCodeVisitor::Visit( const CPrivateAccessModifier* modifier ) {
 
 /*__________ Expressions __________*/
 
-void CPrintCodeVisitor::Visit( const CBinaryExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -45,7 +45,7 @@ void CPrintCodeVisitor::Visit( const CBinaryExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CBracketExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CBracketExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BRACKET );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -57,7 +57,7 @@ void CPrintCodeVisitor::Visit( const CBracketExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CNumberExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CNumberExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NUMBER );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -66,7 +66,7 @@ void CPrintCodeVisitor::Visit( const CNumberExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CLogicExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CLogicExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LOGIC );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -75,7 +75,7 @@ void CPrintCodeVisitor::Visit( const CLogicExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CIdExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ID );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -84,7 +84,7 @@ void CPrintCodeVisitor::Visit( const CIdExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CLengthExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CLengthExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LENGTH );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -94,7 +94,7 @@ void CPrintCodeVisitor::Visit( const CLengthExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CMethodExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CMethodExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_METHOD );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -110,7 +110,7 @@ void CPrintCodeVisitor::Visit( const CMethodExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CThisExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CThisExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_THIS );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -119,7 +119,7 @@ void CPrintCodeVisitor::Visit( const CThisExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CNewArrayExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CNewArrayExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ARRAY );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -130,7 +130,7 @@ void CPrintCodeVisitor::Visit( const CNewArrayExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CNewIdExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEW_ID );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -141,7 +141,7 @@ void CPrintCodeVisitor::Visit( const CNewIdExpression* expression ) {
     onNodeExit( nodeName, expression->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
+void CGenerateCodeVisitor::Visit( const CNegateExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NEGATE );
     onNodeEnter( nodeName, expression->Location() );
 
@@ -154,7 +154,7 @@ void CPrintCodeVisitor::Visit( const CNegateExpression* expression ) {
 
 /*__________ Statements __________*/
 
-void CPrintCodeVisitor::Visit( const CAssignIdStatement* statement ) {
+void CGenerateCodeVisitor::Visit( const CAssignIdStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID );
     onNodeEnter( nodeName, statement->Location() );
 
@@ -167,7 +167,7 @@ void CPrintCodeVisitor::Visit( const CAssignIdStatement* statement ) {
     onNodeExit( nodeName, statement->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
+void CGenerateCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_ASSIGN_ID_WITH_INDEX );
     onNodeEnter( nodeName, statement->Location() );
 
@@ -182,7 +182,7 @@ void CPrintCodeVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
     onNodeExit( nodeName, statement->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
+void CGenerateCodeVisitor::Visit( const CPrintStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_PRINT );
     onNodeEnter( nodeName, statement->Location() );
 
@@ -193,7 +193,7 @@ void CPrintCodeVisitor::Visit( const CPrintStatement* statement ) {
     onNodeExit( nodeName, statement->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
+void CGenerateCodeVisitor::Visit( const CConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_CONDITIONAL );
     onNodeEnter( nodeName, statement->Location() );
 
@@ -211,7 +211,7 @@ void CPrintCodeVisitor::Visit( const CConditionalStatement* statement ) {
     onNodeExit( nodeName, statement->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
+void CGenerateCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_WHILE_LOOP );
     onNodeEnter( nodeName, statement->Location() );
 
@@ -226,7 +226,7 @@ void CPrintCodeVisitor::Visit( const CWhileLoopStatement* statement ) {
     onNodeExit( nodeName, statement->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
+void CGenerateCodeVisitor::Visit( const CBracesStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_BRACES );
     onNodeEnter( nodeName, statement->Location() );
 
@@ -241,7 +241,7 @@ void CPrintCodeVisitor::Visit( const CBracesStatement* statement ) {
 
 /*__________ Type Modifiers __________*/
 
-void CPrintCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
+void CGenerateCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT );
     onNodeEnter( nodeName, typeModifier->Location() );
     
@@ -250,7 +250,7 @@ void CPrintCodeVisitor::Visit( const CIntTypeModifier* typeModifier ) {
     onNodeExit( nodeName, typeModifier->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
+void CGenerateCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_BOOL );
     onNodeEnter( nodeName, typeModifier->Location() );
 
@@ -259,7 +259,7 @@ void CPrintCodeVisitor::Visit( const CBooleanTypeModifier* typeModifier ) {
     onNodeExit( nodeName, typeModifier->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
+void CGenerateCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_INT_ARRAY );
     onNodeEnter( nodeName, typeModifier->Location() );
 
@@ -268,7 +268,7 @@ void CPrintCodeVisitor::Visit( const CIntArrayTypeModifier* typeModifier ) {
     onNodeExit( nodeName, typeModifier->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
+void CGenerateCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
     std::string nodeName = generateNodeName( CNodeNames::TYPE_MOD_ID );
     onNodeEnter( nodeName, typeModifier->Location() );
 
@@ -280,7 +280,7 @@ void CPrintCodeVisitor::Visit( const CIdTypeModifier* typeModifier ) {
 
 /*__________ Other (except lists) __________*/
 
-void CPrintCodeVisitor::Visit( const CVarDeclaration* declaration ) {
+void CGenerateCodeVisitor::Visit( const CVarDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::VAR_DECL );
     onNodeEnter( nodeName, declaration->Location() );
 
@@ -292,7 +292,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclaration* declaration ) {
     onNodeExit( nodeName, declaration->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CMethodArgument* argument ) {
+void CGenerateCodeVisitor::Visit( const CMethodArgument* argument ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_ARG );
     onNodeEnter( nodeName, argument->Location() );
 
@@ -302,7 +302,7 @@ void CPrintCodeVisitor::Visit( const CMethodArgument* argument ) {
     onNodeExit( nodeName, argument->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
+void CGenerateCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_DECL );
     onNodeEnter( nodeName, declaration->Location() );
 
@@ -325,7 +325,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclaration* declaration ) {
     onNodeExit( nodeName, declaration->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
+void CGenerateCodeVisitor::Visit( const CMainClass* mainClass ) {
     std::string nodeName = generateNodeName( CNodeNames::MAIN_CLASS );
     onNodeEnter( nodeName, mainClass->Location() );
 
@@ -347,7 +347,7 @@ void CPrintCodeVisitor::Visit( const CMainClass* mainClass ) {
     onNodeExit( nodeName, mainClass->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
+void CGenerateCodeVisitor::Visit( const CClassDeclaration* declaration ) {
     std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL );
     onNodeEnter( nodeName, declaration->Location() );
 
@@ -370,7 +370,7 @@ void CPrintCodeVisitor::Visit( const CClassDeclaration* declaration ) {
     onNodeExit( nodeName, declaration->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CProgram* program ) {
+void CGenerateCodeVisitor::Visit( const CProgram* program ) {
     std::string nodeName = generateNodeName( CNodeNames::PROGRAM );
     onNodeEnter( nodeName, program->Location() );
 
@@ -383,7 +383,7 @@ void CPrintCodeVisitor::Visit( const CProgram* program ) {
 
 /*__________  Lists __________*/
 
-void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
+void CGenerateCodeVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName, list->Location() );
 
@@ -399,7 +399,7 @@ void CPrintCodeVisitor::Visit( const CExpressionList* list ) {
     onNodeExit( nodeName, list->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CStatementList* list ) {
+void CGenerateCodeVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName, list->Location() );
 
@@ -412,7 +412,7 @@ void CPrintCodeVisitor::Visit( const CStatementList* list ) {
     onNodeExit( nodeName, list->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CVarDeclarationList* list ) {
+void CGenerateCodeVisitor::Visit( const CVarDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::VAR_DECL_LIST );
     onNodeEnter( nodeName, list->Location() );
 
@@ -424,7 +424,7 @@ void CPrintCodeVisitor::Visit( const CVarDeclarationList* list ) {
     onNodeExit( nodeName, list->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
+void CGenerateCodeVisitor::Visit( const CMethodArgumentList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_ARG_LIST );
     onNodeEnter( nodeName, list->Location() );
 
@@ -440,7 +440,7 @@ void CPrintCodeVisitor::Visit( const CMethodArgumentList* list ) {
     onNodeExit( nodeName, list->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
+void CGenerateCodeVisitor::Visit( const CMethodDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::METH_DECL_LIST );
     onNodeEnter( nodeName, list->Location() );
 
@@ -453,7 +453,7 @@ void CPrintCodeVisitor::Visit( const CMethodDeclarationList* list ) {
     onNodeExit( nodeName, list->Location() );
 }
 
-void CPrintCodeVisitor::Visit( const CClassDeclarationList* list ) {
+void CGenerateCodeVisitor::Visit( const CClassDeclarationList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::CLASS_DECL_LIST );
     onNodeEnter( nodeName, list->Location() );
 

@@ -6,6 +6,7 @@ void CCompilator::Run() {
     CAstBuildingPhase astBuilding( pathInputFile );
     astBuilding.Run();
     astBuilding.PrintResults( pathOutputDir + "/ast", ".gv" );
+    astBuilding.PrintCodeGenerated( pathOutputDir + "/code", ".java" );
     
     CSymbolTableBuildingPhase symbolTableBuilding( astBuilding.GetAstRoot() );
     symbolTableBuilding.Run();
