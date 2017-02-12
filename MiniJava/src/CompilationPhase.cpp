@@ -105,7 +105,7 @@ void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const s
     for ( auto it = methodTreesPtr->begin(); it != methodTreesPtr->end(); ++it ) {
         std::string methodName = it->first;
         methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + "_" + methodName + extension, openMode );
+        std::fstream outputStream( pathOutputFile + methodName + extension, openMode );
         outputStream << ToDotLanguage( it->first ) << std::endl;
         outputStream.close();
     }

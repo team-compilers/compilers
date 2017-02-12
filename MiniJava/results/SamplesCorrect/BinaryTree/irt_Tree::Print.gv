@@ -1,0 +1,46 @@
+digraph {
+	ordering = out;
+	StatMove2 -> ExpTemp4;
+	StatMove2 -> ExpCall5;
+	ExpTemp4 -> "Temp4: T41";
+	StatSeq1 -> StatSeq2;
+	StatSeq1 -> StatMove2;
+	ExpList0 -> ExpMem2;
+	ExpBinary1 -> ExpTemp1;
+	ExpBinary1 -> Plus1;
+	ExpBinary1 -> ExpCall1;
+	ExpMem0 -> ExpBinary0;
+	ExpBinary2 -> ExpTemp2;
+	ExpBinary2 -> Plus2;
+	ExpBinary2 -> ExpCall2;
+	StatLabel0 -> "Label0: Tree::Print";
+	ExpTemp1 -> "Temp1: T40";
+	ExpCall3 -> ExpName0;
+	ExpCall3 -> ExpList0;
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatSeq1;
+	ExpTemp3 -> "Temp3: T40";
+	ExpTemp0 -> "Temp0: T40";
+	ExpBinary3 -> ExpTemp3;
+	ExpBinary3 -> Plus3;
+	ExpBinary3 -> ExpCall4;
+	ExpCall0 -> "Value0: 16";
+	ExpMem2 -> ExpBinary3;
+	ExpCall1 -> "Value1: 4";
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpBinary1;
+	ExpCall2 -> "Value2: 12";
+	ExpBinary0 -> ExpTemp0;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpCall0;
+	StatSeq2 -> StatMove0;
+	StatSeq2 -> StatMove1;
+	ExpTemp2 -> "Temp2: T40";
+	ExpMem1 -> ExpBinary2;
+	StatMove1 -> ExpMem1;
+	StatMove1 -> ExpCall3;
+	ExpName0 -> "Label1: Tree::RecPrint";
+	ExpCall5 -> "Value4: 1";
+	ExpCall4 -> "Value3: 16";
+}
+

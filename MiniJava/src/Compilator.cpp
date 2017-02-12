@@ -25,5 +25,5 @@ void CCompilator::Run() {
 
     CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable(), false );
     irtBuilding.Run();
-    irtBuilding.PrintResults( pathOutputDir + "/irt", ".gv" );
+    irtBuilding.PrintResults( pathOutputDir + "/irt_", ".gv" );
 }

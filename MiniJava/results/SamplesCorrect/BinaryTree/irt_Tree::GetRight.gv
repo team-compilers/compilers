@@ -1,0 +1,16 @@
+digraph {
+	ordering = out;
+	ExpMem0 -> ExpBinary0;
+	ExpCall0 -> "Value0: 24";
+	ExpTemp1 -> "Temp1: T10";
+	StatLabel0 -> "Label0: Tree::GetRight";
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatMove0;
+	ExpTemp0 -> "Temp0: T11";
+	ExpBinary0 -> ExpTemp1;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpCall0;
+	StatMove0 -> ExpTemp0;
+	StatMove0 -> ExpMem0;
+}
+

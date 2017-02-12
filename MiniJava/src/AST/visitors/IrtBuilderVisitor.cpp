@@ -36,7 +36,7 @@ void CIrtBuilderVisitor::updateSubtreeWrapper( std::unique_ptr<IRTree::ISubtreeW
 }
 
 std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className, const std::string& methodName ) {
-    return className + "$" + methodName;
+    return className + "::" + methodName;
 }
 
 void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std::string& methodName,

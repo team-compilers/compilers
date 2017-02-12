@@ -1,0 +1,22 @@
+digraph {
+	ordering = out;
+	StatMove1 -> ExpTemp1;
+	StatMove1 -> ExpCall2;
+	ExpBinary0 -> ExpTemp0;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpCall0;
+	ExpCall2 -> "Value2: 1";
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpCall1;
+	ExpCall1 -> "Value1: 1";
+	ExpTemp0 -> "Temp0: T14";
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatSeq1;
+	StatLabel0 -> "Label0: List::Init";
+	ExpMem0 -> ExpBinary0;
+	ExpCall0 -> "Value0: 8";
+	StatSeq1 -> StatMove0;
+	StatSeq1 -> StatMove1;
+	ExpTemp1 -> "Temp1: T15";
+}
+

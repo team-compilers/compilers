@@ -1,0 +1,11 @@
+digraph {
+	ordering = out;
+	ExpCall0 -> "Value0: 1";
+	StatLabel0 -> "Label0: Base::Func";
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatMove0;
+	ExpTemp0 -> "Temp0: T3";
+	StatMove0 -> ExpTemp0;
+	StatMove0 -> ExpCall0;
+}
+
