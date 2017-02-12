@@ -15,7 +15,8 @@ public:
     virtual ~CCompilationPhase() = default;
 
     virtual void Run() = 0;
-    virtual void PrintResults( const std::string& pathOutputFile,
+    virtual void PrintResults(
+        const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) = 0;
 protected:
     bool verbose;
@@ -27,7 +28,7 @@ public:
         : CCompilationPhase( _verbose ), pathInputFile( _pathInputFile ) {}
 
     virtual void Run() override;
-    virtual void PrintResults( const std::string& pathOutputFile,
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     const ASTree::CProgram* GetAstRoot() const;
@@ -47,7 +48,7 @@ public:
         : CCompilationPhase( _verbose ), astRoot( _astRoot ) {}
 
     virtual void Run() override;
-    virtual void PrintResults( const std::string& pathOutputFile,
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     const CSymbolTable* GetSymbolTable() const;
@@ -69,7 +70,7 @@ public:
         : CCompilationPhase( _verbose ), astRoot( _astRoot ), symbolTable( _symbolTable ) {}
 
     virtual void Run() override;
-    virtual void PrintResults( const std::string& pathOutputFile,
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     const std::vector<CCompilationError>* GetErrors() const;
@@ -92,7 +93,7 @@ public:
     : CCompilationPhase( _verbose ), astRoot( _astRoot ), symbolTable( _symbolTable ) {}
 
     virtual void Run() override;
-    virtual void PrintResults( const std::string& pathOutputFile,
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     const TMethodToIRTMap* MethodTrees() const;
@@ -105,5 +106,5 @@ private:
 
     // results
     std::unique_ptr<const TMethodToIRTMap> methodTrees;
-    // std::string dotLangTraversal;
+    std::string dotLangTraversal;
 };

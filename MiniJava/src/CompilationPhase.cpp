@@ -9,7 +9,7 @@
 #include <AST/visitors/IrtBuilderVisitor.h>
 #include <AST/visitors/TypeCheckerVisitor.h>
 
-// #include <IRT/visitors/DotLangVisitor.h>
+#include <IRT/visitors/DotLangVisitor.h>
 
 #include <BisonParser.h>
 
@@ -18,8 +18,9 @@ void CAstBuildingPhase::Run() {
     astRoot = std::unique_ptr<const ASTree::CProgram>( parser.buildAST( pathInputFile ) );
 }
 
-void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
-    std::fstream outputStream( pathOutputFile, openMode );
+void CAstBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
+    std::fstream outputStream( pathOutputFile + extension, openMode );
     outputStream << ToDotLanguage() << std::endl;
     outputStream.close();
 }
@@ -45,10 +46,11 @@ void CSymbolTableBuildingPhase::Run() {
     errors = std::unique_ptr<const std::vector<CCompilationError>>( symbolTableBuilderVisitor.Errors() );
 }
 
-void CSymbolTableBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+void CSymbolTableBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
     assert( errors );
     if ( !errors->empty() ) {
-        std::fstream outputStream( pathOutputFile, openMode );
+        std::fstream outputStream( pathOutputFile + extension, openMode );
         for ( auto it = errors->begin(); it != errors->end(); ++it ) {
             outputStream << it->ToString() << std::endl;
         }
@@ -72,10 +74,11 @@ void CTypeCheckingPhase::Run() {
     errors = std::unique_ptr<const std::vector<CCompilationError>>( typeCheckerVisitor.GetErrors() );
 }
 
-void CTypeCheckingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
+void CTypeCheckingPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
     assert( errors );
     if ( !errors->empty() ) {
-        std::fstream outputStream( pathOutputFile, openMode );
+        std::fstream outputStream( pathOutputFile + extension, openMode );
         for ( auto it = errors->begin(); it != errors->end(); ++it ) {
             outputStream << it->ToString() << std::endl;
         }
@@ -93,15 +96,19 @@ using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IR
 void CIrtBuildingPhase::Run() {
     ASTree::CIrtBuilderVisitor irtBuilderVisitor( symbolTable, verbose );
     irtBuilderVisitor.Visit( astRoot );
-    // std::unique_ptr<const std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>> methodTrees(
-    //     irtBuilderVisitor.MethodTrees()
-    // );
+    methodTrees = std::move( irtBuilderVisitor.MethodTrees() );
 }
 
-void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::ios_base::openmode& openMode ) {
-    std::fstream outputStream( pathOutputFile, openMode );
-    // outputStream << ToDotLanguage(  ) << std::endl;
-    outputStream.close();
+void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
+    const TMethodToIRTMap* methodTreesPtr = MethodTrees();
+    for ( auto it = methodTreesPtr->begin(); it != methodTreesPtr->end(); ++it ) {
+        std::string methodName = it->first;
+        methodName[0] = std::toupper( methodName[0] );
+        std::fstream outputStream( pathOutputFile + "_" + methodName + extension, openMode );
+        outputStream << ToDotLanguage( it->first ) << std::endl;
+        outputStream.close();
+    }
 }
 
 const TMethodToIRTMap* CIrtBuildingPhase::MethodTrees() const {
@@ -110,11 +117,8 @@ const TMethodToIRTMap* CIrtBuildingPhase::MethodTrees() const {
 }
 
 std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
-    // assert( methodTrees );
-    // if ( dotLangTraversal.empty() ) {
-    //     IRTree::CDotLangVisitor dotLangVisitor( verbose );
-    //     methodTrees->at( methodName )->Accept( &dotLangVisitor );
-    //     dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
-    // }
-    // return dotLangTraversal;
+    assert( methodTrees );
+    IRTree::CDotLangVisitor dotLangVisitor( verbose );
+    methodTrees->at( methodName )->Accept( &dotLangVisitor );
+    return dotLangVisitor.GetTraversalInDotLanguage();
 }

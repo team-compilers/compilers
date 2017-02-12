@@ -5,11 +5,11 @@
 void CCompilator::Run() {
     CAstBuildingPhase astBuilding( pathInputFile );
     astBuilding.Run();
-    astBuilding.PrintResults( pathOutputDir + "/ast.gv" );
+    astBuilding.PrintResults( pathOutputDir + "/ast", ".gv" );
     
     CSymbolTableBuildingPhase symbolTableBuilding( astBuilding.GetAstRoot() );
     symbolTableBuilding.Run();
-    symbolTableBuilding.PrintResults( pathOutputDir + "/errors.txt" );
+    symbolTableBuilding.PrintResults( pathOutputDir + "/errors", ".txt" );
 
     if ( !symbolTableBuilding.GetErrors()->empty() ) {
         return;
@@ -17,7 +17,7 @@ void CCompilator::Run() {
 
     CTypeCheckingPhase typeChecking( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable() );
     typeChecking.Run();
-    typeChecking.PrintResults( pathOutputDir + "/errors.txt", std::fstream::app );
+    typeChecking.PrintResults( pathOutputDir + "/errors", ".txt", std::fstream::app );
 
     if ( !typeChecking.GetErrors()->empty() ) {
         return;
@@ -25,5 +25,5 @@ void CCompilator::Run() {
 
     CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable(), false );
     irtBuilding.Run();
-    irtBuilding.PrintResults( pathOutputDir + "/irt.gv" );
+    irtBuilding.PrintResults( pathOutputDir + "/irt", ".gv" );
 }
