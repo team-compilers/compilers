@@ -128,22 +128,38 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
     onNodeEnter( nodeName, expression->Location() );
 
     expression->LeftOperand()->Accept( this );
-    std::unique_ptr<const IRTree::CExpression> expressionLeft = std::move( subtreeWrapper->ToExpression() );
+    std::unique_ptr<IRTree::ISubtreeWrapper> wrapperLeft = std::move( subtreeWrapper );
+    // std::unique_ptr<const IRTree::CExpression> expressionLeft = std::move( subtreeWrapper->ToExpression() );
 
     expression->RightOperand()->Accept( this );
-    std::unique_ptr<const IRTree::CExpression> expressionRight = std::move( subtreeWrapper->ToExpression() );
+    std::unique_ptr<IRTree::ISubtreeWrapper> wrapperRight = std::move( subtreeWrapper );
+    // std::unique_ptr<const IRTree::CExpression> expressionRight = std::move( subtreeWrapper->ToExpression() );
 
     if ( expression->Operation() == TOperatorType::OT_LT ) {
         updateSubtreeWrapper( new IRTree::CRelativeConditionalWrapper(
             IRTree::TLogicOperatorType::LOT_LT,
-            std::move( expressionLeft ),
-            std::move( expressionRight )
+            std::move( wrapperLeft->ToExpression() ),
+            std::move( wrapperRight->ToExpression() )
+        ) );
+    } else if ( expression->Operation() == TOperatorType::OT_And ) {
+        updateSubtreeWrapper( new IRTree::CAndConditionalWrapper(
+            std::move( wrapperLeft ),
+            std::move( wrapperRight )
+        ) );
+    } else if ( expression->Operation() == TOperatorType::OT_Or ) {
+        updateSubtreeWrapper( new IRTree::COrConditionalWrapper(
+            std::move( wrapperLeft ),
+            std::move( wrapperRight )
         ) );
     } else {
         IRTree::TOperatorType operatorType = operatorFromAstToIr( expression->Operation() );
 
         updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-            new IRTree::CBinaryExpression( operatorType, std::move( expressionLeft ), std::move( expressionRight ) )
+            new IRTree::CBinaryExpression(
+                operatorType,
+                std::move( wrapperLeft->ToExpression() ),
+                std::move( wrapperRight->ToExpression() )
+            )
         ) );
     }
 
