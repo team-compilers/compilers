@@ -7,11 +7,11 @@ digraph {
 	StatMove0 -> ExpTemp0;
 	StatMove0 -> ExpBinary0;
 	ExpCall1 -> "Value1: 0";
-	ExpTemp0 -> "Temp0: T5";
+	ExpTemp0 -> "Temp0: RetVal";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatMove0;
 	StatLabel0 -> "Label0: GrandChild::Add";
-	ExpTemp1 -> "Temp1: T4";
+	ExpTemp1 -> "Temp1: FP";
 	ExpBinary2 -> ExpTemp1;
 	ExpBinary2 -> Plus0;
 	ExpBinary2 -> ExpCall0;

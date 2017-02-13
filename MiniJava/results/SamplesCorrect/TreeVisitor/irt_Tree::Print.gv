@@ -2,7 +2,7 @@ digraph {
 	ordering = out;
 	StatMove2 -> ExpTemp4;
 	StatMove2 -> ExpCall5;
-	ExpTemp4 -> "Temp4: T41";
+	ExpTemp4 -> "Temp4: RetVal";
 	StatSeq1 -> StatSeq2;
 	StatSeq1 -> StatMove2;
 	ExpList0 -> ExpMem2;
@@ -14,13 +14,13 @@ digraph {
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpCall2;
 	StatLabel0 -> "Label0: Tree::Print";
-	ExpTemp1 -> "Temp1: T40";
+	ExpTemp1 -> "Temp1: FP";
 	ExpCall3 -> ExpName0;
 	ExpCall3 -> ExpList0;
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp3 -> "Temp3: T40";
-	ExpTemp0 -> "Temp0: T40";
+	ExpTemp3 -> "Temp3: FP";
+	ExpTemp0 -> "Temp0: FP";
 	ExpBinary3 -> ExpTemp3;
 	ExpBinary3 -> Plus3;
 	ExpBinary3 -> ExpCall4;
@@ -35,7 +35,7 @@ digraph {
 	ExpBinary0 -> ExpCall0;
 	StatSeq2 -> StatMove0;
 	StatSeq2 -> StatMove1;
-	ExpTemp2 -> "Temp2: T40";
+	ExpTemp2 -> "Temp2: FP";
 	ExpMem1 -> ExpBinary2;
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpCall3;

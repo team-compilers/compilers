@@ -2,11 +2,11 @@ digraph {
 	ordering = out;
 	StatMove1 -> ExpTemp2;
 	StatMove1 -> ExpCall3;
-	ExpTemp2 -> "Temp2: T17";
+	ExpTemp2 -> "Temp2: RetVal";
 	ExpCall3 -> "Value3: 1";
-	ExpTemp1 -> "Temp1: T16";
+	ExpTemp1 -> "Temp1: FP";
 	ExpMem2 -> ExpBinary2;
-	ExpTemp0 -> "Temp0: T16";
+	ExpTemp0 -> "Temp0: FP";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
 	StatLabel0 -> "Label0: Tree::SetKey";

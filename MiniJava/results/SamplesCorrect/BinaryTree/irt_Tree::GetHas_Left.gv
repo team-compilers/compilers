@@ -6,11 +6,11 @@ digraph {
 	ExpBinary0 -> Plus1;
 	ExpBinary0 -> ExpCall1;
 	ExpCall1 -> "Value1: 0";
-	ExpTemp0 -> "Temp0: T21";
+	ExpTemp0 -> "Temp0: RetVal";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatMove0;
 	StatLabel0 -> "Label0: Tree::GetHas_Left";
-	ExpTemp1 -> "Temp1: T20";
+	ExpTemp1 -> "Temp1: FP";
 	ExpMem0 -> ExpBinary0;
 	ExpBinary1 -> ExpTemp1;
 	ExpBinary1 -> Plus0;

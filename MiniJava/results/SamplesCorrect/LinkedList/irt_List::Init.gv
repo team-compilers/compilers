@@ -3,8 +3,8 @@ digraph {
 	StatMove1 -> ExpTemp1;
 	StatMove1 -> ExpCall3;
 	ExpCall3 -> "Value3: 1";
-	ExpTemp1 -> "Temp1: T15";
-	ExpTemp0 -> "Temp0: T14";
+	ExpTemp1 -> "Temp1: RetVal";
+	ExpTemp0 -> "Temp0: FP";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
 	StatLabel0 -> "Label0: List::Init";

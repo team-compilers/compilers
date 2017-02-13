@@ -6,7 +6,7 @@ digraph {
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpCall3;
 	ExpMem1 -> ExpBinary2;
-	ExpTemp2 -> "Temp2: T18";
+	ExpTemp2 -> "Temp2: FP";
 	StatSeq2 -> StatMove0;
 	StatSeq2 -> StatSeq3;
 	ExpBinary0 -> ExpTemp0;
@@ -25,8 +25,8 @@ digraph {
 	ExpBinary3 -> ExpCall5;
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp1 -> "Temp1: T18";
-	ExpTemp5 -> "Temp5: T18";
+	ExpTemp1 -> "Temp1: FP";
+	ExpTemp5 -> "Temp5: FP";
 	ExpBinary7 -> ExpTemp7;
 	ExpBinary7 -> Plus6;
 	ExpBinary7 -> ExpCall11;
@@ -52,7 +52,7 @@ digraph {
 	ExpCall8 -> "Value6: 4";
 	StatSeq3 -> StatMove1;
 	StatSeq3 -> StatMove2;
-	ExpTemp3 -> "Temp3: T18";
+	ExpTemp3 -> "Temp3: FP";
 	ExpCall10 -> "Value8: 0";
 	ExpBinary4 -> ExpTemp3;
 	ExpBinary4 -> Plus3;
@@ -61,9 +61,9 @@ digraph {
 	StatMove2 -> ExpMem2;
 	StatMove2 -> ExpCall7;
 	ExpName1 -> "Label2: List::InitNew";
-	ExpTemp4 -> "Temp4: T18";
-	ExpTemp0 -> "Temp0: T18";
-	ExpTemp7 -> "Temp7: T18";
+	ExpTemp4 -> "Temp4: FP";
+	ExpTemp0 -> "Temp0: FP";
+	ExpTemp7 -> "Temp7: FP";
 	ExpBinary5 -> ExpTemp4;
 	ExpBinary5 -> Plus4;
 	ExpBinary5 -> ExpCall8;
@@ -71,7 +71,7 @@ digraph {
 	ExpCall9 -> "Value7: 12";
 	StatSeq1 -> StatSeq2;
 	StatSeq1 -> StatMove3;
-	ExpTemp6 -> "Temp6: T19";
+	ExpTemp6 -> "Temp6: RetVal";
 	StatMove3 -> ExpTemp6;
 	StatMove3 -> ExpMem5;
 	ExpCall11 -> "Value9: 16";

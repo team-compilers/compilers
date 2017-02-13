@@ -1,6 +1,6 @@
 digraph {
 	ordering = out;
-	ExpTemp0 -> "Temp0: T44";
+	ExpTemp0 -> "Temp0: FP";
 	ExpList0 -> ExpCall1;
 	ExpCall1 -> "Value0: 333";
 	ExpBinary0 -> ExpTemp0;
@@ -29,10 +29,10 @@ digraph {
 	StatSeq0 -> StatSeq1;
 	ExpCall3 -> ExpName1;
 	ExpCall3 -> ExpList1;
-	ExpTemp1 -> "Temp1: T44";
+	ExpTemp1 -> "Temp1: FP";
 	ExpCall5 -> "Value3: 0";
 	StatExp0 -> ExpCall0;
 	ExpCall4 -> "Value2: 0";
-	ExpTemp2 -> "Temp2: T45";
+	ExpTemp2 -> "Temp2: RetVal";
 }
 

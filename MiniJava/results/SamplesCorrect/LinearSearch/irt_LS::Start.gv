@@ -3,7 +3,7 @@ digraph {
 	ExpCall19 -> "Value8: 55";
 	StatMove2 -> ExpTemp3;
 	StatMove2 -> ExpCall19;
-	ExpTemp3 -> "Temp3: T3";
+	ExpTemp3 -> "Temp3: RetVal";
 	StatSeq1 -> StatSeq2;
 	StatSeq1 -> StatMove2;
 	StatExp4 -> ExpCall16;
@@ -33,7 +33,7 @@ digraph {
 	StatMove1 -> ExpCall4;
 	StatSeq5 -> StatExp1;
 	StatSeq5 -> StatSeq6;
-	ExpTemp2 -> "Temp2: T2";
+	ExpTemp2 -> "Temp2: FP";
 	StatSeq2 -> StatMove0;
 	StatSeq2 -> StatSeq3;
 	ExpMem1 -> ExpBinary1;
@@ -51,11 +51,11 @@ digraph {
 	ExpCall0 -> "Value0: 16";
 	StatSeq4 -> StatExp0;
 	StatSeq4 -> StatSeq5;
-	ExpTemp0 -> "Temp0: T2";
+	ExpTemp0 -> "Temp0: FP";
 	StatExp0 -> ExpCall5;
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp1 -> "Temp1: T2";
+	ExpTemp1 -> "Temp1: FP";
 	StatSeq7 -> StatExp3;
 	StatSeq7 -> StatExp4;
 	ExpName2 -> "Label3: print";

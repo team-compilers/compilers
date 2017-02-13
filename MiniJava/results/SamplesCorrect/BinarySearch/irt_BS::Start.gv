@@ -169,7 +169,7 @@ digraph {
 	ExpCall0 -> "Value0: 16";
 	StatLabel37 -> "Label68: L1";
 	ExpList21 -> ExpCall51;
-	ExpTemp0 -> "Temp0: T2";
+	ExpTemp0 -> "Temp0: FP";
 	StatSeq9 -> StatLabel4;
 	StatSeq9 -> StatSeq10;
 	ExpList13 -> ExpCall32;
@@ -189,11 +189,11 @@ digraph {
 	ExpCall19 -> ExpList8;
 	StatSeq5 -> StatCJump0;
 	StatSeq5 -> StatSeq6;
-	ExpTemp2 -> "Temp2: T2";
+	ExpTemp2 -> "Temp2: FP";
 	StatExp0 -> ExpCall8;
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp1 -> "Temp1: T2";
+	ExpTemp1 -> "Temp1: FP";
 	StatLabel32 -> "Label59: L4";
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
@@ -223,7 +223,7 @@ digraph {
 	StatJump3 -> "Label35: L14";
 	ExpList3 -> ExpCall9;
 	StatLabel19 -> "Label36: L13";
-	ExpTemp3 -> "Temp3: T3";
+	ExpTemp3 -> "Temp3: RetVal";
 	StatSeq37 -> StatLabel24;
 	StatSeq37 -> StatSeq38;
 	StatLabel8 -> "Label15: L18";
