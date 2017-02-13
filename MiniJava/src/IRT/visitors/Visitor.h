@@ -49,6 +49,7 @@ public:
 };
 
 enum class TOperatorType : char;
+enum class TLogicOperatorType : char;
 
 class CVisitor : public IVisitor {
 public:
@@ -68,6 +69,8 @@ protected:
 
     // Maps each TOperatorType to a string with its name.
     std::string operatorName( const TOperatorType& type ) const;
+    // Maps each TLogicOperatorType to a string with its name.
+    std::string operatorName( const TLogicOperatorType& type ) const;
 
     // Maps each TOperatorType to a string with its character.
     std::string operatorChar( const TOperatorType& type ) const;

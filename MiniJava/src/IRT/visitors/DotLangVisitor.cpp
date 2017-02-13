@@ -148,6 +148,8 @@ void CDotLangVisitor::Visit( const CJumpConditionalStatement* statement ) {
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
+    addEdge( nodeName, generateNodeName( operatorName( statement->Operation() ) ) );
+
     statement->LeftOperand()->Accept( this );
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
