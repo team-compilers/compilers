@@ -40,7 +40,7 @@ digraph {
 	ExpCall7 -> ExpName3;
 	ExpCall7 -> ExpList3;
 	ExpName4 -> "Label5: LS::Search";
-	ExpCall2 -> "Value1: 8";
+	ExpCall2 -> "Value1: 4";
 	StatExp1 -> ExpCall7;
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpCall1;
@@ -48,7 +48,7 @@ digraph {
 	ExpCall1 -> ExpName0;
 	ExpCall1 -> ExpList0;
 	ExpMem2 -> ExpBinary2;
-	ExpCall0 -> "Value0: 20";
+	ExpCall0 -> "Value0: 16";
 	StatSeq4 -> StatExp0;
 	StatSeq4 -> StatSeq5;
 	ExpTemp0 -> "Temp0: T2";
@@ -63,7 +63,7 @@ digraph {
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpCall3;
-	ExpCall3 -> "Value2: 16";
+	ExpCall3 -> "Value2: 12";
 	ExpBinary1 -> ExpTemp1;
 	ExpBinary1 -> Plus1;
 	ExpBinary1 -> ExpCall2;

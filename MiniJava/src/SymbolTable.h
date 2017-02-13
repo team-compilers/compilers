@@ -104,7 +104,7 @@ public:
     // Get method definition by name. Zero if not exists
     std::shared_ptr<const CMethodDefinition> GetMethodDefinition( const std::string& name ) const;
 
-    // Get field definition by name. NotFount if not exists
+    // Get field definition by name. NotFound if not exists
     CTypeIdentifier GetFieldType( const std::string& name ) const;
     const std::unordered_map<std::string, CTypeIdentifier>& Fields() const;
     bool HasParent() const { return hasParent; }

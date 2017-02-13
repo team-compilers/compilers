@@ -1,20 +1,25 @@
 digraph {
 	ordering = out;
-	ExpMem0 -> ExpBinary1;
-	ExpCall0 -> "Value0: 4";
-	ExpBinary1 -> ExpTemp1;
-	ExpBinary1 -> Plus0;
-	ExpBinary1 -> ExpCall0;
-	ExpTemp1 -> "Temp1: T4";
-	StatLabel0 -> "Label0: GrandChild::Add";
-	StatSeq0 -> StatLabel0;
-	StatSeq0 -> StatMove0;
-	ExpTemp0 -> "Temp0: T5";
-	ExpCall1 -> "Value1: 1";
 	ExpBinary0 -> ExpMem0;
-	ExpBinary0 -> Plus1;
-	ExpBinary0 -> ExpCall1;
+	ExpBinary0 -> Plus2;
+	ExpBinary0 -> ExpCall2;
+	ExpCall2 -> "Value2: 1";
 	StatMove0 -> ExpTemp0;
 	StatMove0 -> ExpBinary0;
+	ExpCall1 -> "Value1: 0";
+	ExpTemp0 -> "Temp0: T5";
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatMove0;
+	StatLabel0 -> "Label0: GrandChild::Add";
+	ExpTemp1 -> "Temp1: T4";
+	ExpBinary2 -> ExpTemp1;
+	ExpBinary2 -> Plus0;
+	ExpBinary2 -> ExpCall0;
+	ExpCall0 -> "Value0: 0";
+	ExpMem1 -> ExpBinary2;
+	ExpMem0 -> ExpBinary1;
+	ExpBinary1 -> ExpMem1;
+	ExpBinary1 -> Plus1;
+	ExpBinary1 -> ExpCall1;
 }
 

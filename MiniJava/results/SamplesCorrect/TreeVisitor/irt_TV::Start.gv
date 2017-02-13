@@ -25,7 +25,7 @@ digraph {
 	ExpCall63 -> ExpName27;
 	ExpCall63 -> ExpList27;
 	ExpName27 -> "Label28: Tree::Delete";
-	ExpCall62 -> "Value35: 12";
+	ExpCall62 -> "Value35: 8";
 	ExpBinary16 -> ExpTemp14;
 	ExpBinary16 -> Plus14;
 	ExpBinary16 -> ExpCall62;
@@ -48,8 +48,8 @@ digraph {
 	ExpCall21 -> ExpName7;
 	ExpCall21 -> ExpList7;
 	ExpMem6 -> ExpBinary7;
-	ExpCall29 -> "Value19: 12";
-	ExpCall7 -> "Value5: 12";
+	ExpCall29 -> "Value19: 8";
+	ExpCall7 -> "Value5: 8";
 	ExpName6 -> "Label7: Tree::Insert";
 	ExpName3 -> "Label4: print";
 	ExpList6 -> ExpCall19;
@@ -86,11 +86,11 @@ digraph {
 	ExpBinary4 -> ExpCall11;
 	ExpTemp1 -> "Temp1: T2";
 	ExpList1 -> ExpCall6;
-	ExpCall23 -> "Value15: 12";
+	ExpCall23 -> "Value15: 8";
 	ExpCall5 -> ExpName1;
 	ExpCall5 -> ExpList1;
 	ExpName7 -> "Label8: Tree::Insert";
-	ExpCall4 -> "Value3: 12";
+	ExpCall4 -> "Value3: 8";
 	ExpTemp9 -> "Temp9: T2";
 	StatSeq10 -> StatMove7;
 	StatSeq10 -> StatSeq11;
@@ -98,7 +98,7 @@ digraph {
 	ExpName1 -> "Label2: Tree::Init";
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpCall5;
-	ExpCall65 -> "Value37: 12";
+	ExpCall65 -> "Value37: 8";
 	ExpCall43 -> ExpName15;
 	ExpCall43 -> ExpList15;
 	ExpList18 -> ExpCall49;
@@ -106,8 +106,8 @@ digraph {
 	StatSeq5 -> StatExp0;
 	StatSeq5 -> StatSeq6;
 	ExpMem1 -> ExpBinary2;
-	ExpCall20 -> "Value13: 12";
-	ExpCall44 -> "Value28: 16";
+	ExpCall20 -> "Value13: 8";
+	ExpCall44 -> "Value28: 12";
 	StatSeq2 -> StatMove0;
 	StatSeq2 -> StatSeq3;
 	ExpCall27 -> ExpName9;
@@ -145,7 +145,7 @@ digraph {
 	ExpCall28 -> "Value18: 28";
 	ExpCall47 -> ExpName17;
 	ExpCall47 -> ExpList17;
-	ExpCall14 -> "Value9: 12";
+	ExpCall14 -> "Value9: 8";
 	ExpName4 -> "Label5: Tree::Insert";
 	ExpMem5 -> ExpBinary6;
 	StatLabel0 -> "Label0: TV::Start";
@@ -155,8 +155,8 @@ digraph {
 	ExpBinary2 -> Plus1;
 	ExpBinary2 -> ExpCall4;
 	ExpList30 -> ExpCall69;
-	ExpCall0 -> "Value0: 24";
-	ExpCall17 -> "Value11: 12";
+	ExpCall0 -> "Value0: 20";
+	ExpCall17 -> "Value11: 8";
 	ExpList22 -> ExpCall55;
 	ExpCall18 -> ExpName6;
 	ExpCall18 -> ExpList6;
@@ -174,7 +174,7 @@ digraph {
 	ExpBinary12 -> Plus11;
 	ExpBinary12 -> ExpCall36;
 	ExpName0 -> "Label1: malloc";
-	ExpCall26 -> "Value17: 12";
+	ExpCall26 -> "Value17: 8";
 	ExpMem7 -> ExpBinary8;
 	ExpBinary3 -> ExpTemp2;
 	ExpBinary3 -> Plus2;
@@ -196,7 +196,7 @@ digraph {
 	ExpMem3 -> ExpBinary4;
 	ExpName21 -> "Label22: print";
 	ExpCall10 -> "Value6: 100000000";
-	ExpCall36 -> "Value23: 16";
+	ExpCall36 -> "Value23: 12";
 	ExpName8 -> "Label9: Tree::Insert";
 	StatMove2 -> ExpMem2;
 	StatMove2 -> ExpCall8;
@@ -237,7 +237,7 @@ digraph {
 	ExpBinary11 -> ExpTemp10;
 	ExpBinary11 -> Plus10;
 	ExpBinary11 -> ExpCall32;
-	ExpCall42 -> "Value27: 20";
+	ExpCall42 -> "Value27: 16";
 	ExpName10 -> "Label11: Tree::Insert";
 	ExpMem4 -> ExpBinary5;
 	StatMove10 -> ExpMem10;
@@ -289,7 +289,7 @@ digraph {
 	ExpCall41 -> "Value26: 50000000";
 	ExpList14 -> ExpCall41;
 	StatExp2 -> ExpCall40;
-	ExpCall32 -> "Value21: 12";
+	ExpCall32 -> "Value21: 8";
 	ExpName22 -> "Label23: Tree::Search";
 	ExpCall40 -> ExpName14;
 	ExpCall40 -> ExpList14;
@@ -303,7 +303,7 @@ digraph {
 	ExpCall45 -> ExpName16;
 	ExpCall45 -> ExpList16;
 	StatExp3 -> ExpCall45;
-	ExpCall11 -> "Value7: 12";
+	ExpCall11 -> "Value7: 8";
 	ExpName17 -> "Label18: print";
 	ExpCall49 -> "Value30: 24";
 	StatSeq21 -> StatExp6;

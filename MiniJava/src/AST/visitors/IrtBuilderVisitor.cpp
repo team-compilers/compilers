@@ -229,22 +229,41 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
 
     if ( address ) {
         // expression is a name of local var / argument / field
-        updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-            new IRTree::CMemExpression(
-                std::move( address->ToExpression(
-                    std::move( std::unique_ptr<IRTree::CExpression>(
-                        new IRTree::CTempExpression( frameCurrent->FramePointer() )
-                    ) )
-                ) )
-            )
-        ) );
 
         std::shared_ptr<const CClassDefinition> classDefinition = symbolTable->GetClassDefinition( frameCurrent->GetClassName() );
         std::shared_ptr<const CMethodDefinition> methodDefinition = classDefinition->GetMethodDefinition( frameCurrent->GetMethodName() );
         CTypeIdentifier type = methodDefinition->GetVariableType( expression->Name() );
         if ( type.Type() == TTypeIdentifier::NotFound ) {
+            // expression is a name of field
+            updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+                new IRTree::CMemExpression(
+                    std::move( address->ToExpression(
+                        std::move( std::unique_ptr<IRTree::CExpression>(
+                            new IRTree::CMemExpression(
+                                frameCurrent->GetThis()->ToExpression(
+                                    std::move( std::unique_ptr<IRTree::CExpression>(
+                                        new IRTree::CTempExpression( frameCurrent->FramePointer() )
+                                    ) )
+                                )
+                            )
+                        ) )
+                    ) )
+                )
+            ) );
             type = classDefinition->GetFieldType( expression->Name() );
+        } else {
+            // expression is a name of local var / argument
+            updateSubtreeWrapper( new IRTree::CExpressionWrapper(
+                new IRTree::CMemExpression(
+                    std::move( address->ToExpression(
+                        std::move( std::unique_ptr<IRTree::CExpression>(
+                            new IRTree::CTempExpression( frameCurrent->FramePointer() )
+                        ) )
+                    ) )
+                )
+            ) );
         }
+
         if ( type.Type() == TTypeIdentifier::ClassId ) {
             methodCallerClassName = type.ClassName();
         }
@@ -499,7 +518,7 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
                                     new IRTree::CSeqStatement(
                                         std::move( wrapperTargetNegative->ToStatement() ),
                                         std::move( std::unique_ptr<const IRTree::CLabelStatement>(
-                                            new IRTree::CLabelStatement( IRTree::CLabel() )
+                                            new IRTree::CLabelStatement( labelJoin )
                                         ) )
                                     )
                                 )

@@ -24,12 +24,12 @@ digraph {
 	ExpBinary3 -> ExpTemp3;
 	ExpBinary3 -> Plus3;
 	ExpBinary3 -> ExpCall4;
-	ExpCall0 -> "Value0: 16";
+	ExpCall0 -> "Value0: 12";
 	ExpMem2 -> ExpBinary3;
-	ExpCall1 -> "Value1: 4";
+	ExpCall1 -> "Value1: 0";
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpBinary1;
-	ExpCall2 -> "Value2: 12";
+	ExpCall2 -> "Value2: 8";
 	ExpBinary0 -> ExpTemp0;
 	ExpBinary0 -> Plus0;
 	ExpBinary0 -> ExpCall0;
@@ -41,6 +41,6 @@ digraph {
 	StatMove1 -> ExpCall3;
 	ExpName0 -> "Label1: Tree::RecPrint";
 	ExpCall5 -> "Value4: 1";
-	ExpCall4 -> "Value3: 16";
+	ExpCall4 -> "Value3: 12";
 }
 

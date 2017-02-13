@@ -1,6 +1,6 @@
 digraph {
 	ordering = out;
-	ExpCall9 -> "Value8: 16";
+	ExpCall9 -> "Value8: 12";
 	ExpBinary7 -> ExpTemp6;
 	ExpBinary7 -> Plus5;
 	ExpBinary7 -> ExpCall9;
@@ -12,13 +12,13 @@ digraph {
 	ExpMem1 -> ExpBinary1;
 	StatSeq4 -> StatMove0;
 	StatSeq4 -> StatSeq5;
-	ExpCall0 -> "Value0: 8";
+	ExpCall0 -> "Value0: 4";
 	StatLabel1 -> "Label1: L0";
 	ExpMem2 -> ExpBinary2;
 	StatMove0 -> ExpMem1;
 	StatMove0 -> ExpCall3;
-	ExpCall2 -> "Value2: 16";
-	ExpCall7 -> "Value6: 8";
+	ExpCall2 -> "Value2: 12";
+	ExpCall7 -> "Value6: 4";
 	StatSeq3 -> StatLabel3;
 	StatSeq3 -> StatSeq4;
 	ExpTemp1 -> "Temp1: T2";
@@ -58,10 +58,10 @@ digraph {
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpCall4;
 	ExpTemp5 -> "Temp5: T3";
-	StatLabel5 -> "Label7: L3";
+	StatLabel5 -> "Label7: L2";
 	StatLabel2 -> "Label2: L1";
-	ExpCall4 -> "Value4: 16";
-	ExpCall5 -> "Value5: 8";
+	ExpCall4 -> "Value4: 12";
+	ExpCall5 -> "Value5: 4";
 	ExpBinary4 -> ExpTemp3;
 	ExpBinary4 -> Plus3;
 	ExpBinary4 -> ExpCall5;

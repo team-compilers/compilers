@@ -19,8 +19,8 @@ digraph {
 	ExpBinary0 -> ExpTemp0;
 	ExpBinary0 -> Plus0;
 	ExpBinary0 -> ExpCall0;
-	ExpCall2 -> "Value1: 8";
-	ExpCall7 -> "Value4: 16";
+	ExpCall2 -> "Value1: 4";
+	ExpCall7 -> "Value4: 12";
 	ExpMem4 -> ExpBinary4;
 	ExpName4 -> "Label5: BBS::Print";
 	StatMove0 -> ExpMem0;
@@ -29,7 +29,7 @@ digraph {
 	ExpCall1 -> ExpName0;
 	ExpCall1 -> ExpList0;
 	ExpMem2 -> ExpBinary2;
-	ExpCall0 -> "Value0: 16";
+	ExpCall0 -> "Value0: 12";
 	StatSeq4 -> StatExp0;
 	StatSeq4 -> StatSeq5;
 	ExpTemp0 -> "Temp0: T2";
@@ -43,7 +43,7 @@ digraph {
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpCall3;
-	ExpCall3 -> "Value2: 16";
+	ExpCall3 -> "Value2: 12";
 	ExpBinary1 -> ExpTemp1;
 	ExpBinary1 -> Plus1;
 	ExpBinary1 -> ExpCall2;
@@ -65,7 +65,7 @@ digraph {
 	ExpBinary3 -> Plus3;
 	ExpBinary3 -> ExpCall7;
 	ExpMem3 -> ExpBinary3;
-	ExpCall9 -> "Value5: 16";
+	ExpCall9 -> "Value5: 12";
 	StatMove2 -> ExpMem3;
 	StatMove2 -> ExpCall8;
 	ExpName3 -> "Label4: BBS::Sort";

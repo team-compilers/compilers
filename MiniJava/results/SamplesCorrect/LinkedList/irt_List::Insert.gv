@@ -13,13 +13,13 @@ digraph {
 	ExpBinary0 -> Plus0;
 	ExpBinary0 -> ExpCall0;
 	ExpMem4 -> ExpBinary6;
-	ExpCall2 -> "Value2: 20";
+	ExpCall2 -> "Value2: 16";
 	ExpCall7 -> ExpName1;
 	ExpCall7 -> ExpList1;
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpBinary1;
 	ExpList0 -> ExpBinary3;
-	ExpCall1 -> "Value1: 4";
+	ExpCall1 -> "Value1: 0";
 	ExpBinary3 -> ExpCall4;
 	ExpBinary3 -> Times0;
 	ExpBinary3 -> ExpCall5;
@@ -35,7 +35,7 @@ digraph {
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpCall2;
-	ExpCall0 -> "Value0: 16";
+	ExpCall0 -> "Value0: 12";
 	ExpMem2 -> ExpBinary4;
 	ExpMem0 -> ExpBinary0;
 	ExpBinary6 -> ExpTemp5;
@@ -49,7 +49,7 @@ digraph {
 	ExpBinary1 -> ExpTemp1;
 	ExpBinary1 -> Plus1;
 	ExpBinary1 -> ExpCall1;
-	ExpCall8 -> "Value6: 8";
+	ExpCall8 -> "Value6: 4";
 	StatSeq3 -> StatMove1;
 	StatSeq3 -> StatMove2;
 	ExpTemp3 -> "Temp3: T18";
@@ -57,7 +57,7 @@ digraph {
 	ExpBinary4 -> ExpTemp3;
 	ExpBinary4 -> Plus3;
 	ExpBinary4 -> ExpCall6;
-	ExpCall6 -> "Value5: 24";
+	ExpCall6 -> "Value5: 20";
 	StatMove2 -> ExpMem2;
 	StatMove2 -> ExpCall7;
 	ExpName1 -> "Label2: List::InitNew";
@@ -68,12 +68,12 @@ digraph {
 	ExpBinary5 -> Plus4;
 	ExpBinary5 -> ExpCall8;
 	ExpMem3 -> ExpBinary5;
-	ExpCall9 -> "Value7: 16";
+	ExpCall9 -> "Value7: 12";
 	StatSeq1 -> StatSeq2;
 	StatSeq1 -> StatMove3;
 	ExpTemp6 -> "Temp6: T19";
 	StatMove3 -> ExpTemp6;
 	StatMove3 -> ExpMem5;
-	ExpCall11 -> "Value9: 20";
+	ExpCall11 -> "Value9: 16";
 }
 

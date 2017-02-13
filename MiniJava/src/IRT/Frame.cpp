@@ -110,13 +110,15 @@ std::unique_ptr<const CExpression> CFrame::ExternalCall( const std::string& func
 }
 
 int CFrame::nextOffsetFromFramePointer() {
+    int tmp = maxOffsetFramePointer;
     maxOffsetFramePointer += wordSize;
-    return maxOffsetFramePointer;
+    return tmp;
 }
 
 int CFrame::nextOffsetFromThis() {
+    int tmp = maxOffsetThis;
     maxOffsetThis += wordSize;
-    return maxOffsetThis;
+    return tmp;
 }
 
 void CFrame::addAddress( const std::string& name, const IAddress* address ) {
