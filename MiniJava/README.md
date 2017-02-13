@@ -30,7 +30,4 @@ __Дополнения__:
 ```bash
 # последовательный запуск утилиты valgrind на всех файлах из директории data/
 python launcher.py valgrind
-```  
-
-__Ссылки__:  
-Качать актуальную версию flex отсюда: https://sourceforge.net/projects/flex/files/
+```
