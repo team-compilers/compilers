@@ -34,8 +34,11 @@ const int CFrame::wordSize = 4;
 const std::string CFrame::thisName = "$this";
 const std::string CFrame::returnName = "$return";
 
+const CTemp CFrame::returnValueTemp = CTemp( "RetVal" );
+const CTemp CFrame::framePointerTemp = CTemp( "FP" );
+
 CTemp CFrame::FramePointer() const {
-    return framePointer;
+    return framePointerTemp;
 }
 
 CTemp CFrame::ReturnValueTemp() const {

@@ -82,11 +82,12 @@ private:
     CLabel name;
     std::unordered_map<std::string, std::unique_ptr<const IAddress>> addresses;
 
-    CTemp framePointer;
-    CTemp returnValueTemp;
     static const int wordSize;
     static const std::string thisName;
-    static const std::string returnName;
+    static const std::string returnName; // return address
+
+    static const CTemp returnValueTemp; // return value
+    static const CTemp framePointerTemp;
 
     int maxOffsetFramePointer;
     int maxOffsetThis;
