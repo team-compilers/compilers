@@ -51,6 +51,7 @@ def generate_results_valgrind(dirpaths_input = DEF_DIRS_IN, dirpaths_output = DE
     generate_results(sys_command_f, dirpaths_input, dirpaths_output, verbose)
 
 def generate_results_all():
+    remove_generated_data()
     generate_results_run()
     generate_results_images()
 
