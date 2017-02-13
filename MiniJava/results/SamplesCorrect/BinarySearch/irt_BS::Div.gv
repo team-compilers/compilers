@@ -39,6 +39,7 @@ digraph {
 	ExpTemp2 -> "Temp2: T6";
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpCall3;
+	StatCJump0 -> LT0;
 	StatCJump0 -> ExpMem4;
 	StatCJump0 -> ExpMem5;
 	StatCJump0 -> StatLabel2;

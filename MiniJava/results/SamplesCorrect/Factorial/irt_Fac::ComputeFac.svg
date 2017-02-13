@@ -255,22 +255,22 @@
 <polygon fill="black" stroke="black" points="736.968,-766 733.184,-756.104 729.971,-766.2 736.968,-766"/>
 </g>
 <!-- StatJump0 -->
-<g id="node43" class="node"><title>StatJump0</title>
+<g id="node40" class="node"><title>StatJump0</title>
 <ellipse fill="none" stroke="black" cx="845.696" cy="-738" rx="48.1917" ry="18"/>
 <text text-anchor="middle" x="845.696" y="-734.3" font-family="Times,serif" font-size="14.00">StatJump0</text>
 </g>
 <!-- StatSeq5&#45;&gt;StatJump0 -->
-<g id="edge35" class="edge"><title>StatSeq5&#45;&gt;StatJump0</title>
+<g id="edge29" class="edge"><title>StatSeq5&#45;&gt;StatJump0</title>
 <path fill="none" stroke="black" d="M845.696,-791.697C845.696,-783.983 845.696,-774.712 845.696,-766.112"/>
 <polygon fill="black" stroke="black" points="849.196,-766.104 845.696,-756.104 842.196,-766.104 849.196,-766.104"/>
 </g>
 <!-- StatSeq6 -->
-<g id="node48" class="node"><title>StatSeq6</title>
+<g id="node41" class="node"><title>StatSeq6</title>
 <ellipse fill="none" stroke="black" cx="958.696" cy="-738" rx="42.4939" ry="18"/>
 <text text-anchor="middle" x="958.696" y="-734.3" font-family="Times,serif" font-size="14.00">StatSeq6</text>
 </g>
 <!-- StatSeq5&#45;&gt;StatSeq6 -->
-<g id="edge36" class="edge"><title>StatSeq5&#45;&gt;StatSeq6</title>
+<g id="edge30" class="edge"><title>StatSeq5&#45;&gt;StatSeq6</title>
 <path fill="none" stroke="black" d="M868.563,-794.834C885.411,-784.398 908.532,-770.075 927.138,-758.549"/>
 <polygon fill="black" stroke="black" points="929.204,-761.386 935.862,-753.144 925.518,-755.435 929.204,-761.386"/>
 </g>
@@ -381,13 +381,13 @@
 </g>
 <!-- StatLabel3 -->
 <g id="node29" class="node"><title>StatLabel3</title>
-<ellipse fill="none" stroke="black" cx="621.696" cy="-882" rx="48.9926" ry="18"/>
-<text text-anchor="middle" x="621.696" y="-878.3" font-family="Times,serif" font-size="14.00">StatLabel3</text>
+<ellipse fill="none" stroke="black" cx="620.696" cy="-882" rx="48.9926" ry="18"/>
+<text text-anchor="middle" x="620.696" y="-878.3" font-family="Times,serif" font-size="14.00">StatLabel3</text>
 </g>
 <!-- StatSeq3&#45;&gt;StatLabel3 -->
 <g id="edge20" class="edge"><title>StatSeq3&#45;&gt;StatLabel3</title>
-<path fill="none" stroke="black" d="M663.171,-936.765C656.52,-928.143 648.205,-917.365 640.77,-907.727"/>
-<polygon fill="black" stroke="black" points="643.406,-905.413 634.527,-899.633 637.864,-909.689 643.406,-905.413"/>
+<path fill="none" stroke="black" d="M662.939,-936.765C656.165,-928.143 647.696,-917.365 640.124,-907.727"/>
+<polygon fill="black" stroke="black" points="642.695,-905.334 633.765,-899.633 637.191,-909.659 642.695,-905.334"/>
 </g>
 <!-- Label3: L0 -->
 <g id="node35" class="node"><title>Label3: L0</title>
@@ -396,8 +396,8 @@
 </g>
 <!-- StatLabel3&#45;&gt;Label3: L0 -->
 <g id="edge25" class="edge"><title>StatLabel3&#45;&gt;Label3: L0</title>
-<path fill="none" stroke="black" d="M620.46,-863.697C619.909,-855.983 619.246,-846.712 618.632,-838.112"/>
-<polygon fill="black" stroke="black" points="622.121,-837.83 617.917,-828.104 615.139,-838.328 622.121,-837.83"/>
+<path fill="none" stroke="black" d="M619.707,-863.697C619.266,-855.983 618.736,-846.712 618.245,-838.112"/>
+<polygon fill="black" stroke="black" points="621.738,-837.888 617.673,-828.104 614.749,-838.288 621.738,-837.888"/>
 </g>
 <!-- Temp1: T2 -->
 <g id="node31" class="node"><title>Temp1: T2</title>
@@ -445,7 +445,7 @@
 <polygon fill="black" stroke="black" points="526.223,-1052.35 519.359,-1044.28 519.692,-1054.86 526.223,-1052.35"/>
 </g>
 <!-- StatSeq1&#45;&gt;StatMove2 -->
-<g id="edge83" class="edge"><title>StatSeq1&#45;&gt;StatMove2</title>
+<g id="edge84" class="edge"><title>StatSeq1&#45;&gt;StatMove2</title>
 <path fill="none" stroke="black" d="M707.571,-1086.06C741.723,-1074.34 796.204,-1055.65 834.712,-1042.44"/>
 <polygon fill="black" stroke="black" points="836.304,-1045.59 844.627,-1039.03 834.032,-1038.97 836.304,-1045.59"/>
 </g>
@@ -455,7 +455,7 @@
 <text text-anchor="middle" x="675.696" y="-1022.3" font-family="Times,serif" font-size="14.00">StatSeq2</text>
 </g>
 <!-- StatSeq1&#45;&gt;StatSeq2 -->
-<g id="edge82" class="edge"><title>StatSeq1&#45;&gt;StatSeq2</title>
+<g id="edge83" class="edge"><title>StatSeq1&#45;&gt;StatSeq2</title>
 <path fill="none" stroke="black" d="M675.696,-1079.7C675.696,-1071.98 675.696,-1062.71 675.696,-1054.11"/>
 <polygon fill="black" stroke="black" points="679.196,-1054.1 675.696,-1044.1 672.196,-1054.1 679.196,-1054.1"/>
 </g>
@@ -466,101 +466,176 @@
 </g>
 <!-- StatCJump0 -->
 <g id="node37" class="node"><title>StatCJump0</title>
-<ellipse fill="none" stroke="black" cx="380.696" cy="-954" rx="53.8905" ry="18"/>
-<text text-anchor="middle" x="380.696" y="-950.3" font-family="Times,serif" font-size="14.00">StatCJump0</text>
+<ellipse fill="none" stroke="black" cx="325.696" cy="-954" rx="53.8905" ry="18"/>
+<text text-anchor="middle" x="325.696" y="-950.3" font-family="Times,serif" font-size="14.00">StatCJump0</text>
 </g>
 <!-- StatSeq2&#45;&gt;StatCJump0 -->
 <g id="edge26" class="edge"><title>StatSeq2&#45;&gt;StatCJump0</title>
-<path fill="none" stroke="black" d="M644.3,-1013.94C637.854,-1011.84 631.086,-1009.75 624.696,-1008 560.948,-990.507 486.567,-975.048 436.841,-965.407"/>
-<polygon fill="black" stroke="black" points="437.407,-961.952 426.926,-963.499 436.084,-968.826 437.407,-961.952"/>
+<path fill="none" stroke="black" d="M644.351,-1013.75C637.901,-1011.66 631.118,-1009.63 624.696,-1008 542.579,-987.155 445.733,-971.595 385.01,-962.9"/>
+<polygon fill="black" stroke="black" points="385.236,-959.397 374.844,-961.46 384.255,-966.328 385.236,-959.397"/>
 </g>
 <!-- StatCJump0&#45;&gt;StatLabel1 -->
-<g id="edge79" class="edge"><title>StatCJump0&#45;&gt;StatLabel1</title>
-<path fill="none" stroke="black" d="M380.696,-935.697C380.696,-927.983 380.696,-918.712 380.696,-910.112"/>
-<polygon fill="black" stroke="black" points="384.196,-910.104 380.696,-900.104 377.196,-910.104 384.196,-910.104"/>
+<g id="edge80" class="edge"><title>StatCJump0&#45;&gt;StatLabel1</title>
+<path fill="none" stroke="black" d="M338.73,-936.411C345.511,-927.781 353.932,-917.062 361.448,-907.497"/>
+<polygon fill="black" stroke="black" points="364.329,-909.496 367.755,-899.47 358.824,-905.171 364.329,-909.496"/>
 </g>
 <!-- ExpCall1 -->
-<g id="node45" class="node"><title>ExpCall1</title>
-<ellipse fill="none" stroke="black" cx="268.696" cy="-882" rx="44.393" ry="18"/>
-<text text-anchor="middle" x="268.696" y="-878.3" font-family="Times,serif" font-size="14.00">ExpCall1</text>
+<g id="node51" class="node"><title>ExpCall1</title>
+<ellipse fill="none" stroke="black" cx="269.696" cy="-882" rx="44.393" ry="18"/>
+<text text-anchor="middle" x="269.696" y="-878.3" font-family="Times,serif" font-size="14.00">ExpCall1</text>
 </g>
 <!-- StatCJump0&#45;&gt;ExpCall1 -->
-<g id="edge78" class="edge"><title>StatCJump0&#45;&gt;ExpCall1</title>
-<path fill="none" stroke="black" d="M356.393,-937.811C340.067,-927.607 318.381,-914.053 300.659,-902.977"/>
-<polygon fill="black" stroke="black" points="302.137,-899.774 291.802,-897.442 298.427,-905.71 302.137,-899.774"/>
+<g id="edge79" class="edge"><title>StatCJump0&#45;&gt;ExpCall1</title>
+<path fill="none" stroke="black" d="M312.424,-936.411C305.52,-927.781 296.945,-917.062 289.293,-907.497"/>
+<polygon fill="black" stroke="black" points="291.851,-905.092 282.871,-899.47 286.385,-909.465 291.851,-905.092"/>
 </g>
 <!-- ExpMem0 -->
 <g id="node57" class="node"><title>ExpMem0</title>
-<ellipse fill="none" stroke="black" cx="153.696" cy="-882" rx="48.9926" ry="18"/>
-<text text-anchor="middle" x="153.696" y="-878.3" font-family="Times,serif" font-size="14.00">ExpMem0</text>
+<ellipse fill="none" stroke="black" cx="158.696" cy="-882" rx="48.9926" ry="18"/>
+<text text-anchor="middle" x="158.696" y="-878.3" font-family="Times,serif" font-size="14.00">ExpMem0</text>
 </g>
 <!-- StatCJump0&#45;&gt;ExpMem0 -->
-<g id="edge77" class="edge"><title>StatCJump0&#45;&gt;ExpMem0</title>
-<path fill="none" stroke="black" d="M342.445,-941.205C303.024,-929.048 241.561,-910.095 199.556,-897.142"/>
-<polygon fill="black" stroke="black" points="200.437,-893.751 189.85,-894.149 198.375,-900.44 200.437,-893.751"/>
+<g id="edge78" class="edge"><title>StatCJump0&#45;&gt;ExpMem0</title>
+<path fill="none" stroke="black" d="M293.496,-939.503C266.587,-928.224 228.073,-912.08 199.097,-899.935"/>
+<polygon fill="black" stroke="black" points="200.242,-896.62 189.667,-895.982 197.536,-903.076 200.242,-896.62"/>
 </g>
 <!-- StatLabel2 -->
 <g id="node69" class="node"><title>StatLabel2</title>
-<ellipse fill="none" stroke="black" cx="496.696" cy="-882" rx="48.9926" ry="18"/>
-<text text-anchor="middle" x="496.696" y="-878.3" font-family="Times,serif" font-size="14.00">StatLabel2</text>
+<ellipse fill="none" stroke="black" cx="497.696" cy="-882" rx="48.9926" ry="18"/>
+<text text-anchor="middle" x="497.696" y="-878.3" font-family="Times,serif" font-size="14.00">StatLabel2</text>
 </g>
 <!-- StatCJump0&#45;&gt;StatLabel2 -->
-<g id="edge80" class="edge"><title>StatCJump0&#45;&gt;StatLabel2</title>
-<path fill="none" stroke="black" d="M405.58,-937.983C422.515,-927.764 445.113,-914.128 463.567,-902.992"/>
-<polygon fill="black" stroke="black" points="465.496,-905.915 472.25,-897.752 461.88,-899.922 465.496,-905.915"/>
+<g id="edge81" class="edge"><title>StatCJump0&#45;&gt;StatLabel2</title>
+<path fill="none" stroke="black" d="M358.452,-939.669C386.421,-928.286 426.775,-911.863 456.848,-899.624"/>
+<polygon fill="black" stroke="black" points="458.279,-902.821 466.222,-895.809 455.64,-896.337 458.279,-902.821"/>
 </g>
-<!-- ExpBinary0 -->
-<g id="node38" class="node"><title>ExpBinary0</title>
-<ellipse fill="none" stroke="black" cx="149.696" cy="-810" rx="53.0913" ry="18"/>
-<text text-anchor="middle" x="149.696" y="-806.3" font-family="Times,serif" font-size="14.00">ExpBinary0</text>
+<!-- LT0 -->
+<g id="node85" class="node"><title>LT0</title>
+<ellipse fill="none" stroke="black" cx="64.6955" cy="-882" rx="27" ry="18"/>
+<text text-anchor="middle" x="64.6955" y="-878.3" font-family="Times,serif" font-size="14.00">LT0</text>
 </g>
-<!-- ExpBinary0&#45;&gt;ExpCall0 -->
-<g id="edge30" class="edge"><title>ExpBinary0&#45;&gt;ExpCall0</title>
-<path fill="none" stroke="black" d="M170.799,-793.116C183.669,-783.429 200.284,-770.923 214.299,-760.374"/>
-<polygon fill="black" stroke="black" points="216.747,-762.912 222.632,-754.101 212.538,-757.319 216.747,-762.912"/>
+<!-- StatCJump0&#45;&gt;LT0 -->
+<g id="edge77" class="edge"><title>StatCJump0&#45;&gt;LT0</title>
+<path fill="none" stroke="black" d="M278.774,-944.926C232.684,-936.304 160.742,-920.988 100.696,-900 98.787,-899.333 96.8447,-898.596 94.9011,-897.815"/>
+<polygon fill="black" stroke="black" points="95.8905,-894.428 85.3245,-893.647 93.0971,-900.847 95.8905,-894.428"/>
 </g>
 <!-- ExpTemp0 -->
-<g id="node39" class="node"><title>ExpTemp0</title>
+<g id="node38" class="node"><title>ExpTemp0</title>
 <ellipse fill="none" stroke="black" cx="50.6955" cy="-738" rx="50.0912" ry="18"/>
 <text text-anchor="middle" x="50.6955" y="-734.3" font-family="Times,serif" font-size="14.00">ExpTemp0</text>
 </g>
-<!-- ExpBinary0&#45;&gt;ExpTemp0 -->
-<g id="edge28" class="edge"><title>ExpBinary0&#45;&gt;ExpTemp0</title>
-<path fill="none" stroke="black" d="M127.724,-793.465C113.915,-783.7 95.9136,-770.972 80.7861,-760.276"/>
-<polygon fill="black" stroke="black" points="82.4506,-757.167 72.2648,-754.251 78.4092,-762.882 82.4506,-757.167"/>
-</g>
-<!-- Plus0 -->
-<g id="node40" class="node"><title>Plus0</title>
-<ellipse fill="none" stroke="black" cx="149.696" cy="-738" rx="30.5947" ry="18"/>
-<text text-anchor="middle" x="149.696" y="-734.3" font-family="Times,serif" font-size="14.00">Plus0</text>
-</g>
-<!-- ExpBinary0&#45;&gt;Plus0 -->
-<g id="edge29" class="edge"><title>ExpBinary0&#45;&gt;Plus0</title>
-<path fill="none" stroke="black" d="M149.696,-791.697C149.696,-783.983 149.696,-774.712 149.696,-766.112"/>
-<polygon fill="black" stroke="black" points="153.196,-766.104 149.696,-756.104 146.196,-766.104 153.196,-766.104"/>
-</g>
 <!-- Temp0: T2 -->
-<g id="node47" class="node"><title>Temp0: T2</title>
+<g id="node39" class="node"><title>Temp0: T2</title>
 <ellipse fill="none" stroke="black" cx="50.6955" cy="-666" rx="50.8918" ry="18"/>
 <text text-anchor="middle" x="50.6955" y="-662.3" font-family="Times,serif" font-size="14.00">Temp0: T2</text>
 </g>
 <!-- ExpTemp0&#45;&gt;Temp0: T2 -->
-<g id="edge34" class="edge"><title>ExpTemp0&#45;&gt;Temp0: T2</title>
+<g id="edge28" class="edge"><title>ExpTemp0&#45;&gt;Temp0: T2</title>
 <path fill="none" stroke="black" d="M50.6955,-719.697C50.6955,-711.983 50.6955,-702.712 50.6955,-694.112"/>
 <polygon fill="black" stroke="black" points="54.1956,-694.104 50.6955,-684.104 47.1956,-694.104 54.1956,-694.104"/>
 </g>
+<!-- Label4: L2 -->
+<g id="node50" class="node"><title>Label4: L2</title>
+<ellipse fill="none" stroke="black" cx="845.696" cy="-666" rx="50.0912" ry="18"/>
+<text text-anchor="middle" x="845.696" y="-662.3" font-family="Times,serif" font-size="14.00">Label4: L2</text>
+</g>
+<!-- StatJump0&#45;&gt;Label4: L2 -->
+<g id="edge38" class="edge"><title>StatJump0&#45;&gt;Label4: L2</title>
+<path fill="none" stroke="black" d="M845.696,-719.697C845.696,-711.983 845.696,-702.712 845.696,-694.112"/>
+<polygon fill="black" stroke="black" points="849.196,-694.104 845.696,-684.104 842.196,-694.104 849.196,-694.104"/>
+</g>
+<!-- StatLabel4 -->
+<g id="node42" class="node"><title>StatLabel4</title>
+<ellipse fill="none" stroke="black" cx="962.696" cy="-666" rx="48.9926" ry="18"/>
+<text text-anchor="middle" x="962.696" y="-662.3" font-family="Times,serif" font-size="14.00">StatLabel4</text>
+</g>
+<!-- StatSeq6&#45;&gt;StatLabel4 -->
+<g id="edge49" class="edge"><title>StatSeq6&#45;&gt;StatLabel4</title>
+<path fill="none" stroke="black" d="M959.684,-719.697C960.125,-711.983 960.655,-702.712 961.146,-694.112"/>
+<polygon fill="black" stroke="black" points="964.642,-694.288 961.718,-684.104 957.653,-693.888 964.642,-694.288"/>
+</g>
+<!-- StatSeq7 -->
+<g id="node44" class="node"><title>StatSeq7</title>
+<ellipse fill="none" stroke="black" cx="1075.7" cy="-666" rx="42.4939" ry="18"/>
+<text text-anchor="middle" x="1075.7" y="-662.3" font-family="Times,serif" font-size="14.00">StatSeq7</text>
+</g>
+<!-- StatSeq6&#45;&gt;StatSeq7 -->
+<g id="edge50" class="edge"><title>StatSeq6&#45;&gt;StatSeq7</title>
+<path fill="none" stroke="black" d="M982.091,-723.003C999.592,-712.532 1023.74,-698.082 1043.13,-686.482"/>
+<polygon fill="black" stroke="black" points="1045.16,-689.351 1051.94,-681.213 1041.56,-683.344 1045.16,-689.351"/>
+</g>
+<!-- Label5: L1 -->
+<g id="node43" class="node"><title>Label5: L1</title>
+<ellipse fill="none" stroke="black" cx="957.696" cy="-594" rx="50.0912" ry="18"/>
+<text text-anchor="middle" x="957.696" y="-590.3" font-family="Times,serif" font-size="14.00">Label5: L1</text>
+</g>
+<!-- StatLabel4&#45;&gt;Label5: L1 -->
+<g id="edge31" class="edge"><title>StatLabel4&#45;&gt;Label5: L1</title>
+<path fill="none" stroke="black" d="M961.46,-647.697C960.909,-639.983 960.246,-630.712 959.632,-622.112"/>
+<polygon fill="black" stroke="black" points="963.121,-621.83 958.917,-612.104 956.139,-622.328 963.121,-621.83"/>
+</g>
+<!-- StatSeq7&#45;&gt;StatMove1 -->
+<g id="edge32" class="edge"><title>StatSeq7&#45;&gt;StatMove1</title>
+<path fill="none" stroke="black" d="M1075.7,-647.697C1075.7,-639.983 1075.7,-630.712 1075.7,-622.112"/>
+<polygon fill="black" stroke="black" points="1079.2,-622.104 1075.7,-612.104 1072.2,-622.104 1079.2,-622.104"/>
+</g>
+<!-- StatLabel5 -->
+<g id="node45" class="node"><title>StatLabel5</title>
+<ellipse fill="none" stroke="black" cx="1194.7" cy="-594" rx="48.9926" ry="18"/>
+<text text-anchor="middle" x="1194.7" y="-590.3" font-family="Times,serif" font-size="14.00">StatLabel5</text>
+</g>
+<!-- StatSeq7&#45;&gt;StatLabel5 -->
+<g id="edge33" class="edge"><title>StatSeq7&#45;&gt;StatLabel5</title>
+<path fill="none" stroke="black" d="M1099.49,-651.003C1117.14,-640.623 1141.43,-626.333 1161.06,-614.785"/>
+<polygon fill="black" stroke="black" points="1162.87,-617.784 1169.71,-609.697 1159.32,-611.75 1162.87,-617.784"/>
+</g>
+<!-- Label7: L3 -->
+<g id="node68" class="node"><title>Label7: L3</title>
+<ellipse fill="none" stroke="black" cx="1196.7" cy="-522" rx="50.0912" ry="18"/>
+<text text-anchor="middle" x="1196.7" y="-518.3" font-family="Times,serif" font-size="14.00">Label7: L3</text>
+</g>
+<!-- StatLabel5&#45;&gt;Label7: L3 -->
+<g id="edge59" class="edge"><title>StatLabel5&#45;&gt;Label7: L3</title>
+<path fill="none" stroke="black" d="M1195.19,-575.697C1195.41,-567.983 1195.68,-558.712 1195.92,-550.112"/>
+<polygon fill="black" stroke="black" points="1199.42,-550.2 1196.21,-540.104 1192.42,-550 1199.42,-550.2"/>
+</g>
+<!-- ExpBinary0 -->
+<g id="node46" class="node"><title>ExpBinary0</title>
+<ellipse fill="none" stroke="black" cx="149.696" cy="-810" rx="53.0913" ry="18"/>
+<text text-anchor="middle" x="149.696" y="-806.3" font-family="Times,serif" font-size="14.00">ExpBinary0</text>
+</g>
+<!-- ExpBinary0&#45;&gt;ExpCall0 -->
+<g id="edge36" class="edge"><title>ExpBinary0&#45;&gt;ExpCall0</title>
+<path fill="none" stroke="black" d="M170.799,-793.116C183.669,-783.429 200.284,-770.923 214.299,-760.374"/>
+<polygon fill="black" stroke="black" points="216.747,-762.912 222.632,-754.101 212.538,-757.319 216.747,-762.912"/>
+</g>
+<!-- ExpBinary0&#45;&gt;ExpTemp0 -->
+<g id="edge34" class="edge"><title>ExpBinary0&#45;&gt;ExpTemp0</title>
+<path fill="none" stroke="black" d="M127.724,-793.465C113.915,-783.7 95.9136,-770.972 80.7861,-760.276"/>
+<polygon fill="black" stroke="black" points="82.4506,-757.167 72.2648,-754.251 78.4092,-762.882 82.4506,-757.167"/>
+</g>
+<!-- Plus0 -->
+<g id="node47" class="node"><title>Plus0</title>
+<ellipse fill="none" stroke="black" cx="149.696" cy="-738" rx="30.5947" ry="18"/>
+<text text-anchor="middle" x="149.696" y="-734.3" font-family="Times,serif" font-size="14.00">Plus0</text>
+</g>
+<!-- ExpBinary0&#45;&gt;Plus0 -->
+<g id="edge35" class="edge"><title>ExpBinary0&#45;&gt;Plus0</title>
+<path fill="none" stroke="black" d="M149.696,-791.697C149.696,-783.983 149.696,-774.712 149.696,-766.112"/>
+<polygon fill="black" stroke="black" points="153.196,-766.104 149.696,-756.104 146.196,-766.104 153.196,-766.104"/>
+</g>
 <!-- ExpMem4 -->
-<g id="node41" class="node"><title>ExpMem4</title>
+<g id="node48" class="node"><title>ExpMem4</title>
 <ellipse fill="none" stroke="black" cx="1350.7" cy="-234" rx="48.9926" ry="18"/>
 <text text-anchor="middle" x="1350.7" y="-230.3" font-family="Times,serif" font-size="14.00">ExpMem4</text>
 </g>
 <!-- ExpBinary6 -->
-<g id="node42" class="node"><title>ExpBinary6</title>
+<g id="node49" class="node"><title>ExpBinary6</title>
 <ellipse fill="none" stroke="black" cx="1350.7" cy="-162" rx="53.0913" ry="18"/>
 <text text-anchor="middle" x="1350.7" y="-158.3" font-family="Times,serif" font-size="14.00">ExpBinary6</text>
 </g>
 <!-- ExpMem4&#45;&gt;ExpBinary6 -->
-<g id="edge31" class="edge"><title>ExpMem4&#45;&gt;ExpBinary6</title>
+<g id="edge37" class="edge"><title>ExpMem4&#45;&gt;ExpBinary6</title>
 <path fill="none" stroke="black" d="M1350.7,-215.697C1350.7,-207.983 1350.7,-198.712 1350.7,-190.112"/>
 <polygon fill="black" stroke="black" points="1354.2,-190.104 1350.7,-180.104 1347.2,-190.104 1354.2,-190.104"/>
 </g>
@@ -589,80 +664,15 @@
 <path fill="none" stroke="black" d="M1350.7,-143.697C1350.7,-135.983 1350.7,-126.712 1350.7,-118.112"/>
 <polygon fill="black" stroke="black" points="1354.2,-118.104 1350.7,-108.104 1347.2,-118.104 1354.2,-118.104"/>
 </g>
-<!-- Label4: L2 -->
-<g id="node44" class="node"><title>Label4: L2</title>
-<ellipse fill="none" stroke="black" cx="845.696" cy="-666" rx="50.0912" ry="18"/>
-<text text-anchor="middle" x="845.696" y="-662.3" font-family="Times,serif" font-size="14.00">Label4: L2</text>
-</g>
-<!-- StatJump0&#45;&gt;Label4: L2 -->
-<g id="edge32" class="edge"><title>StatJump0&#45;&gt;Label4: L2</title>
-<path fill="none" stroke="black" d="M845.696,-719.697C845.696,-711.983 845.696,-702.712 845.696,-694.112"/>
-<polygon fill="black" stroke="black" points="849.196,-694.104 845.696,-684.104 842.196,-694.104 849.196,-694.104"/>
-</g>
 <!-- Value1: 1 -->
-<g id="node46" class="node"><title>Value1: 1</title>
+<g id="node52" class="node"><title>Value1: 1</title>
 <ellipse fill="none" stroke="black" cx="266.696" cy="-810" rx="45.4919" ry="18"/>
 <text text-anchor="middle" x="266.696" y="-806.3" font-family="Times,serif" font-size="14.00">Value1: 1</text>
 </g>
 <!-- ExpCall1&#45;&gt;Value1: 1 -->
-<g id="edge33" class="edge"><title>ExpCall1&#45;&gt;Value1: 1</title>
-<path fill="none" stroke="black" d="M268.201,-863.697C267.981,-855.983 267.716,-846.712 267.47,-838.112"/>
-<polygon fill="black" stroke="black" points="270.968,-838 267.184,-828.104 263.971,-838.2 270.968,-838"/>
-</g>
-<!-- StatLabel4 -->
-<g id="node49" class="node"><title>StatLabel4</title>
-<ellipse fill="none" stroke="black" cx="962.696" cy="-666" rx="48.9926" ry="18"/>
-<text text-anchor="middle" x="962.696" y="-662.3" font-family="Times,serif" font-size="14.00">StatLabel4</text>
-</g>
-<!-- StatSeq6&#45;&gt;StatLabel4 -->
-<g id="edge49" class="edge"><title>StatSeq6&#45;&gt;StatLabel4</title>
-<path fill="none" stroke="black" d="M959.684,-719.697C960.125,-711.983 960.655,-702.712 961.146,-694.112"/>
-<polygon fill="black" stroke="black" points="964.642,-694.288 961.718,-684.104 957.653,-693.888 964.642,-694.288"/>
-</g>
-<!-- StatSeq7 -->
-<g id="node51" class="node"><title>StatSeq7</title>
-<ellipse fill="none" stroke="black" cx="1075.7" cy="-666" rx="42.4939" ry="18"/>
-<text text-anchor="middle" x="1075.7" y="-662.3" font-family="Times,serif" font-size="14.00">StatSeq7</text>
-</g>
-<!-- StatSeq6&#45;&gt;StatSeq7 -->
-<g id="edge50" class="edge"><title>StatSeq6&#45;&gt;StatSeq7</title>
-<path fill="none" stroke="black" d="M982.091,-723.003C999.592,-712.532 1023.74,-698.082 1043.13,-686.482"/>
-<polygon fill="black" stroke="black" points="1045.16,-689.351 1051.94,-681.213 1041.56,-683.344 1045.16,-689.351"/>
-</g>
-<!-- Label5: L1 -->
-<g id="node50" class="node"><title>Label5: L1</title>
-<ellipse fill="none" stroke="black" cx="957.696" cy="-594" rx="50.0912" ry="18"/>
-<text text-anchor="middle" x="957.696" y="-590.3" font-family="Times,serif" font-size="14.00">Label5: L1</text>
-</g>
-<!-- StatLabel4&#45;&gt;Label5: L1 -->
-<g id="edge37" class="edge"><title>StatLabel4&#45;&gt;Label5: L1</title>
-<path fill="none" stroke="black" d="M961.46,-647.697C960.909,-639.983 960.246,-630.712 959.632,-622.112"/>
-<polygon fill="black" stroke="black" points="963.121,-621.83 958.917,-612.104 956.139,-622.328 963.121,-621.83"/>
-</g>
-<!-- StatSeq7&#45;&gt;StatMove1 -->
-<g id="edge38" class="edge"><title>StatSeq7&#45;&gt;StatMove1</title>
-<path fill="none" stroke="black" d="M1075.7,-647.697C1075.7,-639.983 1075.7,-630.712 1075.7,-622.112"/>
-<polygon fill="black" stroke="black" points="1079.2,-622.104 1075.7,-612.104 1072.2,-622.104 1079.2,-622.104"/>
-</g>
-<!-- StatLabel5 -->
-<g id="node52" class="node"><title>StatLabel5</title>
-<ellipse fill="none" stroke="black" cx="1194.7" cy="-594" rx="48.9926" ry="18"/>
-<text text-anchor="middle" x="1194.7" y="-590.3" font-family="Times,serif" font-size="14.00">StatLabel5</text>
-</g>
-<!-- StatSeq7&#45;&gt;StatLabel5 -->
-<g id="edge39" class="edge"><title>StatSeq7&#45;&gt;StatLabel5</title>
-<path fill="none" stroke="black" d="M1099.49,-651.003C1117.14,-640.623 1141.43,-626.333 1161.06,-614.785"/>
-<polygon fill="black" stroke="black" points="1162.87,-617.784 1169.71,-609.697 1159.32,-611.75 1162.87,-617.784"/>
-</g>
-<!-- Label7: L3 -->
-<g id="node68" class="node"><title>Label7: L3</title>
-<ellipse fill="none" stroke="black" cx="1196.7" cy="-522" rx="50.0912" ry="18"/>
-<text text-anchor="middle" x="1196.7" y="-518.3" font-family="Times,serif" font-size="14.00">Label7: L3</text>
-</g>
-<!-- StatLabel5&#45;&gt;Label7: L3 -->
-<g id="edge59" class="edge"><title>StatLabel5&#45;&gt;Label7: L3</title>
-<path fill="none" stroke="black" d="M1195.19,-575.697C1195.41,-567.983 1195.68,-558.712 1195.92,-550.112"/>
-<polygon fill="black" stroke="black" points="1199.42,-550.2 1196.21,-540.104 1192.42,-550 1199.42,-550.2"/>
+<g id="edge39" class="edge"><title>ExpCall1&#45;&gt;Value1: 1</title>
+<path fill="none" stroke="black" d="M268.954,-863.697C268.623,-855.983 268.226,-846.712 267.857,-838.112"/>
+<polygon fill="black" stroke="black" points="271.354,-837.945 267.429,-828.104 264.36,-838.245 271.354,-837.945"/>
 </g>
 <!-- ExpCall8 -->
 <g id="node55" class="node"><title>ExpCall8</title>
@@ -681,8 +691,8 @@
 </g>
 <!-- ExpMem0&#45;&gt;ExpBinary0 -->
 <g id="edge45" class="edge"><title>ExpMem0&#45;&gt;ExpBinary0</title>
-<path fill="none" stroke="black" d="M152.707,-863.697C152.266,-855.983 151.736,-846.712 151.245,-838.112"/>
-<polygon fill="black" stroke="black" points="154.738,-837.888 150.673,-828.104 147.749,-838.288 154.738,-837.888"/>
+<path fill="none" stroke="black" d="M156.471,-863.697C155.479,-855.983 154.287,-846.712 153.181,-838.112"/>
+<polygon fill="black" stroke="black" points="156.641,-837.576 151.895,-828.104 149.699,-838.469 156.641,-837.576"/>
 </g>
 <!-- Temp4: T2 -->
 <g id="node82" class="node"><title>Temp4: T2</title>
@@ -736,8 +746,8 @@
 </g>
 <!-- StatLabel2&#45;&gt;Label2: L1 -->
 <g id="edge60" class="edge"><title>StatLabel2&#45;&gt;Label2: L1</title>
-<path fill="none" stroke="black" d="M497.19,-863.697C497.41,-855.983 497.675,-846.712 497.921,-838.112"/>
-<polygon fill="black" stroke="black" points="501.42,-838.2 498.207,-828.104 494.423,-838 501.42,-838.2"/>
+<path fill="none" stroke="black" d="M497.943,-863.697C498.053,-855.983 498.185,-846.712 498.308,-838.112"/>
+<polygon fill="black" stroke="black" points="501.808,-838.153 498.451,-828.104 494.809,-838.053 501.808,-838.153"/>
 </g>
 <!-- ExpCall5 -->
 <g id="node72" class="node"><title>ExpCall5</title>
@@ -815,7 +825,7 @@
 <text text-anchor="middle" x="1455.7" y="-302.3" font-family="Times,serif" font-size="14.00">ExpBinary5</text>
 </g>
 <!-- ExpList0&#45;&gt;ExpBinary5 -->
-<g id="edge81" class="edge"><title>ExpList0&#45;&gt;ExpBinary5</title>
+<g id="edge82" class="edge"><title>ExpList0&#45;&gt;ExpBinary5</title>
 <path fill="none" stroke="black" d="M1432.2,-360.055C1435.73,-352.091 1440.01,-342.411 1443.96,-333.51"/>
 <polygon fill="black" stroke="black" points="1447.2,-334.836 1448.05,-324.275 1440.8,-332.002 1447.2,-334.836"/>
 </g>

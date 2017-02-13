@@ -96,6 +96,7 @@ digraph {
 	ExpBinary5 -> Times0;
 	ExpBinary5 -> ExpCall8;
 	ExpMem3 -> ExpBinary3;
+	StatCJump0 -> LT0;
 	StatCJump0 -> ExpMem1;
 	StatCJump0 -> ExpMem2;
 	StatCJump0 -> StatLabel2;

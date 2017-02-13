@@ -46,6 +46,7 @@ digraph {
 	StatLabel4 -> "Label5: L64";
 	StatSeq5 -> StatLabel4;
 	StatSeq5 -> StatSeq6;
+	StatCJump0 -> NE0;
 	StatCJump0 -> ExpCall0;
 	StatCJump0 -> ExpCall1;
 	StatCJump0 -> StatLabel2;

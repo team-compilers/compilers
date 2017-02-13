@@ -39,14 +39,11 @@ digraph {
 	StatSeq48 -> StatLabel33;
 	StatSeq48 -> StatSeq49;
 	ExpCall49 -> "Value28: 0";
-	StatCJump6 -> ExpCall47;
-	StatCJump6 -> ExpCall49;
-	StatCJump6 -> StatLabel31;
-	StatCJump6 -> StatLabel32;
 	ExpList20 -> ExpCall48;
 	ExpCall48 -> "Value27: 39";
 	ExpCall47 -> ExpName20;
 	ExpCall47 -> ExpList20;
+	ExpName20 -> "Label57: BS::Search";
 	ExpName9 -> "Label25: print";
 	StatLabel26 -> "Label49: L8";
 	StatSeq20 -> StatLabel13;
@@ -57,6 +54,7 @@ digraph {
 	StatSeq35 -> StatSeq36;
 	ExpCall22 -> ExpName9;
 	ExpCall22 -> ExpList9;
+	StatCJump1 -> NE1;
 	StatCJump1 -> ExpCall12;
 	StatCJump1 -> ExpCall14;
 	StatCJump1 -> StatLabel6;
@@ -64,6 +62,7 @@ digraph {
 	ExpCall3 -> "Value2: 16";
 	ExpName16 -> "Label46: print";
 	StatLabel10 -> "Label20: L27";
+	StatCJump7 -> NE7;
 	StatCJump7 -> ExpCall54;
 	StatCJump7 -> ExpCall56;
 	StatCJump7 -> StatLabel36;
@@ -116,6 +115,11 @@ digraph {
 	StatSeq29 -> StatSeq30;
 	ExpCall5 -> ExpName2;
 	ExpCall5 -> ExpList2;
+	StatCJump6 -> NE6;
+	StatCJump6 -> ExpCall47;
+	StatCJump6 -> ExpCall49;
+	StatCJump6 -> StatLabel31;
+	StatCJump6 -> StatLabel32;
 	StatExp1 -> ExpCall10;
 	ExpName1 -> "Label2: BS::Print";
 	StatSeq13 -> StatLabel8;
@@ -133,6 +137,7 @@ digraph {
 	StatSeq2 -> StatMove0;
 	StatSeq2 -> StatSeq3;
 	ExpCall27 -> "Value15: 21";
+	StatCJump2 -> NE2;
 	StatCJump2 -> ExpCall19;
 	StatCJump2 -> ExpCall21;
 	StatCJump2 -> StatLabel11;
@@ -145,6 +150,7 @@ digraph {
 	ExpName4 -> "Label10: print";
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpCall1;
+	StatCJump0 -> NE0;
 	StatCJump0 -> ExpCall5;
 	StatCJump0 -> ExpCall7;
 	StatCJump0 -> StatLabel1;
@@ -274,14 +280,15 @@ digraph {
 	ExpList12 -> ExpCall30;
 	ExpName2 -> "Label3: BS::Search";
 	ExpCall37 -> "Value21: 1";
-	ExpName11 -> "Label30: BS::Search";
-	ExpCall26 -> ExpName11;
-	ExpCall26 -> ExpList11;
 	ExpList9 -> ExpCall23;
+	StatCJump3 -> NE3;
 	StatCJump3 -> ExpCall26;
 	StatCJump3 -> ExpCall28;
 	StatCJump3 -> StatLabel16;
 	StatCJump3 -> StatLabel17;
+	ExpName11 -> "Label30: BS::Search";
+	ExpCall26 -> ExpName11;
+	ExpCall26 -> ExpList11;
 	ExpCall6 -> "Value3: 8";
 	ExpCall28 -> "Value16: 0";
 	StatSeq26 -> StatCJump3;
@@ -306,6 +313,14 @@ digraph {
 	StatExp7 -> ExpCall31;
 	StatSeq25 -> StatSeq26;
 	StatSeq25 -> StatSeq32;
+	StatSeq14 -> StatExp2;
+	StatSeq14 -> StatSeq15;
+	StatCJump4 -> NE4;
+	StatCJump4 -> ExpCall33;
+	StatCJump4 -> ExpCall35;
+	StatCJump4 -> StatLabel21;
+	StatCJump4 -> StatLabel22;
+	StatLabel30 -> "Label56: L11";
 	ExpName14 -> "Label39: BS::Search";
 	ExpCall33 -> ExpName14;
 	ExpCall33 -> ExpList14;
@@ -313,13 +328,6 @@ digraph {
 	StatSeq12 -> StatSeq13;
 	ExpCall34 -> "Value19: 37";
 	ExpList14 -> ExpCall34;
-	StatSeq14 -> StatExp2;
-	StatSeq14 -> StatSeq15;
-	StatCJump4 -> ExpCall33;
-	StatCJump4 -> ExpCall35;
-	StatCJump4 -> StatLabel21;
-	StatCJump4 -> StatLabel22;
-	StatLabel30 -> "Label56: L11";
 	ExpCall56 -> "Value32: 0";
 	ExpCall35 -> "Value20: 0";
 	StatSeq15 -> StatJump1;
@@ -344,17 +352,18 @@ digraph {
 	StatSeq22 -> StatJump2;
 	StatSeq22 -> StatSeq23;
 	ExpCall39 -> "Value22: 0";
-	ExpCall11 -> "Value6: 0";
-	ExpName17 -> "Label48: BS::Search";
-	ExpCall41 -> "Value23: 38";
-	ExpList17 -> ExpCall41;
 	ExpCall1 -> ExpName0;
 	ExpCall1 -> ExpList0;
 	StatLabel20 -> "Label38: L19";
+	StatCJump5 -> NE5;
 	StatCJump5 -> ExpCall40;
 	StatCJump5 -> ExpCall42;
 	StatCJump5 -> StatLabel26;
 	StatCJump5 -> StatLabel27;
+	ExpCall11 -> "Value6: 0";
+	ExpName17 -> "Label48: BS::Search";
+	ExpCall41 -> "Value23: 38";
+	ExpList17 -> ExpCall41;
 	ExpCall42 -> "Value24: 0";
 	ExpCall23 -> "Value13: 1";
 	StatLabel28 -> "Label51: L8";
@@ -375,6 +384,5 @@ digraph {
 	StatExp11 -> ExpCall45;
 	StatSeq45 -> StatExp11;
 	StatSeq45 -> StatLabel30;
-	ExpName20 -> "Label57: BS::Search";
 }
 

@@ -33,6 +33,7 @@ digraph {
 	StatSeq11 -> StatSeq12;
 	StatLabel7 -> "Label14: L89";
 	StatLabel6 -> "Label13: L88";
+	StatCJump0 -> NE0;
 	StatCJump0 -> ExpCall0;
 	StatCJump0 -> ExpCall1;
 	StatCJump0 -> StatLabel1;
@@ -61,13 +62,6 @@ digraph {
 	ExpCall4 -> ExpName2;
 	ExpCall4 -> ExpList2;
 	StatLabel2 -> "Label3: L93";
-	StatLabel1 -> "Label2: L92";
-	StatSeq4 -> StatLabel3;
-	StatSeq4 -> StatSeq5;
-	ExpCall0 -> ExpName0;
-	ExpCall0 -> ExpList0;
-	StatSeq9 -> StatExp0;
-	StatSeq9 -> StatSeq10;
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpCall11;
@@ -75,6 +69,13 @@ digraph {
 	ExpName2 -> "Label6: Tree::GetLeft";
 	StatSeq7 -> StatLabel4;
 	StatSeq7 -> StatSeq8;
+	StatLabel1 -> "Label2: L92";
+	StatSeq4 -> StatLabel3;
+	StatSeq4 -> StatSeq5;
+	ExpCall0 -> ExpName0;
+	ExpCall0 -> ExpList0;
+	StatSeq9 -> StatExp0;
+	StatSeq9 -> StatSeq10;
 	StatJump0 -> "Label7: L94";
 	ExpCall1 -> "Value0: 0";
 	StatSeq14 -> StatLabel9;
@@ -115,11 +116,12 @@ digraph {
 	StatSeq2 -> StatSeq3;
 	StatSeq2 -> StatSeq9;
 	ExpName3 -> "Label10: print";
-	ExpCall9 -> ExpName5;
-	ExpCall9 -> ExpList5;
+	StatCJump1 -> NE1;
 	StatCJump1 -> ExpCall9;
 	StatCJump1 -> ExpCall10;
 	StatCJump1 -> StatLabel6;
 	StatCJump1 -> StatLabel7;
+	ExpCall9 -> ExpName5;
+	ExpCall9 -> ExpList5;
 }
 

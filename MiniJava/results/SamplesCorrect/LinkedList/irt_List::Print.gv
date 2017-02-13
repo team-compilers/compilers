@@ -43,6 +43,7 @@ digraph {
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpMem2;
 	ExpList0 -> ExpCall9;
+	StatCJump0 -> NE0;
 	StatCJump0 -> ExpMem5;
 	StatCJump0 -> ExpCall7;
 	StatCJump0 -> StatLabel2;

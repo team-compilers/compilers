@@ -105,6 +105,7 @@ digraph {
 	ExpBinary0 -> Plus0;
 	ExpBinary0 -> ExpCall0;
 	ExpMem1 -> ExpBinary1;
+	StatCJump0 -> NE0;
 	StatCJump0 -> ExpMem6;
 	StatCJump0 -> ExpCall9;
 	StatCJump0 -> StatLabel2;
@@ -134,6 +135,14 @@ digraph {
 	ExpBinary12 -> ExpTemp12;
 	ExpBinary12 -> Plus12;
 	ExpBinary12 -> ExpCall19;
+	ExpCall22 -> ExpName3;
+	ExpCall22 -> ExpList3;
+	ExpCall3 -> "Value3: 4";
+	StatCJump1 -> NE1;
+	StatCJump1 -> ExpCall10;
+	StatCJump1 -> ExpCall12;
+	StatCJump1 -> StatLabel5;
+	StatCJump1 -> StatLabel6;
 	ExpName0 -> "Label5: Element::Equal";
 	ExpCall10 -> ExpName0;
 	ExpCall10 -> ExpList0;
@@ -141,13 +150,6 @@ digraph {
 	ExpBinary8 -> Plus8;
 	ExpBinary8 -> ExpCall11;
 	ExpCall11 -> "Value10: 20";
-	ExpCall22 -> ExpName3;
-	ExpCall22 -> ExpList3;
-	ExpCall3 -> "Value3: 4";
-	StatCJump1 -> ExpCall10;
-	StatCJump1 -> ExpCall12;
-	StatCJump1 -> StatLabel5;
-	StatCJump1 -> StatLabel6;
 	ExpTemp12 -> "Temp12: T24";
 	StatLabel6 -> "Label7: L45";
 	StatSeq12 -> StatLabel7;

@@ -60,6 +60,7 @@ digraph {
 	ExpBinary27 -> Plus24;
 	ExpBinary27 -> ExpCall28;
 	ExpList0 -> ExpBinary3;
+	StatCJump0 -> LT0;
 	StatCJump0 -> ExpMem7;
 	StatCJump0 -> ExpMem8;
 	StatCJump0 -> StatLabel2;
