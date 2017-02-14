@@ -282,9 +282,7 @@ void CIrtBuilderVisitor::Visit( const CLengthExpression* expression ) {
     std::unique_ptr<const IRTree::CExpression> targetExpression = std::move( subtreeWrapper->ToExpression() );
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        new IRTree::CMemExpression(
-            std::move( targetExpression )
-        )
+        std::move( targetExpression )
     ) );
 
     onNodeExit( nodeName, expression->Location() );
