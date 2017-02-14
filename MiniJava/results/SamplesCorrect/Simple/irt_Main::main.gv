@@ -1,8 +1,8 @@
 digraph {
 	ordering = out;
-	ExpList0 -> ExpCall1;
-	ExpCall1 -> "Value0: 10";
+	ExpList0 -> ExpConst0;
 	StatExp0 -> ExpCall0;
+	ExpConst0 -> "Value0: 10";
 	StatLabel0 -> "Label0: Main::main";
 	ExpCall0 -> ExpName0;
 	ExpCall0 -> ExpList0;

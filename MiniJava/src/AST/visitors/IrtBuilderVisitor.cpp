@@ -187,7 +187,9 @@ void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
                         new IRTree::CBinaryExpression(
                             IRTree::TOperatorType::OT_Plus,
                             std::move( indexExpression ),
-                            std::move( std::unique_ptr<const IRTree::CConstExpression>( new IRTree::CConstExpression( 1 )  ) )
+                            std::move( std::unique_ptr<const IRTree::CConstExpression>(
+                                new IRTree::CConstExpression( 1 )
+                            ) )
                         ),
                         new IRTree::CConstExpression( frameCurrent->WordSize() )
                     )
