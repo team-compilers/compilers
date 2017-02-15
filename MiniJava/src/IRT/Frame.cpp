@@ -126,6 +126,6 @@ int CFrame::nextOffsetFromThis() {
 
 void CFrame::addAddress( const std::string& name, const IAddress* address ) {
     auto result = addresses.emplace( name, std::unique_ptr<const IAddress>( address ) );
-    // overwriting should not happen
-    assert( result.second );
+    // overwriting may happen in case there is a field and a local/argument with the same name
+    // assert( result.second );
 }

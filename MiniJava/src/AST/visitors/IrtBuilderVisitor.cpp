@@ -50,6 +50,8 @@ void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std:
     for ( auto it = fields.begin(); it != fields.end(); ++it ) {
         frameCurrent->AddField( *it );
     }
+    // arguments and locals should be added after fields
+    // in order to overwrite them in the map of addresses in case of name collision
     for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
         frameCurrent->AddArgument( *it );
     }
@@ -454,7 +456,9 @@ void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
                                 new IRTree::CBinaryExpression(
                                     IRTree::TOperatorType::OT_Plus,
                                     std::move( indexExpression ),
-                                    std::move( std::unique_ptr<const IRTree::CConstExpression>( new IRTree::CConstExpression( 1 ) ) )
+                                    std::move( std::unique_ptr<const IRTree::CConstExpression>(
+                                        new IRTree::CConstExpression( 1 )
+                                    ) )
                                 ),
                                 new IRTree::CConstExpression( frameCurrent->WordSize() )
                             )

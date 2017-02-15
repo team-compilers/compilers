@@ -8,7 +8,7 @@ digraph {
 	StatMove1 -> ExpMem2;
 	StatMove1 -> ExpBinary3;
 	ExpConst3 -> "Value3: 1";
-	ExpConst7 -> "Value7: 12";
+	ExpConst7 -> "Value7: 0";
 	StatSeq4 -> StatMove0;
 	StatSeq4 -> StatSeq5;
 	StatJump0 -> "Label4: L2";
@@ -30,7 +30,7 @@ digraph {
 	StatLabel2 -> "Label2: L1";
 	StatSeq7 -> StatMove1;
 	StatSeq7 -> StatLabel5;
-	ExpConst6 -> "Value6: 12";
+	ExpConst6 -> "Value6: 0";
 	ExpMem1 -> ExpBinary1;
 	ExpBinary0 -> ExpTemp0;
 	ExpBinary0 -> Plus0;
@@ -58,13 +58,13 @@ digraph {
 	ExpTemp5 -> "Temp5: RetVal";
 	StatLabel5 -> "Label6: L2";
 	StatLabel3 -> "Label3: L0";
-	ExpConst4 -> "Value4: 12";
+	ExpConst4 -> "Value4: 0";
 	ExpConst0 -> "Value0: 4";
 	ExpBinary4 -> ExpTemp3;
 	ExpBinary4 -> Plus3;
 	ExpBinary4 -> ExpConst5;
 	ExpConst5 -> "Value5: 4";
-	ExpConst2 -> "Value2: 12";
+	ExpConst2 -> "Value2: 0";
 	ExpBinary3 -> ExpMem3;
 	ExpBinary3 -> Times0;
 	ExpBinary3 -> ExpMem4;
