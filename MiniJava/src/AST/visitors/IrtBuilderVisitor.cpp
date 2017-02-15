@@ -39,24 +39,26 @@ std::string CIrtBuilderVisitor::makeMethodFullName( const std::string& className
     return className + "::" + methodName;
 }
 
+template <class InputIteratorArguments, class InputIteratorLocals, class InputIteratorFields>
 void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std::string& methodName,
-        const std::vector<std::string>& arguments, const std::vector<std::string>& locals,
-        const std::unordered_set<std::string>& fields ) {
+        InputIteratorArguments argumentsLeftIt, InputIteratorArguments argumentsRightIt,
+        InputIteratorLocals localsLeftIt, InputIteratorLocals localsRightIt,
+        InputIteratorFields fieldsLeftIt, InputIteratorFields fieldsRightIt ) {
     std::unique_ptr<IRTree::CFrame> frameNew = std::unique_ptr<IRTree::CFrame>( new IRTree::CFrame( className, methodName ) );
 
     frameCurrent = frameNew.get();
 
     frameCurrent->AddThis();
-    for ( auto it = fields.begin(); it != fields.end(); ++it ) {
+    for ( auto it = fieldsLeftIt; it != fieldsRightIt; ++it ) {
         frameCurrent->AddField( *it );
     }
     // arguments and locals should be added after fields
     // in order to overwrite them in the map of addresses in case of name collision
-    for ( auto it = arguments.begin(); it != arguments.end(); ++it ) {
+    for ( auto it = argumentsLeftIt; it != argumentsRightIt; ++it ) {
         frameCurrent->AddArgument( *it );
     }
     frameCurrent->AddReturn();
-    for ( auto it = locals.begin(); it != locals.end(); ++it ) {
+    for ( auto it = localsLeftIt; it != localsRightIt; ++it ) {
         frameCurrent->AddLocal( *it );
     }
 
@@ -92,13 +94,14 @@ void CIrtBuilderVisitor::buildNewFrame( const CMethodDeclaration* declaration ) 
         baseClass = baseClass->HasParent() ? symbolTable->GetClassDefinition( baseClass->GetParentName() ) : nullptr;
     }
 
-    buildNewFrame( classCurrentName, declaration->MethodId()->Name(), argumentsNames, localsNames, fieldsNames );
+    buildNewFrame( classCurrentName, declaration->MethodId()->Name(), argumentsNames.begin(), argumentsNames.end(),
+        localsNames.begin(), localsNames.end(), fieldsNames.begin(), fieldsNames.end() );
 }
 
 void CIrtBuilderVisitor::buildNewFrame( const CMainClass* mainClass ) {
-    std::vector<std::string> emptyVector;
     std::unordered_set<std::string> emptySet;
-    buildNewFrame( mainClass->ClassName()->Name(), "main", emptyVector, emptyVector, emptySet );
+    buildNewFrame( mainClass->ClassName()->Name(), "main", emptySet.end(), emptySet.end(),
+        emptySet.end(), emptySet.end(), emptySet.end(), emptySet.end() );
 }
 
 /*__________ Access Modifiers __________*/

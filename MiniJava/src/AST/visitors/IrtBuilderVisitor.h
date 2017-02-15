@@ -93,9 +93,12 @@ private:
     void updateSubtreeWrapper( IRTree::ISubtreeWrapper* wrapperNew );
     void updateSubtreeWrapper( std::unique_ptr<IRTree::ISubtreeWrapper> wrapperNew );
     std::string makeMethodFullName( const std::string& className, const std::string& methodName );
+
+    template <class InputIteratorArguments, class InputIteratorLocals, class InputIteratorFields>
     void buildNewFrame( const std::string& className, const std::string& methodName,
-        const std::vector<std::string>& arguments, const std::vector<std::string>& locals,
-        const std::unordered_set<std::string>& fields );
+        InputIteratorArguments argumentsLeftIt, InputIteratorArguments argumentsRightIt,
+        InputIteratorLocals localsLeftIt, InputIteratorLocals localsRightIt,
+        InputIteratorFields fieldsLeftIt, InputIteratorFields fieldsRightIt );
     void buildNewFrame( const CMethodDeclaration* declaration );
     void buildNewFrame( const CMainClass* mainClass );
 
