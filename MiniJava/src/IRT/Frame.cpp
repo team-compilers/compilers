@@ -4,23 +4,39 @@
 using namespace IRTree;
 
 std::unique_ptr<const CExpression> CAddressInFrame::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
-    return std::move( std::unique_ptr<const CBinaryExpression>(
-        new CBinaryExpression(
-            TOperatorType::OT_Plus,
-            std::move( framePointer ),
-            std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
-        )
-    ) );
+    std::unique_ptr<const CExpression> offsetExpression;
+    if ( offset != 0 ) {
+        offsetExpression = std::move( std::unique_ptr<const CBinaryExpression>(
+            new CBinaryExpression(
+                TOperatorType::OT_Plus,
+                std::move( framePointer ),
+                std::move( std::unique_ptr<const CExpression>(
+                    new CConstExpression( offset )
+                ) )
+            )
+        ) );
+    } else {
+        offsetExpression = std::move( framePointer );
+    }
+    return std::move( offsetExpression );
 }
 
 std::unique_ptr<const CExpression> CAddressOfField::ToExpression( std::unique_ptr<const CExpression> thisPointer ) const {
-    return std::move( std::unique_ptr<const CBinaryExpression>(
-        new CBinaryExpression(
-            TOperatorType::OT_Plus,
-            std::move( thisPointer ),
-            std::move( std::unique_ptr<const CExpression>( new CConstExpression( offset ) ) )
-        )
-    ) );
+    std::unique_ptr<const CExpression> offsetExpression;
+    if ( offset != 0 ) {
+        offsetExpression = std::move( std::unique_ptr<const CBinaryExpression>(
+            new CBinaryExpression(
+                TOperatorType::OT_Plus,
+                std::move( thisPointer ),
+                std::move( std::unique_ptr<const CExpression>(
+                    new CConstExpression( offset )
+                ) )
+            )
+        ) );
+    } else {
+        offsetExpression = std::move( thisPointer );
+    }
+    return std::move( offsetExpression );
 }
 
 std::unique_ptr<const CExpression> CAddressInRegister::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {

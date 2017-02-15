@@ -1,32 +1,28 @@
 digraph {
 	ordering = out;
+	ExpConst2 -> "Value2: 1";
 	ExpTemp2 -> "Temp2: RetVal";
-	ExpConst3 -> "Value3: 1";
-	ExpConst2 -> "Value2: 4";
 	StatSeq1 -> StatMove0;
 	StatSeq1 -> StatMove1;
-	ExpBinary2 -> ExpTemp1;
-	ExpBinary2 -> Plus2;
-	ExpBinary2 -> ExpConst2;
-	ExpTemp1 -> "Temp1: FP";
 	StatMove1 -> ExpTemp2;
-	StatMove1 -> ExpConst3;
-	ExpConst1 -> "Value1: 16";
-	ExpMem2 -> ExpBinary2;
+	StatMove1 -> ExpConst2;
+	ExpConst1 -> "Value1: 4";
+	ExpMem2 -> ExpBinary1;
 	ExpTemp0 -> "Temp0: FP";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
 	StatLabel0 -> "Label0: Tree::SetLeft";
-	ExpConst0 -> "Value0: 0";
-	ExpMem1 -> ExpBinary1;
-	ExpBinary1 -> ExpTemp0;
-	ExpBinary1 -> Plus0;
-	ExpBinary1 -> ExpConst0;
-	ExpMem0 -> ExpBinary0;
+	ExpMem1 -> ExpTemp0;
+	ExpConst0 -> "Value0: 16";
 	ExpBinary0 -> ExpMem1;
-	ExpBinary0 -> Plus1;
-	ExpBinary0 -> ExpConst1;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst0;
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpMem2;
+	ExpTemp1 -> "Temp1: FP";
+	ExpMem0 -> ExpBinary0;
+	ExpBinary1 -> ExpTemp1;
+	ExpBinary1 -> Plus1;
+	ExpBinary1 -> ExpConst1;
 }
 
