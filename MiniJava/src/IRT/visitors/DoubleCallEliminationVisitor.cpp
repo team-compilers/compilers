@@ -1,10 +1,10 @@
-#include <IRT/visitors/CallEliminationVisitor.h>
+#include <IRT/visitors/DoubleCallEliminationVisitor.h>
 
 using namespace IRTree;
 
 /*__________ Expressions __________*/
 
-void CCallEliminationVisitor::Visit( const CConstExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CConstExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CONST );
     onNodeEnter( nodeName );
 
@@ -13,7 +13,7 @@ void CCallEliminationVisitor::Visit( const CConstExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CNameExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CNameExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NAME );
     onNodeEnter( nodeName );
 
@@ -22,7 +22,7 @@ void CCallEliminationVisitor::Visit( const CNameExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CTempExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CTempExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_TEMP );
     onNodeEnter( nodeName );
 
@@ -31,7 +31,7 @@ void CCallEliminationVisitor::Visit( const CTempExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CBinaryExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
@@ -40,7 +40,7 @@ void CCallEliminationVisitor::Visit( const CBinaryExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CMemExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CMemExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_MEM );
     onNodeEnter( nodeName );
 
@@ -49,7 +49,7 @@ void CCallEliminationVisitor::Visit( const CMemExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CCallExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CCallExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CALL );
     onNodeEnter( nodeName );
 
@@ -58,7 +58,7 @@ void CCallEliminationVisitor::Visit( const CCallExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CEseqExpression* expression ) {
+void CDoubleCallEliminationVisitor::Visit( const CEseqExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ESEQ );
     onNodeEnter( nodeName );
 
@@ -69,7 +69,7 @@ void CCallEliminationVisitor::Visit( const CEseqExpression* expression ) {
 
 /*__________ Statements __________*/
 
-void CCallEliminationVisitor::Visit( const CExpStatement* statement ) {
+void CDoubleCallEliminationVisitor::Visit( const CExpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_EXP );
     onNodeEnter( nodeName );
 
@@ -78,7 +78,7 @@ void CCallEliminationVisitor::Visit( const CExpStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CJumpConditionalStatement* statement ) {
+void CDoubleCallEliminationVisitor::Visit( const CJumpConditionalStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_CJUMP );
     onNodeEnter( nodeName );
 
@@ -87,7 +87,7 @@ void CCallEliminationVisitor::Visit( const CJumpConditionalStatement* statement 
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CJumpStatement* statement ) {
+void CDoubleCallEliminationVisitor::Visit( const CJumpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_JUMP );
     onNodeEnter( nodeName );
 
@@ -96,7 +96,7 @@ void CCallEliminationVisitor::Visit( const CJumpStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CLabelStatement* statement ) {
+void CDoubleCallEliminationVisitor::Visit( const CLabelStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LABEL );
     onNodeEnter( nodeName );
 
@@ -105,7 +105,7 @@ void CCallEliminationVisitor::Visit( const CLabelStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CMoveStatement* statement ) {
+void CDoubleCallEliminationVisitor::Visit( const CMoveStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_MOVE );
     onNodeEnter( nodeName );
 
@@ -114,7 +114,7 @@ void CCallEliminationVisitor::Visit( const CMoveStatement* statement ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CSeqStatement* statement ) {
+void CDoubleCallEliminationVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
 
@@ -125,7 +125,7 @@ void CCallEliminationVisitor::Visit( const CSeqStatement* statement ) {
 
 /*__________  Lists __________*/
 
-void CCallEliminationVisitor::Visit( const CExpressionList* list ) {
+void CDoubleCallEliminationVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
@@ -134,7 +134,7 @@ void CCallEliminationVisitor::Visit( const CExpressionList* list ) {
     onNodeExit( nodeName );
 }
 
-void CCallEliminationVisitor::Visit( const CStatementList* list ) {
+void CDoubleCallEliminationVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 

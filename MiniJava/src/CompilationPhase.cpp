@@ -10,7 +10,7 @@
 #include <AST/visitors/TypeCheckerVisitor.h>
 
 #include <IRT/visitors/DotLangVisitor.h>
-#include <IRT/visitors/CallEliminationVisitor.h>
+#include <IRT/visitors/DoubleCallEliminationVisitor.h>
 
 #include <BisonParser.h>
 
@@ -142,7 +142,10 @@ std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
 }
 
 void CIrtCanonizationPhase::Run() {
-
+    for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
+        IRTree::CDoubleCallEliminationVisitor callEliminationVisitor( verbose );
+        it->second->Accept( &callEliminationVisitor );
+    }
 }
 
 void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,

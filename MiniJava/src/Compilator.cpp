@@ -24,7 +24,11 @@ void CCompilator::Run() {
         return;
     }
 
-    CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable(), false );
+    CIrtBuildingPhase irtBuilding( astBuilding.GetAstRoot(), symbolTableBuilding.GetSymbolTable() );
     irtBuilding.Run();
     irtBuilding.PrintResults( pathOutputDir + "/irt_", ".gv" );
+
+    CIrtCanonizationPhase irtCanonization( irtBuilding.MethodTrees() );
+    irtCanonization.Run();
+    irtCanonization.PrintResults( pathOutputDir + "/irtCanon_", ".gv" );
 }

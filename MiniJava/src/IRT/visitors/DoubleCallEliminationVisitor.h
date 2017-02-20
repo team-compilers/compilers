@@ -10,10 +10,10 @@
 
 namespace IRTree {
 
-class CCallEliminationVisitor : public CVisitor {
+class CDoubleCallEliminationVisitor : public CVisitor {
 public:
-    CCallEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
-    ~CCallEliminationVisitor() {}
+    CDoubleCallEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    ~CDoubleCallEliminationVisitor() {}
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
