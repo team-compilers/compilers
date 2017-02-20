@@ -10,10 +10,10 @@
 
 namespace IRTree {
 
-class CSeqLinearizerVisotr : public CVisitor {
+class CSeqLinearizerVisitor : public CVisitor {
 public:
-    CSeqLinearizerVisotr( bool _verbose = false ) : CVisitor( _verbose ) {}
-    ~CSeqLinearizerVisotr() {}
+    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    ~CSeqLinearizerVisitor() {}
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
