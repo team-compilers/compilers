@@ -10,6 +10,7 @@
 #include <AST/visitors/TypeCheckerVisitor.h>
 
 #include <IRT/visitors/DotLangVisitor.h>
+#include <IRT/visitors/CallEliminationVisitor.h>
 
 #include <BisonParser.h>
 
@@ -138,4 +139,13 @@ std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
     IRTree::CDotLangVisitor dotLangVisitor( verbose );
     methodTrees->at( methodName )->Accept( &dotLangVisitor );
     return dotLangVisitor.GetTraversalInDotLanguage();
+}
+
+void CIrtCanonizationPhase::Run() {
+
+}
+
+void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
+
 }

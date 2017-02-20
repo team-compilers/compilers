@@ -88,9 +88,10 @@ private:
     std::unique_ptr<const std::vector<CCompilationError>> errors;
 };
 
+using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
+
 class CIrtBuildingPhase : public CCompilationPhase {
 public:
-    using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
 
     CIrtBuildingPhase( const ASTree::CProgram* _astRoot,
             const CSymbolTable* _symbolTable,
@@ -112,4 +113,17 @@ private:
     // results
     std::unique_ptr<const TMethodToIRTMap> methodTrees;
     std::string dotLangTraversal;
+};
+
+class CIrtCanonizationPhase : CCompilationPhase {
+public:
+    CIrtCanonizationPhase( const TMethodToIRTMap*, bool _verbose = false )
+        : CCompilationPhase( _verbose ) {}
+
+    virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
+private:
+    // parameters
+    const TMethodToIRTMap* methodTrees;
 };

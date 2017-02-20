@@ -54,7 +54,7 @@ public:
 
     virtual std::unique_ptr<const CExpression> ToExpression() override;
     virtual std::unique_ptr<const CStatement> ToStatement() override;
-    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) = 0;
+    virtual std::unique_ptr<const CStatement> ToConditional( CLabel labelTrue, CLabel labelFalse ) override = 0;
 };
 
 // Specific Subtree Wrappers
