@@ -18,33 +18,30 @@ digraph {
 	StatSeq1 -> StatSeq2;
 	StatSeq1 -> StatMove2;
 	ExpMem8 -> ExpBinary7;
-	ExpConst7 -> "Value7: 8";
-	StatLabel2 -> "Label2: L22";
 	ExpTemp2 -> "Temp2: FP";
 	ExpConst3 -> "Value3: 4";
+	ExpConst7 -> "Value7: 8";
 	ExpTemp1 -> "Temp1: FP";
-	StatLabel5 -> "Label7: L23";
 	ExpTemp5 -> "Temp5: FP";
 	ExpBinary7 -> ExpTemp5;
 	ExpBinary7 -> Plus6;
 	ExpBinary7 -> ExpConst7;
+	StatSeq5 -> StatLabel2;
+	StatSeq5 -> StatSeq6;
 	ExpBinary0 -> ExpTemp0;
 	ExpBinary0 -> Plus0;
 	ExpBinary0 -> ExpConst0;
 	ExpMem4 -> ExpBinary3;
-	StatMove0 -> ExpMem0;
-	StatMove0 -> ExpConst1;
-	ExpMem2 -> ExpBinary2;
-	StatLabel1 -> "Label1: L21";
 	StatSeq4 -> StatCJump0;
 	StatSeq4 -> StatSeq5;
+	ExpMem2 -> ExpBinary2;
+	StatLabel1 -> "Label1: L21";
 	ExpCall0 -> ExpName0;
 	ExpCall0 -> ExpList0;
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpConst1;
 	ExpTemp7 -> "Temp7: RetVal";
 	ExpTemp0 -> "Temp0: FP";
-	StatSeq5 -> StatLabel4;
-	StatSeq5 -> StatSeq6;
-	StatLabel4 -> "Label4: L22";
 	StatSeq3 -> StatLabel1;
 	StatSeq3 -> StatSeq4;
 	ExpMem7 -> ExpBinary6;
@@ -55,6 +52,7 @@ digraph {
 	StatLabel0 -> "Label0: QS::Print";
 	StatSeq7 -> StatExp0;
 	StatSeq7 -> StatMove1;
+	StatLabel2 -> "Label4: L22";
 	ExpMem3 -> ExpTemp2;
 	ExpBinary1 -> ExpTemp1;
 	ExpBinary1 -> Plus1;
@@ -71,7 +69,7 @@ digraph {
 	ExpConst1 -> "Value1: 0";
 	ExpName0 -> "Label5: print";
 	StatSeq8 -> StatJump0;
-	StatSeq8 -> StatLabel5;
+	StatSeq8 -> StatLabel3;
 	ExpTemp3 -> "Temp3: FP";
 	ExpMem6 -> ExpTemp3;
 	ExpConst2 -> "Value2: 8";
@@ -80,8 +78,8 @@ digraph {
 	ExpBinary3 -> ExpBinary4;
 	ExpConst5 -> "Value5: 1";
 	ExpTemp4 -> "Temp4: FP";
+	StatLabel3 -> "Label7: L23";
 	ExpConst8 -> "Value8: 8";
-	StatLabel3 -> "Label3: L23";
 	ExpConst4 -> "Value4: 8";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
@@ -97,8 +95,8 @@ digraph {
 	StatCJump0 -> LT0;
 	StatCJump0 -> ExpMem1;
 	StatCJump0 -> ExpMem2;
-	StatCJump0 -> StatLabel2;
-	StatCJump0 -> StatLabel3;
+	StatCJump0 -> "Label2: L22";
+	StatCJump0 -> "Label3: L23";
 	ExpList0 -> ExpMem4;
 }
 

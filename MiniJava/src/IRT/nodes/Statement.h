@@ -86,16 +86,16 @@ class CJumpConditionalStatement : public CStatement {
 public:
     CJumpConditionalStatement( TLogicOperatorType _operation,
         const CExpression* left, const CExpression* right,
-        const CLabelStatement* _labelTrue, const CLabelStatement* _labelFalse );
+        CLabel _labelTrue, CLabel _labelFalse );
     CJumpConditionalStatement( TLogicOperatorType _operation,
     std::unique_ptr<const CExpression> left, std::unique_ptr<const CExpression> right,
-    std::unique_ptr<const CLabelStatement> _labelTrue, std::unique_ptr<const CLabelStatement> _labelFalse );
+    CLabel _labelTrue, CLabel _labelFalse );
     ~CJumpConditionalStatement();
 
     const CExpression* LeftOperand() const { return leftOperand.get(); }
     const CExpression* RightOperand() const { return rightOperand.get(); }
-    const CLabelStatement* TrueLabel() const { return labelTrue.get(); }
-    const CLabelStatement* FalseLabel() const { return labelFalse.get(); }
+    CLabel TrueLabel() const { return labelTrue; }
+    CLabel FalseLabel() const { return labelFalse; }
     TLogicOperatorType Operation() const { return operation; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
@@ -103,8 +103,8 @@ public:
 private:
     std::unique_ptr<const CExpression> leftOperand;
     std::unique_ptr<const CExpression> rightOperand;
-    std::unique_ptr<const CLabelStatement> labelTrue;
-    std::unique_ptr<const CLabelStatement> labelFalse;
+    CLabel labelTrue;
+    CLabel labelFalse;
     TLogicOperatorType operation;
 };
 

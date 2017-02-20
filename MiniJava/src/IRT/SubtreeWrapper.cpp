@@ -17,8 +17,8 @@ std::unique_ptr<const CStatement> CExpressionWrapper::ToConditional( CLabel labe
             TLogicOperatorType::LOT_NE,
             std::move( expression ),
             std::move( std::unique_ptr<const CExpression>( new CConstExpression( 0 ) ) ),
-            std::move( std::unique_ptr<const CLabelStatement>( new CLabelStatement( labelTrue ) ) ),
-            std::move( std::unique_ptr<const CLabelStatement>( new CLabelStatement( labelFalse ) ) )
+            labelTrue,
+            labelFalse
         )
     ) );
 }
@@ -78,8 +78,8 @@ std::unique_ptr<const CStatement> CRelativeConditionalWrapper::ToConditional( CL
             operatorType,
             std::move( operandLeft ),
             std::move( operandRight ),
-            std::move( std::unique_ptr<const CLabelStatement>( new CLabelStatement( labelTrue ) ) ),
-            std::move( std::unique_ptr<const CLabelStatement>( new CLabelStatement( labelFalse ) ) )
+            labelTrue,
+            labelFalse
         )
     ) );
 }

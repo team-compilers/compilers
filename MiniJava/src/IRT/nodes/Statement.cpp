@@ -26,14 +26,14 @@ CJumpStatement::~CJumpStatement() {}
 
 CJumpConditionalStatement::CJumpConditionalStatement( TLogicOperatorType _operation,
     const CExpression* left, const CExpression* right,
-    const CLabelStatement* _labelTrue, const CLabelStatement* _labelFalse )
+    CLabel _labelTrue, CLabel _labelFalse )
         : leftOperand( left ), rightOperand( right ),
         labelTrue( _labelTrue ), labelFalse( _labelFalse ), operation( _operation ) {}
 CJumpConditionalStatement::CJumpConditionalStatement( TLogicOperatorType _operation,
     std::unique_ptr<const CExpression> left, std::unique_ptr<const CExpression> right,
-    std::unique_ptr<const CLabelStatement> _labelTrue, std::unique_ptr<const CLabelStatement> _labelFalse )
+    CLabel _labelTrue, CLabel _labelFalse )
         : leftOperand( std::move( left ) ), rightOperand( std::move( right ) ),
-        labelTrue( std::move( _labelTrue ) ), labelFalse( std::move( _labelFalse ) ), operation( _operation ) {}
+        labelTrue( _labelTrue ), labelFalse( _labelFalse ), operation( _operation ) {}
 CJumpConditionalStatement::~CJumpConditionalStatement() {}
 
 CSeqStatement::CSeqStatement( const CStatement* _left, const CStatement* _right )

@@ -6,7 +6,7 @@ digraph {
 	ExpBinary13 -> ExpConst15;
 	ExpTemp10 -> "Temp10: RetVal";
 	StatSeq10 -> StatJump0;
-	StatSeq10 -> StatLabel5;
+	StatSeq10 -> StatLabel3;
 	StatJump0 -> "Label5: L39";
 	ExpConst14 -> "Value14: 2";
 	ExpConst13 -> "Value13: 16";
@@ -31,7 +31,6 @@ digraph {
 	ExpBinary9 -> ExpConst10;
 	StatMove3 -> ExpMem6;
 	StatMove3 -> ExpBinary8;
-	ExpMem6 -> ExpBinary7;
 	StatMove2 -> ExpMem2;
 	StatMove2 -> ExpBinary3;
 	ExpTemp2 -> "Temp2: FP";
@@ -62,7 +61,6 @@ digraph {
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
 	ExpTemp1 -> "Temp1: FP";
-	StatLabel5 -> "Label6: L41";
 	ExpTemp5 -> "Temp5: FP";
 	ExpConst12 -> "Value12: 16";
 	ExpTemp8 -> "Temp8: FP";
@@ -72,9 +70,9 @@ digraph {
 	ExpBinary12 -> ExpTemp9;
 	ExpBinary12 -> Plus10;
 	ExpBinary12 -> ExpConst13;
-	StatSeq7 -> StatLabel4;
+	StatSeq7 -> StatLabel2;
 	StatSeq7 -> StatSeq8;
-	StatLabel2 -> "Label2: L40";
+	StatLabel2 -> "Label4: L40";
 	ExpBinary1 -> ExpTemp1;
 	ExpBinary1 -> Plus1;
 	ExpBinary1 -> ExpConst2;
@@ -89,14 +87,13 @@ digraph {
 	ExpConst6 -> "Value6: 1";
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpConst3;
-	StatLabel4 -> "Label4: L40";
 	StatSeq5 -> StatLabel1;
 	StatSeq5 -> StatSeq6;
 	StatCJump0 -> LT0;
 	StatCJump0 -> ExpMem4;
 	StatCJump0 -> ExpMem5;
-	StatCJump0 -> StatLabel2;
-	StatCJump0 -> StatLabel3;
+	StatCJump0 -> "Label2: L40";
+	StatCJump0 -> "Label3: L41";
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
 	ExpBinary2 -> ExpConst4;
@@ -116,16 +113,17 @@ digraph {
 	ExpBinary3 -> ExpConst6;
 	ExpMem3 -> ExpBinary4;
 	ExpTemp4 -> "Temp4: FP";
+	StatLabel3 -> "Label6: L41";
+	ExpConst4 -> "Value4: 12";
+	ExpConst8 -> "Value8: 12";
+	ExpTemp6 -> "Temp6: FP";
 	ExpBinary11 -> ExpMem9;
 	ExpBinary11 -> Plus11;
 	ExpBinary11 -> ExpConst14;
-	ExpConst9 -> "Value9: 20";
 	ExpBinary5 -> ExpTemp4;
 	ExpBinary5 -> Plus4;
 	ExpBinary5 -> ExpConst7;
-	ExpConst4 -> "Value4: 12";
-	ExpConst8 -> "Value8: 12";
-	StatLabel3 -> "Label3: L41";
-	ExpTemp6 -> "Temp6: FP";
+	ExpConst9 -> "Value9: 20";
+	ExpMem6 -> ExpBinary7;
 }
 

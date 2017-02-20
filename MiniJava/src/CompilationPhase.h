@@ -117,8 +117,8 @@ private:
 
 class CIrtCanonizationPhase : CCompilationPhase {
 public:
-    CIrtCanonizationPhase( const TMethodToIRTMap*, bool _verbose = false )
-        : CCompilationPhase( _verbose ) {}
+    CIrtCanonizationPhase( const TMethodToIRTMap* _methodTrees, bool _verbose = false )
+        : CCompilationPhase( _verbose ), methodTrees( _methodTrees ) {}
 
     virtual void Run() override;
     virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,

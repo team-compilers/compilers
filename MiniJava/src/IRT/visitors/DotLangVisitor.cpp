@@ -158,13 +158,13 @@ void CDotLangVisitor::Visit( const CJumpConditionalStatement* statement ) {
     addEdge( nodeName, visitedNodeStack.back() );
     visitedNodeStack.pop_back();
 
-    statement->TrueLabel()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+    std::string labelTrueNodeName = "\"" + generateNodeName( "Label" ) + ": ";
+    labelTrueNodeName += statement->TrueLabel().ToString() + "\"";
+    addEdge( nodeName, labelTrueNodeName );
 
-    statement->FalseLabel()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
+    std::string labelFalseNodeName = "\"" + generateNodeName( "Label" ) + ": ";
+    labelFalseNodeName += statement->FalseLabel().ToString() + "\"";
+    addEdge( nodeName, labelFalseNodeName );
 
     onNodeExit( nodeName );
 }

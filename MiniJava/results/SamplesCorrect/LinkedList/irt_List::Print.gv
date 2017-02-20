@@ -2,7 +2,7 @@ digraph {
 	ordering = out;
 	ExpTemp10 -> "Temp10: RetVal";
 	StatSeq12 -> StatJump0;
-	StatSeq12 -> StatLabel5;
+	StatSeq12 -> StatLabel3;
 	ExpMem10 -> ExpBinary7;
 	ExpTemp9 -> "Temp9: FP";
 	ExpName3 -> "Label8: List::GetEnd";
@@ -32,12 +32,8 @@ digraph {
 	ExpTemp4 -> "Temp4: FP";
 	StatMove1 -> ExpMem1;
 	StatMove1 -> ExpMem2;
-	ExpList0 -> ExpCall1;
-	StatCJump0 -> NE0;
-	StatCJump0 -> ExpMem7;
-	StatCJump0 -> ExpConst5;
-	StatCJump0 -> StatLabel2;
-	StatCJump0 -> StatLabel3;
+	StatSeq5 -> StatLabel1;
+	StatSeq5 -> StatSeq6;
 	ExpConst1 -> "Value1: 12";
 	ExpBinary0 -> ExpTemp0;
 	ExpBinary0 -> Plus0;
@@ -66,19 +62,12 @@ digraph {
 	StatSeq3 -> StatMove1;
 	StatSeq3 -> StatSeq4;
 	ExpMem7 -> ExpBinary4;
-	StatSeq5 -> StatLabel1;
-	StatSeq5 -> StatSeq6;
-	StatLabel4 -> "Label4: L41";
 	StatSeq8 -> StatSeq9;
 	StatSeq8 -> StatSeq12;
 	ExpTemp3 -> "Temp3: FP";
 	StatSeq6 -> StatCJump0;
 	StatSeq6 -> StatSeq7;
-	StatExp0 -> ExpCall0;
-	StatSeq0 -> StatLabel0;
-	StatSeq0 -> StatSeq1;
 	ExpTemp1 -> "Temp1: FP";
-	StatLabel5 -> "Label11: L42";
 	ExpTemp5 -> "Temp5: FP";
 	ExpBinary2 -> ExpMem3;
 	ExpBinary2 -> Plus2;
@@ -86,14 +75,14 @@ digraph {
 	ExpMem5 -> ExpMem6;
 	StatLabel0 -> "Label0: List::Print";
 	ExpName2 -> "Label7: List::GetNext";
-	StatSeq7 -> StatLabel4;
+	StatSeq7 -> StatLabel2;
 	StatSeq7 -> StatSeq8;
 	ExpMem9 -> ExpBinary6;
 	ExpConst6 -> "Value6: 16";
 	ExpMem1 -> ExpBinary1;
 	ExpCall4 -> ExpName4;
 	ExpCall4 -> ExpList4;
-	StatLabel2 -> "Label2: L42";
+	StatLabel2 -> "Label4: L41";
 	ExpTemp2 -> "Temp2: FP";
 	ExpMem3 -> ExpTemp3;
 	ExpCall3 -> ExpName3;
@@ -115,9 +104,12 @@ digraph {
 	ExpBinary4 -> ExpTemp6;
 	ExpBinary4 -> Plus4;
 	ExpBinary4 -> ExpConst4;
+	StatLabel3 -> "Label11: L42";
 	ExpConst8 -> "Value8: 8";
 	ExpConst4 -> "Value4: 12";
-	StatLabel3 -> "Label3: L41";
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatSeq1;
+	StatExp0 -> ExpCall0;
 	ExpName0 -> "Label5: print";
 	StatSeq10 -> StatMove3;
 	StatSeq10 -> StatSeq11;
@@ -125,5 +117,11 @@ digraph {
 	StatJump0 -> "Label10: L40";
 	ExpCall1 -> ExpName1;
 	ExpCall1 -> ExpList1;
+	StatCJump0 -> NE0;
+	StatCJump0 -> ExpMem7;
+	StatCJump0 -> ExpConst5;
+	StatCJump0 -> "Label2: L42";
+	StatCJump0 -> "Label3: L41";
+	ExpList0 -> ExpCall1;
 }
 
