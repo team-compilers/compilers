@@ -145,10 +145,25 @@ void CIrtCanonizationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
         IRTree::CDoubleCallEliminationVisitor callEliminationVisitor( verbose );
         it->second->Accept( &callEliminationVisitor );
+        methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
     }
 }
 
 void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode ) {
+    assert( methodTreesWithoutDoubleCalls );
+    for ( auto it = methodTreesWithoutDoubleCalls->begin(); it != methodTreesWithoutDoubleCalls->end(); ++it ) {
+        std::string methodName = it->first;
+        methodName[0] = std::toupper( methodName[0] );
+        std::fstream outputStream( pathOutputFile + methodName + extension, openMode );
+        outputStream << ToDotLanguage( it->first ) << std::endl;
+        outputStream.close();
+    }
+}
 
+std::string CIrtCanonizationPhase::ToDotLanguage( const std::string& methodName ) {
+    assert( methodTreesWithoutDoubleCalls );
+    IRTree::CDotLangVisitor dotLangVisitor( verbose );
+    methodTreesWithoutDoubleCalls->at( methodName )->Accept( &dotLangVisitor );
+    return dotLangVisitor.GetTraversalInDotLanguage();
 }

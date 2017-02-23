@@ -1,0 +1,34 @@
+digraph {
+	ordering = out;
+	ExpConst2 -> "Value2: 0";
+	ExpTemp2 -> "Temp2: RetVal";
+	ExpTemp1 -> "Temp1: FP";
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpCall1;
+	ExpMem0 -> ExpBinary0;
+	StatMove1 -> ExpTemp2;
+	StatMove1 -> ExpConst2;
+	ExpList1 -> ExpTemp1;
+	ExpName1 -> "Label2: Visitor::visit";
+	ExpConst1 -> "Value1: 12";
+	ExpName0 -> "Label1: print";
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatSeq1;
+	StatSeq1 -> StatSeq2;
+	StatSeq1 -> StatMove1;
+	ExpCall0 -> ExpName0;
+	ExpCall0 -> ExpList0;
+	StatSeq2 -> StatExp0;
+	StatSeq2 -> StatMove0;
+	StatLabel0 -> "Label0: Tree::accept";
+	ExpConst0 -> "Value0: 333";
+	ExpCall1 -> ExpName1;
+	ExpCall1 -> ExpList1;
+	ExpList0 -> ExpConst0;
+	StatExp0 -> ExpCall0;
+	ExpTemp0 -> "Temp0: FP";
+	ExpBinary0 -> ExpTemp0;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst1;
+}
+

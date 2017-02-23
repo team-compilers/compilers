@@ -35,4 +35,6 @@ CCallExpression::~CCallExpression() {}
 
 CEseqExpression::CEseqExpression( const CStatement* _statement, const CExpression* _expression )
     : statement( _statement ), expression( _expression ) {}
+CEseqExpression::CEseqExpression( std::unique_ptr<const CStatement> _statement, std::unique_ptr<const CExpression> _expression )
+    : statement( std::move( _statement ) ), expression( std::move( _expression ) ) {}
 CEseqExpression::~CEseqExpression() {}

@@ -249,7 +249,7 @@ void CDotLangVisitor::Visit( const CStatementList* list ) {
 
     visitedNodeStack.push_back( nodeName );
 
-    const std::vector< std::unique_ptr<const CStatement> >& statements = list->Statements();
+    const std::vector<std::unique_ptr<const CStatement>>& statements = list->Statements();
     for ( auto it = statements.begin(); it != statements.end(); ++it ) {
         ( *it )->Accept( this );
 

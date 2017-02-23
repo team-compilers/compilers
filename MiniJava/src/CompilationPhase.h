@@ -118,12 +118,17 @@ private:
 class CIrtCanonizationPhase : CCompilationPhase {
 public:
     CIrtCanonizationPhase( const TMethodToIRTMap* _methodTrees, bool _verbose = false )
-        : CCompilationPhase( _verbose ), methodTrees( _methodTrees ) {}
+        : CCompilationPhase( _verbose ), methodTrees( _methodTrees ), methodTreesWithoutDoubleCalls( new TMethodToIRTMap() ) {}
 
     virtual void Run() override;
     virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
+
+    std::string ToDotLanguage( const std::string& methodName );
 private:
     // parameters
     const TMethodToIRTMap* methodTrees;
+
+    // results
+    std::unique_ptr<TMethodToIRTMap> methodTreesWithoutDoubleCalls;
 };

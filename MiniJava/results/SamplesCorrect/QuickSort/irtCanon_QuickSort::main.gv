@@ -1,0 +1,17 @@
+digraph {
+	ordering = out;
+	ExpList0 -> ExpCall1;
+	ExpList1 -> ExpConst0;
+	ExpCall1 -> ExpName1;
+	ExpCall1 -> ExpList1;
+	ExpName1 -> "Label2: QS::Start";
+	StatExp0 -> ExpCall0;
+	ExpConst0 -> "Value0: 10";
+	StatLabel0 -> "Label0: QuickSort::main";
+	ExpCall0 -> ExpName0;
+	ExpCall0 -> ExpList0;
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatExp0;
+	ExpName0 -> "Label1: print";
+}
+

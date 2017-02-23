@@ -134,6 +134,7 @@ private:
 class CEseqExpression : public CExpression {
 public:
     CEseqExpression( const CStatement* _statement, const CExpression* _expression );
+    CEseqExpression( std::unique_ptr<const CStatement> _statement, std::unique_ptr<const CExpression> _expression );
     ~CEseqExpression();
 
     const CStatement* Statement() const { return statement.get(); }
