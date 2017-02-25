@@ -128,7 +128,7 @@ digraph {
 	StatSeq21 -> StatExp4;
 	StatSeq21 -> StatSeq22;
 	StatExp0 -> ExpCall3;
-	ExpTemp2 -> "Temp2: FP";
+	ExpTemp2 -> "Temp2: $fp";
 	StatLabel11 -> "Label36: L13";
 	ExpConst12 -> "Value12: 0";
 	ExpList20 -> ExpConst27;
@@ -174,8 +174,8 @@ digraph {
 	ExpList13 -> ExpConst18;
 	StatSeq9 -> StatLabel2;
 	StatSeq9 -> StatSeq10;
-	ExpTemp1 -> "Temp1: FP";
-	ExpTemp0 -> "Temp0: FP";
+	ExpTemp1 -> "Temp1: $fp";
+	ExpTemp0 -> "Temp0: $fp";
 	ExpList21 -> ExpConst29;
 	ExpName2 -> "Label3: BS::Search";
 	ExpConst6 -> "Value6: 0";
@@ -220,7 +220,7 @@ digraph {
 	ExpCall4 -> ExpName4;
 	ExpCall4 -> ExpList4;
 	StatJump3 -> "Label35: L14";
-	ExpTemp3 -> "Temp3: RetVal";
+	ExpTemp3 -> "Temp3: $rv";
 	StatSeq37 -> StatLabel14;
 	StatSeq37 -> StatSeq38;
 	StatLabel8 -> "Label27: L16";

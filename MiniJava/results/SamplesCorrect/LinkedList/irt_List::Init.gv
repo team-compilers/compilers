@@ -1,9 +1,9 @@
 digraph {
 	ordering = out;
 	ExpConst2 -> "Value2: 1";
-	ExpTemp1 -> "Temp1: RetVal";
+	ExpTemp1 -> "Temp1: $rv";
 	ExpMem0 -> ExpBinary0;
-	ExpTemp0 -> "Temp0: FP";
+	ExpTemp0 -> "Temp0: $fp";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
 	StatLabel0 -> "Label0: List::Init";

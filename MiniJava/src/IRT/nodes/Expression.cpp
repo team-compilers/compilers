@@ -14,7 +14,7 @@ CConstExpression::~CConstExpression() {}
 CNameExpression::CNameExpression( CLabel _label ) : label( _label ) {}
 CNameExpression::~CNameExpression() {}
 
-CTempExpression::CTempExpression( CTemp _temporary ) : temporary( _temporary ) {}
+CTempExpression::CTempExpression( const CTemp& _temporary ) : temporary( _temporary ) {}
 CTempExpression::~CTempExpression() {}
 
 CBinaryExpression::CBinaryExpression( TOperatorType _operation, const CExpression* left, const CExpression* right )

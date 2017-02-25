@@ -12,7 +12,7 @@ namespace IRTree {
 class IAddress {
 public:
     virtual ~IAddress() {}
-    virtual std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> framePointer ) const = 0;
+    virtual std::unique_ptr<const CExpression> ToExpression() const = 0;
 };
 
 /**
@@ -20,18 +20,24 @@ Indicates a memory location at offset X from the frame pointer.
 */
 class CAddressInFrame : public IAddress {
 public:
-    CAddressInFrame( int _offset ) : offset( _offset ) {}
+    CAddressInFrame( const IAddress* _frameAddress, int _offset )
+        : frameAddress( _frameAddress ), offset( _offset ) {}
 
     virtual ~CAddressInFrame() {}
-    virtual std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
-protected:
+    virtual std::unique_ptr<const CExpression> ToExpression() const override;
+private:
+    const IAddress* frameAddress;
     int offset;
 };
 
-class CAddressOfField : public CAddressInFrame {
+class CAddressOfField : public IAddress {
 public:
-    CAddressOfField( int _offset ) : CAddressInFrame( _offset ) {}
-    std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> thisPointer ) const override;
+    CAddressOfField( const IAddress* _thisAddress, int _offset )
+        : thisAddress( std::move( _thisAddress ) ), offset( _offset ) {}
+    std::unique_ptr<const CExpression> ToExpression() const override;
+private:
+    const IAddress* thisAddress;
+    int offset;
 };
 
 /**
@@ -40,7 +46,7 @@ CAddressInRegister (T84) indicates that it will be held in "register" T84
 class CAddressInRegister : public IAddress {
 public:
     CAddressInRegister( const CTemp& _temp ) : temp( _temp ) {}
-    std::unique_ptr<const CExpression> ToExpression( std::unique_ptr<const CExpression> framePointer ) const override;
+    std::unique_ptr<const CExpression> ToExpression() const override;
 private:
     CTemp temp;
 };
@@ -48,28 +54,26 @@ private:
 class CFrame {
 public:
     // CFrame( CLabel _name ) : name( _name ), maxOffsetFramePointer( 0 ) {}
-    CFrame( const std::string& _className, const std::string& _methodName )
-        : className( _className ), methodName( _methodName ),
-          name( className + "$" + methodName ), maxOffsetFramePointer( 0 ), maxOffsetThis( 0 ) {}
+    CFrame( const std::string& _className, const std::string& _methodName );
 
-    CTemp FramePointer() const;
-    CTemp ReturnValueTemp() const;
-    int WordSize() const;
+    int GetWordSize() const;
 
     CLabel GetName() const;
     const std::string& GetClassName() const;
     const std::string& GetMethodName() const;
 
     // reserves place on stack for method arguments and locals (determines offsets for them)
-    void AddThis();
-    void AddReturn();
-    void AddArgument( const std::string& name );
-    void AddLocal( const std::string& name );
-    void AddField( const std::string& name );
+    void AddThisAddress();
+    void AddReturnAddress();
+    void AddArgumentAddress( const std::string& name );
+    void AddLocalAddress( const std::string& name );
+    void AddFieldAddress( const std::string& name );
 
+    const IAddress* GetFramePointerAddress() const;
+    const IAddress* GetReturnValueAddress() const;
+    const IAddress* GetThisAddress() const;
+    const IAddress* GetReturnAddress() const;
     const IAddress* GetAddress( const std::string& varName ) const;
-    const IAddress* GetThis() const;
-    const IAddress* GetReturn() const;
 
     std::unique_ptr<const CExpression> ExternalCall( const std::string& functionName, std::unique_ptr<const CExpressionList> args ) const;
 private:
@@ -83,11 +87,10 @@ private:
     std::unordered_map<std::string, std::unique_ptr<const IAddress>> addresses;
 
     static const int wordSize;
-    static const std::string thisName;
-    static const std::string returnName; // return address
-
-    static const CTemp returnValueTemp; // return value
-    static const CTemp framePointerTemp;
+    static const std::string thisAddressName;
+    static const std::string returnAddressName;
+    static const std::string returnValueAddressName;
+    static const std::string framePointerAddressName;
 
     int maxOffsetFramePointer;
     int maxOffsetThis;

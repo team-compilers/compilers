@@ -48,18 +48,18 @@ void CIrtBuilderVisitor::buildNewFrame( const std::string& className, const std:
 
     frameCurrent = frameNew.get();
 
-    frameCurrent->AddThis();
+    frameCurrent->AddThisAddress();
     for ( auto it = fieldsLeftIt; it != fieldsRightIt; ++it ) {
-        frameCurrent->AddField( *it );
+        frameCurrent->AddFieldAddress( *it );
     }
     // arguments and locals should be added after fields
     // in order to overwrite them in the map of addresses in case of name collision
     for ( auto it = argumentsLeftIt; it != argumentsRightIt; ++it ) {
-        frameCurrent->AddArgument( *it );
+        frameCurrent->AddArgumentAddress( *it );
     }
-    frameCurrent->AddReturn();
+    frameCurrent->AddReturnAddress();
     for ( auto it = localsLeftIt; it != localsRightIt; ++it ) {
-        frameCurrent->AddLocal( *it );
+        frameCurrent->AddLocalAddress( *it );
     }
 
     std::string methodFullName = makeMethodFullName( className, methodName );
@@ -134,11 +134,9 @@ void CIrtBuilderVisitor::Visit( const CBinaryExpression* expression ) {
 
     expression->LeftOperand()->Accept( this );
     std::unique_ptr<IRTree::ISubtreeWrapper> wrapperLeft = std::move( subtreeWrapper );
-    // std::unique_ptr<const IRTree::CExpression> expressionLeft = std::move( subtreeWrapper->ToExpression() );
 
     expression->RightOperand()->Accept( this );
     std::unique_ptr<IRTree::ISubtreeWrapper> wrapperRight = std::move( subtreeWrapper );
-    // std::unique_ptr<const IRTree::CExpression> expressionRight = std::move( subtreeWrapper->ToExpression() );
 
     if ( expression->Operation() == TOperatorType::OT_LT ) {
         updateSubtreeWrapper( new IRTree::CRelativeConditionalWrapper(
@@ -186,17 +184,17 @@ void CIrtBuilderVisitor::Visit( const CBracketExpression* expression ) {
             new IRTree::CBinaryExpression(
                 IRTree::TOperatorType::OT_Plus,
                 std::move( containerExpression ),
-                std::move( std::unique_ptr<const IRTree::CBinaryExpression>(
+                std::move( std::unique_ptr<const IRTree::CExpression>(
                     new IRTree::CBinaryExpression(
                         IRTree::TOperatorType::OT_Times,
                         new IRTree::CBinaryExpression(
                             IRTree::TOperatorType::OT_Plus,
                             std::move( indexExpression ),
-                            std::move( std::unique_ptr<const IRTree::CConstExpression>(
+                            std::move( std::unique_ptr<const IRTree::CExpression>(
                                 new IRTree::CConstExpression( 1 )
                             ) )
                         ),
-                        new IRTree::CConstExpression( frameCurrent->WordSize() )
+                        new IRTree::CConstExpression( frameCurrent->GetWordSize() )
                     )
                 ) )
             )
@@ -243,31 +241,13 @@ void CIrtBuilderVisitor::Visit( const CIdExpression* expression ) {
         if ( type.Type() == TTypeIdentifier::NotFound ) {
             // expression is a name of field
             updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-                new IRTree::CMemExpression(
-                    std::move( address->ToExpression(
-                        std::move( std::unique_ptr<IRTree::CExpression>(
-                            new IRTree::CMemExpression(
-                                frameCurrent->GetThis()->ToExpression(
-                                    std::move( std::unique_ptr<IRTree::CExpression>(
-                                        new IRTree::CTempExpression( frameCurrent->FramePointer() )
-                                    ) )
-                                )
-                            )
-                        ) )
-                    ) )
-                )
+                std::move( address->ToExpression() )
             ) );
             type = classDefinition->GetFieldType( expression->Name() );
         } else {
             // expression is a name of local var / argument
             updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-                new IRTree::CMemExpression(
-                    std::move( address->ToExpression(
-                        std::move( std::unique_ptr<IRTree::CExpression>(
-                            new IRTree::CTempExpression( frameCurrent->FramePointer() )
-                        ) )
-                    ) )
-                )
+                std::move( address->ToExpression() )
             ) );
         }
 
@@ -331,11 +311,7 @@ void CIrtBuilderVisitor::Visit( const CThisExpression* expression ) {
     onNodeEnter( nodeName, expression->Location() );
 
     updateSubtreeWrapper( new IRTree::CExpressionWrapper(
-        std::move( frameCurrent->GetThis()->ToExpression(
-            std::move( std::unique_ptr<const IRTree::CExpression>(
-                new IRTree::CTempExpression( frameCurrent->FramePointer() )
-            ) )
-        ) )
+        std::move( frameCurrent->GetThisAddress()->ToExpression() )
     ) );
     methodCallerClassName = classCurrentName;
 
@@ -362,7 +338,7 @@ void CIrtBuilderVisitor::Visit( const CNewArrayExpression* expression ) {
                             std::move( expressionLength ),
                             std::move( std::unique_ptr<IRTree::CConstExpression>( new IRTree::CConstExpression( 1 ) ) )
                         ),
-                        new IRTree::CConstExpression( frameCurrent->WordSize() )
+                        new IRTree::CConstExpression( frameCurrent->GetWordSize() )
                     )
                 )
             ) )
@@ -387,7 +363,7 @@ void CIrtBuilderVisitor::Visit( const CNewIdExpression* expression ) {
                     new IRTree::CBinaryExpression(
                         IRTree::TOperatorType::OT_Times,
                         new IRTree::CConstExpression( fieldCount ),
-                        new IRTree::CConstExpression( frameCurrent->WordSize() )
+                        new IRTree::CConstExpression( frameCurrent->GetWordSize() )
                     )
                 )
             ) )
@@ -448,22 +424,22 @@ void CIrtBuilderVisitor::Visit( const CAssignIdWithIndexStatement* statement ) {
 
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CMoveStatement(
-            std::move( std::unique_ptr<const IRTree::CMemExpression>(
+            std::move( std::unique_ptr<const IRTree::CExpression>(
                 new IRTree::CMemExpression(
                     new IRTree::CBinaryExpression(
                         IRTree::TOperatorType::OT_Plus,
                         std::move( leftPartExpression ),
-                        std::move( std::unique_ptr<const IRTree::CBinaryExpression>(
+                        std::move( std::unique_ptr<const IRTree::CExpression>(
                             new IRTree::CBinaryExpression(
                                 IRTree::TOperatorType::OT_Times,
                                 new IRTree::CBinaryExpression(
                                     IRTree::TOperatorType::OT_Plus,
                                     std::move( indexExpression ),
-                                    std::move( std::unique_ptr<const IRTree::CConstExpression>(
+                                    std::move( std::unique_ptr<const IRTree::CExpression>(
                                         new IRTree::CConstExpression( 1 )
                                     ) )
                                 ),
-                                new IRTree::CConstExpression( frameCurrent->WordSize() )
+                                new IRTree::CConstExpression( frameCurrent->GetWordSize() )
                             )
                         ) )
                     )
@@ -512,19 +488,19 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CSeqStatement(
             std::move( wrapperCondition->ToConditional( labelTrue, labelFalse ) ),
-            std::move( std::unique_ptr<const IRTree::CSeqStatement>(
+            std::move( std::unique_ptr<const IRTree::CStatement>(
                 new IRTree::CSeqStatement(
                     new IRTree::CLabelStatement( labelTrue ),
                     new IRTree::CSeqStatement(
                         std::move( wrapperTargetPositive->ToStatement() ),
-                        std::move( std::unique_ptr<const IRTree::CSeqStatement>(
+                        std::move( std::unique_ptr<const IRTree::CStatement>(
                             new IRTree::CSeqStatement(
                                 new IRTree::CJumpStatement( labelJoin ),
                                 new IRTree::CSeqStatement(
                                     new IRTree::CLabelStatement( labelFalse ),
                                     new IRTree::CSeqStatement(
                                         std::move( wrapperTargetNegative->ToStatement() ),
-                                        std::move( std::unique_ptr<const IRTree::CLabelStatement>(
+                                        std::move( std::unique_ptr<const IRTree::CStatement>(
                                             new IRTree::CLabelStatement( labelJoin )
                                         ) )
                                     )
@@ -558,12 +534,12 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
             new IRTree::CLabelStatement( labelLoop ),
             new IRTree::CSeqStatement(
                 std::move( wrapperCondition->ToConditional( labelBody, labelDone ) ),
-                std::move( std::unique_ptr<const IRTree::CSeqStatement>(
+                std::move( std::unique_ptr<const IRTree::CStatement>(
                     new IRTree::CSeqStatement(
                         new IRTree::CLabelStatement( labelBody ),
                         new IRTree::CSeqStatement(
                             std::move( wrapperBody->ToStatement() ),
-                            std::move( std::unique_ptr<const IRTree::CSeqStatement>(
+                            std::move( std::unique_ptr<const IRTree::CStatement>(
                                 new IRTree::CSeqStatement(
                                     new IRTree::CJumpStatement( labelLoop ),
                                     new IRTree::CLabelStatement( labelDone )
@@ -671,11 +647,9 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
                 new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
                 new IRTree::CSeqStatement(
                     std::move( statementListWrapper->ToStatement() ),
-                    std::move( std::unique_ptr<const IRTree::CMoveStatement>(
+                    std::move( std::unique_ptr<const IRTree::CStatement>(
                         new IRTree::CMoveStatement(
-                            std::move( std::unique_ptr<const IRTree::CTempExpression>(
-                                new IRTree::CTempExpression( frameCurrent->ReturnValueTemp() )
-                            ) ),
+                            std::move( frameCurrent->GetReturnValueAddress()->ToExpression() ),
                             std::move( expressionReturn )
                         )
                     ) )
@@ -687,9 +661,7 @@ void CIrtBuilderVisitor::Visit( const CMethodDeclaration* declaration ) {
             new IRTree::CSeqStatement(
                 new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) ),
                 new IRTree::CMoveStatement(
-                    std::move( std::unique_ptr<const IRTree::CTempExpression>(
-                        new IRTree::CTempExpression( frameCurrent->ReturnValueTemp() )
-                    ) ),
+                    std::move( frameCurrent->GetReturnValueAddress()->ToExpression() ),
                     std::move( expressionReturn )
                 )
             )
@@ -711,7 +683,7 @@ void CIrtBuilderVisitor::Visit( const CMainClass* mainClass ) {
     if ( statementListWrapper ) {
         updateSubtreeWrapper( new IRTree::CStatementWrapper(
             new IRTree::CSeqStatement(
-                std::move( std::unique_ptr<const IRTree::CLabelStatement>(
+                std::move( std::unique_ptr<const IRTree::CStatement>(
                     new IRTree::CLabelStatement( IRTree::CLabel( methodFullName ) )
                 ) ),
                 std::move( statementListWrapper->ToStatement() )

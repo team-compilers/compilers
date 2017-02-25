@@ -3,65 +3,67 @@
 
 using namespace IRTree;
 
-std::unique_ptr<const CExpression> CAddressInFrame::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
+std::unique_ptr<const CExpression> CAddressInFrame::ToExpression() const {
     std::unique_ptr<const CExpression> offsetExpression;
     if ( offset != 0 ) {
-        offsetExpression = std::move( std::unique_ptr<const CBinaryExpression>(
+        offsetExpression = std::move( std::unique_ptr<const CExpression>(
             new CBinaryExpression(
                 TOperatorType::OT_Plus,
-                std::move( framePointer ),
+                std::move( frameAddress->ToExpression() ),
                 std::move( std::unique_ptr<const CExpression>(
                     new CConstExpression( offset )
                 ) )
             )
         ) );
     } else {
-        offsetExpression = std::move( framePointer );
+        offsetExpression = std::move( frameAddress->ToExpression() );
     }
-    return std::move( offsetExpression );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CMemExpression( std::move( offsetExpression ) )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CAddressOfField::ToExpression( std::unique_ptr<const CExpression> thisPointer ) const {
+std::unique_ptr<const CExpression> CAddressOfField::ToExpression() const {
     std::unique_ptr<const CExpression> offsetExpression;
     if ( offset != 0 ) {
-        offsetExpression = std::move( std::unique_ptr<const CBinaryExpression>(
+        offsetExpression = std::move( std::unique_ptr<const CExpression>(
             new CBinaryExpression(
                 TOperatorType::OT_Plus,
-                std::move( thisPointer ),
+                std::move( thisAddress->ToExpression() ),
                 std::move( std::unique_ptr<const CExpression>(
                     new CConstExpression( offset )
                 ) )
             )
         ) );
     } else {
-        offsetExpression = std::move( thisPointer );
+        offsetExpression = std::move( thisAddress->ToExpression() );
     }
-    return std::move( offsetExpression );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CMemExpression( std::move( offsetExpression ) )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CAddressInRegister::ToExpression( std::unique_ptr<const CExpression> framePointer ) const {
-    return std::move( std::unique_ptr<const CTempExpression>(
+std::unique_ptr<const CExpression> CAddressInRegister::ToExpression() const {
+    return std::move( std::unique_ptr<const CExpression>(
         new CTempExpression( temp )
     ) );
 }
 
 
 const int CFrame::wordSize = 4;
-const std::string CFrame::thisName = "$this";
-const std::string CFrame::returnName = "$return";
+const std::string CFrame::thisAddressName = "$this";
+const std::string CFrame::returnAddressName = "$return";
+const std::string CFrame::returnValueAddressName = "$rv";
+const std::string CFrame::framePointerAddressName = "$fp";
 
-const CTemp CFrame::returnValueTemp = CTemp( "RetVal" );
-const CTemp CFrame::framePointerTemp = CTemp( "FP" );
-
-CTemp CFrame::FramePointer() const {
-    return framePointerTemp;
+CFrame::CFrame( const std::string& _className, const std::string& _methodName )
+    : className( _className ), methodName( _methodName ), name( className + "$" + methodName ),
+        maxOffsetFramePointer( 0 ), maxOffsetThis( 0 ) {
+    addAddress( framePointerAddressName, new CAddressInRegister( CTemp( framePointerAddressName ) ) );
+    addAddress( returnValueAddressName, new CAddressInRegister( CTemp( returnValueAddressName ) ) );
 }
 
-CTemp CFrame::ReturnValueTemp() const {
-    return returnValueTemp;
-}
-
-int CFrame::WordSize() const {
+int CFrame::GetWordSize() const {
     return wordSize;
 }
 
@@ -77,26 +79,25 @@ const std::string& CFrame::GetMethodName() const {
     return methodName;
 }
 
-
-void CFrame::AddThis() {
-    AddArgument( thisName );
+void CFrame::AddThisAddress() {
+    AddArgumentAddress( thisAddressName );
 }
 
-void CFrame::AddReturn() {
-    AddArgument( returnName );
+void CFrame::AddReturnAddress() {
+    AddArgumentAddress( returnAddressName );
 }
 
-void CFrame::AddArgument( const std::string& name ) {
-    AddLocal( name );
+void CFrame::AddArgumentAddress( const std::string& name ) {
+    AddLocalAddress( name );
 }
 
-void CFrame::AddLocal( const std::string& name ) {
-    const CAddressInFrame* address = new CAddressInFrame( nextOffsetFromFramePointer() );
+void CFrame::AddLocalAddress( const std::string& name ) {
+    const CAddressInFrame* address = new CAddressInFrame( GetFramePointerAddress(), nextOffsetFromFramePointer() );
     addAddress( name, address );
 }
 
-void CFrame::AddField( const std::string& name ) {
-    const CAddressOfField* address = new CAddressOfField( nextOffsetFromThis() );
+void CFrame::AddFieldAddress( const std::string& name ) {
+    const CAddressOfField* address = new CAddressOfField( GetThisAddress(), nextOffsetFromThis() );
     addAddress( name, address );
 }
 
@@ -109,18 +110,26 @@ const IAddress* CFrame::GetAddress( const std::string& varName ) const {
     return res;
 }
 
-const IAddress* CFrame::GetThis() const {
-    return GetAddress( thisName );
+const IAddress* CFrame::GetThisAddress() const {
+    return GetAddress( thisAddressName );
 }
 
-const IAddress* CFrame::GetReturn() const {
-    return GetAddress( returnName );
+const IAddress* CFrame::GetReturnAddress() const {
+    return GetAddress( returnAddressName );
+}
+
+const IAddress* CFrame::GetFramePointerAddress() const {
+    return GetAddress( framePointerAddressName );
+}
+
+const IAddress* CFrame::GetReturnValueAddress() const {
+    return GetAddress( returnValueAddressName );
 }
 
 std::unique_ptr<const CExpression> CFrame::ExternalCall( const std::string& functionName, std::unique_ptr<const CExpressionList> args ) const {
-    return std::move( std::unique_ptr<const IRTree::CCallExpression>(
+    return std::move( std::unique_ptr<const CExpression>(
         new IRTree::CCallExpression(
-            std::move( std::unique_ptr<const CNameExpression>(
+            std::move( std::unique_ptr<const CExpression>(
                 new CNameExpression( CLabel( functionName ) )
             ) ),
             std::move( args )

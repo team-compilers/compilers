@@ -1,14 +1,14 @@
 digraph {
 	ordering = out;
 	ExpConst2 -> "Value2: 0";
-	ExpTemp2 -> "Temp2: RetVal";
-	ExpTemp1 -> "Temp1: FP";
+	ExpTemp2 -> "Temp2: $rv";
+	ExpTemp1 -> "Temp1: $fp";
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpCall1;
 	ExpMem0 -> ExpBinary0;
 	StatMove1 -> ExpTemp2;
 	StatMove1 -> ExpConst2;
-	ExpList1 -> ExpTemp1;
+	ExpList1 -> ExpMem1;
 	ExpName1 -> "Label2: Visitor::visit";
 	ExpConst1 -> "Value1: 12";
 	ExpName0 -> "Label1: print";
@@ -21,12 +21,13 @@ digraph {
 	StatSeq2 -> StatExp0;
 	StatSeq2 -> StatMove0;
 	StatLabel0 -> "Label0: Tree::accept";
+	ExpMem1 -> ExpTemp1;
 	ExpConst0 -> "Value0: 333";
 	ExpCall1 -> ExpName1;
 	ExpCall1 -> ExpList1;
 	ExpList0 -> ExpConst0;
 	StatExp0 -> ExpCall0;
-	ExpTemp0 -> "Temp0: FP";
+	ExpTemp0 -> "Temp0: $fp";
 	ExpBinary0 -> ExpTemp0;
 	ExpBinary0 -> Plus0;
 	ExpBinary0 -> ExpConst1;

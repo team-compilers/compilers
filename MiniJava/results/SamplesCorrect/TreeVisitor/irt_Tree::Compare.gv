@@ -1,7 +1,7 @@
 digraph {
 	ordering = out;
 	ExpMem10 -> ExpBinary11;
-	ExpTemp10 -> "Temp10: RetVal";
+	ExpTemp10 -> "Temp10: $rv";
 	StatSeq9 -> StatSeq10;
 	StatSeq9 -> StatLabel6;
 	ExpConst14 -> "Value14: 1";
@@ -18,7 +18,7 @@ digraph {
 	StatSeq1 -> StatMove5;
 	ExpMem8 -> ExpBinary9;
 	ExpConst11 -> "Value11: 20";
-	ExpTemp9 -> "Temp9: FP";
+	ExpTemp9 -> "Temp9: $fp";
 	ExpBinary9 -> ExpTemp8;
 	ExpBinary9 -> Plus9;
 	ExpBinary9 -> ExpConst11;
@@ -34,7 +34,7 @@ digraph {
 	ExpBinary8 -> ExpConst10;
 	ExpMem6 -> ExpBinary7;
 	ExpConst12 -> "Value12: 0";
-	ExpTemp8 -> "Temp8: FP";
+	ExpTemp8 -> "Temp8: $fp";
 	ExpBinary7 -> ExpTemp6;
 	ExpBinary7 -> Plus7;
 	ExpBinary7 -> ExpConst9;
@@ -50,7 +50,7 @@ digraph {
 	StatLabel4 -> "Label10: L1";
 	StatSeq5 -> StatLabel1;
 	StatSeq5 -> StatSeq6;
-	ExpTemp2 -> "Temp2: FP";
+	ExpTemp2 -> "Temp2: $fp";
 	StatLabel6 -> "Label12: L5";
 	ExpConst3 -> "Value3: 8";
 	ExpConst7 -> "Value7: 20";
@@ -78,14 +78,14 @@ digraph {
 	StatMove5 -> ExpTemp10;
 	StatMove5 -> ExpMem10;
 	ExpConst5 -> "Value5: 4";
-	ExpTemp7 -> "Temp7: FP";
-	ExpTemp0 -> "Temp0: FP";
-	ExpTemp11 -> "Temp11: FP";
+	ExpTemp7 -> "Temp7: $fp";
+	ExpTemp0 -> "Temp0: $fp";
+	ExpTemp11 -> "Temp11: $fp";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp1 -> "Temp1: FP";
+	ExpTemp1 -> "Temp1: $fp";
 	StatLabel5 -> "Label11: L2";
-	ExpTemp5 -> "Temp5: FP";
+	ExpTemp5 -> "Temp5: $fp";
 	ExpMem5 -> ExpBinary6;
 	ExpBinary2 -> ExpMem2;
 	ExpBinary2 -> Plus3;
@@ -109,7 +109,7 @@ digraph {
 	ExpConst1 -> "Value1: 0";
 	StatSeq6 -> StatMove2;
 	StatSeq6 -> StatSeq7;
-	ExpTemp3 -> "Temp3: FP";
+	ExpTemp3 -> "Temp3: $fp";
 	StatSeq8 -> StatLabel2;
 	StatSeq8 -> StatSeq9;
 	ExpConst0 -> "Value0: 20";
@@ -117,7 +117,7 @@ digraph {
 	ExpBinary4 -> Plus4;
 	ExpBinary4 -> ExpConst5;
 	ExpMem3 -> ExpBinary4;
-	ExpTemp4 -> "Temp4: FP";
+	ExpTemp4 -> "Temp4: $fp";
 	StatCJump1 -> LT1;
 	StatCJump1 -> ExpMem6;
 	StatCJump1 -> ExpMem7;
@@ -137,6 +137,6 @@ digraph {
 	StatLabel3 -> "Label8: L0";
 	ExpConst4 -> "Value4: 1";
 	ExpConst8 -> "Value8: 0";
-	ExpTemp6 -> "Temp6: FP";
+	ExpTemp6 -> "Temp6: $fp";
 }
 
