@@ -485,31 +485,52 @@ void CIrtBuilderVisitor::Visit( const CConditionalStatement* statement ) {
     IRTree::CLabel labelFalse;
     IRTree::CLabel labelJoin;
 
+    IRTree::CLabel* resultLabelTrue = &labelJoin;
+    IRTree::CLabel* resultLabelFalse = &labelJoin;
+
+    std::unique_ptr<const IRTree::CStatement> suffix( new IRTree::CLabelStatement( labelJoin ) );
+    if ( wrapperTargetNegative ) {
+        resultLabelFalse = &labelFalse;
+
+        suffix = std::move( std::unique_ptr<const IRTree::CStatement>(
+            new IRTree::CSeqStatement(
+                new IRTree::CLabelStatement( labelFalse ),
+                new IRTree::CSeqStatement(
+                    std::move( wrapperTargetNegative->ToStatement() ),
+                    std::move( suffix )
+                )
+            )
+        ) );
+        if ( wrapperTargetPositive ) {
+            suffix = std::move( std::unique_ptr<const IRTree::CStatement>(
+                new IRTree::CSeqStatement(
+                    std::move( std::unique_ptr<const IRTree::CStatement>(
+                        new IRTree::CJumpStatement( labelJoin )
+                    ) ),
+                    std::move( suffix )
+                )
+            ) );
+        }
+    }
+
+    if ( wrapperTargetPositive ) {
+        resultLabelTrue = &labelTrue;
+
+        suffix = std::move( std::unique_ptr<const IRTree::CStatement>(
+            new IRTree::CSeqStatement(
+                new IRTree::CLabelStatement( labelTrue ),
+                new IRTree::CSeqStatement(
+                    std::move( wrapperTargetPositive->ToStatement() ),
+                    std::move( suffix )
+                )
+            )
+        ) );
+    }
+
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CSeqStatement(
-            std::move( wrapperCondition->ToConditional( labelTrue, labelFalse ) ),
-            std::move( std::unique_ptr<const IRTree::CStatement>(
-                new IRTree::CSeqStatement(
-                    new IRTree::CLabelStatement( labelTrue ),
-                    new IRTree::CSeqStatement(
-                        std::move( wrapperTargetPositive->ToStatement() ),
-                        std::move( std::unique_ptr<const IRTree::CStatement>(
-                            new IRTree::CSeqStatement(
-                                new IRTree::CJumpStatement( labelJoin ),
-                                new IRTree::CSeqStatement(
-                                    new IRTree::CLabelStatement( labelFalse ),
-                                    new IRTree::CSeqStatement(
-                                        std::move( wrapperTargetNegative->ToStatement() ),
-                                        std::move( std::unique_ptr<const IRTree::CStatement>(
-                                            new IRTree::CLabelStatement( labelJoin )
-                                        ) )
-                                    )
-                                )
-                            )
-                        ) )
-                    )
-                )
-            ) )
+            std::move( wrapperCondition->ToConditional( *resultLabelTrue, *resultLabelFalse ) ),
+            std::move( suffix )
         )
     ) );
 
@@ -529,6 +550,21 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
     IRTree::CLabel labelBody;
     IRTree::CLabel labelDone;
 
+    std::unique_ptr<const IRTree::CStatement> suffix(
+        new IRTree::CSeqStatement(
+            new IRTree::CJumpStatement( labelLoop ),
+            new IRTree::CLabelStatement( labelDone )
+        )
+    );
+    if ( wrapperBody ) {
+        suffix = std::move( std::unique_ptr<const IRTree::CStatement>(
+            new IRTree::CSeqStatement(
+                std::move( wrapperBody->ToStatement() ),
+                std::move( suffix )
+            )
+        ) );
+    }
+
     updateSubtreeWrapper( new IRTree::CStatementWrapper(
         new IRTree::CSeqStatement(
             new IRTree::CLabelStatement( labelLoop ),
@@ -536,16 +572,10 @@ void CIrtBuilderVisitor::Visit( const CWhileLoopStatement* statement ) {
                 std::move( wrapperCondition->ToConditional( labelBody, labelDone ) ),
                 std::move( std::unique_ptr<const IRTree::CStatement>(
                     new IRTree::CSeqStatement(
-                        new IRTree::CLabelStatement( labelBody ),
-                        new IRTree::CSeqStatement(
-                            std::move( wrapperBody->ToStatement() ),
-                            std::move( std::unique_ptr<const IRTree::CStatement>(
-                                new IRTree::CSeqStatement(
-                                    new IRTree::CJumpStatement( labelLoop ),
-                                    new IRTree::CLabelStatement( labelDone )
-                                )
-                            ) )
-                        )
+                        std::move( std::unique_ptr<const IRTree::CStatement>(
+                            new IRTree::CLabelStatement( labelBody )
+                        ) ),
+                        std::move( suffix )
                     )
                 ) )
             )
