@@ -1,0 +1,13 @@
+digraph {
+	ordering = out;
+	ExpList0 -> ExpConst0;
+	StatExp0 -> ExpCall0;
+	ExpConst0 -> "Value0: 10";
+	StatLabel0 -> "Label0: Main@main";
+	ExpCall0 -> ExpName0;
+	ExpCall0 -> ExpList0;
+	StatSeq0 -> StatLabel0;
+	StatSeq0 -> StatExp0;
+	ExpName0 -> "Label1: print";
+}
+
