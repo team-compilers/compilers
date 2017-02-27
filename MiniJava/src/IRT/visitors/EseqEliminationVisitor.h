@@ -12,8 +12,10 @@ namespace IRTree {
 
 class CEseqEliminationVisitor : public CVisitor {
 public:
-    CEseqEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    CEseqEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ), eseqCount( 0 ) {}
     ~CEseqEliminationVisitor() {}
+
+    std::unique_ptr<const CStatement> ResultTree();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
@@ -33,6 +35,25 @@ public:
 
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
+
+private:
+    void updateLastExpression( const CExpression* newLastExpression );
+    void updateLastExpression( std::unique_ptr<const CExpression> newLastExpression );
+
+    void updateLastExpressionList( const CExpressionList* newLastExpressionList );
+    void updateLastExpressionList( std::unique_ptr<const CExpressionList> newLastExpressionList );
+
+    void updateLastStatement( const CStatement* newLastStatement );
+    void updateLastStatement( std::unique_ptr<const CStatement> newLastStatement );
+
+    void updateLastStatementList( const CStatementList* newLastStatementList );
+    void updateLastStatementList( std::unique_ptr<const CStatementList> newLastStatementList );
+
+    int eseqCount;
+    std::unique_ptr<const CExpression> lastExpression;
+    std::unique_ptr<const CStatement> lastStatement;
+    std::unique_ptr<const CExpressionList> lastExpressionList;
+    std::unique_ptr<const CStatementList> lastStatementList;
 };
 
 }

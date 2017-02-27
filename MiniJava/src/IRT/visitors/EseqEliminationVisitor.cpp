@@ -4,11 +4,52 @@ using namespace IRTree;
 
 /*__________ Expressions __________*/
 
+std::unique_ptr<const CStatement> CEseqEliminationVisitor::ResultTree() {
+    return std::move( lastStatement );
+}
+
+void CEseqEliminationVisitor::updateLastExpression( const CExpression* newLastExpression ) {
+    lastExpression = std::unique_ptr<const CExpression>( newLastExpression );
+}
+
+void CEseqEliminationVisitor::updateLastExpression( std::unique_ptr<const CExpression> newLastExpression ) {
+    lastExpression = std::move( newLastExpression );
+}
+
+void CEseqEliminationVisitor::updateLastExpressionList( const CExpressionList* newLastExpressionList ) {
+    lastExpressionList = std::unique_ptr<const CExpressionList>( newLastExpressionList );
+}
+
+void CEseqEliminationVisitor::updateLastExpressionList( std::unique_ptr<const CExpressionList> newLastExpressionList ) {
+    lastExpressionList = std::move( newLastExpressionList );
+}
+
+void CEseqEliminationVisitor::updateLastStatement( const CStatement* newLastStatement ) {
+    lastStatement = std::unique_ptr<const CStatement>( newLastStatement );
+}
+
+void CEseqEliminationVisitor::updateLastStatement( std::unique_ptr<const CStatement> newLastStatement ) {
+    lastStatement = std::move( newLastStatement );
+}
+
+void CEseqEliminationVisitor::updateLastStatementList( const CStatementList* newLastStatementList ) {
+    lastStatementList = std::unique_ptr<const CStatementList>( newLastStatementList );
+}
+
+void CEseqEliminationVisitor::updateLastStatementList( std::unique_ptr<const CStatementList> newLastStatementList ) {
+    lastStatementList = std::move( newLastStatementList );
+}
+
+
+/*__________ Expressions __________*/
+
 void CEseqEliminationVisitor::Visit( const CConstExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CONST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastExpression(
+        new CConstExpression( expression->Value() )
+    );
 
     onNodeExit( nodeName );
 }
@@ -17,7 +58,9 @@ void CEseqEliminationVisitor::Visit( const CNameExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NAME );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastExpression(
+        new CNameExpression( expression->Label() )
+    );
 
     onNodeExit( nodeName );
 }
@@ -26,7 +69,9 @@ void CEseqEliminationVisitor::Visit( const CTempExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_TEMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastExpression(
+        new CTempExpression( expression->Temporary() )
+    );
 
     onNodeExit( nodeName );
 }
@@ -35,7 +80,19 @@ void CEseqEliminationVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->LeftOperand()->Accept( this );
+    std::unique_ptr<const CExpression> expressionLeft = std::move( lastExpression );
+
+    expression->RightOperand()->Accept( this );
+    std::unique_ptr<const CExpression> expressionRight = std::move( lastExpression );
+
+    updateLastExpression(
+        new CBinaryExpression(
+            expression->Operation(),
+            std::move( expressionLeft ),
+            std::move( expressionRight )
+        )
+    );
 
     onNodeExit( nodeName );
 }
@@ -44,7 +101,12 @@ void CEseqEliminationVisitor::Visit( const CMemExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_MEM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->Address()->Accept( this );
+    std::unique_ptr<const CExpression> addressExpression = std::move( lastExpression );
+
+    updateLastExpression(
+        new CMemExpression( std::move( addressExpression ) )
+    );
 
     onNodeExit( nodeName );
 }
@@ -53,7 +115,17 @@ void CEseqEliminationVisitor::Visit( const CCallExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CALL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->Function()->Accept( this );
+    std::unique_ptr<const CExpression> functionExpression = std::move( lastExpression );
+    expression->Arguments()->Accept( this );
+    std::unique_ptr<const CExpressionList> argumentsList = std::move( lastExpressionList );
+
+    updateLastExpression(
+        new CCallExpression(
+            std::move( functionExpression ),
+            std::move( argumentsList )
+        )
+    );
 
     onNodeExit( nodeName );
 }
@@ -62,7 +134,15 @@ void CEseqEliminationVisitor::Visit( const CEseqExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ESEQ );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->Statement()->Accept( this );
+    expression->Expression()->Accept( this );
+
+    updateLastExpression(
+        new CEseqExpression(
+            std::move( lastStatement ),
+            std::move( lastExpression )
+        )
+    );
 
     onNodeExit( nodeName );
 }
@@ -73,7 +153,12 @@ void CEseqEliminationVisitor::Visit( const CExpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_EXP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Expression()->Accept( this );
+    std::unique_ptr<const CExpression> expression = std::move( lastExpression );
+
+    updateLastStatement(
+        new CExpStatement( std::move( expression ) )
+    );
 
     onNodeExit( nodeName );
 }
@@ -82,7 +167,21 @@ void CEseqEliminationVisitor::Visit( const CJumpConditionalStatement* statement 
     std::string nodeName = generateNodeName( CNodeNames::STAT_CJUMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftOperand()->Accept( this );
+    std::unique_ptr<const CExpression> expressionLeft = std::move( lastExpression );
+
+    statement->RightOperand()->Accept( this );
+    std::unique_ptr<const CExpression> expressionRight = std::move( lastExpression );
+
+    updateLastStatement(
+        new CJumpConditionalStatement(
+            statement->Operation(),
+            std::move( expressionLeft ),
+            std::move( expressionRight ),
+            statement->TrueLabel(),
+            statement->FalseLabel()
+        )
+    );
 
     onNodeExit( nodeName );
 }
@@ -91,7 +190,9 @@ void CEseqEliminationVisitor::Visit( const CJumpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_JUMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastStatement(
+        new CJumpStatement( statement->Target() )
+    );
 
     onNodeExit( nodeName );
 }
@@ -100,7 +201,9 @@ void CEseqEliminationVisitor::Visit( const CLabelStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LABEL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastStatement(
+        new CLabelStatement( statement->Label() )
+    );
 
     onNodeExit( nodeName );
 }
@@ -109,7 +212,15 @@ void CEseqEliminationVisitor::Visit( const CMoveStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_MOVE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Destination()->Accept( this );
+    std::unique_ptr<const CExpression> destination = std::move( lastExpression );
+
+    statement->Source()->Accept( this );
+    std::unique_ptr<const CExpression> source = std::move( lastExpression );
+
+    updateLastStatement(
+        new CMoveStatement( std::move( destination ), std::move( source ) )
+    );
 
     onNodeExit( nodeName );
 }
@@ -118,7 +229,15 @@ void CEseqEliminationVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftStatement()->Accept( this );
+    std::unique_ptr<const CStatement> statementLeft = std::move( lastStatement );
+
+    statement->RightStatement()->Accept( this );
+    std::unique_ptr<const CStatement> statementRight = std::move( lastStatement );
+
+    updateLastStatement(
+        new CSeqStatement( std::move( statementLeft ), std::move( statementRight ) )
+    );
 
     onNodeExit( nodeName );
 }
@@ -129,7 +248,15 @@ void CEseqEliminationVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    CExpressionList* newList = new CExpressionList();
+
+    const std::vector<std::unique_ptr<const CExpression>>& expressions = list->Expressions();
+    for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
+        ( *it )->Accept( this );
+        newList->Add( std::move( lastExpression ) );
+    }
+
+    updateLastExpressionList( newList );
 
     onNodeExit( nodeName );
 }
@@ -138,7 +265,15 @@ void CEseqEliminationVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    CStatementList* newList = new CStatementList();
+
+    const std::vector<std::unique_ptr<const CStatement>>& statements = list->Statements();
+    for ( auto it = statements.begin(); it != statements.end(); ++it ) {
+        ( *it )->Accept( this );
+        newList->Add( std::move( lastStatement ) );
+    }
+
+    updateLastStatementList( newList );
 
     onNodeExit( nodeName );
 }
