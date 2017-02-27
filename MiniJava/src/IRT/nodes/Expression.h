@@ -16,6 +16,8 @@ namespace IRTree {
 class IExpression : public IVisitorTarget {
 public:
     virtual ~IExpression();
+
+    virtual std::unique_ptr<const IExpression> Canonize( int eseqCount ) = 0;
 };
 
 class CExpression : public IExpression {
@@ -43,6 +45,8 @@ public:
     int Value() const { return value; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
 private:
     int value;
 };
@@ -58,6 +62,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
+
 private:
     CLabel label;
 };
@@ -72,6 +78,8 @@ public:
     CTemp Temporary() const { return temporary; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
 private:
     CTemp temporary;
 };
@@ -89,6 +97,8 @@ public:
     const CExpression* RightOperand() const { return rightOperand.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
 
 private:
     std::unique_ptr<const CExpression> leftOperand;
@@ -108,6 +118,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
+
 private:
     std::unique_ptr<const CExpression> address;
 };
@@ -125,6 +137,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
+
 private:
     std::unique_ptr<const CExpression> function;
     std::unique_ptr<const CExpressionList> arguments;
@@ -141,6 +155,8 @@ public:
     const CExpression* Expression() const { return expression.get(); }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    std::unique_ptr<const IExpression> Canonize( int eseqCount );
 
 private:
     std::unique_ptr<const CStatement> statement;

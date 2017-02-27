@@ -9,6 +9,8 @@ namespace IRTree {
 class IStatement : public IVisitorTarget {
 public:
     virtual ~IStatement();
+
+    virtual std::unique_ptr<const IStatement> Canonize( int eseqCount ) = 0;
 };
 
 class CStatement : public IStatement {
@@ -44,6 +46,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+
 private:
     std::unique_ptr<const CExpression> destination;
     std::unique_ptr<const CExpression> source;
@@ -61,6 +65,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+
 private:
     std::unique_ptr<const CExpression> expression;
 };
@@ -75,6 +81,8 @@ public:
     CLabel Target() const { return target; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    std::unique_ptr<const IStatement> Canonize( int eseqCount );
 
 private:
     CLabel target;
@@ -100,6 +108,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+
 private:
     std::unique_ptr<const CExpression> leftOperand;
     std::unique_ptr<const CExpression> rightOperand;
@@ -121,6 +131,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+
 private:
     std::unique_ptr<const CStatement> leftStatement;
     std::unique_ptr<const CStatement> rightStatement;
@@ -136,6 +148,8 @@ public:
     CLabel Label() const { return label; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    std::unique_ptr<const IStatement> Canonize( int eseqCount );
 
 private:
     CLabel label;
