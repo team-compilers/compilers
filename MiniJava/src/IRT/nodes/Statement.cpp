@@ -14,11 +14,15 @@ CMoveStatement::CMoveStatement( std::unique_ptr<const CExpression> _destination,
 CMoveStatement::~CMoveStatement() {}
 
 std::unique_ptr<const CStatement> CMoveStatement::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CStatement>(
+        new CMoveStatement(
+            destination->Clone(),
+            source->Clone()
+        )
+    ) );
 }
 
-std::unique_ptr<const CStatement> CMoveStatement::Canonize() {
+std::unique_ptr<const CStatement> CMoveStatement::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -29,11 +33,12 @@ CExpStatement::CExpStatement( std::unique_ptr<const CExpression> _expression )
 CExpStatement::~CExpStatement() {}
 
 std::unique_ptr<const CStatement> CExpStatement::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CStatement>(
+        new CExpStatement( expression->Clone() )
+    ) );
 }
 
-std::unique_ptr<const CStatement> CExpStatement::Canonize() {
+std::unique_ptr<const CStatement> CExpStatement::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -43,11 +48,12 @@ CJumpStatement::CJumpStatement( CLabel _target )
 CJumpStatement::~CJumpStatement() {}
 
 std::unique_ptr<const CStatement> CJumpStatement::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CStatement>(
+        new CJumpStatement( target )
+    ) );
 }
 
-std::unique_ptr<const CStatement> CJumpStatement::Canonize() {
+std::unique_ptr<const CStatement> CJumpStatement::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -65,11 +71,18 @@ CJumpConditionalStatement::CJumpConditionalStatement( TLogicOperatorType _operat
 CJumpConditionalStatement::~CJumpConditionalStatement() {}
 
 std::unique_ptr<const CStatement> CJumpConditionalStatement::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CStatement>(
+        new CJumpConditionalStatement(
+            operation,
+            leftOperand->Clone(),
+            rightOperand->Clone(),
+            labelTrue,
+            labelFalse
+        )
+    ) );
 }
 
-std::unique_ptr<const CStatement> CJumpConditionalStatement::Canonize() {
+std::unique_ptr<const CStatement> CJumpConditionalStatement::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -81,11 +94,15 @@ CSeqStatement::CSeqStatement( std::unique_ptr<const CStatement> _left, std::uniq
 CSeqStatement::~CSeqStatement() {}
 
 std::unique_ptr<const CStatement> CSeqStatement::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CStatement>(
+        new CSeqStatement(
+            leftStatement->Clone(),
+            rightStatement->Clone()
+        )
+    ) );
 }
 
-std::unique_ptr<const CStatement> CSeqStatement::Canonize() {
+std::unique_ptr<const CStatement> CSeqStatement::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -94,11 +111,12 @@ CLabelStatement::CLabelStatement( CLabel _label ) : label( _label ) {}
 CLabelStatement::~CLabelStatement() {}
 
 std::unique_ptr<const CStatement> CLabelStatement::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CStatement>(
+        new CLabelStatement( label )
+    ) );
 }
 
-std::unique_ptr<const CStatement> CLabelStatement::Canonize() {
+std::unique_ptr<const CStatement> CLabelStatement::Canonize() const {
     // not implemented yet
     assert( false );
 }

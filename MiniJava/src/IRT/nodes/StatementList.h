@@ -26,8 +26,11 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    std::unique_ptr<const CStatementList> Clone() const;
+    std::unique_ptr<const CStatementList> Canonize() const;
+
 private:
-    std::vector< std::unique_ptr<const CStatement> > statements;
+    std::vector<std::unique_ptr<const CStatement>> statements;
 };
 
 }

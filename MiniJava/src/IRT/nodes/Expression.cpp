@@ -11,11 +11,12 @@ CConstExpression::CConstExpression( int _value ) : value( _value ) {}
 CConstExpression::~CConstExpression() {}
 
 std::unique_ptr<const CExpression> CConstExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CConstExpression( value )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CConstExpression::Canonize() {
+std::unique_ptr<const CExpression> CConstExpression::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -24,11 +25,12 @@ CNameExpression::CNameExpression( CLabel _label ) : label( _label ) {}
 CNameExpression::~CNameExpression() {}
 
 std::unique_ptr<const CExpression> CNameExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CNameExpression( label )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CNameExpression::Canonize() {
+std::unique_ptr<const CExpression> CNameExpression::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -37,11 +39,12 @@ CTempExpression::CTempExpression( const CTemp& _temporary ) : temporary( _tempor
 CTempExpression::~CTempExpression() {}
 
 std::unique_ptr<const CExpression> CTempExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CTempExpression( temporary )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CTempExpression::Canonize() {
+std::unique_ptr<const CExpression> CTempExpression::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -53,11 +56,16 @@ CBinaryExpression::CBinaryExpression( TOperatorType _operation, std::unique_ptr<
 CBinaryExpression::~CBinaryExpression() {}
 
 std::unique_ptr<const CExpression> CBinaryExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CBinaryExpression(
+            operation,
+            leftOperand->Clone(),
+            rightOperand->Clone()
+        )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CBinaryExpression::Canonize() {
+std::unique_ptr<const CExpression> CBinaryExpression::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -67,11 +75,12 @@ CMemExpression::CMemExpression( std::unique_ptr<const CExpression> _address ) : 
 CMemExpression::~CMemExpression() {}
 
 std::unique_ptr<const CExpression> CMemExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CMemExpression( address->Clone() )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CMemExpression::Canonize() {
+std::unique_ptr<const CExpression> CMemExpression::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -83,11 +92,15 @@ CCallExpression::CCallExpression( std::unique_ptr<const CExpression> func, std::
 CCallExpression::~CCallExpression() {}
 
 std::unique_ptr<const CExpression> CCallExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CCallExpression(
+            function->Clone(),
+            arguments->Clone()
+        )
+    ) );
 }
 
-std::unique_ptr<const CExpression> CCallExpression::Canonize() {
+std::unique_ptr<const CExpression> CCallExpression::Canonize() const {
     // not implemented yet
     assert( false );
 }
@@ -99,12 +112,17 @@ CEseqExpression::CEseqExpression( std::unique_ptr<const CStatement> _statement, 
 CEseqExpression::~CEseqExpression() {}
 
 std::unique_ptr<const CExpression> CEseqExpression::Clone() const {
-    // not implemented yet
-    assert( false );
+    return std::move( std::unique_ptr<const CExpression>(
+        new CEseqExpression(
+            statement->Clone(),
+            expression->Clone()
+        )
+    ) );
 }
 
 
-std::unique_ptr<const CExpression> CEseqExpression::Canonize() {
-    // not implemented yet
-    assert( false );
+std::unique_ptr<const CExpression> CEseqExpression::Canonize() const {
+    std::unique_ptr<const CStatement> statementCanonized = statement->Canonize();
+    std::unique_ptr<const CExpression> expressionCanonized = expression->Canonize();
+    // if ( dynamic_cast<const CEseqExpression*>( expressionCanonized ) ) {}
 }

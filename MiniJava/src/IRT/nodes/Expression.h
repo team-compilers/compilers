@@ -17,7 +17,7 @@ class CExpression : public IVisitorTarget {
 public:
     virtual ~CExpression();
     virtual std::unique_ptr<const CExpression> Clone() const = 0;
-    virtual std::unique_ptr<const CExpression> Canonize() = 0;
+    virtual std::unique_ptr<const CExpression> Canonize() const = 0;
 };
 
 enum class TOperatorType : char {
@@ -42,7 +42,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 private:
     int value;
 };
@@ -59,7 +59,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 
 private:
     CLabel label;
@@ -77,7 +77,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 
 private:
     CTemp temporary;
@@ -98,7 +98,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 
 private:
     std::unique_ptr<const CExpression> leftOperand;
@@ -119,7 +119,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 
 private:
     std::unique_ptr<const CExpression> address;
@@ -139,7 +139,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 
 private:
     std::unique_ptr<const CExpression> function;
@@ -159,7 +159,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpression> Clone() const override;
-    std::unique_ptr<const CExpression> Canonize() override;
+    std::unique_ptr<const CExpression> Canonize() const override;
 
 private:
     std::unique_ptr<const CStatement> statement;

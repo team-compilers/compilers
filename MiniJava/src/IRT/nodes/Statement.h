@@ -10,7 +10,7 @@ class CStatement : public IVisitorTarget {
 public:
     virtual ~CStatement();
     virtual std::unique_ptr<const CStatement> Clone() const = 0;
-    virtual std::unique_ptr<const CStatement> Canonize() = 0;
+    virtual std::unique_ptr<const CStatement> Canonize() const = 0;
 };
 
 enum class TLogicOperatorType : char {
@@ -41,7 +41,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CStatement> Clone() const override;
-    std::unique_ptr<const CStatement> Canonize();
+    std::unique_ptr<const CStatement> Canonize() const override;
 
 private:
     std::unique_ptr<const CExpression> destination;
@@ -61,7 +61,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CStatement> Clone() const override;
-    std::unique_ptr<const CStatement> Canonize();
+    std::unique_ptr<const CStatement> Canonize() const override;
 
 private:
     std::unique_ptr<const CExpression> expression;
@@ -79,7 +79,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CStatement> Clone() const override;
-    std::unique_ptr<const CStatement> Canonize();
+    std::unique_ptr<const CStatement> Canonize() const override;
 
 private:
     CLabel target;
@@ -106,7 +106,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CStatement> Clone() const override;
-    std::unique_ptr<const CStatement> Canonize();
+    std::unique_ptr<const CStatement> Canonize() const override;
 
 private:
     std::unique_ptr<const CExpression> leftOperand;
@@ -130,7 +130,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CStatement> Clone() const override;
-    std::unique_ptr<const CStatement> Canonize();
+    std::unique_ptr<const CStatement> Canonize() const override;
 
 private:
     std::unique_ptr<const CStatement> leftStatement;
@@ -149,7 +149,7 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CStatement> Clone() const override;
-    std::unique_ptr<const CStatement> Canonize();
+    std::unique_ptr<const CStatement> Canonize() const override;
 
 private:
     CLabel label;
