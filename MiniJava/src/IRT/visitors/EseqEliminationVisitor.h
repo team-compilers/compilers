@@ -12,7 +12,7 @@ namespace IRTree {
 
 class CEseqEliminationVisitor : public CVisitor {
 public:
-    CEseqEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ), eseqCount( 0 ) {}
+    CEseqEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
     ~CEseqEliminationVisitor() {}
 
     std::unique_ptr<const CStatement> ResultTree();
@@ -49,7 +49,6 @@ private:
     void updateLastStatementList( const CStatementList* newLastStatementList );
     void updateLastStatementList( std::unique_ptr<const CStatementList> newLastStatementList );
 
-    int eseqCount;
     std::unique_ptr<const CExpression> lastExpression;
     std::unique_ptr<const CStatement> lastStatement;
     std::unique_ptr<const CExpressionList> lastExpressionList;

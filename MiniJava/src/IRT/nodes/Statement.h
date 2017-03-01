@@ -6,17 +6,11 @@
 
 namespace IRTree {
 
-class IStatement : public IVisitorTarget {
+class CStatement : public IVisitorTarget {
 public:
-    virtual ~IStatement();
-
-    virtual std::unique_ptr<const IStatement> Canonize( int eseqCount ) = 0;
-};
-
-class CStatement : public IStatement {
-public:
-    CStatement();
     virtual ~CStatement();
+    virtual std::unique_ptr<const CStatement> Clone() const = 0;
+    virtual std::unique_ptr<const CStatement> Canonize() = 0;
 };
 
 enum class TLogicOperatorType : char {
@@ -46,7 +40,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+    std::unique_ptr<const CStatement> Clone() const override;
+    std::unique_ptr<const CStatement> Canonize();
 
 private:
     std::unique_ptr<const CExpression> destination;
@@ -65,7 +60,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+    std::unique_ptr<const CStatement> Clone() const override;
+    std::unique_ptr<const CStatement> Canonize();
 
 private:
     std::unique_ptr<const CExpression> expression;
@@ -82,7 +78,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+    std::unique_ptr<const CStatement> Clone() const override;
+    std::unique_ptr<const CStatement> Canonize();
 
 private:
     CLabel target;
@@ -108,7 +105,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+    std::unique_ptr<const CStatement> Clone() const override;
+    std::unique_ptr<const CStatement> Canonize();
 
 private:
     std::unique_ptr<const CExpression> leftOperand;
@@ -131,7 +129,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+    std::unique_ptr<const CStatement> Clone() const override;
+    std::unique_ptr<const CStatement> Canonize();
 
 private:
     std::unique_ptr<const CStatement> leftStatement;
@@ -149,7 +148,8 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const IStatement> Canonize( int eseqCount );
+    std::unique_ptr<const CStatement> Clone() const override;
+    std::unique_ptr<const CStatement> Canonize();
 
 private:
     CLabel label;
