@@ -15,6 +15,9 @@ std::unique_ptr<const CExpressionList> CExpressionList::Clone() const {
 }
 
 std::unique_ptr<const CExpressionList> CExpressionList::Canonize() const {
-    // not implemented yet
-    assert( false );
+    CExpressionList* newList = new CExpressionList();
+    for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
+        newList->Add( std::move( ( *it )->Canonize() ) );
+    }
+    return std::move( std::unique_ptr<const CExpressionList>( newList ) );
 }

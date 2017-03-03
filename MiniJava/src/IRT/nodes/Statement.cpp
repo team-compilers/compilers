@@ -1,6 +1,6 @@
 #include <IRT/nodes/Statement.h>
-
 #include <IRT/nodes/Expression.h>
+#include <IRT/Canonization.h>
 #include <cassert>
 
 using namespace IRTree;
@@ -27,7 +27,7 @@ std::unique_ptr<const CStatement> CMoveStatement::Canonize() const {
     std::unique_ptr<const CExpression> sourceCanon = source->Canonize();
 
     std::unique_ptr<const CStatement> result;
-    const CEseqExpression* sourceCanonEseq = dynamic_cast<const CEseqExpression*>( sourceCanon.get() );
+    const CEseqExpression* sourceCanonEseq = CastToEseqExpression( sourceCanon.get() );
     if ( sourceCanonEseq ) {
         result = std::move( std::unique_ptr<const CStatement>(
             new CSeqStatement(
@@ -63,8 +63,10 @@ std::unique_ptr<const CStatement> CExpStatement::Clone() const {
 }
 
 std::unique_ptr<const CStatement> CExpStatement::Canonize() const {
-    // not implemented yet
-    assert( false );
+    std::unique_ptr<const CExpression> expressionCanon = expression->Canonize();
+    return std::move( std::unique_ptr<const CStatement>(
+        new CExpStatement( std::move( expressionCanon ) )
+    ) );
 }
 
 CJumpStatement::CJumpStatement( CLabel _target )
@@ -106,35 +108,29 @@ std::unique_ptr<const CStatement> CJumpConditionalStatement::Clone() const {
 }
 
 std::unique_ptr<const CStatement> CJumpConditionalStatement::Canonize() const {
-    // not implemented yet
-    assert( false );
     std::unique_ptr<const CExpression> expressionLeftCanon = leftOperand->Canonize();
     std::unique_ptr<const CExpression> expressionRightCanon = rightOperand->Canonize();
 
     std::unique_ptr<const CStatement> result;
-    const CEseqExpression* eseqExpressionLeftCanon = dynamic_cast<const CEseqExpression*>( expressionLeftCanon.get() );
-    const CEseqExpression* eseqExpressionRightCanon = dynamic_cast<const CEseqExpression*>( expressionRightCanon.get() );
+    const CEseqExpression* eseqExpressionLeftCanon = CastToEseqExpression( expressionLeftCanon.get() );
+    const CEseqExpression* eseqExpressionRightCanon = CastToEseqExpression( expressionRightCanon.get() );
     if ( eseqExpressionLeftCanon ) {
-        if ( true ) { // do commutate
-            result = std::move( std::unique_ptr<const CStatement>(
-                new CSeqStatement(
-                    std::move( eseqExpressionLeftCanon->Statement()->Clone() ),
-                    std::move( std::unique_ptr<const CStatement>(
-                        new CJumpConditionalStatement(
-                            operation,
-                            std::move( eseqExpressionLeftCanon->Expression()->Clone() ),
-                            std::move( expressionRightCanon ),
-                            labelTrue,
-                            labelFalse
-                        )
-                    ) )
-                )
-            ) );
-        } else {
-
-        }
+        result = std::move( std::unique_ptr<const CStatement>(
+            new CSeqStatement(
+                std::move( eseqExpressionLeftCanon->Statement()->Clone() ),
+                std::move( std::unique_ptr<const CStatement>(
+                    new CJumpConditionalStatement(
+                        operation,
+                        std::move( eseqExpressionLeftCanon->Expression()->Clone() ),
+                        std::move( expressionRightCanon ),
+                        labelTrue,
+                        labelFalse
+                    )
+                ) )
+            )
+        ) );
     } else if ( eseqExpressionRightCanon ) {
-        if ( true ) { // do commutate
+        if ( AreCommuting( eseqExpressionRightCanon->Statement(), expressionLeftCanon.get() ) ) {
             result = std::move( std::unique_ptr<const CStatement>(
                 new CSeqStatement(
                     std::move( eseqExpressionRightCanon->Statement()->Clone() ),
@@ -206,8 +202,15 @@ std::unique_ptr<const CStatement> CSeqStatement::Clone() const {
 }
 
 std::unique_ptr<const CStatement> CSeqStatement::Canonize() const {
-    // not implemented yet
-    assert( false );
+    std::unique_ptr<const CStatement> statementLeftCanon = leftStatement->Canonize();
+    std::unique_ptr<const CStatement> statementRightCanon = rightStatement->Canonize();
+
+    return std::move( std::unique_ptr<const CStatement>(
+        new CSeqStatement(
+            std::move( statementLeftCanon ),
+            std::move( statementRightCanon )
+        )
+    ) );
 }
 
 CLabelStatement::CLabelStatement( CLabel _label ) : label( _label ) {}
@@ -220,6 +223,5 @@ std::unique_ptr<const CStatement> CLabelStatement::Clone() const {
 }
 
 std::unique_ptr<const CStatement> CLabelStatement::Canonize() const {
-    // not implemented yet
-    assert( false );
+    return std::move( Clone() );
 }
