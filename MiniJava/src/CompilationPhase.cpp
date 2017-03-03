@@ -11,7 +11,6 @@
 
 #include <IRT/visitors/DotLangVisitor.h>
 #include <IRT/visitors/DoubleCallEliminationVisitor.h>
-#include <IRT/visitors/EseqEliminationVisitor.h>
 
 #include <BisonParser.h>
 
@@ -148,15 +147,14 @@ void CIrtCanonizationPhase::Run() {
         it->second->Accept( &callEliminationVisitor );
         methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
 
-        IRTree::CEseqEliminationVisitor eseqEliminationVisitor( verbose );
-        it->second->Accept( &eseqEliminationVisitor );
+        methodTreesWithoutEseqs->emplace( it->first, std::move( it->second->Canonize() ) );
     }
 }
 
 void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode ) {
-    assert( methodTreesWithoutDoubleCalls );
-    for ( auto it = methodTreesWithoutDoubleCalls->begin(); it != methodTreesWithoutDoubleCalls->end(); ++it ) {
+    assert( methodTreesWithoutEseqs );
+    for ( auto it = methodTreesWithoutEseqs->begin(); it != methodTreesWithoutEseqs->end(); ++it ) {
         std::string methodName = it->first;
         methodName[0] = std::toupper( methodName[0] );
         std::fstream outputStream( pathOutputFile + methodName + extension, openMode );
