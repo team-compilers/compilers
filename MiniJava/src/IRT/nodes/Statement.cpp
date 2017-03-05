@@ -29,15 +29,16 @@ std::unique_ptr<const CStatement> CMoveStatement::Canonize() const {
     std::unique_ptr<const CStatement> result;
     const CEseqExpression* sourceCanonEseq = CastToEseqExpression( sourceCanon.get() );
     if ( sourceCanonEseq ) {
+        std::unique_ptr<const CStatement> moveStatement(
+            new CMoveStatement(
+                std::move( destinationCanon ),
+                std::move( sourceCanonEseq->Expression()->Clone() )
+            )
+        );
         result = std::move( std::unique_ptr<const CStatement>(
             new CSeqStatement(
                 std::move( sourceCanonEseq->Statement()->Clone() ),
-                std::move( std::unique_ptr<const CStatement>(
-                    new CMoveStatement(
-                        std::move( destinationCanon ),
-                        std::move( sourceCanonEseq->Expression()->Clone() )
-                    )
-                ) )
+                std::move( moveStatement->Canonize() )
             )
         ) );
     } else {
@@ -68,14 +69,15 @@ std::unique_ptr<const CStatement> CExpStatement::Canonize() const {
     std::unique_ptr<const CStatement> result;
     const CEseqExpression* eseqExpression = CastToEseqExpression( expressionCanon.get() );
     if ( eseqExpression ) {
+        std::unique_ptr<const CStatement> expStatement(
+            new CExpStatement(
+                eseqExpression->Expression()->Clone()
+            )
+        );
         result = std::move( std::unique_ptr<const CStatement>(
             new CSeqStatement(
                 std::move( eseqExpression->Statement()->Clone() ),
-                std::move( std::unique_ptr<const CStatement>(
-                    new CExpStatement(
-                        eseqExpression->Expression()->Clone()
-                    )
-                ) )
+                std::move( expStatement->Canonize() )
             )
         ) );
     } else {
