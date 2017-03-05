@@ -125,7 +125,7 @@ public:
     virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
-    std::string ToDotLanguage( const std::string& methodName );
+    std::string ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName );
 private:
     // parameters
     const TMethodToIRTMap* methodTrees;

@@ -145,27 +145,36 @@ void CIrtCanonizationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
         IRTree::CDoubleCallEliminationVisitor callEliminationVisitor( verbose );
         it->second->Accept( &callEliminationVisitor );
-        methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
 
-        methodTreesWithoutEseqs->emplace( it->first, std::move( it->second->Canonize() ) );
+        auto res = methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
+        methodTreesWithoutEseqs->emplace( it->first, std::move( res.first->second->Canonize() ) );
     }
 }
 
 void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode ) {
+    assert( methodTreesWithoutDoubleCalls );
+    for ( auto it = methodTreesWithoutDoubleCalls->begin(); it != methodTreesWithoutDoubleCalls->end(); ++it ) {
+        std::string methodName = it->first;
+        methodName[0] = std::toupper( methodName[0] );
+        std::fstream outputStream( pathOutputFile + "_" + methodName + extension, openMode );
+        outputStream << ToDotLanguage( methodTreesWithoutDoubleCalls.get(), it->first ) << std::endl;
+        outputStream.close();
+    }
+
     assert( methodTreesWithoutEseqs );
     for ( auto it = methodTreesWithoutEseqs->begin(); it != methodTreesWithoutEseqs->end(); ++it ) {
         std::string methodName = it->first;
         methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + methodName + extension, openMode );
-        outputStream << ToDotLanguage( it->first ) << std::endl;
+        std::fstream outputStream( pathOutputFile + "2_" + methodName + extension, openMode );
+        outputStream << ToDotLanguage( methodTreesWithoutEseqs.get(), it->first ) << std::endl;
         outputStream.close();
     }
 }
 
-std::string CIrtCanonizationPhase::ToDotLanguage( const std::string& methodName ) {
-    assert( methodTreesWithoutDoubleCalls );
+std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName ) {
+    assert( methodTreesMap );
     IRTree::CDotLangVisitor dotLangVisitor( verbose );
-    methodTreesWithoutDoubleCalls->at( methodName )->Accept( &dotLangVisitor );
+    methodTreesMap->at( methodName )->Accept( &dotLangVisitor );
     return dotLangVisitor.GetTraversalInDotLanguage();
 }
