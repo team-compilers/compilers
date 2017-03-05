@@ -30,5 +30,5 @@ void CCompilator::Run() {
 
     CIrtCanonizationPhase irtCanonization( irtBuilding.MethodTrees() );
     irtCanonization.Run();
-    irtCanonization.PrintResults( pathOutputDir + "/irtCanon_", ".gv" );
+    irtCanonization.PrintResults( pathOutputDir + "/irtCanon2_", ".gv" );
 }

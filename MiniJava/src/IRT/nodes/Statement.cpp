@@ -64,9 +64,26 @@ std::unique_ptr<const CStatement> CExpStatement::Clone() const {
 
 std::unique_ptr<const CStatement> CExpStatement::Canonize() const {
     std::unique_ptr<const CExpression> expressionCanon = expression->Canonize();
-    return std::move( std::unique_ptr<const CStatement>(
-        new CExpStatement( std::move( expressionCanon ) )
-    ) );
+
+    std::unique_ptr<const CStatement> result;
+    const CEseqExpression* eseqExpression = CastToEseqExpression( expressionCanon.get() );
+    if ( eseqExpression ) {
+        result = std::move( std::unique_ptr<const CStatement>(
+            new CSeqStatement(
+                std::move( eseqExpression->Statement()->Clone() ),
+                std::move( std::unique_ptr<const CStatement>(
+                    new CExpStatement(
+                        eseqExpression->Expression()->Clone()
+                    )
+                ) )
+            )
+        ) );
+    } else {
+        result = std::move( std::unique_ptr<const CStatement>(
+            new CExpStatement( std::move( expressionCanon ) )
+        ) );
+    }
+    return std::move( result );
 }
 
 CJumpStatement::CJumpStatement( CLabel _target )
