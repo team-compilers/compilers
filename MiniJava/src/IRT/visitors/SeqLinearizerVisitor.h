@@ -51,8 +51,7 @@ private:
 
     void saveResult( std::unique_ptr<const CStatement> result );
 
-    std::vector<std::unique_ptr<std::deque<std::unique_ptr<const CStatement>>>> dequeStack; // stack of deques
-    std::vector<bool> isAddToLeftStack;
+    std::vector<std::unique_ptr<std::vector<std::unique_ptr<const CStatement>>>> statementStack; // stack of statements
     std::vector<int> distanceToSeqStack;
     std::unique_ptr<const CStatement> lastStatement;
     std::unique_ptr<const CExpression> lastExpression;

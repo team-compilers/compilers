@@ -32,11 +32,7 @@ void CSeqLinearizerVisitor::updateLastExpressionList( std::unique_ptr<const CExp
 
 void CSeqLinearizerVisitor::saveResult( std::unique_ptr<const CStatement> result ) {
     if ( distanceToSeqStack.back() == 1 ) {
-        if ( isAddToLeftStack.back() ) {
-            dequeStack.back()->emplace_front( std::move( result ) );
-        } else {
-            dequeStack.back()->emplace_back( std::move( result ) );
-        }
+        statementStack.back()->push_back( std::move( result ) );
     } else {
         updateLastStatement( std::move( result ) );
     }
@@ -286,27 +282,26 @@ void CSeqLinearizerVisitor::Visit( const CSeqStatement* statement ) {
     ++distanceToSeqStack.back();
 
     if ( distanceToSeqStack.back() > 1 ) {
-        dequeStack.emplace_back( new std::deque<std::unique_ptr<const CStatement>>() );
+        statementStack.emplace_back( new std::vector<std::unique_ptr<const CStatement>>() );
     }
 
     distanceToSeqStack.push_back( 0 );
-    isAddToLeftStack.push_back( true );
+    std::cout << nodeName << ". Enter: " << statementStack.back()->size() << std::endl;
     statement->LeftStatement()->Accept( this );
-    isAddToLeftStack.pop_back();
-
-    isAddToLeftStack.push_back( false );
     statement->RightStatement()->Accept( this );
-    isAddToLeftStack.pop_back();
+    std::cout << nodeName << ". Exit: " << statementStack.back()->size() << std::endl;
 
     distanceToSeqStack.pop_back();
     if ( distanceToSeqStack.back() > 1 ) {
         CStatementList* statementList = new CStatementList();
-        for ( auto it = dequeStack.back()->begin(); it != dequeStack.back()->end(); ++it ) {
+        for ( auto it = statementStack.back()->begin(); it != statementStack.back()->end(); ++it ) {
             statementList->Add( std::move( *it ) );
         }
         updateLastStatement( statementList );
-        dequeStack.pop_back();
+        statementStack.pop_back();
     }
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
