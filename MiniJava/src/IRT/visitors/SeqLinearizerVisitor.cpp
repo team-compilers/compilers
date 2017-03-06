@@ -2,13 +2,53 @@
 
 using namespace IRTree;
 
+void CSeqLinearizerVisitor::updateLastExpression( const CExpression* newLastExpression ) {
+    lastExpression = std::unique_ptr<const CExpression>( newLastExpression );
+}
+
+void CSeqLinearizerVisitor::updateLastExpression( std::unique_ptr<const CExpression> newLastExpression ) {
+    lastExpression = std::move( newLastExpression );
+}
+
+void CSeqLinearizerVisitor::updateLastStatement( const CStatement* newLastStatement ) {
+    lastStatement = std::unique_ptr<const CStatement>( newLastStatement );
+}
+
+void CSeqLinearizerVisitor::updateLastStatement( std::unique_ptr<const CStatement> newLastStatement ) {
+    lastStatement = std::move( newLastStatement );
+}
+
+void CSeqLinearizerVisitor::updateLastExpressionList( const CExpressionList* newLastExpressionList ) {
+    lastExpressionList = std::unique_ptr<const CExpressionList>( newLastExpressionList );
+}
+
+void CSeqLinearizerVisitor::updateLastExpressionList( std::unique_ptr<const CExpressionList> newLastExpressionList ) {
+    lastExpressionList = std::move( newLastExpressionList );
+}
+
+void CSeqLinearizerVisitor::saveResult( std::unique_ptr<const CStatement> result ) {
+    if ( distanceToSeqStack.back() == 1 ) {
+        if ( isAddToLeftStack.back() ) {
+            dequeStack.back()->emplace_front( std::move( result ) );
+        } else {
+            dequeStack.back()->emplace_back( std::move( result ) );
+        }
+    } else {
+        updateLastStatement( std::move( result ) );
+    }
+}
+
 /*__________ Expressions __________*/
 
 void CSeqLinearizerVisitor::Visit( const CConstExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CONST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    updateLastExpression( std::move( expression->Clone() ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -17,7 +57,11 @@ void CSeqLinearizerVisitor::Visit( const CNameExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NAME );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    updateLastExpression( std::move( expression->Clone() ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -26,7 +70,11 @@ void CSeqLinearizerVisitor::Visit( const CTempExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_TEMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    updateLastExpression( std::move( expression->Clone() ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -35,7 +83,22 @@ void CSeqLinearizerVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    expression->LeftOperand()->Accept( this );
+    std::unique_ptr<const CExpression> leftOperand = std::move( lastExpression );
+    expression->RightOperand()->Accept( this );
+    std::unique_ptr<const CExpression> rightOperand = std::move( lastExpression );
+
+    updateLastExpression(
+        new CBinaryExpression(
+            expression->Operation(),
+            std::move( leftOperand ),
+            std::move( rightOperand )
+        )
+    );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -44,7 +107,18 @@ void CSeqLinearizerVisitor::Visit( const CMemExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_MEM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    expression->Address()->Accept( this );
+    std::unique_ptr<const CExpression> addressExpression = std::move( lastExpression );
+
+    updateLastExpression(
+        new CMemExpression(
+            std::move( addressExpression )
+        )
+    );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -53,7 +127,21 @@ void CSeqLinearizerVisitor::Visit( const CCallExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CALL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    expression->Function()->Accept( this );
+    std::unique_ptr<const CExpression> functionExpression = std::move( lastExpression );
+    expression->Arguments()->Accept( this );
+    std::unique_ptr<const CExpressionList> argumentList = std::move( lastExpressionList );
+
+    updateLastExpression(
+        new CCallExpression(
+            std::move( functionExpression ),
+            std::move( argumentList )
+        )
+    );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -62,7 +150,21 @@ void CSeqLinearizerVisitor::Visit( const CEseqExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ESEQ );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    expression->Statement()->Accept( this );
+    std::unique_ptr<const CStatement> eseqStatement = std::move( lastStatement );
+    expression->Expression()->Accept( this );
+    std::unique_ptr<const CExpression> eseqExpression = std::move( lastExpression );
+
+    updateLastExpression(
+        new CEseqExpression(
+            std::move( eseqStatement ),
+            std::move( eseqExpression )
+        )
+    );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -73,7 +175,19 @@ void CSeqLinearizerVisitor::Visit( const CExpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_EXP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    statement->Expression()->Accept( this );
+    std::unique_ptr<const CExpression> expression = std::move( lastExpression );
+
+    std::unique_ptr<CStatement> result(
+        new CExpStatement(
+            std::move( expression )
+        )
+    );
+    saveResult( std::move( result ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -82,7 +196,25 @@ void CSeqLinearizerVisitor::Visit( const CJumpConditionalStatement* statement ) 
     std::string nodeName = generateNodeName( CNodeNames::STAT_CJUMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    statement->LeftOperand()->Accept( this );
+    std::unique_ptr<const CExpression> leftOperand = std::move( lastExpression );
+    statement->RightOperand()->Accept( this );
+    std::unique_ptr<const CExpression> rightOperand = std::move( lastExpression );
+
+    std::unique_ptr<CStatement> result(
+        new CJumpConditionalStatement(
+            statement->Operation(),
+            std::move( leftOperand ),
+            std::move( rightOperand ),
+            statement->TrueLabel(),
+            statement->FalseLabel()
+        )
+    );
+    saveResult( std::move( result ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -91,7 +223,14 @@ void CSeqLinearizerVisitor::Visit( const CJumpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_JUMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    std::unique_ptr<CStatement> result(
+        new CJumpStatement( statement->Target() )
+    );
+    saveResult( std::move( result ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -100,7 +239,14 @@ void CSeqLinearizerVisitor::Visit( const CLabelStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LABEL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+
+    std::unique_ptr<CStatement> result(
+        new CLabelStatement( statement->Label() )
+    );
+    saveResult( std::move( result ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -110,11 +256,21 @@ void CSeqLinearizerVisitor::Visit( const CMoveStatement* statement ) {
     onNodeEnter( nodeName );
 
     ++distanceToSeqStack.back();
-    // if ( isAddToLeftStack.back() ) {
-    //     dequeStack.back().push_front( std::move( statement->Clone() ) );
-    // } else {
-    //     dequeStack.back().push_back( std::move( statement->Clone() ) );
-    // }
+
+    statement->Destination()->Accept( this );
+    std::unique_ptr<const CExpression> destination = std::move( lastExpression );
+    statement->Source()->Accept( this );
+    std::unique_ptr<const CExpression> source = std::move( lastExpression );
+
+    std::unique_ptr<CStatement> result(
+        new CMoveStatement(
+            std::move( destination ),
+            std::move( source )
+        )
+    );
+    saveResult( std::move( result ) );
+
+    --distanceToSeqStack.back();
 
     onNodeExit( nodeName );
 }
@@ -123,17 +279,30 @@ void CSeqLinearizerVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
 
-    // if ( distanceToSeqStack.back() > 1 ) {
-    //     dequeStack.push_back( std::deque<std::unique_ptr<const CStatement>>() );
-    // }
+    ++distanceToSeqStack.back();
 
-    // isAddToLeftStack.push_back( true );
-    // statement->LeftStatement()->Accept( this );
-    // isAddToLeftStack.pop_back();
+    if ( distanceToSeqStack.back() > 1 ) {
+        dequeStack.emplace_back( new std::deque<std::unique_ptr<const CStatement>>() );
+    }
 
-    // isAddToLeftStack.push_back( false );
-    // statement->RightStatement()->Accept( this );
-    // isAddToLeftStack.pop_back();
+    distanceToSeqStack.push_back( 0 );
+    isAddToLeftStack.push_back( true );
+    statement->LeftStatement()->Accept( this );
+    isAddToLeftStack.pop_back();
+
+    isAddToLeftStack.push_back( false );
+    statement->RightStatement()->Accept( this );
+    isAddToLeftStack.pop_back();
+
+    distanceToSeqStack.pop_back();
+    if ( distanceToSeqStack.back() > 1 ) {
+        CStatementList* statementList = new CStatementList();
+        for ( auto it = dequeStack.back()->begin(); it != dequeStack.back()->end(); ++it ) {
+            statementList->Add( std::move( *it ) );
+        }
+        updateLastStatement( statementList );
+        dequeStack.pop_back();
+    }
 
     onNodeExit( nodeName );
 }
@@ -144,7 +313,15 @@ void CSeqLinearizerVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    CExpressionList* newList = new CExpressionList();
+
+    const std::vector<std::unique_ptr<const CExpression>>& expressions = list->Expressions();
+    for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
+        ( *it )->Accept( this );
+        newList->Add( std::move( lastExpression ) );
+    }
+
+    updateLastExpressionList( newList );
 
     onNodeExit( nodeName );
 }
@@ -153,7 +330,8 @@ void CSeqLinearizerVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }

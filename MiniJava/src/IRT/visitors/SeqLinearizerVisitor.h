@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cassert>
 #include <deque>
+#include <limits>
 #include <vector>
 
 #include <IRT/nodes/NodeNames.h>
@@ -14,7 +16,7 @@ namespace IRTree {
 
 class CSeqLinearizerVisitor : public CVisitor {
 public:
-    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ), distanceToSeqStack( 1, 0 ) {}
+    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ), distanceToSeqStack( 1, std::numeric_limits<int>::max() ) {}
     ~CSeqLinearizerVisitor() {}
 
     // Visitors for different node types.
@@ -36,9 +38,23 @@ public:
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
 private:
-    // std::vector<std::deque<std::unique_ptr<const CStatement>>> dequeStack; // stack of deques
+    void updateLastExpression( const CExpression* newLastExpression );
+    void updateLastExpression( std::unique_ptr<const CExpression> newLastExpression );
+
+    void updateLastStatement( const CStatement* newLastStatement );
+    void updateLastStatement( std::unique_ptr<const CStatement> newLastStatement );
+
+    void updateLastExpressionList( const CExpressionList* newLastExpressionList );
+    void updateLastExpressionList( std::unique_ptr<const CExpressionList> newLastExpressionList );
+
+    void saveResult( std::unique_ptr<const CStatement> result );
+
+    std::vector<std::unique_ptr<std::deque<std::unique_ptr<const CStatement>>>> dequeStack; // stack of deques
     std::vector<bool> isAddToLeftStack;
     std::vector<int> distanceToSeqStack;
+    std::unique_ptr<const CStatement> lastStatement;
+    std::unique_ptr<const CExpression> lastExpression;
+    std::unique_ptr<const CExpressionList> lastExpressionList;
 };
 
 }
