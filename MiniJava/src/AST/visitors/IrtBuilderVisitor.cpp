@@ -281,7 +281,9 @@ void CIrtBuilderVisitor::Visit( const CMethodExpression* expression ) {
     std::string methodCaller = methodCallerClassName;
 
     IRTree::CExpressionList* expressionListIrt = new IRTree::CExpressionList();
-    const std::vector< std::unique_ptr<const CExpression> >& expressionsAst = expression->Arguments()->Expressions();
+    expressionListIrt->Add( std::move( subtreeWrapper->ToExpression() ) );
+
+    const std::vector<std::unique_ptr<const CExpression>>& expressionsAst = expression->Arguments()->Expressions();
     for ( auto it = expressionsAst.begin(); it != expressionsAst.end(); ++it ) {
         ( *it )->Accept( this );
         expressionListIrt->Add( std::move( subtreeWrapper->ToExpression() ) );

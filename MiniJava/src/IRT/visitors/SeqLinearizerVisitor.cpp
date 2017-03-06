@@ -286,10 +286,8 @@ void CSeqLinearizerVisitor::Visit( const CSeqStatement* statement ) {
     }
 
     distanceToSeqStack.push_back( 0 );
-    std::cout << nodeName << ". Enter: " << statementStack.back()->size() << std::endl;
     statement->LeftStatement()->Accept( this );
     statement->RightStatement()->Accept( this );
-    std::cout << nodeName << ". Exit: " << statementStack.back()->size() << std::endl;
 
     distanceToSeqStack.pop_back();
     if ( distanceToSeqStack.back() > 1 ) {

@@ -1,17 +1,27 @@
 digraph {
 	ordering = out;
-	ExpList0 -> ExpCall1;
-	ExpList1 -> ExpConst0;
-	ExpCall1 -> ExpName1;
-	ExpCall1 -> ExpList1;
-	ExpName1 -> "Label2: LS@Start";
+	ExpConst2 -> "Value2: 10";
 	StatExp0 -> ExpCall0;
-	ExpConst0 -> "Value0: 10";
-	StatLabel0 -> "Label0: LinearSearch@main";
-	ExpCall0 -> ExpName0;
-	ExpCall0 -> ExpList0;
+	ExpList2 -> ExpBinary0;
+	ExpName0 -> "Label1: print";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatExp0;
-	ExpName0 -> "Label1: print";
+	ExpCall2 -> ExpName2;
+	ExpCall2 -> ExpList2;
+	ExpCall0 -> ExpName0;
+	ExpCall0 -> ExpList0;
+	StatLabel0 -> "Label0: LinearSearch@main";
+	ExpConst0 -> "Value0: 2";
+	ExpList1 -> ExpCall2;
+	ExpList1 -> ExpConst2;
+	ExpConst1 -> "Value1: 4";
+	ExpName1 -> "Label2: LS@Start";
+	ExpList0 -> ExpCall1;
+	ExpCall1 -> ExpName1;
+	ExpCall1 -> ExpList1;
+	ExpBinary0 -> ExpConst0;
+	ExpBinary0 -> Times0;
+	ExpBinary0 -> ExpConst1;
+	ExpName2 -> "Label3: malloc";
 }
 

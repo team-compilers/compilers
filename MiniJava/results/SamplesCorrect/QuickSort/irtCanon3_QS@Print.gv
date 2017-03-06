@@ -11,7 +11,7 @@ digraph {
 	ExpBinary9 -> ExpTemp8;
 	ExpBinary9 -> Plus7;
 	ExpBinary9 -> ExpConst8;
-	ExpTemp3 -> "Temp3: T10";
+	ExpTemp3 -> "Temp3: T11";
 	StatLabel2 -> "Label4: L22";
 	ExpMem8 -> ExpBinary7;
 	ExpTemp2 -> "Temp2: $fp";
@@ -92,7 +92,7 @@ digraph {
 	StatCJump0 -> "Label2: L22";
 	StatCJump0 -> "Label3: L23";
 	ExpList0 -> ExpMem4;
-	ExpTemp6 -> "Temp6: T10";
+	ExpTemp6 -> "Temp6: T11";
 	StatMove2 -> ExpMem8;
 	StatMove2 -> ExpBinary8;
 }

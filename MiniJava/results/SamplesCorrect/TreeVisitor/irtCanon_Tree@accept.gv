@@ -1,30 +1,36 @@
 digraph {
 	ordering = out;
-	ExpConst2 -> "Value2: 0";
-	StatMove3 -> ExpTemp6;
-	StatMove3 -> ExpConst2;
-	ExpTemp6 -> "Temp6: $rv";
-	ExpMem1 -> ExpTemp4;
+	ExpConst3 -> "Value3: 0";
+	StatMove3 -> ExpTemp7;
+	StatMove3 -> ExpConst3;
+	ExpTemp6 -> "Temp6: T104";
+	ExpMem1 -> ExpBinary1;
+	ExpConst2 -> "Value2: 4";
+	ExpBinary1 -> ExpTemp4;
+	ExpBinary1 -> Plus1;
+	ExpBinary1 -> ExpConst2;
 	ExpEseq0 -> StatMove0;
 	ExpEseq0 -> ExpTemp1;
 	ExpList0 -> ExpConst0;
 	ExpCall1 -> ExpName1;
 	ExpCall1 -> ExpList1;
+	ExpMem2 -> ExpTemp5;
 	ExpCall0 -> ExpName0;
 	ExpCall0 -> ExpList0;
+	ExpTemp7 -> "Temp7: $rv";
 	ExpTemp4 -> "Temp4: $fp";
 	ExpName0 -> "Label1: print";
 	ExpConst0 -> "Value0: 333";
 	StatLabel0 -> "Label0: Tree@accept";
-	ExpTemp5 -> "Temp5: T100";
-	ExpTemp1 -> "Temp1: T99";
+	ExpTemp5 -> "Temp5: $fp";
+	ExpTemp1 -> "Temp1: T103";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp3 -> "Temp3: T100";
-	ExpTemp0 -> "Temp0: T99";
+	ExpTemp3 -> "Temp3: T104";
+	ExpTemp0 -> "Temp0: T103";
 	StatExp0 -> ExpEseq0;
 	ExpEseq1 -> StatMove2;
-	ExpEseq1 -> ExpTemp5;
+	ExpEseq1 -> ExpTemp6;
 	StatMove0 -> ExpTemp0;
 	StatMove0 -> ExpCall0;
 	StatSeq2 -> StatExp0;
@@ -42,6 +48,7 @@ digraph {
 	StatMove1 -> ExpEseq1;
 	ExpName1 -> "Label2: Visitor@visit";
 	ExpList1 -> ExpMem1;
+	ExpList1 -> ExpMem2;
 	ExpMem0 -> ExpBinary0;
 }
 
