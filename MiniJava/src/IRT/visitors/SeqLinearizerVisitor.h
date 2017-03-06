@@ -16,8 +16,10 @@ namespace IRTree {
 
 class CSeqLinearizerVisitor : public CVisitor {
 public:
-    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ), distanceToSeqStack( 1, std::numeric_limits<int>::max() ) {}
+    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ), distanceToSeqStack( 1, std::numeric_limits<int>::max() - 1 ) {}
     ~CSeqLinearizerVisitor() {}
+
+    std::unique_ptr<const CStatement> ResultTree();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;

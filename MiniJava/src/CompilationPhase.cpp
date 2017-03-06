@@ -11,6 +11,7 @@
 
 #include <IRT/visitors/DotLangVisitor.h>
 #include <IRT/visitors/DoubleCallEliminationVisitor.h>
+#include <IRT/visitors/SeqLinearizerVisitor.h>
 
 #include <BisonParser.h>
 
@@ -147,7 +148,11 @@ void CIrtCanonizationPhase::Run() {
         it->second->Accept( &callEliminationVisitor );
 
         auto res = methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
-        methodTreesWithoutEseqs->emplace( it->first, std::move( res.first->second->Canonize() ) );
+        auto res2 = methodTreesWithoutEseqs->emplace( it->first, std::move( res.first->second->Canonize() ) );
+
+        IRTree::CSeqLinearizerVisitor seqLinearizerVisitor( verbose );
+        res2.first->second->Accept( &seqLinearizerVisitor );
+        methodTreesLinearized->emplace( it->first, std::move( seqLinearizerVisitor.ResultTree() ) );
     }
 }
 
@@ -168,6 +173,15 @@ void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, con
         methodName[0] = std::toupper( methodName[0] );
         std::fstream outputStream( pathOutputFile + "2_" + methodName + extension, openMode );
         outputStream << ToDotLanguage( methodTreesWithoutEseqs.get(), it->first ) << std::endl;
+        outputStream.close();
+    }
+
+    assert( methodTreesLinearized );
+    for ( auto it = methodTreesLinearized->begin(); it != methodTreesLinearized->end(); ++it ) {
+        std::string methodName = it->first;
+        methodName[0] = std::toupper( methodName[0] );
+        std::fstream outputStream( pathOutputFile + "3_" + methodName + extension, openMode );
+        outputStream << ToDotLanguage( methodTreesLinearized.get(), it->first ) << std::endl;
         outputStream.close();
     }
 }

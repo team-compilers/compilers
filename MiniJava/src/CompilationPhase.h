@@ -119,7 +119,9 @@ class CIrtCanonizationPhase : CCompilationPhase {
 public:
     CIrtCanonizationPhase( const TMethodToIRTMap* _methodTrees, bool _verbose = false )
         : CCompilationPhase( _verbose ), methodTrees( _methodTrees ),
-            methodTreesWithoutDoubleCalls( new TMethodToIRTMap() ), methodTreesWithoutEseqs( new TMethodToIRTMap() ) {}
+            methodTreesWithoutDoubleCalls( new TMethodToIRTMap() ),
+            methodTreesWithoutEseqs( new TMethodToIRTMap() ),
+            methodTreesLinearized( new TMethodToIRTMap() ) {}
 
     virtual void Run() override;
     virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
@@ -133,4 +135,5 @@ private:
     // results
     std::unique_ptr<TMethodToIRTMap> methodTreesWithoutDoubleCalls;
     std::unique_ptr<TMethodToIRTMap> methodTreesWithoutEseqs;
+    std::unique_ptr<TMethodToIRTMap> methodTreesLinearized;
 };

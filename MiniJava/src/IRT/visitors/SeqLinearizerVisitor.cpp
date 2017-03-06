@@ -2,6 +2,10 @@
 
 using namespace IRTree;
 
+std::unique_ptr<const CStatement> CSeqLinearizerVisitor::ResultTree() {
+    return std::move( lastStatement );
+}
+
 void CSeqLinearizerVisitor::updateLastExpression( const CExpression* newLastExpression ) {
     lastExpression = std::unique_ptr<const CExpression>( newLastExpression );
 }
