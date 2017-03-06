@@ -244,3 +244,20 @@ std::unique_ptr<const CStatement> CLabelStatement::Clone() const {
 std::unique_ptr<const CStatement> CLabelStatement::Canonize() const {
     return std::move( Clone() );
 }
+
+
+std::unique_ptr<const CStatement> CStatementList::Clone() const {
+    CStatementList* newList = new CStatementList();
+    for ( auto it = statements.begin(); it != statements.end(); ++it ) {
+        newList->Add( std::move( ( *it )->Clone() ) );
+    }
+    return std::move( std::unique_ptr<const CStatementList>( newList ) );
+}
+
+std::unique_ptr<const CStatement> CStatementList::Canonize() const {
+    CStatementList* newList = new CStatementList();
+    for ( auto it = statements.begin(); it != statements.end(); ++it ) {
+        newList->Add( std::move( ( *it )->Canonize() ) );
+    }
+    return std::move( std::unique_ptr<const CStatementList>( newList ) );
+}

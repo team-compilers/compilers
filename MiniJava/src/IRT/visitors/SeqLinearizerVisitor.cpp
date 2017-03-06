@@ -109,7 +109,12 @@ void CSeqLinearizerVisitor::Visit( const CMoveStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_MOVE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    ++distanceToSeqStack.back();
+    // if ( isAddToLeftStack.back() ) {
+    //     dequeStack.back().push_front( std::move( statement->Clone() ) );
+    // } else {
+    //     dequeStack.back().push_back( std::move( statement->Clone() ) );
+    // }
 
     onNodeExit( nodeName );
 }
@@ -118,7 +123,17 @@ void CSeqLinearizerVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // if ( distanceToSeqStack.back() > 1 ) {
+    //     dequeStack.push_back( std::deque<std::unique_ptr<const CStatement>>() );
+    // }
+
+    // isAddToLeftStack.push_back( true );
+    // statement->LeftStatement()->Accept( this );
+    // isAddToLeftStack.pop_back();
+
+    // isAddToLeftStack.push_back( false );
+    // statement->RightStatement()->Accept( this );
+    // isAddToLeftStack.pop_back();
 
     onNodeExit( nodeName );
 }

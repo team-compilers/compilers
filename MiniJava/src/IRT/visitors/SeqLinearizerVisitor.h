@@ -1,18 +1,20 @@
 #pragma once
 
+#include <deque>
+#include <vector>
+
 #include <IRT/nodes/NodeNames.h>
 #include <IRT/visitors/Visitor.h>
 
 #include <IRT/nodes/Expression.h>
 #include <IRT/nodes/ExpressionList.h>
 #include <IRT/nodes/Statement.h>
-#include <IRT/nodes/StatementList.h>
 
 namespace IRTree {
 
 class CSeqLinearizerVisitor : public CVisitor {
 public:
-    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    CSeqLinearizerVisitor( bool _verbose = false ) : CVisitor( _verbose ), distanceToSeqStack( 1, 0 ) {}
     ~CSeqLinearizerVisitor() {}
 
     // Visitors for different node types.
@@ -33,6 +35,10 @@ public:
 
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
+private:
+    // std::vector<std::deque<std::unique_ptr<const CStatement>>> dequeStack; // stack of deques
+    std::vector<bool> isAddToLeftStack;
+    std::vector<int> distanceToSeqStack;
 };
 
 }

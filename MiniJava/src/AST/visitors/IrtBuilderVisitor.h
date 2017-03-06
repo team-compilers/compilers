@@ -27,7 +27,6 @@
 #include <IRT/nodes/Expression.h>
 #include <IRT/nodes/ExpressionList.h>
 #include <IRT/nodes/Statement.h>
-#include <IRT/nodes/StatementList.h>
 
 #include <IRT/SubtreeWrapper.h>
 
