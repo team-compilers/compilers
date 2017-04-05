@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <IRT/nodes/NodeNames.h>
 #include <IRT/visitors/Visitor.h>
 
@@ -13,6 +15,8 @@ class CEseqEliminationVisitor : public CVisitor {
 public:
     CEseqEliminationVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
     ~CEseqEliminationVisitor() {}
+
+    std::unique_ptr<const CStatement> ResultTree();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;

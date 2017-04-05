@@ -1,6 +1,10 @@
-#include <IRT/visitors/DummyVisitor.h>
+#include <IRT/visitors/EseqEliminationVisitor.h>
 
 using namespace IRTree;
+
+std::unique_ptr<const CStatement> CEseqEliminationVisitor::ResultTree() {
+    return std::move( lastStatement );
+}
 
 void CEseqEliminationVisitor::updateLastExpression( const CExpression* newLastExpression ) {
     lastExpression = std::unique_ptr<const CExpression>( newLastExpression );
@@ -40,7 +44,7 @@ void CEseqEliminationVisitor::Visit( const CConstExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CONST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastExpression( std::move( expression->Clone() ) );
 
     onNodeExit( nodeName );
 }

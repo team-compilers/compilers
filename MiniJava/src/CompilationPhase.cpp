@@ -12,6 +12,7 @@
 #include <IRT/visitors/DotLangVisitor.h>
 #include <IRT/visitors/DoubleCallEliminationVisitor.h>
 #include <IRT/visitors/SeqLinearizerVisitor.h>
+#include <IRT/visitors/EseqEliminationVisitor.h>
 
 #include <BisonParser.h>
 
@@ -146,9 +147,11 @@ void CIrtCanonizationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
         IRTree::CDoubleCallEliminationVisitor callEliminationVisitor( verbose );
         it->second->Accept( &callEliminationVisitor );
-
         auto res = methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
-        auto res2 = methodTreesWithoutEseqs->emplace( it->first, std::move( res.first->second->Canonize() ) );
+
+        IRTree::CEseqEliminationVisitor eseqEliminationVisitor( verbose );
+        res.first->second->Accept( &eseqEliminationVisitor );
+        auto res2 = methodTreesWithoutEseqs->emplace( it->first, std::move( eseqEliminationVisitor.ResultTree() ) );
 
         IRTree::CSeqLinearizerVisitor seqLinearizerVisitor( verbose );
         res2.first->second->Accept( &seqLinearizerVisitor );
