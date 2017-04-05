@@ -169,7 +169,7 @@ public:
     void Add( std::unique_ptr<const CStatement> statement )
         { statements.push_back( std::move( statement ) ); }
 
-    const std::vector< std::unique_ptr<const CStatement> >& Statements() const { return statements; }
+    const std::vector<std::unique_ptr<const CStatement>>& Statements() const { return statements; }
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 

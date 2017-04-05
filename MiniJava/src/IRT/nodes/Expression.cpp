@@ -186,12 +186,63 @@ std::unique_ptr<const CExpression> CCallExpression::Clone() const {
 
 std::unique_ptr<const CExpression> CCallExpression::Canonize() const {
     std::unique_ptr<const CExpression> functionCanon = function->Canonize();
-    std::unique_ptr<const CExpressionList> argumentsCanon = arguments->Canonize();
+    std::unique_ptr<const CExpressionList> argumentsCanonListPtr = arguments->Canonize();
+
+    std::unique_ptr<CExpressionList> expressionList( new CExpressionList() );
+    std::unique_ptr<CStatementList> statementList( new CStatementList() );
+
+    const std::vector<std::unique_ptr<const CExpression>>& argumentsCanonList = argumentsCanonListPtr->Expressions();
+    for ( auto it = std::next( argumentsCanonList.rbegin() ); it != argumentsCanonList.rend(); ++it ) {
+        std::unique_ptr<const CExpression> expressionSave;
+        const CEseqExpression* eseqExpressionCanon = CastToEseqExpression( it->get() );
+        if ( eseqExpressionCanon ) {
+            statementList->Add( std::move( eseqExpressionCanon->Statement()->Clone() ) );
+            expressionSave = std::move( eseqExpressionCanon->Expression()->Clone() );
+        } else {
+            expressionSave = std::move( ( *it )->Clone() );
+        }
+
+        CTemp temp;
+        statementList->Add(
+            std::move( std::unique_ptr<const CStatement>(
+                new CMoveStatement(
+                    std::move( std::unique_ptr<const CExpression>(
+                        new CTempExpression( temp )
+                    ) ),
+                    std::move( expressionSave )
+                )
+            ) )
+        );
+        expressionList->Add(
+            std::move( std::unique_ptr<const CExpression>(
+                new CTempExpression( temp )
+            ) )
+        );
+    }
+
+    const std::vector<std::unique_ptr<const CStatement>>& statements = statementList->Statements();
+    std::unique_ptr<const CStatement> resultOnSuffix;
+    if ( !statements.empty() ) {// TODO: how is it possible?
+        resultOnSuffix = std::move( statements.back()->Clone() );
+        for ( auto it = std::next( statements.rbegin() ); it != statements.rend(); ++it ) {
+            resultOnSuffix = std::move( std::unique_ptr<const CStatement>(
+                new CSeqStatement(
+                    std::move( ( *it )->Clone() ),
+                    std::move( resultOnSuffix )
+                )
+            ) );
+        }
+    }
 
     return std::move( std::unique_ptr<const CExpression>(
-        new CCallExpression(
-            std::move( functionCanon ),
-            std::move( argumentsCanon )
+        new CEseqExpression(
+            std::move( resultOnSuffix ),
+            std::move( std::unique_ptr<const CExpression>(
+                new CCallExpression(
+                    std::move( functionCanon ),
+                    std::move( expressionList )
+                )
+            ) )
         )
     ) );
 }

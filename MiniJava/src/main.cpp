@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <Compilator.h>
+#include <Compiler.h>
 
 void printHelp( const std::string& programName ) {
     std::cerr << programName << " <inputFilePath> <outputDirPath>" << std::endl;
@@ -17,8 +17,8 @@ int main( int argc, char* argv[] ) {
     const std::string pathInputFile( argv[1] );
     const std::string pathOutputDir( argv[2] );
 
-    CCompilator compilator( pathInputFile, pathOutputDir );
-    compilator.Run();
+    CCompiler compiler( pathInputFile, pathOutputDir );
+    compiler.Run();
 
     return 0;
 }

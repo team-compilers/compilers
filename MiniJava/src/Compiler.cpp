@@ -1,8 +1,8 @@
-#include <Compilator.h>
+#include <Compiler.h>
 
 #include <fstream>
 
-void CCompilator::Run() {
+void CCompiler::Run() {
     CAstBuildingPhase astBuilding( pathInputFile );
     astBuilding.Run();
     astBuilding.PrintResults( pathOutputDir + "/ast", ".gv" );

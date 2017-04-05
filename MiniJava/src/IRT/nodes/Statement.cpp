@@ -38,7 +38,7 @@ std::unique_ptr<const CStatement> CMoveStatement::Canonize() const {
         result = std::move( std::unique_ptr<const CStatement>(
             new CSeqStatement(
                 std::move( sourceCanonEseq->Statement()->Clone() ),
-                std::move( moveStatement->Canonize() )
+                std::move( moveStatement )
             )
         ) );
     } else {

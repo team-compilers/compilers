@@ -4,9 +4,9 @@
 
 #include <CompilationPhase.h>
 
-class CCompilator {
+class CCompiler {
 public:
-    CCompilator( const std::string& _pathInputFile, const std::string& _pathOutputDir )
+    CCompiler( const std::string& _pathInputFile, const std::string& _pathOutputDir )
         : pathInputFile( _pathInputFile ), pathOutputDir( _pathOutputDir ) {}
 
     void Run();
