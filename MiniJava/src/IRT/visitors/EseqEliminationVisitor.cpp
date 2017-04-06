@@ -185,7 +185,27 @@ void CEseqEliminationVisitor::Visit( const CMemExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_MEM );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->Address()->Accept( this );
+    std::unique_ptr<const CExpression> addressCanonized = std::move( lastExpression );
+
+    const CEseqExpression* addressEseq = castToEseqExpression( addressCanonized.get() );
+
+    std::unique_ptr<const CExpression> resultExpression = nullptr;
+    if ( addressEseq ) {
+        resultExpression = std::move( std::unique_ptr<const CExpression>(
+            new CEseqExpression(
+                std::move( addressEseq->Statement()->Clone() ),
+                std::move( std::unique_ptr<const CExpression>(
+                    new CMemExpression( std::move( addressEseq->Expression()->Clone() ) )
+                ) )
+            )
+        ) );
+    } else {
+        resultExpression = std::move( std::unique_ptr<const CExpression>(
+            new CMemExpression( std::move( addressCanonized ) )
+        ) );
+    }
+    updateLastExpression( std::move( resultExpression ) );
 
     onNodeExit( nodeName );
 }
