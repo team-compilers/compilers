@@ -1,9 +1,18 @@
 #include <IRT/visitors/EseqEliminationVisitor.h>
+#include <IRT/Temporary.h>
 
 using namespace IRTree;
 
 std::unique_ptr<const CStatement> CEseqEliminationVisitor::ResultTree() {
+    return std::move( ResultStatementTree() );
+}
+
+std::unique_ptr<const CStatement> CEseqEliminationVisitor::ResultStatementTree() {
     return std::move( lastStatement );
+}
+
+std::unique_ptr<const CExpression> CEseqEliminationVisitor::ResultExpressionTree() {
+    return std::move( lastExpression );
 }
 
 void CEseqEliminationVisitor::updateLastExpression( const CExpression* newLastExpression ) {
@@ -38,6 +47,26 @@ void CEseqEliminationVisitor::updateLastStatementList( std::unique_ptr<const CSt
     lastStatementList = std::move( newLastStatementList );
 }
 
+std::unique_ptr<const CExpression> CEseqEliminationVisitor::canonizeExpressionSubtree( std::unique_ptr<const CExpression> expression ) const {
+    CEseqEliminationVisitor visitor( verbose );
+    expression->Accept( &visitor );
+    return std::move( visitor.ResultExpressionTree() );
+}
+
+bool CEseqEliminationVisitor::areCommuting( const CStatement* statement, const CExpression* expression ) {
+    assert( statement != nullptr && expression != nullptr );
+    const CExpStatement* expStatement = dynamic_cast<const CExpStatement*>( statement );
+    bool isStatementEmpty = expStatement != 0 &&
+        dynamic_cast<const CConstExpression*>( expStatement->Expression() ) != 0;
+    return isStatementEmpty ||
+        dynamic_cast<const CConstExpression*>( expression ) != 0 ||
+        dynamic_cast<const CNameExpression*>( expression ) != 0;
+}
+
+const CEseqExpression* CEseqEliminationVisitor::castToEseqExpression( const CExpression* expression ) {
+    return dynamic_cast<const CEseqExpression*>( expression );
+}
+
 /*__________ Expressions __________*/
 
 void CEseqEliminationVisitor::Visit( const CConstExpression* expression ) {
@@ -53,7 +82,7 @@ void CEseqEliminationVisitor::Visit( const CNameExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_NAME );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastExpression( std::move( expression->Clone() ) );
 
     onNodeExit( nodeName );
 }
@@ -62,7 +91,7 @@ void CEseqEliminationVisitor::Visit( const CTempExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_TEMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastExpression( std::move( expression->Clone() ) );
 
     onNodeExit( nodeName );
 }
@@ -71,7 +100,83 @@ void CEseqEliminationVisitor::Visit( const CBinaryExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_BINARY );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->LeftOperand()->Accept( this );
+    std::unique_ptr<const CExpression> leftOperandCanonized = std::move( lastExpression );
+    expression->RightOperand()->Accept( this );
+    std::unique_ptr<const CExpression> rightOperandCanonized = std::move( lastExpression );
+
+    const CEseqExpression* leftOperandEseq = castToEseqExpression( leftOperandCanonized.get() );
+    const CEseqExpression* rightOperandEseq = castToEseqExpression( rightOperandCanonized.get() );
+
+    std::unique_ptr<const CExpression> resultExpression = nullptr;
+
+    if ( leftOperandEseq ) {
+        resultExpression = std::move( std::unique_ptr<const CExpression>(
+            new CEseqExpression(
+                std::move( leftOperandEseq->Statement()->Clone() ),
+                std::move( std::unique_ptr<const CExpression>(
+                    new CBinaryExpression(
+                        expression->Operation(),
+                        std::move( leftOperandEseq->Expression()->Clone() ),
+                        std::move( rightOperandCanonized )
+                    )
+                ) )
+            )
+        ) );
+        if ( rightOperandEseq ) {
+            resultExpression = canonizeExpressionSubtree( std::move( resultExpression ) );
+        }
+    } else if ( rightOperandEseq ) {
+        if ( areCommuting( rightOperandEseq->Statement(), leftOperandCanonized.get() ) ) {
+            resultExpression = std::move( std::unique_ptr<const CExpression>(
+                new CEseqExpression(
+                    std::move( rightOperandEseq->Statement()->Clone() ),
+                    std::move( std::unique_ptr<const CExpression>(
+                        new CBinaryExpression(
+                            expression->Operation(),
+                            std::move( leftOperandCanonized ),
+                            std::move( rightOperandEseq->Expression()->Clone() )
+                        )
+                    ) )
+                )
+            ) );
+        } else {
+            CTemp temp;
+            resultExpression = std::move( std::unique_ptr<const CExpression>(
+                new CEseqExpression(
+                    new CMoveStatement(
+                        std::move( std::unique_ptr<const CExpression>(
+                            new CTempExpression( temp )
+                        ) ),
+                        std::move( leftOperandCanonized )
+                    ),
+                    new CEseqExpression(
+                        std::move( rightOperandEseq->Statement()->Clone() ),
+                        std::move( std::unique_ptr<const CExpression>(
+                            new CBinaryExpression(
+                                expression->Operation(),
+                                std::move( std::unique_ptr<const CExpression>(
+                                    new CTempExpression( temp )
+                                ) ),
+                                std::move( rightOperandEseq->Expression()->Clone() )
+                            )
+                        ) )
+                    )
+                )
+            ) );
+            resultExpression = std::move( canonizeExpressionSubtree( std::move( resultExpression ) ) );
+        }
+    } else {
+        resultExpression = std::move( std::unique_ptr<const CExpression>(
+            new CBinaryExpression(
+                expression->Operation(),
+                std::move( leftOperandCanonized ),
+                std::move( rightOperandCanonized )
+            )
+        ) );
+    }
+
+    updateLastExpression( std::move( resultExpression ) );
 
     onNodeExit( nodeName );
 }

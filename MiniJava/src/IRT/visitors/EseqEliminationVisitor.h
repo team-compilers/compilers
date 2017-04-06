@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <memory>
 
 #include <IRT/nodes/NodeNames.h>
@@ -17,6 +18,8 @@ public:
     ~CEseqEliminationVisitor() {}
 
     std::unique_ptr<const CStatement> ResultTree();
+    std::unique_ptr<const CStatement> ResultStatementTree();
+    std::unique_ptr<const CExpression> ResultExpressionTree();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
@@ -49,6 +52,11 @@ private:
 
     void updateLastStatementList( const CStatementList* newLastStatementList );
     void updateLastStatementList( std::unique_ptr<const CStatementList> newLastStatementList );
+
+    std::unique_ptr<const CExpression> canonizeExpressionSubtree( std::unique_ptr<const CExpression> expression ) const;
+
+    bool areCommuting( const CStatement* statement, const CExpression* expression );
+    const CEseqExpression* castToEseqExpression( const CExpression* expression );
 
     std::unique_ptr<const CExpression> lastExpression;
     std::unique_ptr<const CStatement> lastStatement;
