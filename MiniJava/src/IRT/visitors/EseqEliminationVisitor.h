@@ -54,6 +54,7 @@ private:
     void updateLastStatementList( std::unique_ptr<const CStatementList> newLastStatementList );
 
     std::unique_ptr<const CExpression> canonizeExpressionSubtree( std::unique_ptr<const CExpression> expression ) const;
+    std::unique_ptr<const CStatement> canonizeStatementSubtree( std::unique_ptr<const CStatement> statement ) const;
 
     bool areCommuting( const CStatement* statement, const CExpression* expression );
     const CEseqExpression* castToEseqExpression( const CExpression* expression );

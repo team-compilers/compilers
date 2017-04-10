@@ -53,6 +53,12 @@ std::unique_ptr<const CExpression> CEseqEliminationVisitor::canonizeExpressionSu
     return std::move( visitor.ResultExpressionTree() );
 }
 
+std::unique_ptr<const CStatement> CEseqEliminationVisitor::canonizeStatementSubtree( std::unique_ptr<const CStatement> statement ) const {
+    CEseqEliminationVisitor visitor( verbose );
+    statement->Accept( &visitor );
+    return std::move( visitor.ResultStatementTree() );
+}
+
 bool CEseqEliminationVisitor::areCommuting( const CStatement* statement, const CExpression* expression ) {
     assert( statement != nullptr && expression != nullptr );
     const CExpStatement* expStatement = dynamic_cast<const CExpStatement*>( statement );
@@ -214,7 +220,82 @@ void CEseqEliminationVisitor::Visit( const CCallExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_CALL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    expression->Function()->Accept( this );
+    std::unique_ptr<const CExpression> functionCanonized = std::move( lastExpression );
+    expression->Arguments()->Accept( this );
+    std::unique_ptr<const CExpressionList> argumentsListCanonized = std::move( lastExpressionList );
+
+    CTemp tempFunctionExpression = CTemp();
+    std::vector<std::unique_ptr<const CStatement>> newStatements;
+    newStatements.emplace_back( new CMoveStatement(
+        std::move( std::unique_ptr<const CExpression> (
+            new CTempExpression( tempFunctionExpression )
+        ) ),
+        std::move( functionCanonized )
+    ) );
+    CExpressionList* tempExpressionList = new CExpressionList();
+
+    const std::vector<std::unique_ptr<const CExpression>>& argumentsCanonized = argumentsListCanonized->Expressions();
+    for ( auto it = argumentsCanonized.begin(); it != argumentsCanonized.end(); ++it ) {
+        const CEseqExpression* argumentEseq = castToEseqExpression( ( *it ).get() );
+        if ( argumentEseq ) {
+            newStatements.push_back( std::move( argumentEseq->Statement()->Clone() ) );
+        }
+
+        CTemp temp;
+        tempExpressionList->Add( new CTempExpression( temp ) );
+
+        std::unique_ptr<const CExpression> moveSourceExpression;
+        if ( argumentEseq ) {
+            moveSourceExpression = std::move( argumentEseq->Expression()->Clone() );
+        } else {
+            moveSourceExpression = std::move( ( *it )->Clone() );
+        }
+        std::unique_ptr<const CStatement> moveStatement = std::move( std::unique_ptr<const CStatement>(
+            new CMoveStatement(
+                std::move( std::unique_ptr<const CExpression>(
+                    new CTempExpression( temp )
+                ) ),
+                std::move( moveSourceExpression )
+            )
+        ) );
+        newStatements.push_back( std::move( moveStatement ) );
+    }
+
+    std::unique_ptr<const CExpression> resultExpression;
+    if ( !newStatements.empty() ) {
+        std::unique_ptr<const CStatement> suffixStatement = std::move( newStatements.back() );
+        newStatements.pop_back();
+        for ( auto it = newStatements.begin(); it != newStatements.end(); ++it ) {
+            suffixStatement = std::move( std::unique_ptr<const CStatement>(
+                new CSeqStatement(
+                    std::move( *it ),
+                    std::move( suffixStatement )
+                )
+            ) );
+        }
+
+        resultExpression = std::move( std::unique_ptr<const CExpression>(
+            new CEseqExpression(
+                std::move( suffixStatement ),
+                std::move( std::unique_ptr<const CExpression>(
+                    new CCallExpression(
+                        new CTempExpression( tempFunctionExpression ),
+                        tempExpressionList
+                    )
+                ) )
+            )
+        ) );
+    } else {
+        resultExpression = std::move( std::unique_ptr<const CExpression>(
+            new CCallExpression(
+                std::move( functionCanonized ),
+                std::move( argumentsListCanonized )
+            )
+        ) );
+    }
+
+    updateLastExpression( std::move( resultExpression ) );
 
     onNodeExit( nodeName );
 }
