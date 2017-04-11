@@ -343,7 +343,31 @@ void CEseqEliminationVisitor::Visit( const CExpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_EXP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Expression()->Accept( this );
+    std::unique_ptr<const CExpression> expressionCanonized = std::move( lastExpression );
+
+    const CEseqExpression* eseqExpression = castToEseqExpression( expressionCanonized.get() );
+    std::unique_ptr<const CStatement> resultStatement;
+    if ( eseqExpression ) {
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CSeqStatement(
+                std::move( eseqExpression->Statement()->Clone() ),
+                std::move( std::unique_ptr<const CStatement>(
+                    new CExpStatement(
+                        std::move( eseqExpression->Expression()->Clone() )
+                    )
+                ) )
+            )
+        ) );
+    } else {
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CExpStatement(
+                std::move( expressionCanonized )
+            )
+        ) );
+    }
+
+    updateLastStatement( std::move( resultStatement ) );
 
     onNodeExit( nodeName );
 }
