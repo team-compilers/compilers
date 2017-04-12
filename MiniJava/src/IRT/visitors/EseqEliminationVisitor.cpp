@@ -571,7 +571,15 @@ void CEseqEliminationVisitor::Visit( const CSeqStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_SEQ );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftStatement()->Accept( this );
+    std::unique_ptr<const CStatement> leftStatementCanonized = std::move( lastStatement );
+    statement->RightStatement()->Accept( this );
+    std::unique_ptr<const CStatement> rightStatementCanonized = std::move( lastStatement );
+
+    updateLastStatement( new CSeqStatement(
+        std::move( leftStatementCanonized ),
+        std::move( rightStatementCanonized )
+    ) );
 
     onNodeExit( nodeName );
 }
