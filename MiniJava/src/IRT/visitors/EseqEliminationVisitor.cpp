@@ -114,7 +114,7 @@ void CEseqEliminationVisitor::Visit( const CBinaryExpression* expression ) {
     const CEseqExpression* leftOperandEseq = castToEseqExpression( leftOperandCanonized.get() );
     const CEseqExpression* rightOperandEseq = castToEseqExpression( rightOperandCanonized.get() );
 
-    std::unique_ptr<const CExpression> resultExpression = nullptr;
+    std::unique_ptr<const CExpression> resultExpression;
 
     if ( leftOperandEseq ) {
         resultExpression = std::move( std::unique_ptr<const CExpression>(
@@ -376,7 +376,92 @@ void CEseqEliminationVisitor::Visit( const CJumpConditionalStatement* statement 
     std::string nodeName = generateNodeName( CNodeNames::STAT_CJUMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->LeftOperand()->Accept( this );
+    std::unique_ptr<const CExpression> leftOperandCanonized = std::move( lastExpression );
+    statement->RightOperand()->Accept( this );
+    std::unique_ptr<const CExpression> rightOperandCanonized = std::move( lastExpression );
+
+    const CEseqExpression* leftOperandEseq = castToEseqExpression( leftOperandCanonized.get() );
+    const CEseqExpression* rightOperandEseq = castToEseqExpression( rightOperandCanonized.get() );
+
+    std::unique_ptr<const CStatement> resultStatement;
+
+    if ( leftOperandEseq ) {
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CJumpConditionalStatement(
+                statement->Operation(),
+                std::move( leftOperandEseq->Expression()->Clone() ),
+                std::move( rightOperandCanonized ),
+                statement->TrueLabel(),
+                statement->FalseLabel()
+            )
+        ) );
+        if ( rightOperandEseq ) {
+            resultStatement = std::move( canonizeStatementSubtree( std::move( resultStatement ) ) );
+        }
+
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CSeqStatement(
+                std::move( leftOperandEseq->Statement()->Clone() ),
+                std::move( resultStatement )
+            )
+        ) );
+    } else if ( rightOperandEseq ) {
+        if ( areCommuting( rightOperandEseq->Statement(), leftOperandCanonized.get() ) ) {
+            resultStatement = std::move( std::unique_ptr<const CStatement>(
+                new CSeqStatement(
+                    std::move( rightOperandEseq->Statement()->Clone() ),
+                    std::move( std::unique_ptr<const CStatement>(
+                        new CJumpConditionalStatement(
+                            statement->Operation(),
+                            std::move( leftOperandCanonized ),
+                            std::move( rightOperandEseq->Expression()->Clone() ),
+                            statement->TrueLabel(),
+                            statement->FalseLabel()
+                        )
+                    ) )
+                )
+            ) );
+        } else {
+            CTemp temp;
+            resultStatement = std::move( std::unique_ptr<const CStatement>(
+                new CSeqStatement(
+                    new CMoveStatement(
+                        std::move( std::unique_ptr<const CExpression>(
+                            new CTempExpression( temp )
+                        ) ),
+                        std::move( leftOperandCanonized )
+                    ),
+                    new CSeqStatement(
+                        std::move( rightOperandEseq->Statement()->Clone() ),
+                        std::move( std::unique_ptr<const CStatement>(
+                            new CJumpConditionalStatement(
+                                statement->Operation(),
+                                std::move( std::unique_ptr<const CExpression>(
+                                    new CTempExpression( temp )
+                                ) ),
+                                std::move( rightOperandEseq->Expression()->Clone() ),
+                                statement->TrueLabel(),
+                                statement->FalseLabel()
+                            )
+                        ) )
+                    )
+                )
+            ) );
+        }
+    } else {
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CJumpConditionalStatement(
+                statement->Operation(),
+                std::move( leftOperandCanonized ),
+                std::move( rightOperandCanonized ),
+                statement->TrueLabel(),
+                statement->FalseLabel()
+            )
+        ) );
+    }
+
+    updateLastStatement( std::move( resultStatement ) );
 
     onNodeExit( nodeName );
 }
