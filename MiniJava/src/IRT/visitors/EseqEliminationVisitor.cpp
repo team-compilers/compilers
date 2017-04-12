@@ -470,7 +470,7 @@ void CEseqEliminationVisitor::Visit( const CJumpStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_JUMP );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastStatement( std::move( statement->Clone() ) );
 
     onNodeExit( nodeName );
 }
@@ -479,7 +479,7 @@ void CEseqEliminationVisitor::Visit( const CLabelStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LABEL );
     onNodeEnter( nodeName );
 
-    // write your code here
+    updateLastStatement( std::move( statement->Clone() ) );
 
     onNodeExit( nodeName );
 }
@@ -488,7 +488,81 @@ void CEseqEliminationVisitor::Visit( const CMoveStatement* statement ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_MOVE );
     onNodeEnter( nodeName );
 
-    // write your code here
+    statement->Destination()->Accept( this );
+    std::unique_ptr<const CExpression> destinationCanonized = std::move( lastExpression );
+    statement->Source()->Accept( this );
+    std::unique_ptr<const CExpression> sourceCanonized = std::move( lastExpression );
+
+    const CEseqExpression* destinationEseq = castToEseqExpression( destinationCanonized.get() );
+    const CEseqExpression* sourceEseq = castToEseqExpression( sourceCanonized.get() );
+
+    std::unique_ptr<const CStatement> resultStatement;
+    if ( destinationEseq ) {
+        // left son is eseq
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CMoveStatement(
+                std::move( destinationEseq->Expression()->Clone() ),
+                std::move( sourceCanonized )
+            )
+        ) );
+        if ( sourceEseq ) {
+            // right son is eseq
+            resultStatement = std::move( canonizeStatementSubtree( std::move( resultStatement ) ) );
+        }
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CSeqStatement(
+                std::move( destinationEseq->Statement()->Clone() ),
+                std::move( resultStatement )
+            )
+        ) );
+    } else if ( sourceEseq ) {
+        // right son is eseq
+        if ( areCommuting( sourceEseq->Statement(), destinationCanonized.get() ) ) {
+            resultStatement = std::move( std::unique_ptr<const CStatement>(
+                new CSeqStatement(
+                    std::move( sourceEseq->Statement()->Clone() ),
+                    std::move( std::unique_ptr<const CStatement>(
+                        new CMoveStatement(
+                            std::move( destinationCanonized ),
+                            std::move( sourceEseq->Expression()->Clone() )
+                        )
+                    ) )
+                )
+            ) );
+        } else {
+            CTemp temp;
+            resultStatement = std::move( std::unique_ptr<const CStatement>(
+                new CSeqStatement(
+                    new CMoveStatement(
+                        std::move( std::unique_ptr<const CExpression>(
+                            new CTempExpression( temp )
+                        ) ),
+                        std::move( destinationCanonized )
+                    ),
+                    new CSeqStatement(
+                        std::move( sourceEseq->Statement()->Clone() ),
+                        std::move( std::unique_ptr<const CStatement>(
+                            new CMoveStatement(
+                                std::move( std::unique_ptr<const CExpression>(
+                                    new CTempExpression( temp )
+                                ) ),
+                                std::move( sourceEseq->Expression()->Clone() )
+                            )
+                        ) )
+                    )
+                )
+            ) );
+        }
+    } else {
+        resultStatement = std::move( std::unique_ptr<const CStatement>(
+            new CMoveStatement(
+                std::move( destinationCanonized ),
+                std::move( sourceCanonized )
+            )
+        ) );
+    }
+
+    updateLastStatement( std::move( resultStatement ) );
 
     onNodeExit( nodeName );
 }
