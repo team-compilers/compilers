@@ -6,7 +6,7 @@ digraph {
 	StatMove15 -> ExpMem21;
 	StatSeq13 -> StatCJump2;
 	StatSeq13 -> StatSeq14;
-	ExpTemp23 -> "Temp23: T108";
+	ExpTemp23 -> "Temp23: T529";
 	ExpEseq2 -> StatMove7;
 	ExpEseq2 -> ExpTemp17;
 	ExpTemp1 -> "Temp1: $fp";
@@ -26,9 +26,9 @@ digraph {
 	ExpConst19 -> "Value19: 24";
 	StatMove12 -> ExpMem18;
 	StatMove12 -> ExpConst24;
-	ExpTemp13 -> "Temp13: T106";
+	ExpTemp13 -> "Temp13: T527";
 	ExpConst11 -> "Value11: 24";
-	ExpTemp15 -> "Temp15: T107";
+	ExpTemp15 -> "Temp15: T528";
 	ExpName1 -> "Label9: Tree@GetHas_Left";
 	StatMove13 -> ExpMem19;
 	StatMove13 -> ExpConst26;
@@ -56,12 +56,12 @@ digraph {
 	ExpCall3 -> ExpList3;
 	ExpConst25 -> "Value25: 20";
 	ExpConst12 -> "Value12: 0";
-	ExpTemp8 -> "Temp8: T105";
+	ExpTemp8 -> "Temp8: T526";
 	ExpMem15 -> ExpBinary14;
 	ExpEseq0 -> StatMove4;
 	ExpEseq0 -> ExpTemp8;
-	ExpTemp11 -> "Temp11: T106";
-	ExpTemp17 -> "Temp17: T107";
+	ExpTemp11 -> "Temp11: T527";
+	ExpTemp17 -> "Temp17: T528";
 	ExpConst3 -> "Value3: 20";
 	StatMove1 -> ExpMem2;
 	StatMove1 -> ExpConst2;
@@ -248,7 +248,7 @@ digraph {
 	StatSeq22 -> StatCJump3;
 	StatSeq22 -> StatSeq23;
 	ExpConst7 -> "Value7: 12";
-	ExpTemp21 -> "Temp21: T108";
+	ExpTemp21 -> "Temp21: T529";
 	StatMove4 -> ExpTemp6;
 	StatMove4 -> ExpCall0;
 	StatMove9 -> ExpTemp21;
@@ -257,7 +257,7 @@ digraph {
 	ExpList3 -> ExpMem15;
 	ExpEseq3 -> StatMove9;
 	ExpEseq3 -> ExpTemp23;
-	ExpTemp25 -> "Temp25: T109";
+	ExpTemp25 -> "Temp25: T530";
 	StatMove3 -> ExpMem5;
 	StatMove3 -> ExpEseq0;
 	StatSeq25 -> StatCJump4;
@@ -282,7 +282,7 @@ digraph {
 	StatSeq34 -> StatMove14;
 	ExpMem17 -> ExpBinary16;
 	ExpList4 -> ExpMem17;
-	ExpTemp27 -> "Temp27: T109";
+	ExpTemp27 -> "Temp27: T530";
 	ExpMem3 -> ExpBinary2;
 	ExpEseq4 -> StatMove11;
 	ExpEseq4 -> ExpTemp27;
@@ -301,7 +301,7 @@ digraph {
 	StatSeq24 -> StatSeq31;
 	ExpTemp29 -> "Temp29: $fp";
 	ExpTemp3 -> "Temp3: $fp";
-	ExpTemp6 -> "Temp6: T105";
+	ExpTemp6 -> "Temp6: T526";
 	StatLabel8 -> "Label21: L61";
 	ExpBinary18 -> ExpTemp29;
 	ExpBinary18 -> Plus18;

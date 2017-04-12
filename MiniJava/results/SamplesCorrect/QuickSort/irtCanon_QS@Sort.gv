@@ -19,7 +19,7 @@ digraph {
 	StatSeq59 -> StatSeq60;
 	StatSeq5 -> StatSeq6;
 	StatSeq5 -> StatSeq59;
-	ExpTemp70 -> "Temp70: T7";
+	ExpTemp70 -> "Temp70: T33";
 	ExpEseq1 -> StatMove26;
 	ExpEseq1 -> ExpTemp70;
 	ExpConst95 -> "Value95: 8";
@@ -34,12 +34,12 @@ digraph {
 	ExpName1 -> "Label41: QS@Sort";
 	StatMove26 -> ExpTemp66;
 	StatMove26 -> ExpCall1;
-	ExpTemp66 -> "Temp66: T7";
+	ExpTemp66 -> "Temp66: T33";
 	ExpMem87 -> ExpBinary91;
 	ExpBinary91 -> ExpTemp65;
 	ExpBinary91 -> Plus76;
 	ExpBinary91 -> ExpConst92;
-	ExpTemp64 -> "Temp64: T6";
+	ExpTemp64 -> "Temp64: T32";
 	ExpEseq0 -> StatMove24;
 	ExpEseq0 -> ExpTemp64;
 	ExpConst91 -> "Value91: 1";
@@ -61,7 +61,7 @@ digraph {
 	ExpName0 -> "Label40: QS@Sort";
 	StatMove24 -> ExpTemp60;
 	StatMove24 -> ExpCall0;
-	ExpTemp60 -> "Temp60: T6";
+	ExpTemp60 -> "Temp60: T32";
 	StatSeq57 -> StatMove22;
 	StatSeq57 -> StatSeq58;
 	ExpMem82 -> ExpBinary86;

@@ -14,7 +14,7 @@ digraph {
 	ExpName4 -> "Label9: List@GetElem";
 	StatMove10 -> ExpTemp21;
 	StatMove10 -> ExpCall4;
-	ExpTemp21 -> "Temp21: T40";
+	ExpTemp21 -> "Temp21: T197";
 	StatMove9 -> ExpMem14;
 	StatMove9 -> ExpEseq4;
 	ExpMem14 -> ExpBinary10;
@@ -44,7 +44,7 @@ digraph {
 	StatSeq7 -> StatLabel2;
 	StatSeq7 -> StatSeq8;
 	ExpName2 -> "Label7: List@GetNext";
-	ExpTemp19 -> "Temp19: T39";
+	ExpTemp19 -> "Temp19: T196";
 	StatLabel0 -> "Label0: List@Print";
 	ExpMem5 -> ExpBinary3;
 	ExpBinary2 -> ExpMem4;
@@ -67,7 +67,7 @@ digraph {
 	StatSeq3 -> StatMove1;
 	StatSeq3 -> StatSeq4;
 	ExpTemp0 -> "Temp0: $fp";
-	ExpTemp7 -> "Temp7: T37";
+	ExpTemp7 -> "Temp7: T194";
 	ExpEseq3 -> StatMove8;
 	ExpEseq3 -> ExpTemp19;
 	ExpCall0 -> ExpName0;
@@ -88,7 +88,7 @@ digraph {
 	ExpTemp2 -> "Temp2: $fp";
 	ExpConst1 -> "Value1: 12";
 	ExpMem15 -> ExpBinary11;
-	ExpTemp8 -> "Temp8: T36";
+	ExpTemp8 -> "Temp8: T193";
 	ExpTemp18 -> "Temp18: $fp";
 	StatCJump0 -> NE0;
 	StatCJump0 -> ExpMem8;
@@ -117,7 +117,7 @@ digraph {
 	ExpName1 -> "Label6: Element@GetAge";
 	ExpEseq1 -> StatMove4;
 	ExpEseq1 -> ExpTemp10;
-	ExpTemp15 -> "Temp15: T38";
+	ExpTemp15 -> "Temp15: T195";
 	StatSeq10 -> StatMove5;
 	StatSeq10 -> StatSeq11;
 	ExpCall1 -> ExpName1;
@@ -142,7 +142,7 @@ digraph {
 	ExpConst9 -> "Value9: 12";
 	StatSeq11 -> StatMove7;
 	StatSeq11 -> StatMove9;
-	ExpTemp11 -> "Temp11: T37";
+	ExpTemp11 -> "Temp11: T194";
 	ExpEseq0 -> StatMove3;
 	ExpEseq0 -> ExpTemp11;
 	ExpBinary6 -> ExpTemp12;
@@ -150,9 +150,9 @@ digraph {
 	ExpBinary6 -> ExpConst7;
 	ExpTemp16 -> "Temp16: $fp";
 	ExpConst7 -> "Value7: 16";
-	ExpTemp10 -> "Temp10: T36";
+	ExpTemp10 -> "Temp10: T193";
 	ExpMem10 -> ExpBinary6;
-	ExpTemp13 -> "Temp13: T38";
+	ExpTemp13 -> "Temp13: T195";
 	ExpCall2 -> ExpName2;
 	ExpCall2 -> ExpList2;
 	ExpTemp14 -> "Temp14: $fp";
@@ -175,9 +175,9 @@ digraph {
 	ExpMem12 -> ExpBinary8;
 	StatMove7 -> ExpMem12;
 	StatMove7 -> ExpEseq3;
-	ExpTemp23 -> "Temp23: T40";
+	ExpTemp23 -> "Temp23: T197";
 	ExpMem9 -> ExpBinary5;
-	ExpTemp17 -> "Temp17: T39";
+	ExpTemp17 -> "Temp17: T196";
 	ExpList3 -> ExpMem13;
 	ExpName0 -> "Label5: print";
 	ExpConst8 -> "Value8: 16";

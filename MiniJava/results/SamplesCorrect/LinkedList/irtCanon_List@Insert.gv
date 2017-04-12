@@ -2,7 +2,7 @@ digraph {
 	ordering = out;
 	StatSeq1 -> StatSeq2;
 	StatSeq1 -> StatMove5;
-	ExpTemp10 -> "Temp10: T64";
+	ExpTemp10 -> "Temp10: T322";
 	ExpMem6 -> ExpBinary6;
 	ExpConst7 -> "Value7: 12";
 	ExpConst3 -> "Value3: 4";
@@ -27,7 +27,7 @@ digraph {
 	ExpMem4 -> ExpBinary4;
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpMem1;
-	ExpTemp3 -> "Temp3: T63";
+	ExpTemp3 -> "Temp3: T321";
 	ExpTemp11 -> "Temp11: $rv";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
@@ -58,7 +58,7 @@ digraph {
 	ExpList0 -> ExpBinary2;
 	ExpEseq0 -> StatMove2;
 	ExpEseq0 -> ExpTemp4;
-	ExpTemp4 -> "Temp4: T63";
+	ExpTemp4 -> "Temp4: T321";
 	ExpTemp0 -> "Temp0: $fp";
 	ExpTemp7 -> "Temp7: $fp";
 	ExpMem7 -> ExpBinary7;
@@ -76,7 +76,7 @@ digraph {
 	ExpMem3 -> ExpBinary3;
 	StatMove3 -> ExpMem3;
 	StatMove3 -> ExpEseq1;
-	ExpTemp6 -> "Temp6: T64";
+	ExpTemp6 -> "Temp6: T322";
 	ExpEseq1 -> StatMove4;
 	ExpEseq1 -> ExpTemp10;
 	ExpName1 -> "Label2: List@InitNew";

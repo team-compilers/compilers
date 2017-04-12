@@ -72,7 +72,7 @@ digraph {
 	ExpConst1 -> "Value1: 1";
 	StatSeq8 -> StatJump0;
 	StatSeq8 -> StatLabel3;
-	ExpTemp3 -> "Temp3: T15";
+	ExpTemp3 -> "Temp3: T69";
 	ExpName0 -> "Label5: print";
 	ExpTemp4 -> "Temp4: $fp";
 	ExpMem6 -> ExpTemp4;
@@ -103,6 +103,6 @@ digraph {
 	ExpList0 -> ExpMem4;
 	ExpEseq0 -> StatMove1;
 	ExpEseq0 -> ExpTemp6;
-	ExpTemp6 -> "Temp6: T15";
+	ExpTemp6 -> "Temp6: T69";
 }
 

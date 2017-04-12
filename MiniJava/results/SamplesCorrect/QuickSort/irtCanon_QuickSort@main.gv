@@ -4,7 +4,7 @@ digraph {
 	ExpEseq0 -> StatMove0;
 	ExpEseq0 -> ExpTemp5;
 	ExpList0 -> ExpEseq1;
-	ExpTemp4 -> "Temp4: T9";
+	ExpTemp4 -> "Temp4: T47";
 	ExpName1 -> "Label2: QS@Start";
 	StatMove1 -> ExpTemp1;
 	StatMove1 -> ExpCall1;
@@ -15,8 +15,8 @@ digraph {
 	ExpCall0 -> ExpList0;
 	ExpName0 -> "Label1: print";
 	StatLabel0 -> "Label0: QuickSort@main";
-	ExpTemp3 -> "Temp3: T8";
-	ExpTemp0 -> "Temp0: T10";
+	ExpTemp3 -> "Temp3: T46";
+	ExpTemp0 -> "Temp0: T48";
 	ExpList2 -> ExpBinary0;
 	ExpCall1 -> ExpName1;
 	ExpCall1 -> ExpList1;
@@ -24,11 +24,11 @@ digraph {
 	ExpEseq1 -> ExpTemp4;
 	StatMove0 -> ExpTemp0;
 	StatMove0 -> ExpCall0;
-	ExpTemp2 -> "Temp2: T8";
+	ExpTemp2 -> "Temp2: T46";
 	StatMove2 -> ExpTemp2;
 	StatMove2 -> ExpCall2;
-	ExpTemp5 -> "Temp5: T10";
-	ExpTemp1 -> "Temp1: T9";
+	ExpTemp5 -> "Temp5: T48";
+	ExpTemp1 -> "Temp1: T47";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatExp0;
 	ExpName2 -> "Label3: malloc";

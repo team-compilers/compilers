@@ -3,7 +3,7 @@ digraph {
 	ExpConst3 -> "Value3: 1";
 	StatMove3 -> ExpTemp7;
 	StatMove3 -> ExpConst3;
-	ExpTemp6 -> "Temp6: T47";
+	ExpTemp6 -> "Temp6: T232";
 	ExpEseq0 -> StatMove2;
 	ExpEseq0 -> ExpTemp6;
 	ExpConst2 -> "Value2: 12";
@@ -24,7 +24,7 @@ digraph {
 	ExpTemp1 -> "Temp1: $fp";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp3 -> "Temp3: T47";
+	ExpTemp3 -> "Temp3: T232";
 	ExpTemp0 -> "Temp0: $fp";
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpMem1;

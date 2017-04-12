@@ -3,7 +3,7 @@ digraph {
 	ExpConst3 -> "Value3: 0";
 	StatMove3 -> ExpTemp7;
 	StatMove3 -> ExpConst3;
-	ExpTemp6 -> "Temp6: T104";
+	ExpTemp6 -> "Temp6: T517";
 	ExpMem1 -> ExpBinary1;
 	ExpConst2 -> "Value2: 4";
 	ExpBinary1 -> ExpTemp4;
@@ -23,11 +23,11 @@ digraph {
 	ExpConst0 -> "Value0: 333";
 	StatLabel0 -> "Label0: Tree@accept";
 	ExpTemp5 -> "Temp5: $fp";
-	ExpTemp1 -> "Temp1: T103";
+	ExpTemp1 -> "Temp1: T516";
 	StatSeq0 -> StatLabel0;
 	StatSeq0 -> StatSeq1;
-	ExpTemp3 -> "Temp3: T104";
-	ExpTemp0 -> "Temp0: T103";
+	ExpTemp3 -> "Temp3: T517";
+	ExpTemp0 -> "Temp0: T516";
 	StatExp0 -> ExpEseq0;
 	ExpEseq1 -> StatMove2;
 	ExpEseq1 -> ExpTemp6;

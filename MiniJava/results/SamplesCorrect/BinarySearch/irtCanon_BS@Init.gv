@@ -129,7 +129,7 @@ digraph {
 	ExpEseq0 -> StatMove2;
 	ExpEseq0 -> ExpTemp5;
 	ExpTemp11 -> "Temp11: $fp";
-	ExpTemp3 -> "Temp3: T2";
+	ExpTemp3 -> "Temp3: T8";
 	StatSeq8 -> StatLabel2;
 	StatSeq8 -> StatSeq9;
 	ExpTemp0 -> "Temp0: $fp";
@@ -235,7 +235,7 @@ digraph {
 	StatMove6 -> ExpBinary15;
 	ExpMem19 -> ExpTemp15;
 	ExpMem18 -> ExpMem19;
-	ExpTemp5 -> "Temp5: T2";
+	ExpTemp5 -> "Temp5: T8";
 	ExpBinary17 -> ExpMem18;
 	ExpBinary17 -> Plus14;
 	ExpBinary17 -> ExpBinary18;

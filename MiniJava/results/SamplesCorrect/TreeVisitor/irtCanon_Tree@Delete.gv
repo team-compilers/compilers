@@ -87,10 +87,10 @@ digraph {
 	ExpMem29 -> ExpBinary27;
 	ExpConst38 -> "Value38: 24";
 	ExpTemp43 -> "Temp43: $fp";
-	ExpTemp45 -> "Temp45: T86";
+	ExpTemp45 -> "Temp45: T407";
 	StatLabel15 -> "Label42: L24";
 	ExpConst37 -> "Value37: 0";
-	ExpTemp42 -> "Temp42: T85";
+	ExpTemp42 -> "Temp42: T406";
 	ExpEseq6 -> StatMove18;
 	ExpEseq6 -> ExpTemp42;
 	ExpBinary26 -> ExpTemp41;
@@ -107,7 +107,7 @@ digraph {
 	StatSeq10 -> StatSeq55;
 	StatLabel14 -> "Label38: L27";
 	ExpConst35 -> "Value35: 0";
-	ExpTemp39 -> "Temp39: T84";
+	ExpTemp39 -> "Temp39: T405";
 	StatMove21 -> ExpTemp45;
 	StatMove21 -> ExpCall7;
 	ExpMem27 -> ExpBinary25;
@@ -125,7 +125,7 @@ digraph {
 	ExpConst42 -> "Value42: 20";
 	StatMove17 -> ExpTemp37;
 	StatMove17 -> ExpCall5;
-	ExpTemp37 -> "Temp37: T84";
+	ExpTemp37 -> "Temp37: T405";
 	StatCJump6 -> NE4;
 	StatCJump6 -> ExpEseq5;
 	StatCJump6 -> ExpConst35;
@@ -195,14 +195,14 @@ digraph {
 	ExpConst25 -> "Value25: 0";
 	ExpEseq0 -> StatMove6;
 	ExpEseq0 -> ExpTemp11;
-	ExpTemp11 -> "Temp11: T79";
+	ExpTemp11 -> "Temp11: T400";
 	ExpTemp47 -> "Temp47: $fp";
 	ExpConst11 -> "Value11: 20";
 	ExpName0 -> "Label5: Tree@GetKey";
 	StatJump5 -> "Label47: L30";
 	StatLabel17 -> "Label46: L26";
 	ExpConst8 -> "Value8: 36";
-	ExpTemp20 -> "Temp20: T81";
+	ExpTemp20 -> "Temp20: T402";
 	ExpBinary24 -> ExpTemp36;
 	ExpBinary24 -> Plus24;
 	ExpBinary24 -> ExpConst32;
@@ -211,7 +211,7 @@ digraph {
 	ExpBinary9 -> ExpConst13;
 	ExpCall4 -> ExpName4;
 	ExpCall4 -> ExpList4;
-	ExpTemp16 -> "Temp16: T80";
+	ExpTemp16 -> "Temp16: T401";
 	StatCJump2 -> NE1;
 	StatCJump2 -> ExpEseq1;
 	StatCJump2 -> ExpConst15;
@@ -278,7 +278,7 @@ digraph {
 	StatMove0 -> ExpMem0;
 	StatMove0 -> ExpMem1;
 	ExpTemp12 -> "Temp12: $fp";
-	ExpTemp14 -> "Temp14: T80";
+	ExpTemp14 -> "Temp14: T401";
 	StatLabel6 -> "Label16: L20";
 	ExpBinary22 -> ExpTemp33;
 	ExpBinary22 -> Plus22;
@@ -301,7 +301,7 @@ digraph {
 	ExpConst13 -> "Value13: 12";
 	ExpMem7 -> ExpBinary5;
 	ExpConst45 -> "Value45: 20";
-	ExpTemp40 -> "Temp40: T85";
+	ExpTemp40 -> "Temp40: T406";
 	ExpBinary3 -> ExpTemp5;
 	ExpBinary3 -> Plus3;
 	ExpBinary3 -> ExpConst4;
@@ -439,7 +439,7 @@ digraph {
 	ExpList2 -> ExpMem16;
 	StatMove27 -> ExpTemp59;
 	StatMove27 -> ExpMem41;
-	ExpTemp22 -> "Temp22: T81";
+	ExpTemp22 -> "Temp22: T402";
 	StatSeq41 -> StatLabel13;
 	StatSeq41 -> StatSeq42;
 	StatLabel3 -> "Label8: L34";
@@ -451,7 +451,7 @@ digraph {
 	StatSeq21 -> StatLabel5;
 	StatSeq21 -> StatSeq22;
 	ExpMem17 -> ExpBinary15;
-	ExpTemp49 -> "Temp49: T86";
+	ExpTemp49 -> "Temp49: T407";
 	ExpConst33 -> "Value33: 0";
 	ExpConst21 -> "Value21: 0";
 	StatSeq19 -> StatMove8;
@@ -487,10 +487,10 @@ digraph {
 	StatSeq43 -> StatSeq46;
 	ExpEseq3 -> StatMove12;
 	ExpEseq3 -> ExpTemp28;
-	ExpTemp9 -> "Temp9: T79";
+	ExpTemp9 -> "Temp9: T400";
 	StatSeq27 -> StatLabel8;
 	StatSeq27 -> StatSeq28;
-	ExpTemp26 -> "Temp26: T82";
+	ExpTemp26 -> "Temp26: T403";
 	ExpList6 -> ExpMem28;
 	ExpName3 -> "Label22: Tree@GetHas_Right";
 	ExpConst49 -> "Value49: 0";
@@ -506,7 +506,7 @@ digraph {
 	ExpBinary18 -> ExpConst24;
 	ExpMem20 -> ExpBinary18;
 	ExpList3 -> ExpMem20;
-	ExpTemp28 -> "Temp28: T82";
+	ExpTemp28 -> "Temp28: T403";
 	StatMove8 -> ExpMem13;
 	StatMove8 -> ExpMem14;
 	StatSeq32 -> StatMove13;
@@ -533,7 +533,7 @@ digraph {
 	StatSeq44 -> StatSeq45;
 	ExpMem5 -> ExpBinary3;
 	ExpMem22 -> ExpBinary20;
-	ExpTemp55 -> "Temp55: T87";
+	ExpTemp55 -> "Temp55: T408";
 	StatCJump3 -> LT1;
 	StatCJump3 -> ExpMem18;
 	StatCJump3 -> ExpMem19;
@@ -548,7 +548,7 @@ digraph {
 	ExpMem23 -> ExpBinary21;
 	StatMove14 -> ExpMem23;
 	StatMove14 -> ExpEseq4;
-	ExpTemp32 -> "Temp32: T83";
+	ExpTemp32 -> "Temp32: T404";
 	ExpName4 -> "Label26: Tree@GetRight";
 	StatSeq52 -> StatLabel18;
 	StatSeq52 -> StatSeq53;
@@ -556,9 +556,9 @@ digraph {
 	ExpEseq4 -> StatMove15;
 	ExpEseq4 -> ExpTemp34;
 	StatLabel7 -> "Label18: L35";
-	ExpTemp34 -> "Temp34: T83";
+	ExpTemp34 -> "Temp34: T404";
 	ExpMem41 -> ExpBinary37;
-	ExpTemp51 -> "Temp51: T87";
+	ExpTemp51 -> "Temp51: T408";
 	StatCJump7 -> NE5;
 	StatCJump7 -> ExpEseq6;
 	StatCJump7 -> ExpConst37;

@@ -29,7 +29,7 @@ digraph {
 	StatSeq38 -> StatLabel13;
 	StatSeq38 -> StatSeq39;
 	ExpConst46 -> "Value46: 0";
-	ExpTemp41 -> "Temp41: T34";
+	ExpTemp41 -> "Temp41: T143";
 	ExpEseq2 -> StatMove17;
 	ExpEseq2 -> ExpTemp41;
 	ExpMem38 -> ExpBinary37;
@@ -47,7 +47,7 @@ digraph {
 	ExpList2 -> ExpMem38;
 	ExpMem36 -> ExpTemp38;
 	ExpName2 -> "Label27: BS@Compare";
-	ExpTemp37 -> "Temp37: T34";
+	ExpTemp37 -> "Temp37: T143";
 	StatSeq8 -> StatSeq9;
 	StatSeq8 -> StatSeq37;
 	StatJump3 -> "Label25: L36";
@@ -146,7 +146,7 @@ digraph {
 	StatSeq10 -> StatSeq11;
 	StatMove13 -> ExpMem30;
 	StatMove13 -> ExpConst35;
-	ExpTemp13 -> "Temp13: T32";
+	ExpTemp13 -> "Temp13: T141";
 	ExpConst35 -> "Value35: 0";
 	StatCJump0 -> NE0;
 	StatCJump0 -> ExpMem9;
@@ -228,7 +228,7 @@ digraph {
 	StatSeq4 -> StatMove2;
 	StatSeq4 -> StatSeq5;
 	ExpMem0 -> ExpBinary0;
-	ExpTemp16 -> "Temp16: T32";
+	ExpTemp16 -> "Temp16: T141";
 	StatCJump2 -> NE1;
 	StatCJump2 -> ExpEseq1;
 	StatCJump2 -> ExpConst33;
@@ -414,7 +414,7 @@ digraph {
 	StatSeq19 -> StatSeq20;
 	StatSeq22 -> StatMove11;
 	StatSeq22 -> StatLabel5;
-	ExpTemp26 -> "Temp26: T33";
+	ExpTemp26 -> "Temp26: T142";
 	ExpMem19 -> ExpTemp18;
 	ExpCall1 -> ExpName1;
 	ExpCall1 -> ExpList1;
@@ -423,7 +423,7 @@ digraph {
 	StatJump0 -> "Label9: L35";
 	ExpEseq1 -> StatMove12;
 	ExpEseq1 -> ExpTemp30;
-	ExpTemp30 -> "Temp30: T33";
+	ExpTemp30 -> "Temp30: T142";
 	ExpConst21 -> "Value21: 1";
 	ExpConst33 -> "Value33: 0";
 	StatSeq24 -> StatCJump2;
