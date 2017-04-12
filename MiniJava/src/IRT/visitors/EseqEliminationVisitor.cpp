@@ -590,7 +590,14 @@ void CEseqEliminationVisitor::Visit( const CExpressionList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    CExpressionList* newList = new CExpressionList();
+    const std::vector< std::unique_ptr<const CExpression> >& expressions = list->Expressions();
+    for ( auto it = expressions.begin(); it != expressions.end(); ++it ) {
+        ( *it )->Accept( this );
+        newList->Add( std::move( lastExpression ) );
+    }
+
+    updateLastExpressionList( newList );
 
     onNodeExit( nodeName );
 }
@@ -599,7 +606,8 @@ void CEseqEliminationVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
     onNodeEnter( nodeName );
 
-    // write your code here
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
