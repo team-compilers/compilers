@@ -2,15 +2,14 @@ digraph {
 	ordering = out;
 	ExpConst2 -> "Value2: 1";
 	ExpTemp2 -> "Temp2: $rv";
-	StatSeq1 -> StatMove0;
-	StatSeq1 -> StatMove1;
 	StatMove1 -> ExpTemp2;
 	StatMove1 -> ExpConst2;
 	ExpConst1 -> "Value1: 4";
 	ExpMem2 -> ExpBinary1;
 	ExpTemp0 -> "Temp0: $fp";
-	StatSeq0 -> StatLabel0;
-	StatSeq0 -> StatSeq1;
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatList0 -> StatMove1;
 	StatLabel0 -> "Label0: Tree@SetHas_Right";
 	ExpMem1 -> ExpTemp0;
 	ExpConst0 -> "Value0: 12";

@@ -11,7 +11,7 @@
 
 class CCompilationPhase {
 public:
-    CCompilationPhase( bool _verbose = false ) : verbose( _verbose ) {}
+    CCompilationPhase( int _verbose = 0 ) : verbose( _verbose ) {}
     virtual ~CCompilationPhase() = default;
 
     virtual void Run() = 0;
@@ -19,12 +19,12 @@ public:
         const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) = 0;
 protected:
-    bool verbose;
+    int verbose;
 };
 
 class CAstBuildingPhase : public CCompilationPhase {
 public:
-    CAstBuildingPhase( const std::string& _pathInputFile, bool _verbose = false )
+    CAstBuildingPhase( const std::string& _pathInputFile, int _verbose = 0 )
         : CCompilationPhase( _verbose ), pathInputFile( _pathInputFile ) {}
 
     virtual void Run() override;
@@ -49,7 +49,7 @@ private:
 
 class CSymbolTableBuildingPhase : public CCompilationPhase {
 public:
-    CSymbolTableBuildingPhase( const ASTree::CProgram* _astRoot, bool _verbose = false )
+    CSymbolTableBuildingPhase( const ASTree::CProgram* _astRoot, int _verbose = 0 )
         : CCompilationPhase( _verbose ), astRoot( _astRoot ) {}
 
     virtual void Run() override;
@@ -71,7 +71,7 @@ class CTypeCheckingPhase : public CCompilationPhase {
 public:
     CTypeCheckingPhase( const ASTree::CProgram* _astRoot,
             const CSymbolTable* _symbolTable,
-            bool _verbose = false )
+            int _verbose = 0 )
         : CCompilationPhase( _verbose ), astRoot( _astRoot ), symbolTable( _symbolTable ) {}
 
     virtual void Run() override;
@@ -95,7 +95,7 @@ public:
 
     CIrtBuildingPhase( const ASTree::CProgram* _astRoot,
             const CSymbolTable* _symbolTable,
-            bool _verbose = false )
+            int _verbose = 0 )
     : CCompilationPhase( _verbose ), astRoot( _astRoot ), symbolTable( _symbolTable ) {}
 
     virtual void Run() override;
@@ -117,7 +117,7 @@ private:
 
 class CIrtCanonizationPhase : CCompilationPhase {
 public:
-    CIrtCanonizationPhase( const TMethodToIRTMap* _methodTrees, bool _verbose = false )
+    CIrtCanonizationPhase( const TMethodToIRTMap* _methodTrees, int _verbose = 0 )
         : CCompilationPhase( _verbose ), methodTrees( _methodTrees ),
             methodTreesWithoutDoubleCalls( new TMethodToIRTMap() ),
             methodTreesWithoutEseqs( new TMethodToIRTMap() ),

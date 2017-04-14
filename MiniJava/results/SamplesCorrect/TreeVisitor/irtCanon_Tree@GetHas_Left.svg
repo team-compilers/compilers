@@ -59,13 +59,13 @@
 <path fill="none" stroke="black" d="M133.336,-288.055C129.809,-280.091 125.522,-270.411 121.58,-261.51"/>
 <polygon fill="black" stroke="black" points="124.74,-260.002 117.491,-252.275 118.34,-262.836 124.74,-260.002"/>
 </g>
-<!-- StatSeq0 -->
-<g id="node7" class="node"><title>StatSeq0</title>
+<!-- StatList0 -->
+<g id="node7" class="node"><title>StatList0</title>
 <ellipse fill="none" stroke="black" cx="213.84" cy="-378" rx="42.4939" ry="18"/>
-<text text-anchor="middle" x="213.84" y="-374.3" font-family="Times,serif" font-size="14.00">StatSeq0</text>
+<text text-anchor="middle" x="213.84" y="-374.3" font-family="Times,serif" font-size="14.00">StatList0</text>
 </g>
-<!-- StatSeq0&#45;&gt;StatLabel0 -->
-<g id="edge5" class="edge"><title>StatSeq0&#45;&gt;StatLabel0</title>
+<!-- StatList0&#45;&gt;StatLabel0 -->
+<g id="edge5" class="edge"><title>StatList0&#45;&gt;StatLabel0</title>
 <path fill="none" stroke="black" d="M197.275,-361.116C187.73,-351.962 175.56,-340.293 164.967,-330.135"/>
 <polygon fill="black" stroke="black" points="167.233,-327.459 157.592,-323.064 162.388,-332.511 167.233,-327.459"/>
 </g>
@@ -74,8 +74,8 @@
 <ellipse fill="none" stroke="black" cx="287.84" cy="-306" rx="50.0912" ry="18"/>
 <text text-anchor="middle" x="287.84" y="-302.3" font-family="Times,serif" font-size="14.00">StatMove0</text>
 </g>
-<!-- StatSeq0&#45;&gt;StatMove0 -->
-<g id="edge6" class="edge"><title>StatSeq0&#45;&gt;StatMove0</title>
+<!-- StatList0&#45;&gt;StatMove0 -->
+<g id="edge6" class="edge"><title>StatList0&#45;&gt;StatMove0</title>
 <path fill="none" stroke="black" d="M230.632,-361.116C240.309,-351.962 252.645,-340.293 263.383,-330.135"/>
 <polygon fill="black" stroke="black" points="265.999,-332.478 270.859,-323.064 261.189,-327.393 265.999,-332.478"/>
 </g>

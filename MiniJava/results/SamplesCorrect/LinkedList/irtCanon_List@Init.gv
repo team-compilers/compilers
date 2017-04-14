@@ -1,11 +1,11 @@
 digraph {
 	ordering = out;
 	ExpConst2 -> "Value2: 1";
-	ExpTemp1 -> "Temp1: $rv";
 	ExpMem0 -> ExpBinary0;
 	ExpTemp0 -> "Temp0: $fp";
-	StatSeq0 -> StatLabel0;
-	StatSeq0 -> StatSeq1;
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatList0 -> StatMove1;
 	StatLabel0 -> "Label0: List@Init";
 	ExpMem1 -> ExpTemp0;
 	ExpConst0 -> "Value0: 4";
@@ -17,7 +17,6 @@ digraph {
 	StatMove1 -> ExpTemp1;
 	StatMove1 -> ExpConst2;
 	ExpConst1 -> "Value1: 1";
-	StatSeq1 -> StatMove0;
-	StatSeq1 -> StatMove1;
+	ExpTemp1 -> "Temp1: $rv";
 }
 

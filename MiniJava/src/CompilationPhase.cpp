@@ -42,7 +42,7 @@ const ASTree::CProgram* CAstBuildingPhase::GetAstRoot() const {
 std::string CAstBuildingPhase::ToDotLanguage() {
     assert( astRoot );
     if ( dotLangTraversal.empty() ) {
-        ASTree::CDotLangVisitor dotLangVisitor( verbose );
+        ASTree::CDotLangVisitor dotLangVisitor( verbose > 1 );
         astRoot->Accept( &dotLangVisitor );
         dotLangTraversal = dotLangVisitor.GetTraversalInDotLanguage();
     }
@@ -52,7 +52,7 @@ std::string CAstBuildingPhase::ToDotLanguage() {
 std::string CAstBuildingPhase::ToCode() {
     assert( astRoot );
     if ( codeGenerated.empty() ) {
-        ASTree::CGenerateCodeVisitor generateCodeVisitor( verbose );
+        ASTree::CGenerateCodeVisitor generateCodeVisitor( verbose > 1 );
         astRoot->Accept( &generateCodeVisitor );
         codeGenerated = generateCodeVisitor.GetCode();
     }
@@ -60,7 +60,7 @@ std::string CAstBuildingPhase::ToCode() {
 }
 
 void CSymbolTableBuildingPhase::Run() {
-    ASTree::CSymbolTableBuilderVisitor symbolTableBuilderVisitor( verbose );
+    ASTree::CSymbolTableBuilderVisitor symbolTableBuilderVisitor( verbose > 1 );
     symbolTableBuilderVisitor.Visit( astRoot );
     symbolTable = std::unique_ptr<const CSymbolTable>( symbolTableBuilderVisitor.SymbolTable() );
     errors = std::unique_ptr<const std::vector<CCompilationError>>( symbolTableBuilderVisitor.Errors() );
@@ -89,7 +89,7 @@ const std::vector<CCompilationError>* CSymbolTableBuildingPhase::GetErrors() con
 }
 
 void CTypeCheckingPhase::Run() {
-    ASTree::CTypeCheckerVisitor typeCheckerVisitor( symbolTable, verbose );
+    ASTree::CTypeCheckerVisitor typeCheckerVisitor( symbolTable, verbose > 1 );
     typeCheckerVisitor.Visit( astRoot );
     errors = std::unique_ptr<const std::vector<CCompilationError>>( typeCheckerVisitor.GetErrors() );
 }
@@ -114,7 +114,7 @@ const std::vector<CCompilationError>* CTypeCheckingPhase::GetErrors() const {
 using TMethodToIRTMap = std::unordered_map<std::string, std::unique_ptr<const IRTree::CStatement>>;
 
 void CIrtBuildingPhase::Run() {
-    ASTree::CIrtBuilderVisitor irtBuilderVisitor( symbolTable, verbose );
+    ASTree::CIrtBuilderVisitor irtBuilderVisitor( symbolTable, verbose > 1 );
     irtBuilderVisitor.Visit( astRoot );
     methodTrees = std::move( irtBuilderVisitor.MethodTrees() );
 }
@@ -138,22 +138,22 @@ const TMethodToIRTMap* CIrtBuildingPhase::MethodTrees() const {
 
 std::string CIrtBuildingPhase::ToDotLanguage( const std::string& methodName ) {
     assert( methodTrees );
-    IRTree::CDotLangVisitor dotLangVisitor( verbose );
+    IRTree::CDotLangVisitor dotLangVisitor( verbose > 1 );
     methodTrees->at( methodName )->Accept( &dotLangVisitor );
     return dotLangVisitor.GetTraversalInDotLanguage();
 }
 
 void CIrtCanonizationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
-        IRTree::CDoubleCallEliminationVisitor callEliminationVisitor( verbose );
+        IRTree::CDoubleCallEliminationVisitor callEliminationVisitor( verbose > 1 );
         it->second->Accept( &callEliminationVisitor );
         auto res = methodTreesWithoutDoubleCalls->emplace( it->first, std::move( callEliminationVisitor.ResultTree() ) );
 
-        IRTree::CEseqEliminationVisitor eseqEliminationVisitor( verbose );
+        IRTree::CEseqEliminationVisitor eseqEliminationVisitor( verbose > 1 );
         res.first->second->Accept( &eseqEliminationVisitor );
         auto res2 = methodTreesWithoutEseqs->emplace( it->first, std::move( eseqEliminationVisitor.ResultTree() ) );
 
-        IRTree::CSeqLinearizerVisitor seqLinearizerVisitor( verbose );
+        IRTree::CSeqLinearizerVisitor seqLinearizerVisitor( verbose > 1 );
         res2.first->second->Accept( &seqLinearizerVisitor );
         methodTreesLinearized->emplace( it->first, std::move( seqLinearizerVisitor.ResultTree() ) );
     }
@@ -161,29 +161,31 @@ void CIrtCanonizationPhase::Run() {
 
 void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode ) {
-    assert( methodTreesWithoutDoubleCalls );
-    for ( auto it = methodTreesWithoutDoubleCalls->begin(); it != methodTreesWithoutDoubleCalls->end(); ++it ) {
-        std::string methodName = it->first;
-        methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + "_" + methodName + extension, openMode );
-        outputStream << ToDotLanguage( methodTreesWithoutDoubleCalls.get(), it->first ) << std::endl;
-        outputStream.close();
-    }
+    if ( verbose > 0 ) {
+        assert( methodTreesWithoutDoubleCalls );
+        for ( auto it = methodTreesWithoutDoubleCalls->begin(); it != methodTreesWithoutDoubleCalls->end(); ++it ) {
+            std::string methodName = it->first;
+            methodName[0] = std::toupper( methodName[0] );
+            std::fstream outputStream( pathOutputFile + "1_" + methodName + extension, openMode );
+            outputStream << ToDotLanguage( methodTreesWithoutDoubleCalls.get(), it->first ) << std::endl;
+            outputStream.close();
+        }
 
-    assert( methodTreesWithoutEseqs );
-    for ( auto it = methodTreesWithoutEseqs->begin(); it != methodTreesWithoutEseqs->end(); ++it ) {
-        std::string methodName = it->first;
-        methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + "2_" + methodName + extension, openMode );
-        outputStream << ToDotLanguage( methodTreesWithoutEseqs.get(), it->first ) << std::endl;
-        outputStream.close();
+        assert( methodTreesWithoutEseqs );
+        for ( auto it = methodTreesWithoutEseqs->begin(); it != methodTreesWithoutEseqs->end(); ++it ) {
+            std::string methodName = it->first;
+            methodName[0] = std::toupper( methodName[0] );
+            std::fstream outputStream( pathOutputFile + "2_" + methodName + extension, openMode );
+            outputStream << ToDotLanguage( methodTreesWithoutEseqs.get(), it->first ) << std::endl;
+            outputStream.close();
+        }
     }
 
     assert( methodTreesLinearized );
     for ( auto it = methodTreesLinearized->begin(); it != methodTreesLinearized->end(); ++it ) {
         std::string methodName = it->first;
         methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + "3_" + methodName + extension, openMode );
+        std::fstream outputStream( pathOutputFile + "_" + methodName + extension, openMode );
         outputStream << ToDotLanguage( methodTreesLinearized.get(), it->first ) << std::endl;
         outputStream.close();
     }
@@ -191,7 +193,7 @@ void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, con
 
 std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName ) {
     assert( methodTreesMap );
-    IRTree::CDotLangVisitor dotLangVisitor( verbose );
+    IRTree::CDotLangVisitor dotLangVisitor( verbose > 1 );
     methodTreesMap->at( methodName )->Accept( &dotLangVisitor );
     return dotLangVisitor.GetTraversalInDotLanguage();
 }
