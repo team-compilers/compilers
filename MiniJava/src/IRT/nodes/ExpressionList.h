@@ -24,7 +24,6 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
     std::unique_ptr<const CExpressionList> Clone() const;
-    std::unique_ptr<const CExpressionList> Canonize() const;
 
 private:
     std::vector<std::unique_ptr<const CExpression>> expressions;
