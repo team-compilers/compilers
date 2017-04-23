@@ -2,6 +2,7 @@
 
 __Быстрая сборка и генерация результатов__:
 ```bash
+sudo apt install g++ python flex bison graphviz
 make && python launcher.py all
 ```  
 
