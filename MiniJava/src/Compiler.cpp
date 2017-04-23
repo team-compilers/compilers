@@ -31,4 +31,7 @@ void CCompiler::Run() {
     CIrtCanonizationPhase irtCanonization( irtBuilding.MethodTrees() );
     irtCanonization.Run();
     irtCanonization.PrintResults( pathOutputDir + "/irtCanon", ".gv" );
+
+    CTraceFormationPhase traceFormation( irtCanonization.MethodTrees() );
+    traceFormation.Run();
 }

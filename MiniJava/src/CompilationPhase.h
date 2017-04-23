@@ -8,6 +8,7 @@
 #include <CompilationError.h>
 #include <SymbolTable.h>
 #include <IRT/nodes/Statement.h>
+#include <Synthesis/Trace.h>
 
 class CCompilationPhase {
 public:
@@ -115,7 +116,7 @@ private:
     std::string dotLangTraversal;
 };
 
-class CIrtCanonizationPhase : CCompilationPhase {
+class CIrtCanonizationPhase : public CCompilationPhase {
 public:
     CIrtCanonizationPhase( const TMethodToIRTMap* _methodTrees, int _verbose = 0 )
         : CCompilationPhase( _verbose ), methodTrees( _methodTrees ),
@@ -127,6 +128,8 @@ public:
     virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
+    const TMethodToIRTMap* MethodTrees() const;
+
     std::string ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName );
 private:
     // parameters
@@ -136,4 +139,25 @@ private:
     std::unique_ptr<TMethodToIRTMap> methodTreesWithoutDoubleCalls;
     std::unique_ptr<TMethodToIRTMap> methodTreesWithoutEseqs;
     std::unique_ptr<TMethodToIRTMap> methodTreesLinearized;
+};
+
+using TMethodToTraceMap = std::unordered_map<std::string, std::unique_ptr<const Synthesis::CTrace>>;
+
+class CTraceFormationPhase : public CCompilationPhase {
+public:
+    CTraceFormationPhase( const TMethodToIRTMap* _methodTrees, int _verbose = 0 )
+        : CCompilationPhase( _verbose ), methodTrees( _methodTrees ),
+            methodTraces( new TMethodToTraceMap() ) {}
+
+    virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
+
+    const TMethodToTraceMap* MethodTraces() const;
+private:
+    // parameters
+    const TMethodToIRTMap* methodTrees;
+
+    // results
+    std::unique_ptr<TMethodToTraceMap> methodTraces;
 };

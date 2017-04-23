@@ -191,9 +191,30 @@ void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, con
     }
 }
 
+const TMethodToIRTMap* CIrtCanonizationPhase::MethodTrees() const {
+    assert( methodTreesLinearized );
+    return methodTreesLinearized.get();
+}
+
 std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName ) {
     assert( methodTreesMap );
     IRTree::CDotLangVisitor dotLangVisitor( verbose > 1 );
     methodTreesMap->at( methodName )->Accept( &dotLangVisitor );
     return dotLangVisitor.GetTraversalInDotLanguage();
+}
+
+void CTraceFormationPhase::Run() {
+    for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
+        
+    }
+}
+
+void CTraceFormationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
+    // no printable results
+}
+
+const TMethodToTraceMap* CTraceFormationPhase::MethodTraces() const {
+    assert( methodTraces );
+    return methodTraces.get();
 }
