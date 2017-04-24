@@ -150,21 +150,8 @@ void CSeqLinearizerVisitor::Visit( const CEseqExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_ESEQ );
     onNodeEnter( nodeName );
 
-    ++distanceToSeqStack.back();
-
-    expression->Statement()->Accept( this );
-    std::unique_ptr<const CStatement> eseqStatement = std::move( lastStatement );
-    expression->Expression()->Accept( this );
-    std::unique_ptr<const CExpression> eseqExpression = std::move( lastExpression );
-
-    updateLastExpression(
-        new CEseqExpression(
-            std::move( eseqStatement ),
-            std::move( eseqExpression )
-        )
-    );
-
-    --distanceToSeqStack.back();
+    // such calls should never happen
+    assert( false );
 
     onNodeExit( nodeName );
 }
