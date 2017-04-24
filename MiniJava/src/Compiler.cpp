@@ -34,4 +34,7 @@ void CCompiler::Run() {
 
     CTraceFormationPhase traceFormation( irtCanonization.MethodTrees() );
     traceFormation.Run();
+
+    CTilingFormationPhase tilingFormation( traceFormation.MethodTraces() );
+    tilingFormation.Run();
 }

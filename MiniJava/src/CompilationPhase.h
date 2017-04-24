@@ -161,3 +161,16 @@ private:
     // results
     std::unique_ptr<TMethodToTraceMap> methodTraces;
 };
+
+class CTilingFormationPhase : public CCompilationPhase {
+public:
+    CTilingFormationPhase( const TMethodToTraceMap* _methodTraces, int _verbose = 0 )
+        : CCompilationPhase( _verbose ), methodTraces( _methodTraces ) {}
+
+    virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
+
+private:
+    const TMethodToTraceMap* methodTraces;
+};

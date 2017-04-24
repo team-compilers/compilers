@@ -218,3 +218,16 @@ const TMethodToTraceMap* CTraceFormationPhase::MethodTraces() const {
     assert( methodTraces );
     return methodTraces.get();
 }
+
+void CTilingFormationPhase::Run() {
+    for ( auto it = methodTraces->begin(); it != methodTraces->end(); ++it ) {
+
+    }
+}
+
+void CTilingFormationPhase::PrintResults(
+        const std::string& pathOutputFile,
+        const std::string& extension,
+        const std::ios_base::openmode& openMode ) {
+    
+}
