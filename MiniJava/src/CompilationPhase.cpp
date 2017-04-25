@@ -14,6 +14,8 @@
 #include <IRT/visitors/SeqLinearizerVisitor.h>
 #include <IRT/visitors/EseqEliminationVisitor.h>
 
+#include <Synthesis/visitors/TilingVisitor.h>
+
 #include <BisonParser.h>
 
 void CAstBuildingPhase::Run() {
@@ -220,8 +222,12 @@ const TMethodToTraceMap* CTraceFormationPhase::MethodTraces() const {
 }
 
 void CTilingFormationPhase::Run() {
-    for ( auto it = methodTraces->begin(); it != methodTraces->end(); ++it ) {
-
+    for ( auto trace = methodTraces->begin(); trace != methodTraces->end(); ++trace ) {
+        auto value = trace->second.get();
+        for ( auto block = value->begin(); block != value->end(); ++block ) {
+            Synthesis::CTilingVisitor tilingVisitor( verbose > 1 );
+            block->get()->Accept( &tilingVisitor );
+        }
     }
 }
 

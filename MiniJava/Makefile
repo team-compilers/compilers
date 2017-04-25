@@ -24,7 +24,7 @@ SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) \
 	src/IRT/Temporary.cpp src/IRT/Frame.cpp src/IRT/visitors/Visitor.cpp \
 	src/IRT/visitors/DotLangVisitor.cpp src/IRT/visitors/DoubleCallEliminationVisitor.cpp \
 	src/IRT/visitors/EseqEliminationVisitor.cpp src/IRT/visitors/SeqLinearizerVisitor.cpp \
-	src/IRT/visitors/TraceFormationVisitor.cpp
+	src/IRT/visitors/TraceFormationVisitor.cpp src/Synthesis/visitors/TilingVisitor.cpp
 
 $(TRG): $(SRC)
 	$(CC) $(SRC) -o $(TRG) $(FLAGS)
