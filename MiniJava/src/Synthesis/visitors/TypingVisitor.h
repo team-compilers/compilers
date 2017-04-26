@@ -8,7 +8,7 @@ using namespace IRTree;
 namespace Synthesis {
 
 template<typename T>
-class CTypingVisitor : public CVisitor {
+class CTypingVisitor : public IRTree::CVisitor {
 public:
     CTypingVisitor( bool _verbose = false ) : CVisitor( _verbose ), node(nullptr) {}
     ~CTypingVisitor() {}
