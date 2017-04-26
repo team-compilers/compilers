@@ -2,6 +2,7 @@
 
 #include <map>
 #include <tuple>
+#include <memory>
 
 #include <IRT/nodes/VisitorTarget.h>
 #include <Synthesis/nodes/VisitorTarget.h>
@@ -9,7 +10,7 @@
 namespace Synthesis {
 
 using IRTVT = IRTree::IVisitorTarget;
-using Dynamic = std::map<const IRTVT*, std::tuple<int, const IVisitorTarget*>>;
+using Dynamic = std::map<const IRTVT*, std::tuple<int, std::unique_ptr<const CExpression>>>;
 
 class CPattern {
 public:
@@ -32,6 +33,7 @@ protected:
     template<typename T>
     ValidAndValue<const T*> GetTypedNode( const IRTVT* node );
     int GetDynamicPrice( const IRTVT* node );
+    const CExpression* GetDynamicValue( const IRTVT* node );
 
     Dynamic* dynamic;
 };

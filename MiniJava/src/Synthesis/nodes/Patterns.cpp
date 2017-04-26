@@ -25,6 +25,10 @@ int CPattern::GetDynamicPrice( const IRTVT* node ) {
     }
 }
 
+const Synthesis::CExpression* CPattern::GetDynamicValue( const IRTVT* node ) {
+    return std::get<1>(dynamic->find(node)->second).get();
+}
+
 void CAddPattern::Consume( const IRTVT* node ) {
     auto root = GetTypedNode<CBinaryExpression>(node);
     if(root.IsValid()) {
@@ -32,8 +36,11 @@ void CAddPattern::Consume( const IRTVT* node ) {
             int price = GetDynamicPrice(root->LeftOperand()) +
                 GetDynamicPrice(root->RightOperand()) + 1;
             if(GetDynamicPrice(*root) > price) {
-                auto addCommand = new CAddCommand(/* TODO */);
-                (*dynamic)[*root] = std::tie(price, addCommand);
+                (*dynamic)[*root] = std::make_tuple(price,
+                    std::unique_ptr<const CExpression>(new CAddCommand(
+                        GetDynamicValue(root->LeftOperand()),
+                        GetDynamicValue(root->RightOperand())
+                    )));
             }
         }
     }

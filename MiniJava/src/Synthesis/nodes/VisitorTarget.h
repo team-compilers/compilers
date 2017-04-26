@@ -10,4 +10,6 @@ public:
     virtual void Accept( IVisitor* visitor ) const = 0;
 };
 
+class CExpression : public IVisitorTarget {};
+
 }
