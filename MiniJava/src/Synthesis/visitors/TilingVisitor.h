@@ -25,12 +25,12 @@ public:
     void Visit( const CCallExpression* expression ) override;
     void Visit( const CEseqExpression* expression ) override;
 
-    void Visit( const CExpStatement* expression ) override;
-    void Visit( const CJumpConditionalStatement* expression ) override;
-    void Visit( const CJumpStatement* expression ) override;
-    void Visit( const CLabelStatement* expression ) override;
-    void Visit( const CMoveStatement* expression ) override;
-    void Visit( const CSeqStatement* expression ) override;
+    void Visit( const CExpStatement* statement ) override;
+    void Visit( const CJumpConditionalStatement* statement ) override;
+    void Visit( const CJumpStatement* statement ) override;
+    void Visit( const CLabelStatement* statement ) override;
+    void Visit( const CMoveStatement* statement ) override;
+    void Visit( const CSeqStatement* statement ) override;
 
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
