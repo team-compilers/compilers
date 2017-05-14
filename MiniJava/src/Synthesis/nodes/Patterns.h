@@ -6,6 +6,7 @@
 
 #include <IRT/nodes/VisitorTarget.h>
 #include <Synthesis/nodes/VisitorTarget.h>
+#include <Synthesis/nodes/Commands.h>
 
 namespace Synthesis {
 
@@ -38,7 +39,113 @@ protected:
     Dynamic* dynamic;
 };
 
+// Add Command
+// r1 + r2
 class CAddPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Sub command
+// r1 - r2
+class CSubPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Mult command
+// r1 * r2
+class CMultPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Div command
+// r1 / r2
+class CDivPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Sub const command
+// r1 - c
+class CSubConstPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Add const commands
+// c + r1
+class CAddConstLeftPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// r1 + c
+class CAddConstRightPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// c
+class CConstPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Load memory commands
+// M[src]
+class CLoadMemoryPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// M[C]
+class CLoadConstMemoryPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// M[C+src]
+class CLoadMemoryLeftOffsetPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// M[src+C]
+class CLoadMemoryRightOffsetPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Store memory commands
+// M[dst] = src
+class CStoreMemoryPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// M[C] = src
+class CStoreConstMemoryPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// M[C+dst] = src
+class CStoreMemoryLeftOffsetPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// M[dst + C] = src
+class CStoreMemoryRightOffsetPattern : public CPattern {
+public:
+    void Consume( const IRTVT* node ) override;
+};
+
+// Move commands
+// M[dst] = M[src]
+class CMoveMemoryPattern : public CPattern {
 public:
     void Consume( const IRTVT* node ) override;
 };
