@@ -64,12 +64,78 @@ void CDivPattern::Consume( const IRTVT* node ) {
 }
 
 void CSubConstPattern::Consume( const IRTVT* node ) {
+    auto root = GetTypedNode<CBinaryExpression>(node);
+    if( !root.IsValid() || root->Operation() != IRTree::TOperatorType::OT_Minus ) {
+        return;
+    }
+
+    const IRTree::CExpression* left = root->LeftOperand();
+    const IRTree::CExpression* right = root->RightOperand();
+
+    auto rightConst = GetTypedNode<CConstExpression>(node);
+    if( !rightConst.IsValid() ) {
+        return;
+    }
+
+    int price = GetDynamicPrice(left) + 1;
+    
+    if(GetDynamicPrice(*root) > price) {
+        (*dynamic)[*root] = std::make_tuple(price,
+            std::unique_ptr<const CExpression>(new CSubConstCommand(
+                GetDynamicValue(left),
+                rightConst->Value()
+            )));
+    }
 }
 
 void CAddConstLeftPattern::Consume( const IRTVT* node ) {
+    auto root = GetTypedNode<CBinaryExpression>(node);
+    if( !root.IsValid() || root->Operation() != IRTree::TOperatorType::OT_Plus ) {
+        return;
+    }
+
+    const IRTree::CExpression* left = root->LeftOperand();
+    const IRTree::CExpression* right = root->RightOperand();
+
+    auto leftConst = GetTypedNode<CConstExpression>(node);
+    if( !leftConst.IsValid() ) {
+        return;
+    }
+
+    int price = GetDynamicPrice(right) + 1;
+    
+    if(GetDynamicPrice(*root) > price) {
+        (*dynamic)[*root] = std::make_tuple(price,
+            std::unique_ptr<const CExpression>(new CAddConstCommand(
+                GetDynamicValue(right),
+                leftConst->Value()
+            )));
+    }
 }
 
 void CAddConstRightPattern::Consume( const IRTVT* node ) {
+    auto root = GetTypedNode<CBinaryExpression>(node);
+    if( !root.IsValid() || root->Operation() != IRTree::TOperatorType::OT_Plus ) {
+        return;
+    }
+
+    const IRTree::CExpression* left = root->LeftOperand();
+    const IRTree::CExpression* right = root->RightOperand();
+
+    auto rightConst = GetTypedNode<CConstExpression>(node);
+    if( !rightConst.IsValid() ) {
+        return;
+    }
+
+    int price = GetDynamicPrice(left) + 1;
+    
+    if(GetDynamicPrice(*root) > price) {
+        (*dynamic)[*root] = std::make_tuple(price,
+            std::unique_ptr<const CExpression>(new CAddConstCommand(
+                GetDynamicValue(left),
+                rightConst->Value()
+            )));
+    }
 }
 
 void CConstPattern::Consume( const IRTVT* node ) {
