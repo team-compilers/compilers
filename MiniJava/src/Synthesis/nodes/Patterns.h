@@ -31,6 +31,9 @@ protected:
         T value;
     };
 
+    template <typename Command>
+    void ConsumeBinaryOperation( const IRTVT* node, IRTree::TOperatorType operation );
+
     template<typename T>
     ValidAndValue<const T*> GetTypedNode( const IRTVT* node );
     int GetDynamicPrice( const IRTVT* node );

@@ -61,6 +61,7 @@ private:
 };
 
 class CMultCommand : public CExpression {
+public:
     CMultCommand(const CExpression* _leftOperand, const CExpression* _rightOperand) :
         leftOperand(_leftOperand), rightOperand(_rightOperand) {}
     ~CMultCommand() {}
@@ -73,6 +74,7 @@ private:
 };
 
 class CDivCommand : public CExpression {
+public:
     CDivCommand(const CExpression* _leftOperand, const CExpression* _rightOperand) :
         leftOperand(_leftOperand), rightOperand(_rightOperand) {}
     ~CDivCommand() {}
