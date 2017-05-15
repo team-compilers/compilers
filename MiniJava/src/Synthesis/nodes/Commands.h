@@ -7,6 +7,9 @@ namespace Synthesis {
 // Expressions = arithmetic operations results
 class CExpression : public IVisitorTarget {};
 
+class CNullExpression : public CExpression {
+};
+
 class CAddCommand : public CExpression {
 public:
     CAddCommand(const CExpression* _leftOperand, const CExpression* _rightOperand) :
@@ -139,4 +142,4 @@ private:
     const CExpression* source;
 };
 
-}
+} // namespace Synthesis

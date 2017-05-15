@@ -11,11 +11,11 @@
 namespace Synthesis {
 
 using IRTVT = IRTree::IVisitorTarget;
-using Dynamic = std::map<const IRTVT*, std::tuple<int, std::unique_ptr<const CExpression>>>;
+using Dynamic = std::map<const IRTVT*, std::pair<int, std::unique_ptr<const IVisitorTarget> > >;
 
 class CPattern {
 public:
-    CPattern( Dynamic* _dynamic ) : dynamic(_dynamic) {}
+    CPattern( Dynamic* _dynamic ) : dynamic( _dynamic ) {}
     virtual void Consume( const IRTVT* node ) = 0;
 
 protected:
