@@ -251,7 +251,7 @@ void CDoubleCallEliminationVisitor::Visit( const CSeqStatement* statement ) {
 /*__________  Lists __________*/
 
 void CDoubleCallEliminationVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_EXP );
     onNodeEnter( nodeName );
 
     CExpressionList* newList = new CExpressionList();
@@ -268,7 +268,7 @@ void CDoubleCallEliminationVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CDoubleCallEliminationVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_STAT );
     onNodeEnter( nodeName );
 
     CStatementList* newList = new CStatementList();

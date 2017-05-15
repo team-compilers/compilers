@@ -21,8 +21,8 @@ public:
     static const std::string STAT_MOVE;
     static const std::string STAT_SEQ;
 
-    static const std::string EXP_LIST;
-    static const std::string STAT_LIST;
+    static const std::string LIST_EXP;
+    static const std::string LIST_STAT;
 };
 
 }

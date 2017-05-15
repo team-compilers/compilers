@@ -143,7 +143,7 @@ void CTilingVisitor::Visit( const CSeqStatement* statement ) {
 /*__________  Lists __________*/
 
 void CTilingVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_EXP );
     onNodeEnter( nodeName );
 
     for(const auto& expression : list->Expressions()) {
@@ -156,7 +156,7 @@ void CTilingVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CTilingVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_STAT );
     onNodeEnter( nodeName );
 
     assert( false );

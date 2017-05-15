@@ -13,6 +13,7 @@
 #include <IRT/visitors/DoubleCallEliminationVisitor.h>
 #include <IRT/visitors/SeqLinearizerVisitor.h>
 #include <IRT/visitors/EseqEliminationVisitor.h>
+#include <IRT/visitors/TraceFormationVisitor.h>
 
 #include <Synthesis/visitors/TilingVisitor.h>
 
@@ -207,7 +208,9 @@ std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodT
 
 void CTraceFormationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
-        
+        IRTree::CTraceFormationVisitor traceVisitor( verbose > 1 );
+        it->second->Accept( &traceVisitor );
+        methodTraces->emplace( it->first, std::move( traceVisitor.Trace() ) );
     }
 }
 

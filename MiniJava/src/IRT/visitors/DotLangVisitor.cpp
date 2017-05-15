@@ -228,7 +228,7 @@ void CDotLangVisitor::Visit( const CSeqStatement* statement ) {
 /*__________  Lists __________*/
 
 void CDotLangVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_EXP );
     onNodeEnter( nodeName );
     visitedNodeStack.push_back( nodeName );
 
@@ -244,7 +244,7 @@ void CDotLangVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CDotLangVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_STAT );
     onNodeEnter( nodeName );
 
     visitedNodeStack.push_back( nodeName );

@@ -1,18 +1,26 @@
 #pragma once
 
+#include <memory>
+
 #include <IRT/nodes/NodeNames.h>
 #include <IRT/visitors/Visitor.h>
 
 #include <IRT/nodes/Expression.h>
 #include <IRT/nodes/ExpressionList.h>
 #include <IRT/nodes/Statement.h>
+#include <IRT/Label.h>
+
+#include <Synthesis/Trace.h>
 
 namespace IRTree {
 
 class CTraceFormationVisitor : public CVisitor {
 public:
-    CTraceFormationVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    CTraceFormationVisitor( bool _verbose = false )
+        : CVisitor( _verbose ), lastVisitedNodeType( TNodeType::OTHER ) {}
     ~CTraceFormationVisitor() {}
+
+    std::unique_ptr<const Synthesis::CTrace> Trace();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
@@ -32,6 +40,15 @@ public:
 
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
+
+private:
+    enum class TNodeType : char {
+        LABEL, JUMP, OTHER
+    };
+
+    std::shared_ptr<CLabel> lastVisitedLabel;
+    TNodeType lastVisitedNodeType;
+    std::unique_ptr<Synthesis::CTrace> trace;
 };
 
 }
