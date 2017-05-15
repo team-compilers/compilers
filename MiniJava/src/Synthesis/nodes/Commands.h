@@ -8,6 +8,10 @@ namespace Synthesis {
 class CExpression : public IVisitorTarget {};
 
 class CNullExpression : public CExpression {
+public:
+    CNullExpression() {}
+    ~CNullExpression() {}
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 };
 
 class CAddCommand : public CExpression {
@@ -92,7 +96,7 @@ private:
 // Get's value from memory: M[src + offset]
 class CLoadCommand : public CExpression {
 public:
-    CLoadCommand( const CExpression* _destination, const CExpression* _source, const int _offset ) :
+    CLoadCommand( const CExpression* _source, const int _offset ) :
         source( _source ),
         offset( _offset ) {}
     

@@ -13,37 +13,37 @@ CPattern::ValidAndValue<const T*> CPattern::GetTypedNode( const IRTVT* node ) {
     CTypingVisitor<T> visitor;
     node->Accept( &visitor );
     const T* pointer = visitor.GetNode();
-    return ValidAndValue<const T*>(pointer == nullptr, pointer);
+    return ValidAndValue<const T*>( pointer == nullptr, pointer );
 }
 
 int CPattern::GetDynamicPrice( const IRTVT* node ) {
-    auto iterator = dynamic->find(node);
-    if(iterator == dynamic->end()) {
+    auto iterator = dynamic->find( node );
+    if( iterator == dynamic->end() ) {
         return std::numeric_limits<int>::max();
     } else {
-        return std::get<0>(iterator->second);
+        return iterator->second.first;
     }
 }
 
 const Synthesis::CExpression* CPattern::GetDynamicValue( const IRTVT* node ) {
-    return std::get<1>(dynamic->find(node)->second).get();
+    return dynamic_cast<const CExpression*>( dynamic->find( node )->second.second.get() );
 }
 
 template <typename Command>
 void CPattern::ConsumeBinaryOperation( const IRTVT* node, IRTree::TOperatorType operation ) {
-    auto root = GetTypedNode<CBinaryExpression>(node);
+    auto root = GetTypedNode<CBinaryExpression>( node );
     if( !root.IsValid() || root->Operation() != operation ) {
         return;
     }
     
-    int price = GetDynamicPrice(root->LeftOperand()) +
-        GetDynamicPrice(root->RightOperand()) + 1;
-    if(GetDynamicPrice(*root) > price) {
-        (*dynamic)[*root] = std::make_tuple(price,
-            std::unique_ptr<const CExpression>(new Command(
-                GetDynamicValue(root->LeftOperand()),
-                GetDynamicValue(root->RightOperand())
-            )));
+    const int price = GetDynamicPrice( root->LeftOperand() ) +
+        GetDynamicPrice( root->RightOperand() ) + 1;
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new Command(
+                GetDynamicValue( root->LeftOperand() ),
+                GetDynamicValue( root->RightOperand() )
+            ) ) );
     }
 }
 
@@ -64,7 +64,7 @@ void CDivPattern::Consume( const IRTVT* node ) {
 }
 
 void CSubConstPattern::Consume( const IRTVT* node ) {
-    auto root = GetTypedNode<CBinaryExpression>(node);
+    const auto root = GetTypedNode<CBinaryExpression>( node );
     if( !root.IsValid() || root->Operation() != IRTree::TOperatorType::OT_Minus ) {
         return;
     }
@@ -72,24 +72,24 @@ void CSubConstPattern::Consume( const IRTVT* node ) {
     const IRTree::CExpression* left = root->LeftOperand();
     const IRTree::CExpression* right = root->RightOperand();
 
-    auto rightConst = GetTypedNode<CConstExpression>(node);
+    const auto rightConst = GetTypedNode<CConstExpression>( node );
     if( !rightConst.IsValid() ) {
         return;
     }
 
-    int price = GetDynamicPrice(left) + 1;
+    const int price = GetDynamicPrice( left ) + 1;
     
-    if(GetDynamicPrice(*root) > price) {
-        (*dynamic)[*root] = std::make_tuple(price,
-            std::unique_ptr<const CExpression>(new CSubConstCommand(
-                GetDynamicValue(left),
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CSubConstCommand(
+                GetDynamicValue( left ),
                 rightConst->Value()
-            )));
+            ) ) );
     }
 }
 
 void CAddConstLeftPattern::Consume( const IRTVT* node ) {
-    auto root = GetTypedNode<CBinaryExpression>(node);
+    const auto root = GetTypedNode<CBinaryExpression>( node );
     if( !root.IsValid() || root->Operation() != IRTree::TOperatorType::OT_Plus ) {
         return;
     }
@@ -97,24 +97,24 @@ void CAddConstLeftPattern::Consume( const IRTVT* node ) {
     const IRTree::CExpression* left = root->LeftOperand();
     const IRTree::CExpression* right = root->RightOperand();
 
-    auto leftConst = GetTypedNode<CConstExpression>(node);
+    const auto leftConst = GetTypedNode<CConstExpression>( node );
     if( !leftConst.IsValid() ) {
         return;
     }
 
-    int price = GetDynamicPrice(right) + 1;
+    const int price = GetDynamicPrice( right ) + 1;
     
-    if(GetDynamicPrice(*root) > price) {
-        (*dynamic)[*root] = std::make_tuple(price,
-            std::unique_ptr<const CExpression>(new CAddConstCommand(
-                GetDynamicValue(right),
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CAddConstCommand(
+                GetDynamicValue( right ),
                 leftConst->Value()
-            )));
+            ) ) );
     }
 }
 
 void CAddConstRightPattern::Consume( const IRTVT* node ) {
-    auto root = GetTypedNode<CBinaryExpression>(node);
+    const auto root = GetTypedNode<CBinaryExpression>( node );
     if( !root.IsValid() || root->Operation() != IRTree::TOperatorType::OT_Plus ) {
         return;
     }
@@ -122,45 +122,291 @@ void CAddConstRightPattern::Consume( const IRTVT* node ) {
     const IRTree::CExpression* left = root->LeftOperand();
     const IRTree::CExpression* right = root->RightOperand();
 
-    auto rightConst = GetTypedNode<CConstExpression>(node);
+    const auto rightConst = GetTypedNode<CConstExpression>( node );
     if( !rightConst.IsValid() ) {
         return;
     }
 
-    int price = GetDynamicPrice(left) + 1;
+    const int price = GetDynamicPrice( left ) + 1;
     
-    if(GetDynamicPrice(*root) > price) {
-        (*dynamic)[*root] = std::make_tuple(price,
-            std::unique_ptr<const CExpression>(new CAddConstCommand(
-                GetDynamicValue(left),
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CAddConstCommand(
+                GetDynamicValue( left ),
                 rightConst->Value()
-            )));
+            ) ) );
     }
 }
 
 void CConstPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CConstExpression>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+
+    const int price = 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CAddConstCommand(
+                new CNullExpression(),
+                root->Value()
+            ) ) );
+    }
 }
 
 void CLoadMemoryPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMemExpression>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* value = root->Address();
+    const int price = GetDynamicPrice( value ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CLoadCommand(
+                GetDynamicValue( value ),
+                0
+            ) ) );
+    }
+}
+
+void CLoadConstMemoryPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMemExpression>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* value = root->Address();
+    const auto constValue = GetTypedNode<CConstExpression>( value );
+    if( !constValue.IsValid() ) {
+        return;
+    }
+    const int price =  1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CLoadCommand(
+                new CNullExpression(),
+                constValue->Value()
+            ) ) );
+    }
 }
 
 void CLoadMemoryLeftOffsetPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMemExpression>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* child = root->Address();
+    const auto expression = GetTypedNode<CBinaryExpression>( child );
+    if( !expression.IsValid() || expression->Operation() != IRTree::TOperatorType::OT_Plus ) {
+        return;
+    }
+
+    const IRTree::CExpression* left = expression->LeftOperand();
+    const IRTree::CExpression* right = expression->RightOperand();
+
+    const auto leftConst = GetTypedNode<CConstExpression>( node );
+    if( !leftConst.IsValid() ) {
+        return;
+    }
+
+    const int price = GetDynamicPrice( right ) + 1;
+    
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CLoadCommand(
+                GetDynamicValue( right ),
+                leftConst->Value()
+            ) ) );
+    }
 }
 
 void CLoadMemoryRightOffsetPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMemExpression>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* child = root->Address();
+    const auto expression = GetTypedNode<CBinaryExpression>( child );
+    if( !expression.IsValid() || expression->Operation() != IRTree::TOperatorType::OT_Plus ) {
+        return;
+    }
+
+    const IRTree::CExpression* left = expression->LeftOperand();
+    const IRTree::CExpression* right = expression->RightOperand();
+
+    const auto rightConst = GetTypedNode<CConstExpression>( node );
+    if( !rightConst.IsValid() ) {
+        return;
+    }
+
+    const int price = GetDynamicPrice( left ) + 1;
+    
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CExpression>( new CLoadCommand(
+                GetDynamicValue( left ),
+                rightConst->Value()
+            ) ) );
+    }
 }
 
 void CStoreMemoryPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMoveStatement>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* dest = root->Destination();
+    const IRTree::CExpression* source = root->Source();
+    
+    const auto destValue = GetTypedNode<CMemExpression>( dest );
+    if( !destValue.IsValid() ){
+        return;
+    }
+
+    const int price = GetDynamicPrice( destValue->Address() ) + GetDynamicPrice( source ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CStatement>( new CStoreCommand(
+                GetDynamicValue( dest ),
+                0,
+                GetDynamicValue( source )
+            ) ) );
+    }
 }
 
 void CStoreConstMemoryPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMoveStatement>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* dest = root->Destination();
+    const IRTree::CExpression* source = root->Source();
+    
+    const auto destValue = GetTypedNode<CMemExpression>( dest );
+    if( !destValue.IsValid() ){
+        return;
+    }
+    const IRTree::CExpression* destChild = destValue->Address();
+    const auto constValue = GetTypedNode<CConstExpression>( destChild );
+    if( !constValue.IsValid() ){
+        return;
+    }
+
+    const int price = GetDynamicPrice( source ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CStatement>( new CStoreCommand(
+                new CNullExpression(),
+                constValue->Value(),
+                GetDynamicValue( source )
+            ) ) );
+    }
 }
 
 void CStoreMemoryRightOffsetPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMoveStatement>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* dest = root->Destination();
+    const IRTree::CExpression* source = root->Source();
+
+    const auto memValue = GetTypedNode<CMemExpression>( dest );
+    if( !memValue.IsValid() ) {
+        return;
+    }
+    const auto memExpressionValue = GetTypedNode<CBinaryExpression>( memValue->Address() );
+    if( !memExpressionValue.IsValid() 
+        || memExpressionValue->Operation() != IRTree::TOperatorType::OT_Plus )
+    {
+        return;
+    }
+    const IRTree::CExpression* left = memExpressionValue->LeftOperand();
+    const IRTree::CExpression* right = memExpressionValue->RightOperand();
+
+    const auto leftConst = GetTypedNode<CConstExpression>( left );
+    if( !leftConst.IsValid() ) {
+        return;
+    }
+
+    const int price = GetDynamicPrice( right ) + GetDynamicPrice( source ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CStatement>( new CStoreCommand(
+                GetDynamicValue( dest ),
+                leftConst->Value(),
+                GetDynamicValue( source )
+            ) ) );
+    }
+
 }
 
 void CStoreMemoryLeftOffsetPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMoveStatement>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* dest = root->Destination();
+    const IRTree::CExpression* source = root->Source();
+
+    const auto memValue = GetTypedNode<CMemExpression>( dest );
+    if( !memValue.IsValid() ) {
+        return;
+    }
+    const auto memExpressionValue = GetTypedNode<CBinaryExpression>( memValue->Address() );
+    if( !memExpressionValue.IsValid() 
+        || memExpressionValue->Operation() != IRTree::TOperatorType::OT_Plus )
+    {
+        return;
+    }
+    const IRTree::CExpression* left = memExpressionValue->LeftOperand();
+    const IRTree::CExpression* right = memExpressionValue->RightOperand();
+
+    const auto rightConst = GetTypedNode<CConstExpression>( right );
+    if( !rightConst.IsValid() ) {
+        return;
+    }
+
+    const int price = GetDynamicPrice( left ) + GetDynamicPrice( source ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CStatement>( new CStoreCommand(
+                GetDynamicValue( dest ),
+                rightConst->Value(),
+                GetDynamicValue( source )
+            ) ) );
+    }
 }
 
 void CMoveMemoryPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMoveStatement>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* dest = root->Destination();
+    const IRTree::CExpression* source = root->Source();
+
+    const auto destValue = GetTypedNode<CMemExpression>( dest );
+    const auto sourceValue = GetTypedNode<CMemExpression>( source );
+    if( !destValue.IsValid() || !sourceValue.IsValid() ) {
+        return;
+    }
+
+    const int price = GetDynamicPrice( destValue->Address() ) 
+        + GetDynamicPrice( sourceValue->Address() ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CStatement>( new CMoveCommand(
+                GetDynamicValue( dest ),
+                GetDynamicValue( source )
+            ) ) );
+    }
 }

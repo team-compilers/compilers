@@ -11,6 +11,7 @@ class CDivCommand;
 class CLoadCommand;
 class CStoreCommand;
 class CMoveCommand;
+class CNullExpression;
 
 class IVisitor {
 public:
@@ -25,7 +26,8 @@ public:
     virtual void Visit( const CLoadCommand* expression ) = 0;
     virtual void Visit( const CStoreCommand* expression ) = 0;
     virtual void Visit( const CMoveCommand* expression ) = 0;
-};;
+    virtual void Visit( const CNullExpression* expression ) = 0;
+};
 
 class CVisitor : public IVisitor {
 public:

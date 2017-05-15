@@ -37,7 +37,7 @@ protected:
     template<typename T>
     ValidAndValue<const T*> GetTypedNode( const IRTVT* node );
     int GetDynamicPrice( const IRTVT* node );
-    const CExpression* GetDynamicValue( const IRTVT* node );
+    const Synthesis::CExpression* GetDynamicValue( const IRTVT* node );
 
     Dynamic* dynamic;
 };
