@@ -51,6 +51,12 @@ public:
         patterns.push_back(std::unique_ptr<CPattern>(new Pattern(&dynamic)));
     }
 
+    void ApplyPatterns( const IRTVT* node ) {
+        for(const auto& pattern : patterns) {
+            pattern->Consume(node);
+        }
+    }
+
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
     void Visit( const CNameExpression* expression ) override;
