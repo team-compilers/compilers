@@ -18,7 +18,8 @@ namespace Synthesis {
 
 class CTilingVisitor : public IRTree::CVisitor {
 public:
-    CTilingVisitor( bool _verbose = false ) : CVisitor( _verbose ) {
+    CTilingVisitor( const IRTVT * _root, bool _verbose = false )
+            : CVisitor( _verbose ), root( _root ) {
         instantiate_patterns<
             CAddPattern,
             CSubPattern,
@@ -76,13 +77,14 @@ public:
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
 
-    std::unique_ptr<const CCommand> Result( const IRTVT* root ) {
-        return nullptr;
+    const CCommand * Result() {
+        return dynamic[root].second.get();
     }
 
 private:
     Dynamic dynamic;
     std::vector<std::unique_ptr<CPattern>> patterns;
+    const IRTVT * root;
 };
 
 }

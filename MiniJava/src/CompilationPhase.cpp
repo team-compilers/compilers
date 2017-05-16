@@ -226,9 +226,9 @@ void CTilingFormationPhase::Run() {
         auto value = trace->second.get();
         for ( auto block = value->begin(); block != value->end(); ++block ) {
             for( const auto& statement : (*block)->Statements() ) {
-                Synthesis::CTilingVisitor tilingVisitor( verbose > 1 );
-                statement->Accept( &tilingVisitor );
-                commands[trace->first].push_back(tilingVisitor.Result(statement.get()));
+                Synthesis::CTilingVisitor * tilingVisitor = new Synthesis::CTilingVisitor( statement.get(), verbose > 1 );
+                statement->Accept( tilingVisitor );
+                commands[trace->first].push_back(std::unique_ptr<const Synthesis::CTilingVisitor>( tilingVisitor ));
             }
         }
     }

@@ -9,7 +9,7 @@
 #include <SymbolTable.h>
 #include <IRT/nodes/Statement.h>
 #include <Synthesis/Trace.h>
-#include <Synthesis/nodes/Commands.h>
+#include <Synthesis/visitors/TilingVisitor.h>
 
 class CCompilationPhase {
 public:
@@ -165,7 +165,7 @@ private:
 
 using TMethodToCommandsList = std::unordered_map<std::string,
     std::vector<
-        std::unique_ptr<const Synthesis::CCommand>
+        std::unique_ptr<const Synthesis::CTilingVisitor>
     >
 >;
 
