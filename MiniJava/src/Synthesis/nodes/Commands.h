@@ -4,8 +4,10 @@
 
 namespace Synthesis {
 
+class CCommand : public IVisitorTarget {};
+
 // Expressions = arithmetic operations results
-class CExpression : public IVisitorTarget {};
+class CExpression : public CCommand {};
 
 class CNullExpression : public CExpression {
 public:
@@ -110,7 +112,7 @@ private:
 };
 
 // Statements = operations with memory
-class CStatement : public IVisitorTarget {};
+class CStatement : public CCommand {};
 
 // M[dst + offset] = src
 class CStoreCommand : public CStatement {

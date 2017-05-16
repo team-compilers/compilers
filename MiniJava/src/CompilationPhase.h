@@ -9,6 +9,7 @@
 #include <SymbolTable.h>
 #include <IRT/nodes/Statement.h>
 #include <Synthesis/Trace.h>
+#include <Synthesis/nodes/Commands.h>
 
 class CCompilationPhase {
 public:
@@ -162,6 +163,12 @@ private:
     std::unique_ptr<TMethodToTraceMap> methodTraces;
 };
 
+using TMethodToCommandsList = std::unordered_map<std::string,
+    std::vector<
+        std::unique_ptr<const Synthesis::CCommand>
+    >
+>;
+
 class CTilingFormationPhase : public CCompilationPhase {
 public:
     CTilingFormationPhase( const TMethodToTraceMap* _methodTraces, int _verbose = 0 )
@@ -173,4 +180,6 @@ public:
 
 private:
     const TMethodToTraceMap* methodTraces;
+
+    TMethodToCommandsList commands;
 };

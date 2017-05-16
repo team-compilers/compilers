@@ -225,8 +225,11 @@ void CTilingFormationPhase::Run() {
     for ( auto trace = methodTraces->begin(); trace != methodTraces->end(); ++trace ) {
         auto value = trace->second.get();
         for ( auto block = value->begin(); block != value->end(); ++block ) {
-            Synthesis::CTilingVisitor tilingVisitor( verbose > 1 );
-            block->get()->Accept( &tilingVisitor );
+            for( const auto& statement : (*block)->Statements() ) {
+                Synthesis::CTilingVisitor tilingVisitor( verbose > 1 );
+                statement->Accept( &tilingVisitor );
+                commands[trace->first].push_back(tilingVisitor.Result(statement.get()));
+            }
         }
     }
 }

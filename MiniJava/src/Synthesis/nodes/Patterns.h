@@ -11,7 +11,7 @@
 namespace Synthesis {
 
 using IRTVT = IRTree::IVisitorTarget;
-using Dynamic = std::map<const IRTVT*, std::pair<int, std::unique_ptr<const IVisitorTarget> > >;
+using Dynamic = std::map<const IRTVT*, std::pair<int, std::unique_ptr<const CCommand> > >;
 
 class CPattern {
 public:

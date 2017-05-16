@@ -76,6 +76,10 @@ public:
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
 
+    std::unique_ptr<const CCommand> Result( const IRTVT* root ) {
+        return nullptr;
+    }
+
 private:
     Dynamic dynamic;
     std::vector<std::unique_ptr<CPattern>> patterns;
