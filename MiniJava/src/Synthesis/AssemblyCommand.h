@@ -11,6 +11,14 @@ public:
     
     static std::string NewRegister() { return "%r" + std::to_string(registerCounter); }
 
+    const std::string& Text() const {
+        return text;
+    }
+
+    const std::vector<std::string>& Registers() const {
+        return registers;
+    }
+
 private:
     const std::string text;
     const std::vector<std::string> registers;

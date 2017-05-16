@@ -195,3 +195,18 @@ private:
 
     TMethodToCommandsList commands;
 };
+
+class CAssemblyGenerationPhase : public CCompilationPhase {
+public:
+    CAssemblyGenerationPhase( const TMethodToCommandsList* _commands, int _verbose = 0 )
+        : CCompilationPhase( _verbose ), commands( _commands ) {}
+
+    virtual void Run() override;
+    virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
+        const std::ios_base::openmode& openMode = std::fstream::out ) override;
+
+private:
+    const TMethodToCommandsList* commands;
+
+    std::vector<std::string> codes;
+};

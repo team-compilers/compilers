@@ -40,4 +40,8 @@ void CCompiler::Run() {
     CTilingFormationPhase tilingFormation( traceFormation.MethodTraces() );
     tilingFormation.Run();
     tilingFormation.PrintResults( pathOutputDir, ".gv" );
+
+    CAssemblyGenerationPhase assemblyGeneration( &tilingFormation.Commands() );
+    assemblyGeneration.Run();
+    assemblyGeneration.PrintResults( JoinPath( pathOutputDir, "code" ), ".txt" );
 }

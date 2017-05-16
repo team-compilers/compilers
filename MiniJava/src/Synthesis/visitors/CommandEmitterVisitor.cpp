@@ -7,20 +7,39 @@ using namespace Synthesis;
 
 int CAssemblyCommand::registerCounter = 0;
 
-void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
+void CCommandEmitterVisitor::Visit( const CExpStatementCommand* statement )  {
+    statement->Expression()->Accept( this );
+}
 
+void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
+    const CExpression* left = command->LeftPart();
+    const CExpression* right = command->RightPart();
+
+    left->Accept( this );
+    std::string leftRegister = lastRegisterValue;
+    right->Accept( this );
+    std::string rightRegister = lastRegisterValue;
+
+    code.push_back( CAssemblyCommand( "CJUMP <TODO>", {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) {
-
+    code.push_back( CAssemblyCommand( "JUMP " + command->LabelName(), {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CCallFunctionCommand* command ) {
+    const std::vector<const CExpression*>& arguments = command->Arguments();
 
+    for(auto it = arguments.begin(); it != arguments.end(); ++it) {
+        (*it)->Accept( this );
+        // TODO: lastRegisterValue
+    }
+
+    code.push_back( CAssemblyCommand( "CALL <TODO>", {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CLabelDeclarationCommand* command ) {
-
+    code.push_back( CAssemblyCommand( command->Name() + ":", {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CMoveRegisterCommand* command ) {

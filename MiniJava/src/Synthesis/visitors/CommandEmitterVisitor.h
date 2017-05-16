@@ -28,6 +28,12 @@ public:
     void Visit( const CLoadCommand* expression ) override;
     void Visit( const CStoreCommand* expression ) override;
     void Visit( const CNullExpression* expression ) override;
+    void Visit( const CExpStatementCommand* statement ) override;
+
+    const std::vector<CAssemblyCommand>& Result() const {
+        return code;
+    }
+
 private:
     std::string lastRegisterValue;
     std::vector<CAssemblyCommand> code;

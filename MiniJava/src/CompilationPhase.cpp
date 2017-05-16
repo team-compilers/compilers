@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <FileUtils.h>
 
 #include <AST/visitors/DotLangVisitor.h>
@@ -20,6 +21,7 @@
 #include <Synthesis/visitors/DotLangVisitor.h>
 #include <Synthesis/visitors/TilingVisitor.h>
 #include <Synthesis/nodes/Commands.h>
+#include <Synthesis/visitors/CommandEmitterVisitor.h>
 
 #include <BisonParser.h>
 
@@ -302,4 +304,30 @@ void CTilingFormationPhase::PrintResults( const std::string& pathOutputDir,
 
 const TMethodToCommandsList& CTilingFormationPhase::Commands() const {
     return commands;
+}
+
+void CAssemblyGenerationPhase::Run() {
+    for ( auto methodIt = commands->begin(); methodIt != commands->end(); ++methodIt ) {
+        for ( auto visitorIt = methodIt->second.begin(); visitorIt != methodIt->second.end(); ++visitorIt ) {
+            Synthesis::CCommandEmitterVisitor commandEmitter( verbose > 1 );
+            ( *visitorIt )->Result()->Accept( &commandEmitter );
+            for( const auto& line : commandEmitter.Result() ) {
+                std::stringstream builder;
+                builder << line.Text();
+                for( const auto& reg : line.Registers() ) {
+                    builder << ' ' << reg;
+                }
+                codes.push_back( builder.str() );
+            }
+        }
+    }
+}
+
+void CAssemblyGenerationPhase::PrintResults( const std::string& outputPath,
+                                          const std::string& extension,
+                                          const std::ios_base::openmode& openMode ) {
+    std::fstream outputStream( outputPath + extension, openMode );
+    for( const auto& line : codes ) {
+        outputStream << line << std::endl;
+    }
 }
