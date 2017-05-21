@@ -21,6 +21,8 @@ public:
     CTilingVisitor( const IRTVT * _root, bool _verbose = false )
             : CVisitor( _verbose ), root( _root ) {
         instantiate_patterns<
+            CTempPattern,
+            CLabelPattern,
             CAddPattern,
             CSubPattern,
             CMultPattern,
@@ -37,7 +39,11 @@ public:
             CStoreConstMemoryPattern,
             CStoreMemoryLeftOffsetPattern,
             CStoreMemoryRightOffsetPattern,
-            CMoveMemoryPattern>();
+            CMoveMemoryPattern,
+            CStoreRegisterPattern,
+            CCallFunctionPattern,
+            CJumpPattern,
+            CConditionalJumpPattern>();
     }
     ~CTilingVisitor() {}
 
@@ -61,7 +67,7 @@ public:
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
     void Visit( const CNameExpression* expression ) override;
-    void Visit( const CTempExpression* expression ) override;
+    void Visit( const Synthesis::CTempExpression* expression ) override;
     void Visit( const CBinaryExpression* expression ) override;
     void Visit( const CMemExpression* expression ) override;
     void Visit( const CCallExpression* expression ) override;

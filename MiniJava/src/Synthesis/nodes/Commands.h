@@ -1,12 +1,13 @@
 #pragma once
 
 #include <Synthesis/nodes/VisitorTarget.h>
+#include <string>
 
 namespace Synthesis {
 
 class CCommand : public IVisitorTarget {};
 
-// Expressions = arithmetic operations results
+// Expressions = arithmetic operations results, stores result to register
 class CExpression : public CCommand {};
 
 class CNullExpression : public CExpression {
@@ -14,6 +15,18 @@ public:
     CNullExpression() {}
     ~CNullExpression() {}
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+};
+
+// Virtual expression resonsible for some register (temp node on the ir-level)
+class CTempExpression : public CExpression {
+public:
+    CTempExpression( std::string _name ) :
+        name( _name ) {}
+    ~CTempExpression() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+private:
+    std::string name;
 };
 
 class CAddCommand : public CExpression {
@@ -111,11 +124,14 @@ private:
     const int offset;
 };
 
-// Statements = operations with memory
+// Statements - operations without storing result
 class CStatement : public CCommand {};
 
+// Memory Statements - stores result to memory cell
+class CMemoryStatement : public CStatement {};
+
 // M[dst + offset] = src
-class CStoreCommand : public CStatement {
+class CStoreCommand : public CMemoryStatement {
 public:
     CStoreCommand( const CExpression* _destination, const int _offset, const CExpression* _source ) :
         destination( _destination ),
@@ -133,7 +149,7 @@ private:
 };
 
 // M[dst] = M[src]
-class CMoveCommand : public CStatement {
+class CMoveCommand : public CMemoryStatement {
 public:
     CMoveCommand( const CExpression* _destination, const CExpression* _source ) :
         destination( _destination ),
@@ -146,6 +162,80 @@ public:
 private:
     const CExpression* destination;
     const CExpression* source;
+};
+
+// dst = src
+class CMoveRegisterCommand : public CStatement {
+public:
+    CMoveRegisterCommand( const CTempExpression* _destination, const CExpression* _source ) :
+        destination( _destination ),
+        source( _source ) {}
+
+    ~CMoveRegisterCommand() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+private:
+    const CTempExpression* destination;
+    const CExpression* source;
+};
+
+class CLabelDeclarationCommand : public CCommand {
+public:
+    CLabelDeclarationCommand( std::string _name ) :
+        name( _name ) {} 
+    ~CLabelDeclarationCommand() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }    
+private:
+    std::string name;
+};
+
+class CCallFunctionCommand : public CStatement {
+public:
+    CCallFunctionCommand( const CExpression* _function, 
+            const std::vector<const CExpression*> _arguments ) :
+        function( _function ),
+        arguments( _arguments ) {}
+    
+    ~CCallFunctionCommand() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+private:
+    const CExpression* function;
+    const std::vector<const CExpression*> arguments;
+};
+
+class CJumpCommand : public CStatement {
+public:
+    CJumpCommand( std::string _labelName ) : labelName( _labelName ) {}
+    ~CJumpCommand() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+private:
+    std::string labelName;
+};
+
+class CConditionalJumpCommand : public CStatement {
+public:
+    CConditionalJumpCommand( const CExpression* _leftPart, const CExpression* _rightPart,
+            IRTree::TOperatorType _cmp, std::string _positiveLabelName, std::string _negativeLabelName ) :
+        leftPart( _leftPart ),
+        rightPart( _rightPart ),
+        cmp( _cmp ),
+        positiveLabelName( _positiveLabelName ),
+        negativeLabelName( _negativeLabelName ) {}
+    ~CConditionalJumpCommand() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+private:
+    const CExpression* leftPart;
+    const CExpression* rightPart;
+    IRTree::TOperatorType cmp;
+    std::string positiveLabelName;
+    std::string negativeLabelName;
 };
 
 } // namespace Synthesis

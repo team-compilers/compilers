@@ -42,6 +42,20 @@ protected:
     Dynamic* dynamic;
 };
 
+// Temp pattern
+class CTempPattern : public CPattern {
+public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
+// Label patterns
+class CLabelPattern : public CPattern {
+public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
 // Add Command
 // r1 + r2
 class CAddPattern : public CPattern {
@@ -166,6 +180,30 @@ public:
 // M[dst] = M[src]
 class CMoveMemoryPattern : public CPattern {
 public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
+// TempK = src
+class CStoreRegisterPattern : public CPattern {
+public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
+class CCallFunctionPattern : public CPattern {
+public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
+class CJumpPattern : public CPattern {
+public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
+class CConditionalJumpPattern : public CPattern {
     using CPattern::CPattern;
     void Consume( const IRTVT* node ) override;
 };

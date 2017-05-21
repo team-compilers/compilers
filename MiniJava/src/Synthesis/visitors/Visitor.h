@@ -12,11 +12,23 @@ class CLoadCommand;
 class CStoreCommand;
 class CMoveCommand;
 class CNullExpression;
+class CTempExpression;
+class CMoveRegisterCommand;
+class CLabelDeclarationCommand;
+class CCallFunctionCommand;
+class CJumpCommand;
+class CConditionalJumpCommand;
 
 class IVisitor {
 public:
     virtual ~IVisitor() = 0;
 
+    virtual void Visit( const CConditionalJumpCommand* command ) = 0;
+    virtual void Visit( const CJumpCommand* command ) = 0;
+    virtual void Visit( const CCallFunctionCommand* command ) = 0;
+    virtual void Visit( const CLabelDeclarationCommand* command ) = 0;
+    virtual void Visit( const CMoveRegisterCommand* command ) = 0;
+    virtual void Visit( const CTempExpression* expression ) = 0;
     virtual void Visit( const CAddCommand* expression ) = 0;
     virtual void Visit( const CAddConstCommand* expression ) = 0;
     virtual void Visit( const CSubCommand* expression ) = 0;

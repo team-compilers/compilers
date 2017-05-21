@@ -47,6 +47,32 @@ void CPattern::ConsumeBinaryOperation( const IRTVT* node, IRTree::TOperatorType 
     }
 }
 
+void CTempPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<IRTree::CTempExpression>( node );
+
+    if( !root.IsValid() ) {
+        return;
+    }
+
+    (*dynamic)[*root] = std::make_pair( 0, 
+        std::unique_ptr<const CExpression>( new Synthesis::CTempExpression(  
+            root->Temporary().ToString()
+        ) ) );
+}
+
+void CLabelPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<IRTree::CLabelStatement>( node );
+
+    if( !root.IsValid() ) {
+        return;
+    }
+
+    (*dynamic)[*root] = std::make_pair( 0,
+        std::unique_ptr<const CExpreesion>( new Synthesis::CLabelDeclarationCommand(
+            root->Label().ToString()
+        ) ) );
+}
+
 void CAddPattern::Consume( const IRTVT* node ) {
     ConsumeBinaryOperation<CAddCommand>( node, IRTree::TOperatorType::OT_Plus );
 }
@@ -409,4 +435,59 @@ void CMoveMemoryPattern::Consume( const IRTVT* node ) {
                 GetDynamicValue( source )
             ) ) );
     }
+}
+
+void CStoreRegisterPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CMoveStatement>( node );
+    if( !root.IsValid() ) {
+        return;
+    }
+    const IRTree::CExpression* dest = root->Destination();
+    const IRTree::CExpression* source = root->Source();
+
+    const auto destValue = GetTypedNode<CTempExpression>( dest );
+    if( !destValue.IsValid() ) {
+        return;
+    }
+
+    const int price = GetDynamicPrice( source ) + 1;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price, 
+            std::unique_ptr<const CStatement>( new CMoveRegisterCommand( 
+                new Synthesis::CTempExpression( destValue->Temp().ToString() ) ,
+                GetDynamicValue( source )
+            ) ) );
+    }
+}
+
+void CCallFunctionPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CCallExpression>( node );
+
+    if( !root.IsValid() ) {
+        return;
+    }
+
+    const IRTree::CExpression* function = root->Function();
+    const std::vector< std::unique_ptr<const CExpression> >& arguments 
+        = root->Arguments().Expressions();
+    
+    int price = GetDynamicPrice( function ) + 1;
+
+    std::vector<const Synthesis::CExpression*> commandArguments;
+    for( unsigned int i = 0; i < arguments.size(); i++ ) {
+        price += GetDynamicPrice( arguments[i] );
+        commandArguments.push_back( GetDynamicValue( arguments[i] ) );
+    }
+    (*dynamic)[*root] = std::make_pair( price, 
+        std::unique_ptr<const CStatement>( new CCallFunctionCommand(
+            GetDynamicValue( function ), commandArguments) ) );
+}
+
+void CJumpPattern::Consume( const IRTVT* node ) {
+    
+}
+
+void CConditionalJumpPattern::Consume( const IRTVT* node ) {
+    
 }
