@@ -147,7 +147,7 @@ void CTraceFormationVisitor::Visit( const CStatementList* list ) {
     std::string nodeName = generateNodeName( CNodeNames::LIST_STAT );
     onNodeEnter( nodeName );
 
-    Synthesis::CBlock* block = new Synthesis::CBlock();
+    std::unique_ptr<Synthesis::CBlock> block;
 
     TNodeType previousNodeType = TNodeType::JUMP;
 
@@ -156,29 +156,40 @@ void CTraceFormationVisitor::Visit( const CStatementList* list ) {
         ( *it )->Accept( this );
 
         if ( lastVisitedNodeType == TNodeType::LABEL || previousNodeType == TNodeType::JUMP ) {
-            if ( previousNodeType != TNodeType::JUMP ) {
-                // current: LABEL, previous: not JUMP
-                // add jump to the current block ...
-                block->Add(
-                    new CJumpStatement( *lastVisitedLabel )
-                );
-                lastVisitedLabel = nullptr;
+            if ( block ) {
+                finalizeBlockAndSave( std::move( block ), previousNodeType, false );
             }
-            // ... and create a new block
-            trace->emplace_back( block );
-            block = new Synthesis::CBlock();
-            if ( lastVisitedNodeType != TNodeType::LABEL ) {
-                // current: not LABEL, previous: JUMP
-                // add label to current block
-                block->Add(
-                    new CLabelStatement( CLabel() )
-                );
-            }
+            block = std::move( startNewBlock() );
         }
         block->Add( std::move( ( *it )->Clone() ) );
 
         previousNodeType = lastVisitedNodeType;
     }
+    if ( block ) {
+        finalizeBlockAndSave( std::move( block ), previousNodeType, true );
+    }
 
     onNodeExit( nodeName );
+}
+
+void CTraceFormationVisitor::finalizeBlockAndSave( std::unique_ptr<Synthesis::CBlock> block,
+                                                   TNodeType previousNodeType,
+                                                   bool isLastBlock ) {
+    if ( previousNodeType != TNodeType::JUMP && !isLastBlock ) {
+        block->Add(
+            new CJumpStatement( *lastVisitedLabel )
+        );
+        lastVisitedLabel = nullptr;
+    }
+    trace->push_back( std::move( std::unique_ptr<const Synthesis::CBlock>( block.release() ) ) );
+}
+
+std::unique_ptr<Synthesis::CBlock> CTraceFormationVisitor::startNewBlock() {
+    std::unique_ptr<Synthesis::CBlock> block( new Synthesis::CBlock() );
+    if ( lastVisitedNodeType != TNodeType::LABEL ) {
+        block->Add(
+            new CLabelStatement( CLabel() )
+        );
+    }
+    return std::move( block );
 }

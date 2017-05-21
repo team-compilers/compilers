@@ -17,7 +17,8 @@ namespace IRTree {
 class CTraceFormationVisitor : public CVisitor {
 public:
     CTraceFormationVisitor( bool _verbose = false )
-        : CVisitor( _verbose ), lastVisitedNodeType( TNodeType::OTHER ) {}
+        : CVisitor( _verbose ), lastVisitedNodeType( TNodeType::OTHER ),
+          trace( new Synthesis::CTrace() ) {}
     ~CTraceFormationVisitor() {}
 
     std::unique_ptr<const Synthesis::CTrace> Trace();
@@ -45,6 +46,11 @@ private:
     enum class TNodeType : char {
         LABEL, JUMP, OTHER
     };
+
+    void finalizeBlockAndSave(std::unique_ptr<Synthesis::CBlock> block,
+                              TNodeType previousNodeType,
+                              bool isLastBlock);
+    std::unique_ptr<Synthesis::CBlock> startNewBlock();
 
     std::shared_ptr<CLabel> lastVisitedLabel;
     TNodeType lastVisitedNodeType;

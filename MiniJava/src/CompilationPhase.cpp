@@ -228,10 +228,10 @@ void CTilingFormationPhase::Run() {
     for ( auto trace = methodTraces->begin(); trace != methodTraces->end(); ++trace ) {
         auto value = trace->second.get();
         for ( auto block = value->begin(); block != value->end(); ++block ) {
-            for( const auto& statement : (*block)->Statements() ) {
-                Synthesis::CTilingVisitor * tilingVisitor = new Synthesis::CTilingVisitor( statement.get(), verbose > 1 );
+            for( const auto& statement : ( *block )->Statements() ) {
+                Synthesis::CTilingVisitor* tilingVisitor = new Synthesis::CTilingVisitor( statement.get(), verbose > 1 );
                 statement->Accept( tilingVisitor );
-                commands[trace->first].push_back(std::unique_ptr<const Synthesis::CTilingVisitor>( tilingVisitor ));
+                commands[trace->first].emplace_back( tilingVisitor );
             }
         }
     }

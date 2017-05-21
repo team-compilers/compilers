@@ -12,7 +12,8 @@ MAIN=src/main.cpp
 
 TRG=minijava
 # -lfl includes flex library
-FLAGS=-O2 -std=c++11 -I"src/" -I"src/grammar"
+# -g -O0 used for debug
+FLAGS=-std=c++11 -I"src/" -I"src/grammar" -g -O0
 SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) \
 	src/Compiler.cpp src/CompilationPhase.cpp src/AST/nodes/NodeNames.cpp \
 	src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp \
