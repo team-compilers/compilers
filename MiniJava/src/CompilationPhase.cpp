@@ -13,6 +13,7 @@
 #include <IRT/visitors/DoubleCallEliminationVisitor.h>
 #include <IRT/visitors/SeqLinearizerVisitor.h>
 #include <IRT/visitors/EseqEliminationVisitor.h>
+#include <IRT/visitors/TraceFormationVisitor.h>
 
 #include <Synthesis/visitors/TilingVisitor.h>
 
@@ -207,7 +208,9 @@ std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodT
 
 void CTraceFormationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
-        
+        IRTree::CTraceFormationVisitor traceVisitor( verbose > 1 );
+        it->second->Accept( &traceVisitor );
+        methodTraces->emplace( it->first, std::move( traceVisitor.Trace() ) );
     }
 }
 
@@ -225,10 +228,10 @@ void CTilingFormationPhase::Run() {
     for ( auto trace = methodTraces->begin(); trace != methodTraces->end(); ++trace ) {
         auto value = trace->second.get();
         for ( auto block = value->begin(); block != value->end(); ++block ) {
-            for( const auto& statement : (*block)->Statements() ) {
-                Synthesis::CTilingVisitor * tilingVisitor = new Synthesis::CTilingVisitor( statement.get(), verbose > 1 );
+            for( const auto& statement : ( *block )->Statements() ) {
+                Synthesis::CTilingVisitor* tilingVisitor = new Synthesis::CTilingVisitor( statement.get(), verbose > 1 );
                 statement->Accept( tilingVisitor );
-                commands[trace->first].push_back(std::unique_ptr<const Synthesis::CTilingVisitor>( tilingVisitor ));
+                commands[trace->first].emplace_back( tilingVisitor );
             }
         }
     }

@@ -587,7 +587,7 @@ void CEseqEliminationVisitor::Visit( const CSeqStatement* statement ) {
 /*__________  Lists __________*/
 
 void CEseqEliminationVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_EXP );
     onNodeEnter( nodeName );
 
     CExpressionList* newList = new CExpressionList();
@@ -603,7 +603,7 @@ void CEseqEliminationVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CEseqEliminationVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_STAT );
     onNodeEnter( nodeName );
 
     // such calls should never happen

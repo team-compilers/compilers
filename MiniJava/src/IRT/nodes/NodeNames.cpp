@@ -17,5 +17,5 @@ const std::string CNodeNames::STAT_LABEL = "StatLabel";
 const std::string CNodeNames::STAT_MOVE = "StatMove";
 const std::string CNodeNames::STAT_SEQ = "StatSeq";
 
-const std::string CNodeNames::EXP_LIST = "ExpList";
-const std::string CNodeNames::STAT_LIST = "StatList";
+const std::string CNodeNames::LIST_EXP = "ExpList";
+const std::string CNodeNames::LIST_STAT = "StatList";

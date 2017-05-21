@@ -126,7 +126,7 @@ void CDummyVisitor::Visit( const CSeqStatement* statement ) {
 /*__________  Lists __________*/
 
 void CDummyVisitor::Visit( const CExpressionList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::EXP_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_EXP );
     onNodeEnter( nodeName );
 
     // write your code here
@@ -135,7 +135,7 @@ void CDummyVisitor::Visit( const CExpressionList* list ) {
 }
 
 void CDummyVisitor::Visit( const CStatementList* list ) {
-    std::string nodeName = generateNodeName( CNodeNames::STAT_LIST );
+    std::string nodeName = generateNodeName( CNodeNames::LIST_STAT );
     onNodeEnter( nodeName );
 
     // write your code here
