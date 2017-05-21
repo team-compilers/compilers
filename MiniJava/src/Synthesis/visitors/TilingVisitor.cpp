@@ -23,7 +23,7 @@ void CTilingVisitor::Visit( const CNameExpression* expression ) {
     onNodeExit( nodeName );
 }
 
-void CTilingVisitor::Visit( const CTempExpression* expression ) {
+void CTilingVisitor::Visit( const IRTree::CTempExpression* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::EXP_TEMP );
     onNodeEnter( nodeName );
 

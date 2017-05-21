@@ -67,7 +67,7 @@ public:
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
     void Visit( const CNameExpression* expression ) override;
-    void Visit( const Synthesis::CTempExpression* expression ) override;
+    void Visit( const IRTree::CTempExpression* expression ) override;
     void Visit( const CBinaryExpression* expression ) override;
     void Visit( const CMemExpression* expression ) override;
     void Visit( const CCallExpression* expression ) override;

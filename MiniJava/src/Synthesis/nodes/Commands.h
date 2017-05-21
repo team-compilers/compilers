@@ -2,6 +2,8 @@
 
 #include <Synthesis/nodes/VisitorTarget.h>
 #include <string>
+#include <vector>
+#include <IRT/nodes/Expression.h>
 
 namespace Synthesis {
 
@@ -190,10 +192,10 @@ private:
     std::string name;
 };
 
-class CCallFunctionCommand : public CStatement {
+class CCallFunctionCommand : public CExpression {
 public:
     CCallFunctionCommand( const CExpression* _function, 
-            const std::vector<const CExpression*> _arguments ) :
+            const std::vector<const CExpression*>& _arguments ) :
         function( _function ),
         arguments( _arguments ) {}
     
@@ -202,8 +204,8 @@ public:
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
 private:
-    const CExpression* function;
-    const std::vector<const CExpression*> arguments;
+    const Synthesis::CExpression* function;
+    const std::vector<const Synthesis::CExpression*> arguments;
 };
 
 class CJumpCommand : public CStatement {

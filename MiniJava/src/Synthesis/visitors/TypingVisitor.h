@@ -14,23 +14,23 @@ public:
     ~CTypingVisitor() {}
 
     // Visitors for different node types.
-    void Visit( const CConstExpression* expression ) {};
-    void Visit( const CNameExpression* expression ) {};
-    void Visit( const CTempExpression* expression ) {};
-    void Visit( const CBinaryExpression* expression ) {};
-    void Visit( const CMemExpression* expression ) {};
-    void Visit( const CCallExpression* expression ) {};
-    void Visit( const CEseqExpression* expression ) {};
+    void Visit( const IRTree::CConstExpression* expression ) {};
+    void Visit( const IRTree::CNameExpression* expression ) {};
+    void Visit( const IRTree::CTempExpression* expression ) {};
+    void Visit( const IRTree::CBinaryExpression* expression ) {};
+    void Visit( const IRTree::CMemExpression* expression ) {};
+    void Visit( const IRTree::CCallExpression* expression ) {};
+    void Visit( const IRTree::CEseqExpression* expression ) {};
 
-    void Visit( const CExpStatement* statement ) {};
-    void Visit( const CJumpConditionalStatement* statement ) {};
-    void Visit( const CJumpStatement* statement ) {};
-    void Visit( const CLabelStatement* statement ) {};
-    void Visit( const CMoveStatement* statement ) {};
-    void Visit( const CSeqStatement* statement ) {};
+    void Visit( const IRTree::CExpStatement* statement ) {};
+    void Visit( const IRTree::CJumpConditionalStatement* statement ) {};
+    void Visit( const IRTree::CJumpStatement* statement ) {};
+    void Visit( const IRTree::CLabelStatement* statement ) {};
+    void Visit( const IRTree::CMoveStatement* statement ) {};
+    void Visit( const IRTree::CSeqStatement* statement ) {};
 
-    void Visit( const CExpressionList* list ) {};
-    void Visit( const CStatementList* list ) {};
+    void Visit( const IRTree::CExpressionList* list ) {};
+    void Visit( const IRTree::CStatementList* list ) {};
 
     const T* GetNode();
 private:
@@ -38,77 +38,78 @@ private:
 };
 
 template<>
-void CTypingVisitor<CConstExpression>::Visit( const CConstExpression* expression ) {
+void CTypingVisitor<IRTree::CConstExpression>::Visit( const IRTree::CConstExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CNameExpression>::Visit( const CNameExpression* expression ) {
+void CTypingVisitor<IRTree::CNameExpression>::Visit( const IRTree::CNameExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CTempExpression>::Visit( const CTempExpression* expression ) {
+void CTypingVisitor<IRTree::CTempExpression>::Visit( const IRTree::CTempExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CBinaryExpression>::Visit( const CBinaryExpression* expression ) {
+void CTypingVisitor<IRTree::CBinaryExpression>::Visit( const IRTree::CBinaryExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CMemExpression>::Visit( const CMemExpression* expression ) {
+void CTypingVisitor<IRTree::CMemExpression>::Visit( const IRTree::CMemExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CCallExpression>::Visit( const CCallExpression* expression ) {
+void CTypingVisitor<IRTree::CCallExpression>::Visit( const IRTree::CCallExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CEseqExpression>::Visit( const CEseqExpression* expression ) {
+void CTypingVisitor<IRTree::CEseqExpression>::Visit( const IRTree::CEseqExpression* expression ) {
     node = expression;
 }
 
 template<>
-void CTypingVisitor<CExpStatement>::Visit( const CExpStatement* statement ) {
+void CTypingVisitor<IRTree::CExpStatement>::Visit( const IRTree::CExpStatement* statement ) {
     node = statement;
 }
 
 template<>
-void CTypingVisitor<CJumpConditionalStatement>::Visit( const CJumpConditionalStatement* statement ) {
+void CTypingVisitor<IRTree::CJumpConditionalStatement>::Visit( 
+        const IRTree::CJumpConditionalStatement* statement ) {
     node = statement;
 }
 
 template<>
-void CTypingVisitor<CJumpStatement>::Visit( const CJumpStatement* statement ) {
+void CTypingVisitor<IRTree::CJumpStatement>::Visit( const IRTree::CJumpStatement* statement ) {
     node = statement;
 }
 
 template<>
-void CTypingVisitor<CLabelStatement>::Visit( const CLabelStatement* statement ) {
+void CTypingVisitor<IRTree::CLabelStatement>::Visit( const IRTree::CLabelStatement* statement ) {
     node = statement;
 }
 
 template<>
-void CTypingVisitor<CMoveStatement>::Visit( const CMoveStatement* statement ) {
+void CTypingVisitor<IRTree::CMoveStatement>::Visit( const IRTree::CMoveStatement* statement ) {
     node = statement;
 }
 
 template<>
-void CTypingVisitor<CSeqStatement>::Visit( const CSeqStatement* statement ) {
+void CTypingVisitor<IRTree::CSeqStatement>::Visit( const IRTree::CSeqStatement* statement ) {
     node = statement;
 }
 
 template<>
-void CTypingVisitor<CExpressionList>::Visit( const CExpressionList* list ) {
+void CTypingVisitor<IRTree::CExpressionList>::Visit( const IRTree::CExpressionList* list ) {
     node = list;
 }
 
 template<>
-void CTypingVisitor<CStatementList>::Visit( const CStatementList* list ) {
+void CTypingVisitor<IRTree::CStatementList>::Visit( const IRTree::CStatementList* list ) {
     node = list;
 }
 

@@ -68,7 +68,7 @@ void CLabelPattern::Consume( const IRTVT* node ) {
     }
 
     (*dynamic)[*root] = std::make_pair( 0,
-        std::unique_ptr<const CExpreesion>( new Synthesis::CLabelDeclarationCommand(
+        std::unique_ptr<const CCommand>( new Synthesis::CLabelDeclarationCommand(
             root->Label().ToString()
         ) ) );
 }
@@ -445,7 +445,7 @@ void CStoreRegisterPattern::Consume( const IRTVT* node ) {
     const IRTree::CExpression* dest = root->Destination();
     const IRTree::CExpression* source = root->Source();
 
-    const auto destValue = GetTypedNode<CTempExpression>( dest );
+    const auto destValue = GetTypedNode<IRTree::CTempExpression>( dest );
     if( !destValue.IsValid() ) {
         return;
     }
@@ -455,7 +455,7 @@ void CStoreRegisterPattern::Consume( const IRTVT* node ) {
     if( GetDynamicPrice( *root ) > price ) {
         (*dynamic)[*root] = std::make_pair( price, 
             std::unique_ptr<const CStatement>( new CMoveRegisterCommand( 
-                new Synthesis::CTempExpression( destValue->Temp().ToString() ) ,
+                new Synthesis::CTempExpression( destValue->Temporary().ToString() ) ,
                 GetDynamicValue( source )
             ) ) );
     }
@@ -469,18 +469,18 @@ void CCallFunctionPattern::Consume( const IRTVT* node ) {
     }
 
     const IRTree::CExpression* function = root->Function();
-    const std::vector< std::unique_ptr<const CExpression> >& arguments 
-        = root->Arguments().Expressions();
+    const std::vector< std::unique_ptr<const IRTree::CExpression> >& arguments 
+        = root->Arguments()->Expressions();
     
     int price = GetDynamicPrice( function ) + 1;
 
     std::vector<const Synthesis::CExpression*> commandArguments;
     for( unsigned int i = 0; i < arguments.size(); i++ ) {
-        price += GetDynamicPrice( arguments[i] );
-        commandArguments.push_back( GetDynamicValue( arguments[i] ) );
+        price += GetDynamicPrice( arguments[i].get() );
+        commandArguments.push_back( GetDynamicValue( arguments[i].get() ) );
     }
     (*dynamic)[*root] = std::make_pair( price, 
-        std::unique_ptr<const CStatement>( new CCallFunctionCommand(
+        std::unique_ptr<const CExpression>( new CCallFunctionCommand(
             GetDynamicValue( function ), commandArguments) ) );
 }
 
