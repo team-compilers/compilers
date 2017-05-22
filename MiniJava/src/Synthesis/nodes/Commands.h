@@ -222,7 +222,7 @@ private:
 class CConditionalJumpCommand : public CStatement {
 public:
     CConditionalJumpCommand( const CExpression* _leftPart, const CExpression* _rightPart,
-            IRTree::TOperatorType _cmp, std::string _positiveLabelName, std::string _negativeLabelName ) :
+            IRTree::TLogicOperatorType _cmp, std::string _positiveLabelName, std::string _negativeLabelName ) :
         leftPart( _leftPart ),
         rightPart( _rightPart ),
         cmp( _cmp ),
@@ -235,7 +235,7 @@ public:
 private:
     const CExpression* leftPart;
     const CExpression* rightPart;
-    IRTree::TOperatorType cmp;
+    IRTree::TLogicOperatorType cmp;
     std::string positiveLabelName;
     std::string negativeLabelName;
 };

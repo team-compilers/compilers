@@ -485,9 +485,35 @@ void CCallFunctionPattern::Consume( const IRTVT* node ) {
 }
 
 void CJumpPattern::Consume( const IRTVT* node ) {
-    
+    const auto root = GetTypedNode<CJumpStatement>( node );
+
+    if( !root.IsValid() ) {
+        return;
+    }
+
+    std::string targetLabel = root->Target().ToString();
+
+    const int price = 1;
+
+    (*dynamic)[*root] = std::make_pair( price, std::unique_ptr<const CStatement>( new CJumpCommand( targetLabel ) ) );
 }
 
 void CConditionalJumpPattern::Consume( const IRTVT* node ) {
-    
+    const auto root = GetTypedNode<CJumpConditionalStatement>( node );
+
+    if( !root.IsValid() ) {
+        return;
+    }
+
+    const IRTree::CExpression* leftOperand = root->LeftOperand();
+    const IRTree::CExpression* rightOperand = root->RightOperand();
+
+    const int price = GetDynamicPrice( leftOperand ) + GetDynamicPrice( rightOperand ) + 2;
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price, 
+            std::unique_ptr<const CStatement>( new CConditionalJumpCommand( GetDynamicValue( leftOperand ), 
+                GetDynamicValue( rightOperand ), root->Operation(), root->TrueLabel().ToString(), 
+                root->FalseLabel().ToString() ) ) );
+    }
 }
