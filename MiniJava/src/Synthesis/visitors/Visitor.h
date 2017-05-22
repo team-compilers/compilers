@@ -21,7 +21,7 @@ class CConditionalJumpCommand;
 
 class IVisitor {
 public:
-    virtual ~IVisitor() = 0;
+    virtual ~IVisitor() {}
 
     virtual void Visit( const CConditionalJumpCommand* command ) = 0;
     virtual void Visit( const CJumpCommand* command ) = 0;
