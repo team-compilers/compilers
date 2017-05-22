@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <FileUtils.h>
 
 #include <AST/visitors/DotLangVisitor.h>
 #include <AST/visitors/GenerateCodeVisitor.h>
@@ -122,14 +123,16 @@ void CIrtBuildingPhase::Run() {
     methodTrees = std::move( irtBuilderVisitor.MethodTrees() );
 }
 
-void CIrtBuildingPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+void CIrtBuildingPhase::PrintResults( const std::string& pathOutputDir, const std::string& extension,
         const std::ios_base::openmode& openMode ) {
     const TMethodToIRTMap* methodTreesPtr = MethodTrees();
     for ( auto it = methodTreesPtr->begin(); it != methodTreesPtr->end(); ++it ) {
-        std::string methodName = it->first;
-        methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + methodName + extension, openMode );
-        outputStream << ToDotLanguage( it->first ) << std::endl;
+        const std::string& methodName = it->first;
+        std::string dirPath = JoinPath( pathOutputDir, methodName );
+        CreateDirectory( dirPath );
+
+        std::fstream outputStream( JoinPath( dirPath, "irt" + extension), openMode );
+        outputStream << ToDotLanguage( methodName ) << std::endl;
         outputStream.close();
     }
 }
@@ -162,34 +165,40 @@ void CIrtCanonizationPhase::Run() {
     }
 }
 
-void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
+void CIrtCanonizationPhase::PrintResults( const std::string& pathOutputDir, const std::string& extension,
         const std::ios_base::openmode& openMode ) {
     if ( verbose > 0 ) {
         assert( methodTreesWithoutDoubleCalls );
         for ( auto it = methodTreesWithoutDoubleCalls->begin(); it != methodTreesWithoutDoubleCalls->end(); ++it ) {
-            std::string methodName = it->first;
-            methodName[0] = std::toupper( methodName[0] );
-            std::fstream outputStream( pathOutputFile + "1_" + methodName + extension, openMode );
-            outputStream << ToDotLanguage( methodTreesWithoutDoubleCalls.get(), it->first ) << std::endl;
+            const std::string& methodName = it->first;
+            std::string dirPath = JoinPath( pathOutputDir, methodName );
+            CreateDirectory( dirPath );
+
+            std::fstream outputStream( JoinPath( dirPath, "irtCanon1" + extension ), openMode );
+            outputStream << ToDotLanguage( methodTreesWithoutDoubleCalls.get(), methodName ) << std::endl;
             outputStream.close();
         }
 
         assert( methodTreesWithoutEseqs );
         for ( auto it = methodTreesWithoutEseqs->begin(); it != methodTreesWithoutEseqs->end(); ++it ) {
-            std::string methodName = it->first;
-            methodName[0] = std::toupper( methodName[0] );
-            std::fstream outputStream( pathOutputFile + "2_" + methodName + extension, openMode );
-            outputStream << ToDotLanguage( methodTreesWithoutEseqs.get(), it->first ) << std::endl;
+            const std::string& methodName = it->first;
+            std::string dirPath = JoinPath( pathOutputDir, methodName );
+            CreateDirectory( dirPath );
+
+            std::fstream outputStream( JoinPath( dirPath, "irtCanon2" + extension ), openMode );
+            outputStream << ToDotLanguage( methodTreesWithoutEseqs.get(), methodName ) << std::endl;
             outputStream.close();
         }
     }
 
     assert( methodTreesLinearized );
     for ( auto it = methodTreesLinearized->begin(); it != methodTreesLinearized->end(); ++it ) {
-        std::string methodName = it->first;
-        methodName[0] = std::toupper( methodName[0] );
-        std::fstream outputStream( pathOutputFile + "_" + methodName + extension, openMode );
-        outputStream << ToDotLanguage( methodTreesLinearized.get(), it->first ) << std::endl;
+        const std::string& methodName = it->first;
+        std::string dirPath = JoinPath( pathOutputDir, methodName );
+        CreateDirectory( dirPath );
+
+        std::fstream outputStream( JoinPath( dirPath, "irtCanon" + extension ), openMode );
+        outputStream << ToDotLanguage( methodTreesLinearized.get(), methodName ) << std::endl;
         outputStream.close();
     }
 }
@@ -199,7 +208,8 @@ const TMethodToIRTMap* CIrtCanonizationPhase::MethodTrees() const {
     return methodTreesLinearized.get();
 }
 
-std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName ) {
+std::string CIrtCanonizationPhase::ToDotLanguage( const TMethodToIRTMap* methodTreesMap,
+                                                  const std::string& methodName ) {
     assert( methodTreesMap );
     IRTree::CDotLangVisitor dotLangVisitor( verbose > 1 );
     methodTreesMap->at( methodName )->Accept( &dotLangVisitor );
@@ -214,14 +224,34 @@ void CTraceFormationPhase::Run() {
     }
 }
 
-void CTraceFormationPhase::PrintResults( const std::string& pathOutputFile, const std::string& extension,
-        const std::ios_base::openmode& openMode ) {
-    // no printable results
+void CTraceFormationPhase::PrintResults( const std::string& pathOutputDir,
+                                         const std::string& extension,
+                                         const std::ios_base::openmode& openMode ) {
+    assert( methodTraces );
+    for ( auto traceIt = methodTraces->begin(); traceIt != methodTraces->end(); ++traceIt ) {
+        const std::string& methodName = traceIt->first;
+        std::string dirPath = JoinPath( JoinPath( pathOutputDir, methodName ), "blocks");
+        CreateDirectory( dirPath );
+
+        int i = 0;
+        for ( auto blockIt = traceIt->second->begin(); blockIt != traceIt->second->end(); ++blockIt, ++i ) {
+            std::fstream outputStream( JoinPath( dirPath, std::to_string( i ) + extension ), openMode );
+            outputStream << ToDotLanguage( blockIt->get() ) << std::endl;
+            outputStream.close();
+        }
+    }
 }
 
 const TMethodToTraceMap* CTraceFormationPhase::MethodTraces() const {
     assert( methodTraces );
     return methodTraces.get();
+}
+
+std::string CTraceFormationPhase::ToDotLanguage( const Synthesis::CBlock* block ) {
+    assert( block );
+    IRTree::CDotLangVisitor dotLangVisitor( verbose > 1 );
+    block->Accept( &dotLangVisitor );
+    return dotLangVisitor.GetTraversalInDotLanguage();
 }
 
 void CTilingFormationPhase::Run() {
@@ -237,9 +267,8 @@ void CTilingFormationPhase::Run() {
     }
 }
 
-void CTilingFormationPhase::PrintResults(
-        const std::string& pathOutputFile,
-        const std::string& extension,
-        const std::ios_base::openmode& openMode ) {
+void CTilingFormationPhase::PrintResults( const std::string& pathOutputFile,
+                                          const std::string& extension,
+                                          const std::ios_base::openmode& openMode ) {
     
 }

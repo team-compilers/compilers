@@ -1,0 +1,13 @@
+digraph {
+	ordering = out;
+	ExpMem0 -> ExpMem1;
+	ExpMem1 -> ExpTemp1;
+	ExpTemp1 -> "Temp1: $fp";
+	StatLabel0 -> "Label0: Element@GetAge";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	ExpTemp0 -> "Temp0: $rv";
+	StatMove0 -> ExpTemp0;
+	StatMove0 -> ExpMem0;
+}
+

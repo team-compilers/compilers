@@ -1,0 +1,14 @@
+digraph {
+	ordering = out;
+	ExpConst1 -> "Value1: 0";
+	StatCJump0 -> NE0;
+	StatCJump0 -> ExpConst0;
+	StatCJump0 -> ExpConst1;
+	StatCJump0 -> "Label1: L1";
+	StatCJump0 -> "Label2: L2";
+	StatLabel0 -> "Label0: L0";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatCJump0;
+	ExpConst0 -> "Value0: 1";
+}
+

@@ -1,0 +1,17 @@
+digraph {
+	ordering = out;
+	ExpMem0 -> ExpBinary0;
+	ExpMem1 -> ExpTemp1;
+	ExpTemp1 -> "Temp1: $fp";
+	ExpConst0 -> "Value0: 8";
+	StatLabel0 -> "Label0: List@GetNext";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	ExpTemp0 -> "Temp0: $rv";
+	ExpBinary0 -> ExpMem1;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst0;
+	StatMove0 -> ExpTemp0;
+	StatMove0 -> ExpMem0;
+}
+

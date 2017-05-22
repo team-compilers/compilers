@@ -1,0 +1,25 @@
+digraph {
+	ordering = out;
+	ExpConst1 -> "Value1: 8";
+	ExpBinary2 -> ExpTemp2;
+	ExpBinary2 -> Plus2;
+	ExpBinary2 -> ExpConst1;
+	StatMove0 -> ExpTemp0;
+	StatMove0 -> ExpBinary0;
+	ExpBinary0 -> ExpMem0;
+	ExpBinary0 -> Plus1;
+	ExpBinary0 -> ExpMem1;
+	ExpTemp0 -> "Temp0: $rv";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatLabel0 -> "Label0: Fac@Sum";
+	ExpMem1 -> ExpBinary2;
+	ExpConst0 -> "Value0: 4";
+	ExpTemp2 -> "Temp2: $fp";
+	ExpTemp1 -> "Temp1: $fp";
+	ExpBinary1 -> ExpTemp1;
+	ExpBinary1 -> Plus0;
+	ExpBinary1 -> ExpConst0;
+	ExpMem0 -> ExpBinary1;
+}
+

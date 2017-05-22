@@ -1,0 +1,15 @@
+digraph {
+	ordering = out;
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpConst0;
+	StatJump0 -> "Label1: L2";
+	ExpConst0 -> "Value0: 1";
+	StatLabel0 -> "Label0: L0";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatList0 -> StatJump0;
+	ExpTemp0 -> "Temp0: $fp";
+	ExpMem0 -> ExpMem1;
+	ExpMem1 -> ExpTemp0;
+}
+

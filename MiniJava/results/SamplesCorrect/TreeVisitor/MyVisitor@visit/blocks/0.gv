@@ -1,0 +1,43 @@
+digraph {
+	ordering = out;
+	ExpConst1 -> "Value1: 0";
+	ExpName0 -> "Label1: Tree@GetHas_Right";
+	StatMove2 -> ExpTemp3;
+	StatMove2 -> ExpMem0;
+	ExpTemp2 -> "Temp2: T8";
+	ExpTemp3 -> "Temp3: T9";
+	StatLabel0 -> "Label0: MyVisitor@visit";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatList0 -> StatMove1;
+	StatList0 -> StatMove2;
+	StatList0 -> StatMove3;
+	StatList0 -> StatCJump0;
+	ExpTemp0 -> "Temp0: T10";
+	StatMove0 -> ExpTemp0;
+	StatMove0 -> ExpTemp1;
+	ExpTemp7 -> "Temp7: T9";
+	ExpTemp4 -> "Temp4: $fp";
+	ExpCall0 -> ExpTemp6;
+	ExpCall0 -> ExpList0;
+	ExpBinary0 -> ExpTemp4;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst0;
+	ExpConst0 -> "Value0: 4";
+	ExpMem0 -> ExpBinary0;
+	ExpTemp1 -> "Temp1: T0";
+	ExpTemp5 -> "Temp5: T10";
+	StatMove3 -> ExpTemp5;
+	StatMove3 -> ExpCall0;
+	ExpTemp6 -> "Temp6: T8";
+	ExpList0 -> ExpTemp7;
+	StatMove1 -> ExpTemp2;
+	StatMove1 -> ExpName0;
+	ExpTemp8 -> "Temp8: T0";
+	StatCJump0 -> NE0;
+	StatCJump0 -> ExpTemp8;
+	StatCJump0 -> ExpConst1;
+	StatCJump0 -> "Label2: L85";
+	StatCJump0 -> "Label3: L86";
+}
+

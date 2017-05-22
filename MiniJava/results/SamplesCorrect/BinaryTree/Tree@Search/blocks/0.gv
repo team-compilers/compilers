@@ -1,0 +1,39 @@
+digraph {
+	ordering = out;
+	StatJump0 -> "Label1: L67";
+	ExpConst4 -> "Value4: 0";
+	ExpBinary2 -> ExpTemp3;
+	ExpBinary2 -> Plus2;
+	ExpBinary2 -> ExpConst3;
+	ExpTemp3 -> "Temp3: $fp";
+	ExpConst3 -> "Value3: 20";
+	ExpConst2 -> "Value2: 1";
+	StatMove1 -> ExpMem2;
+	StatMove1 -> ExpConst2;
+	ExpConst1 -> "Value1: 24";
+	ExpBinary0 -> ExpTemp0;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst0;
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpMem1;
+	ExpMem2 -> ExpBinary1;
+	ExpTemp0 -> "Temp0: $fp";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatList0 -> StatMove1;
+	StatList0 -> StatMove2;
+	StatList0 -> StatJump0;
+	StatLabel0 -> "Label0: Tree@Search";
+	StatMove2 -> ExpMem3;
+	StatMove2 -> ExpConst4;
+	ExpTemp2 -> "Temp2: $fp";
+	ExpMem3 -> ExpBinary2;
+	ExpBinary1 -> ExpTemp2;
+	ExpBinary1 -> Plus1;
+	ExpBinary1 -> ExpConst1;
+	ExpMem0 -> ExpBinary0;
+	ExpConst0 -> "Value0: 16";
+	ExpMem1 -> ExpTemp1;
+	ExpTemp1 -> "Temp1: $fp";
+}
+

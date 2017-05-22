@@ -1,0 +1,44 @@
+digraph {
+	ordering = out;
+	ExpMem3 -> ExpBinary3;
+	ExpTemp1 -> "Temp1: $fp";
+	ExpBinary1 -> ExpTemp1;
+	ExpBinary1 -> Plus1;
+	ExpBinary1 -> ExpConst2;
+	ExpMem0 -> ExpBinary0;
+	ExpConst1 -> "Value1: 1";
+	StatMove1 -> ExpMem1;
+	StatMove1 -> ExpConst3;
+	ExpConst0 -> "Value0: 20";
+	ExpMem1 -> ExpBinary1;
+	StatLabel0 -> "Label0: L4";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatMove0;
+	StatList0 -> StatMove1;
+	StatList0 -> StatMove2;
+	StatList0 -> StatJump0;
+	ExpTemp0 -> "Temp0: $fp";
+	StatJump0 -> "Label1: L5";
+	ExpMem2 -> ExpBinary2;
+	ExpConst5 -> "Value5: 4";
+	ExpBinary3 -> ExpMem4;
+	ExpBinary3 -> Plus3;
+	ExpBinary3 -> ExpConst5;
+	StatMove0 -> ExpMem0;
+	StatMove0 -> ExpConst1;
+	ExpConst2 -> "Value2: 28";
+	ExpConst3 -> "Value3: 1";
+	ExpTemp2 -> "Temp2: $fp";
+	StatMove2 -> ExpMem2;
+	StatMove2 -> ExpMem3;
+	ExpBinary2 -> ExpTemp2;
+	ExpBinary2 -> Plus2;
+	ExpBinary2 -> ExpConst4;
+	ExpConst4 -> "Value4: 24";
+	ExpBinary0 -> ExpTemp0;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst0;
+	ExpMem4 -> ExpTemp3;
+	ExpTemp3 -> "Temp3: $fp";
+}
+

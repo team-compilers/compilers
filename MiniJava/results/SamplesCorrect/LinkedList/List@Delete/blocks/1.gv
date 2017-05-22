@@ -1,0 +1,19 @@
+digraph {
+	ordering = out;
+	ExpConst1 -> "Value1: 0";
+	ExpMem0 -> ExpBinary0;
+	ExpBinary0 -> ExpTemp0;
+	ExpBinary0 -> Plus0;
+	ExpBinary0 -> ExpConst0;
+	ExpConst0 -> "Value0: 20";
+	StatLabel0 -> "Label0: L30";
+	StatList0 -> StatLabel0;
+	StatList0 -> StatCJump0;
+	StatCJump0 -> NE0;
+	StatCJump0 -> ExpMem0;
+	StatCJump0 -> ExpConst1;
+	StatCJump0 -> "Label1: L32";
+	StatCJump0 -> "Label2: L33";
+	ExpTemp0 -> "Temp0: $fp";
+}
+

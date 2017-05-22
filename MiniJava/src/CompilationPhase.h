@@ -20,6 +20,7 @@ public:
     virtual void PrintResults(
         const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) = 0;
+
 protected:
     int verbose;
 };
@@ -39,6 +40,7 @@ public:
     const ASTree::CProgram* GetAstRoot() const;
     std::string ToDotLanguage();
     std::string ToCode();
+
 private:
     // parameters
     std::string pathInputFile;
@@ -60,6 +62,7 @@ public:
 
     const CSymbolTable* GetSymbolTable() const;
     const std::vector<CCompilationError>* GetErrors() const;
+
 private:
     // parameters
     const ASTree::CProgram* astRoot;
@@ -81,6 +84,7 @@ public:
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     const std::vector<CCompilationError>* GetErrors() const;
+
 private:
     // parameters
     const ASTree::CProgram* astRoot;
@@ -107,6 +111,7 @@ public:
     const TMethodToIRTMap* MethodTrees() const;
 
     std::string ToDotLanguage( const std::string& methodName );
+
 private:
     //parameters
     const ASTree::CProgram* astRoot;
@@ -132,6 +137,7 @@ public:
     const TMethodToIRTMap* MethodTrees() const;
 
     std::string ToDotLanguage( const TMethodToIRTMap* methodTreesMap, const std::string& methodName );
+
 private:
     // parameters
     const TMethodToIRTMap* methodTrees;
@@ -155,6 +161,9 @@ public:
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
     const TMethodToTraceMap* MethodTraces() const;
+
+    std::string ToDotLanguage( const Synthesis::CBlock* block );
+
 private:
     // parameters
     const TMethodToIRTMap* methodTrees;

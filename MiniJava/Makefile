@@ -15,8 +15,8 @@ TRG=minijava
 # -g -O0 used for debug
 FLAGS=-std=c++11 -I"src/" -I"src/grammar" -g -O0
 SRC=$(FLEX_TRG) $(BISON_TRG_CPP) $(MAIN) \
-	src/Compiler.cpp src/CompilationPhase.cpp src/AST/nodes/NodeNames.cpp \
-	src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp \
+        src/Compiler.cpp src/CompilationPhase.cpp src/FileUtils.cpp \
+        src/AST/nodes/NodeNames.cpp src/AST/visitors/Visitor.cpp src/AST/visitors/DotLangVisitor.cpp \
 	src/AST/visitors/TypeCheckerVisitor.cpp src/AST/visitors/GenerateCodeVisitor.cpp \
 	src/AST/visitors/SymbolTableBuilderVisitor.cpp src/AST/visitors/IrtBuilderVisitor.cpp \
 	src/BisonParser.cpp src/CompilationError.cpp src/SymbolTable.cpp \
