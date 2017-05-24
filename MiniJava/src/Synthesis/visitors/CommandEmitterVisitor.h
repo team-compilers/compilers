@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Synthesis/visitors/Visitor.h>
+#include <Synthesis/AssemblyCommand.h>
 
 namespace Synthesis {
 
@@ -25,7 +26,8 @@ public:
     void Visit( const CMoveCommand* expression ) override;
     void Visit( const CNullExpression* expression ) override;
 private:
-
+    std::string lastRegisterValue;
+    std::vector<CAssemblyCommand> code;
 };
 
 }; // Synthesis

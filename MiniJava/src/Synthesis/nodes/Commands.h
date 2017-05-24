@@ -161,6 +161,9 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    const CExpression* Destination() const { return destination; }
+    const CExpression* Source() const { return source; }
+
 private:
     const CExpression* destination;
     const CExpression* source;
@@ -174,6 +177,9 @@ public:
         source( _source ) {}
 
     ~CMoveRegisterCommand() {}
+
+    const CTempExpression* Destination() const { return destination; }
+    const CExpression* Source() const { return source; } 
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 private:
