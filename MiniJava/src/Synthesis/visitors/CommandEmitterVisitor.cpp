@@ -37,7 +37,7 @@ void CCommandEmitterVisitor::Visit( const CMoveRegisterCommand* command )
     destination->Accept( this );
     std::string destinationRegister = lastRegisterValue;
 
-    code.push_back( CAssemblyCommand( "MOV " + sourceRegister + "," + destinationRegister, 
+    code.push_back( CAssemblyCommand( "MOV " + destinationRegister + "," + sourceRegister, 
         {sourceRegister, destinationRegister} ) );
 }
 
@@ -55,32 +55,131 @@ void CCommandEmitterVisitor::Visit( const CTempExpression* expression )
 
 void CCommandEmitterVisitor::Visit( const CAddCommand* expression ) 
 {
+    const CExpression* leftOperand = expression->LeftOperand();
+    const CExpression* rightOperand = expression->RightOperand();
 
+    leftOperand->Accept( this );
+    std::string leftRegister = lastRegisterValue;
+    rightOperand->Accept( this );
+    std::string rightRegister = lastRegisterValue;
+
+    std::string resultRegister = CAssemblyCommand::NewRegister();
+
+    code.push_back( CAssemblyCommand( "MOV " + resultRegister + "," + leftRegister, 
+        { leftRegister, resultRegister } ) );
+    code.push_back( CAssemblyCommand( "ADD " + resultRegister + "," + rightRegister,
+        { resultRegister, rightRegister } ) );
+
+    lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CAddConstCommand* expression ) 
+void CCommandEmitterVisitor::Visit( const CAddConstCommand* passedExpression ) 
 {
-    
+    const CExpression* expression = passedExpression->Expression();
+    const int constant = passedExpression->Constant();
+
+    expression->Accept( this );
+    std::string expressionRegister = lastRegisterValue;
+
+    std::string resultRegister = CAssemblyCommand::NewRegister();
+
+    code.push_back( CAssemblyCommand( "MOV " + resultRegister + "," + expressionRegister,
+        { expressionRegister, resultRegister } ) );
+    code.push_back( CAssemblyCommand( "ADD " + resultRegister + "," + std::to_string( constant ) ,
+        { resultRegister } ) );
+
+    lastRegisterValue = resultRegister;
 }
 
 void CCommandEmitterVisitor::Visit( const CSubCommand* expression ) 
 {
+    const CExpression* leftOperand = expression->LeftOperand();
+    const CExpression* rightOperand = expression->RightOperand();
 
+    leftOperand->Accept( this );
+    std::string leftRegister = lastRegisterValue;
+    rightOperand->Accept( this );
+    std::string rightRegister = lastRegisterValue;
+
+    std::string resultRegister = CAssemblyCommand::NewRegister();
+
+    code.push_back( CAssemblyCommand( "MOV " + resultRegister + "," + leftRegister, 
+        { leftRegister, resultRegister } ) );
+    code.push_back( CAssemblyCommand( "SUB " + resultRegister + "," + rightRegister,
+        { resultRegister, rightRegister } ) );
+
+    lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CSubConstCommand* expression )
+void CCommandEmitterVisitor::Visit( const CSubConstCommand* passedExpression )
 {
+    const CExpression* expression = passedExpression->Expression();
+    const int constant = passedExpression->Constant();
 
+    expression->Accept( this );
+    std::string expressionRegister = lastRegisterValue;
+
+    std::string resultRegister = CAssemblyCommand::NewRegister();
+
+    code.push_back( CAssemblyCommand( "MOV " + resultRegister + "," + expressionRegister, 
+        { expressionRegister, resultRegister } ) );
+    code.push_back( CAssemblyCommand( "SUB " + resultRegister + "," + std::to_string( constant ),
+        { resultRegister } ) );
+
+    lastRegisterValue = resultRegister;
 }
 
 void CCommandEmitterVisitor::Visit( const CMultCommand* expression ) 
 {
+    const CExpression* leftOperand = expression->LeftOperand();
+    const CExpression* rightOperand = expression->RightOperand();
 
+    leftOperand->Accept( this );
+    std::string leftRegister = lastRegisterValue;
+    rightOperand->Accept( this );
+    std::string rightRegister = lastRegisterValue;
+
+    std::string resultRegister = CAssemblyCommand::NewRegister();
+
+    // http://www.felixcloutier.com/x86/MUL.html
+    code.push_back( CAssemblyCommand( "MOV AL," + leftRegister,
+        { leftRegister } ) );
+    code.push_back( CAssemblyCommand( "DIV " + rightRegister,
+        { rightRegister } ) );
+    code.push_back( CAssemblyCommand( "MOV " + resultRegister + ",AX",
+        { resultRegister } ) );
+
+    lastRegisterValue = resultRegister;
 }
 
 void CCommandEmitterVisitor::Visit( const CDivCommand* expression ) 
 {
+    const CExpression* leftOperand = expression->LeftOperand();
+    const CExpression* rightOperand = expression->RightOperand();
 
+    leftOperand->Accept( this );
+    std::string leftRegister = lastRegisterValue;
+    rightOperand->Accept( this );
+    std::string rightRegister = lastRegisterValue;
+
+    std::string resultRegister = CAssemblyCommand::NewRegister();
+
+    // http://www.felixcloutier.com/x86/DIV.html
+    code.push_back( CAssemblyCommand( "MOV AX," + leftRegister, { leftRegister } ) );
+    code.push_back( CAssemblyCommand( "DIV " + rightRegister, { rightRegister } ) );
+    code.push_back( CAssemblyCommand( "MOV " + resultRegister + ",AL",
+        { resultRegister } ) );
+
+    lastRegisterValue = resultRegister;
+}
+
+void CCommandEmitterVisitor::Visit( const CNullExpression* expression ) 
+{
+    std::string reg = CAssemblyCommand::NewRegister();
+
+    code.push_back( CAssemblyCommand( "MOV " + reg + ",0", {reg} ) );
+    
+    lastRegisterValue = reg;
 }
 
 void CCommandEmitterVisitor::Visit( const CLoadCommand* expression ) 
@@ -94,11 +193,6 @@ void CCommandEmitterVisitor::Visit( const CStoreCommand* expression )
 }
 
 void CCommandEmitterVisitor::Visit( const CMoveCommand* expression ) 
-{
-
-}
-
-void CCommandEmitterVisitor::Visit( const CNullExpression* expression ) 
 {
 
 }
