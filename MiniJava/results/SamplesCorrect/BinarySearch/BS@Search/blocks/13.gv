@@ -1,10 +1,10 @@
 digraph {
 	ordering = out;
-	ExpConst1 -> "Value1: 1";
+	ExpConst1 -> "Value1: 0";
 	ExpMem0 -> ExpBinary0;
-	StatJump0 -> "Label1: L26";
-	ExpConst0 -> "Value0: 24";
-	StatLabel0 -> "Label0: L24";
+	StatJump0 -> "Label1: L32";
+	ExpConst0 -> "Value0: 36";
+	StatLabel0 -> "Label0: L30";
 	StatList0 -> StatLabel0;
 	StatList0 -> StatMove0;
 	StatList0 -> StatJump0;
