@@ -1,5 +1,6 @@
 digraph {
 	ordering = out;
+	StatJump0 -> "Label1: epilogue";
 	ExpConst1 -> "Value1: 8";
 	ExpBinary2 -> ExpTemp2;
 	ExpBinary2 -> Plus2;
@@ -12,6 +13,7 @@ digraph {
 	ExpTemp0 -> "Temp0: $rv";
 	StatList0 -> StatLabel0;
 	StatList0 -> StatMove0;
+	StatList0 -> StatJump0;
 	StatLabel0 -> "Label0: Fac@Sum";
 	ExpMem1 -> ExpBinary2;
 	ExpConst0 -> "Value0: 4";

@@ -27,8 +27,10 @@ digraph {
 	StatList0 -> StatMove1;
 	StatList0 -> StatMove2;
 	StatList0 -> StatMove3;
+	StatList0 -> StatJump0;
 	ExpMem7 -> ExpTemp4;
 	ExpTemp0 -> "Temp0: $fp";
+	StatJump0 -> "Label1: epilogue";
 	ExpMem2 -> ExpBinary0;
 	ExpMem0 -> ExpMem1;
 	ExpBinary1 -> ExpMem4;

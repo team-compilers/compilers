@@ -47,6 +47,7 @@ digraph {
 	StatList0 -> StatMove9;
 	StatList0 -> StatMove10;
 	StatList0 -> StatMove11;
+	StatList0 -> StatJump0;
 	StatLabel0 -> "Label0: Tree@accept";
 	ExpTemp3 -> "Temp3: T519";
 	ExpTemp2 -> "Temp2: T518";
@@ -81,6 +82,7 @@ digraph {
 	StatMove0 -> ExpTemp1;
 	StatMove8 -> ExpTemp15;
 	StatMove8 -> ExpMem2;
+	StatJump0 -> "Label3: epilogue";
 	ExpCall1 -> ExpTemp18;
 	ExpCall1 -> ExpList1;
 	StatMove2 -> ExpTemp3;

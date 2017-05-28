@@ -1,5 +1,6 @@
 digraph {
 	ordering = out;
+	StatJump0 -> "Label2: epilogue";
 	StatMove17 -> ExpTemp24;
 	StatMove17 -> ExpConst45;
 	ExpConst44 -> "Value44: 5";
@@ -223,6 +224,7 @@ digraph {
 	StatList0 -> StatMove15;
 	StatList0 -> StatMove16;
 	StatList0 -> StatMove17;
+	StatList0 -> StatJump0;
 	ExpConst11 -> "Value11: 4";
 	ExpConst45 -> "Value45: 0";
 	ExpBinary23 -> ExpMem25;

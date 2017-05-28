@@ -52,6 +52,7 @@ digraph {
 	StatList0 -> StatMove11;
 	StatList0 -> StatMove12;
 	StatList0 -> StatExp0;
+	StatList0 -> StatJump0;
 	StatLabel0 -> "Label0: BinarySearch@main";
 	ExpTemp3 -> "Temp3: T14";
 	ExpTemp2 -> "Temp2: T22";
@@ -81,6 +82,7 @@ digraph {
 	ExpConst2 -> "Value2: 20";
 	StatMove9 -> ExpTemp15;
 	StatMove9 -> ExpCall1;
+	StatJump0 -> "Label4: epilogue";
 	ExpCall1 -> ExpTemp16;
 	ExpCall1 -> ExpList1;
 	StatMove2 -> ExpTemp4;

@@ -2,6 +2,7 @@ digraph {
 	ordering = out;
 	ExpList0 -> ExpTemp6;
 	ExpTemp6 -> "Temp6: T19";
+	StatJump0 -> "Label2: epilogue";
 	ExpTemp5 -> "Temp5: T18";
 	StatMove3 -> ExpTemp4;
 	StatMove3 -> ExpCall0;
@@ -19,6 +20,7 @@ digraph {
 	StatList0 -> StatMove2;
 	StatList0 -> StatMove3;
 	StatList0 -> StatExp0;
+	StatList0 -> StatJump0;
 	StatLabel0 -> "Label0: Main@main";
 	ExpTemp3 -> "Temp3: T19";
 	ExpTemp1 -> "Temp1: T17";

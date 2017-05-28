@@ -5,6 +5,7 @@ digraph {
 	StatMove16 -> ExpMem7;
 	ExpTemp29 -> "Temp29: T330";
 	ExpTemp27 -> "Temp27: T328";
+	StatJump0 -> "Label3: epilogue";
 	ExpCall1 -> ExpTemp26;
 	ExpCall1 -> ExpList1;
 	ExpTemp26 -> "Temp26: T327";
@@ -81,6 +82,7 @@ digraph {
 	StatList0 -> StatMove14;
 	StatList0 -> StatMove15;
 	StatList0 -> StatMove16;
+	StatList0 -> StatJump0;
 	ExpTemp19 -> "Temp19: T329";
 	StatMove2 -> ExpTemp4;
 	StatMove2 -> ExpTemp5;
