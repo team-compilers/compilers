@@ -6,8 +6,8 @@
 
 using namespace IRTree;
 
-std::unique_ptr<const Synthesis::CTrace> CTraceFormationVisitor::Trace() {
-    return std::move( std::unique_ptr<const Synthesis::CTrace>( trace.release() ) );
+std::unique_ptr<Synthesis::CTrace> CTraceFormationVisitor::Trace() {
+    return std::move( trace );
 }
 
 /*__________ Expressions __________*/

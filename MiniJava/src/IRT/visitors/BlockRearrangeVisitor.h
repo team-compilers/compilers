@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include <IRT/nodes/NodeNames.h>
 #include <IRT/visitors/Visitor.h>
@@ -8,20 +9,16 @@
 #include <IRT/nodes/Expression.h>
 #include <IRT/nodes/ExpressionList.h>
 #include <IRT/nodes/Statement.h>
-#include <IRT/Label.h>
-
-#include <Synthesis/Trace.h>
 
 namespace IRTree {
 
-class CTraceFormationVisitor : public CVisitor {
+class CBlockRearrangeVisitor : public CVisitor {
 public:
-    CTraceFormationVisitor( bool _verbose = false )
-        : CVisitor( _verbose ), lastVisitedNodeType( TNodeType::OTHER ),
-          trace( new Synthesis::CTrace() ) {}
-    ~CTraceFormationVisitor() {}
+    CBlockRearrangeVisitor( bool _verbose = false ) : CVisitor( _verbose ) {}
+    ~CBlockRearrangeVisitor() {}
 
-    std::unique_ptr<Synthesis::CTrace> Trace();
+    std::string LabelName() const;
+    std::shared_ptr<std::string> JumpTargetLabelName() const;
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
@@ -43,18 +40,8 @@ public:
     void Visit( const CStatementList* list ) override;
 
 private:
-    enum class TNodeType : char {
-        LABEL, JUMP, OTHER
-    };
-
-    void finalizeBlockAndSave(std::unique_ptr<Synthesis::CBlock> block,
-                              TNodeType previousNodeType,
-                              bool isLastBlock);
-    std::unique_ptr<Synthesis::CBlock> startNewBlock();
-
-    std::shared_ptr<CLabel> lastVisitedLabel;
-    TNodeType lastVisitedNodeType;
-    std::unique_ptr<Synthesis::CTrace> trace;
+    std::string labelName;
+    std::shared_ptr<std::string> jumpTargetLabelName;
 };
 
 }

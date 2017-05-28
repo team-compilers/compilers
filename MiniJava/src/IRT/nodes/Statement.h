@@ -166,7 +166,7 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    std::unique_ptr<const CStatement> Clone() const;
+    std::unique_ptr<const CStatement> Clone() const override;
 
 private:
     std::vector<std::unique_ptr<const CStatement>> statements;
