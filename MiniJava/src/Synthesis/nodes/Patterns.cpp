@@ -13,7 +13,7 @@ CPattern::ValidAndValue<const T*> CPattern::GetTypedNode( const IRTVT* node ) {
     CTypingVisitor<T> visitor;
     node->Accept( &visitor );
     const T* pointer = visitor.GetNode();
-    return ValidAndValue<const T*>( pointer == nullptr, pointer );
+    return ValidAndValue<const T*>( pointer != nullptr, pointer );
 }
 
 int CPattern::GetDynamicPrice( const IRTVT* node ) {
@@ -54,7 +54,7 @@ void CTempPattern::Consume( const IRTVT* node ) {
         return;
     }
 
-    (*dynamic)[*root] = std::make_pair( 0, 
+    (*dynamic)[*root] = std::make_pair( 1,
         std::unique_ptr<const CExpression>( new Synthesis::CTempExpression(  
             root->Temporary().ToString()
         ) ) );
@@ -67,7 +67,7 @@ void CLabelPattern::Consume( const IRTVT* node ) {
         return;
     }
 
-    (*dynamic)[*root] = std::make_pair( 0,
+    (*dynamic)[*root] = std::make_pair( 1,
         std::unique_ptr<const CCommand>( new Synthesis::CLabelDeclarationCommand(
             root->Label().ToString()
         ) ) );
@@ -442,11 +442,11 @@ void CCallFunctionPattern::Consume( const IRTVT* node ) {
         return;
     }
 
-    const IRTree::CExpression* function = root->Function();
+    const auto function = GetTypedNode<CNameExpression>( root->Function() );
     const std::vector< std::unique_ptr<const IRTree::CExpression> >& arguments 
         = root->Arguments()->Expressions();
     
-    int price = GetDynamicPrice( function ) + 1;
+    int price = 1;
 
     std::vector<const Synthesis::CExpression*> commandArguments;
     for( unsigned int i = 0; i < arguments.size(); i++ ) {
@@ -455,7 +455,7 @@ void CCallFunctionPattern::Consume( const IRTVT* node ) {
     }
     (*dynamic)[*root] = std::make_pair( price, 
         std::unique_ptr<const CExpression>( new CCallFunctionCommand(
-            GetDynamicValue( function ), commandArguments) ) );
+            function->Label().ToString(), commandArguments) ) );
 }
 
 void CJumpPattern::Consume( const IRTVT* node ) {
@@ -482,7 +482,7 @@ void CConditionalJumpPattern::Consume( const IRTVT* node ) {
     const IRTree::CExpression* leftOperand = root->LeftOperand();
     const IRTree::CExpression* rightOperand = root->RightOperand();
 
-    const int price = GetDynamicPrice( leftOperand ) + GetDynamicPrice( rightOperand ) + 2;
+    const int price = GetDynamicPrice( leftOperand ) + GetDynamicPrice( rightOperand ) + 1;
 
     if( GetDynamicPrice( *root ) > price ) {
         (*dynamic)[*root] = std::make_pair( price, 

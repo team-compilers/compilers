@@ -213,7 +213,7 @@ private:
 
 class CCallFunctionCommand : public CExpression {
 public:
-    CCallFunctionCommand( const CExpression* _function, 
+    CCallFunctionCommand( const std::string& _function,
             const std::vector<const CExpression*>& _arguments ) :
         function( _function ),
         arguments( _arguments ) {}
@@ -222,11 +222,11 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
-    const CExpression* Function() const { return function; }
+    const std::string& Function() const { return function; }
     const std::vector<const Synthesis::CExpression*>& Arguments() const { return arguments; }
 
 private:
-    const Synthesis::CExpression* function;
+    const std::string function;
     const std::vector<const Synthesis::CExpression*> arguments;
 };
 

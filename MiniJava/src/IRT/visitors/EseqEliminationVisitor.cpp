@@ -225,14 +225,7 @@ void CEseqEliminationVisitor::Visit( const CCallExpression* expression ) {
     expression->Arguments()->Accept( this );
     std::unique_ptr<const CExpressionList> argumentsListCanonized = std::move( lastExpressionList );
 
-    CTemp tempFunctionExpression = CTemp();
     std::vector<std::unique_ptr<const CStatement>> newStatements;
-    newStatements.emplace_back( new CMoveStatement(
-        std::move( std::unique_ptr<const CExpression> (
-            new CTempExpression( tempFunctionExpression )
-        ) ),
-        std::move( functionCanonized )
-    ) );
     CExpressionList* tempExpressionList = new CExpressionList();
 
     const std::vector<std::unique_ptr<const CExpression>>& argumentsCanonized = argumentsListCanonized->Expressions();
@@ -280,8 +273,10 @@ void CEseqEliminationVisitor::Visit( const CCallExpression* expression ) {
                 std::move( suffixStatement ),
                 std::move( std::unique_ptr<const CExpression>(
                     new CCallExpression(
-                        new CTempExpression( tempFunctionExpression ),
-                        tempExpressionList
+                        std::move( functionCanonized ),
+                        std::move( std::unique_ptr<const CExpressionList>(
+                            tempExpressionList
+                        ) )
                     )
                 ) )
             )
