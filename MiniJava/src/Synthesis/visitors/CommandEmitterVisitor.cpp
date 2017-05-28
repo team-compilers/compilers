@@ -1,6 +1,7 @@
 #include <Synthesis/visitors/CommandEmitterVisitor.h>
 #include <Synthesis/AssemblyCommand.h>
 #include <Synthesis/nodes/Commands.h>
+#include <string>
 
 using namespace Synthesis;
 

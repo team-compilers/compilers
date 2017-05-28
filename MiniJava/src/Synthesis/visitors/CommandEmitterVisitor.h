@@ -2,6 +2,8 @@
 
 #include <Synthesis/visitors/Visitor.h>
 #include <Synthesis/AssemblyCommand.h>
+#include <vector>
+#include <string>
 
 namespace Synthesis {
 
