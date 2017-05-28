@@ -4,6 +4,7 @@
 #include <Synthesis/AssemblyCommand.h>
 #include <vector>
 #include <string>
+#include <map>
 
 namespace Synthesis {
 
@@ -30,6 +31,8 @@ public:
 private:
     std::string lastRegisterValue;
     std::vector<CAssemblyCommand> code;
+
+    std::map<std::string, std::string> tempToRegister;
 };
 
 }; // Synthesis

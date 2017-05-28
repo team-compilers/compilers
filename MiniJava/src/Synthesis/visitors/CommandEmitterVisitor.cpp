@@ -43,7 +43,14 @@ void CCommandEmitterVisitor::Visit( const CMoveRegisterCommand* command )
 
 void CCommandEmitterVisitor::Visit( const CTempExpression* expression )
 {
+    std::string tempValue = expression->Name();
 
+    auto pos = tempToRegister.find( tempValue );
+    if( pos == tempToRegister.end() ) {
+        tempToRegister[tempValue] = CAssemblyCommand::NewRegister();
+    }
+
+    lastRegisterValue = tempToRegister[tempValue];
 }
 
 void CCommandEmitterVisitor::Visit( const CAddCommand* expression ) 
@@ -53,7 +60,7 @@ void CCommandEmitterVisitor::Visit( const CAddCommand* expression )
 
 void CCommandEmitterVisitor::Visit( const CAddConstCommand* expression ) 
 {
-
+    
 }
 
 void CCommandEmitterVisitor::Visit( const CSubCommand* expression ) 

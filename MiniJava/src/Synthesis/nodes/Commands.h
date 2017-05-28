@@ -27,6 +27,9 @@ public:
     ~CTempExpression() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const std::string& Name() const { return name; }
+
 private:
     std::string name;
 };
@@ -38,6 +41,9 @@ public:
     ~CAddCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const CExpression* LeftOperand() const { return leftOperand; }
+    const CExpression* RightOperand() const { return rightOperand; }
 
 private:
     const CExpression* leftOperand;
@@ -53,6 +59,9 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    const CExpression* Expression() const { return expression; }
+    int Constant() const { return constant; }
+
 private:
     const CExpression* expression;
     const int constant;
@@ -65,6 +74,10 @@ public:
     ~CSubCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const CExpression* LeftOperand() const { return leftOperand; }
+    const CExpression* RightOperand() const { return rightOperand; }
+
 private:
     const CExpression* leftOperand;
     const CExpression* rightOperand;
@@ -79,6 +92,9 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    const CExpression* Expression() const { return expression; }
+    int Constant() const { return constant; }
+
 private:
     const CExpression* expression;
     const int constant;
@@ -92,6 +108,9 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    const CExpression* LeftOperand() const { return leftOperand; }
+    const CExpression* RightOperand() const { return rightOperand; }
+
 private:
     const CExpression* leftOperand;
     const CExpression* rightOperand;
@@ -104,6 +123,9 @@ public:
     ~CDivCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const CExpression* LeftOperand() const { return leftOperand; }
+    const CExpression* RightOperand() const { return rightOperand; }
 
 private:
     const CExpression* leftOperand;
@@ -120,6 +142,9 @@ public:
     ~CLoadCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const CExpression* Source() const { return source; }
+    int Offset() const { return offset; }
 
 private:
     const CExpression* source;
@@ -143,6 +168,10 @@ public:
     ~CStoreCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const CExpression* Destination() const { return destination; }
+    int Offset() const { return offset; }
+    const CExpression* Source() const { return source; }
 
 private:
     const CExpression* destination;
@@ -193,7 +222,10 @@ public:
         name( _name ) {} 
     ~CLabelDeclarationCommand() {}
 
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }    
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const std::string& Name() const { return name; }
+
 private:
     std::string name;
 };
@@ -209,6 +241,9 @@ public:
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
 
+    const CExpression* Function() const { return function; }
+    const std::vector<const Synthesis::CExpression*>& Arguments() const { return arguments; }
+
 private:
     const Synthesis::CExpression* function;
     const std::vector<const Synthesis::CExpression*> arguments;
@@ -220,6 +255,8 @@ public:
     ~CJumpCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const std::string& LabelName() const { return labelName; }
 
 private:
     std::string labelName;
@@ -237,6 +274,12 @@ public:
     ~CConditionalJumpCommand() {}
 
     void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+
+    const CExpression* LeftPart() const { return leftPart; }
+    const CExpression* RightPart() const { return rightPart; }
+    IRTree::TLogicOperatorType Cmp() const { return cmp; }
+    const std::string& PositiveLabelName() const { return positiveLabelName; }
+    const std::string& NegativeLabelName() const { return negativeLabelName; }
 
 private:
     const CExpression* leftPart;
