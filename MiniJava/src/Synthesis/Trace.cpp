@@ -1,6 +1,7 @@
 #include <Synthesis/Trace.h>
 
 #include <IRT/visitors/BlockRearrangeVisitor.h>
+#include <IRT/visitors/TraceFormationVisitor.h>
 
 #include <unordered_map>
 #include <vector>
@@ -38,7 +39,8 @@ std::unique_ptr<CTrace> Synthesis::RearrangeBlocks( std::unique_ptr<CTrace> trac
                 reinterpret_cast<const IRTree::CStatementList*>( statementPtr.release() )
             );
             traceArranged->push_back( std::move( blockPtr ) );
-            if ( !blockIndexToJumpTarget[blockIndex] ) {
+            if ( !blockIndexToJumpTarget[blockIndex] ||
+                 *blockIndexToJumpTarget.at( blockIndex ) == IRTree::CTraceFormationVisitor::EndBlockLabelName() ) {
                 blockIndex = -1;
             } else {
                 blockIndex = blockNameToIndex.at( *blockIndexToJumpTarget[blockIndex] );

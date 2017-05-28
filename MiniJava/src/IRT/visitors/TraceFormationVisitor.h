@@ -22,6 +22,7 @@ public:
     ~CTraceFormationVisitor() {}
 
     std::unique_ptr<Synthesis::CTrace> Trace();
+    static std::string EndBlockLabelName();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;
