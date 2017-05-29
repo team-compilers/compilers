@@ -42,7 +42,9 @@ digraph {
 	StatList0 -> StatMove6;
 	StatList0 -> StatMove7;
 	StatList0 -> StatMove8;
+	StatList0 -> StatJump0;
 	ExpTemp0 -> "Temp0: $fp";
+	StatJump0 -> "Label2: epilogue";
 	ExpTemp17 -> "Temp17: $rv";
 	ExpCall0 -> ExpTemp12;
 	ExpCall0 -> ExpList0;

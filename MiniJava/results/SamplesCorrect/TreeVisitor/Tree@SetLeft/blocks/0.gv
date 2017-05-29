@@ -1,5 +1,6 @@
 digraph {
 	ordering = out;
+	StatJump0 -> "Label1: epilogue";
 	ExpConst2 -> "Value2: 1";
 	ExpTemp2 -> "Temp2: $rv";
 	StatMove1 -> ExpTemp2;
@@ -10,6 +11,7 @@ digraph {
 	StatList0 -> StatLabel0;
 	StatList0 -> StatMove0;
 	StatList0 -> StatMove1;
+	StatList0 -> StatJump0;
 	StatLabel0 -> "Label0: Tree@SetLeft";
 	ExpMem1 -> ExpTemp0;
 	ExpConst0 -> "Value0: 16";

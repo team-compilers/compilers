@@ -21,7 +21,8 @@ public:
           trace( new Synthesis::CTrace() ) {}
     ~CTraceFormationVisitor() {}
 
-    std::unique_ptr<const Synthesis::CTrace> Trace();
+    std::unique_ptr<Synthesis::CTrace> Trace();
+    static std::string EndBlockLabelName();
 
     // Visitors for different node types.
     void Visit( const CConstExpression* expression ) override;

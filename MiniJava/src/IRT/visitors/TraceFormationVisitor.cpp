@@ -6,8 +6,12 @@
 
 using namespace IRTree;
 
-std::unique_ptr<const Synthesis::CTrace> CTraceFormationVisitor::Trace() {
-    return std::move( std::unique_ptr<const Synthesis::CTrace>( trace.release() ) );
+std::unique_ptr<Synthesis::CTrace> CTraceFormationVisitor::Trace() {
+    return std::move( trace );
+}
+
+std::string CTraceFormationVisitor::EndBlockLabelName() {
+    return "epilogue";
 }
 
 /*__________ Expressions __________*/
@@ -175,12 +179,13 @@ void CTraceFormationVisitor::Visit( const CStatementList* list ) {
 void CTraceFormationVisitor::finalizeBlockAndSave( std::unique_ptr<Synthesis::CBlock> block,
                                                    TNodeType previousNodeType,
                                                    bool isLastBlock ) {
-    if ( previousNodeType != TNodeType::JUMP && !isLastBlock ) {
+    if ( previousNodeType != TNodeType::JUMP ) {
+        CLabel jumpLabel = isLastBlock ? CLabel( EndBlockLabelName() ) : *lastVisitedLabel;
         block->Add(
-            new CJumpStatement( *lastVisitedLabel )
+            new CJumpStatement( jumpLabel )
         );
-        lastVisitedLabel = nullptr;
     }
+    lastVisitedLabel = nullptr;
     trace->push_back( std::move( std::unique_ptr<const Synthesis::CBlock>( block.release() ) ) );
 }
 

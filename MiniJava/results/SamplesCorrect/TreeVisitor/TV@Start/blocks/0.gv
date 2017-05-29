@@ -128,6 +128,7 @@ digraph {
 	StatMove127 -> ExpName22;
 	ExpTemp303 -> "Temp303: T214";
 	ExpTemp255 -> "Temp255: T309";
+	StatJump0 -> "Label32: epilogue";
 	ExpTemp307 -> "Temp307: T328";
 	ExpTemp254 -> "Temp254: T307";
 	ExpList21 -> ExpTemp253;
@@ -801,6 +802,7 @@ digraph {
 	StatList0 -> StatMove169;
 	StatList0 -> StatExp9;
 	StatList0 -> StatMove170;
+	StatList0 -> StatJump0;
 	ExpTemp316 -> "Temp316: T333";
 	ExpBinary23 -> ExpConst34;
 	ExpBinary23 -> Times1;

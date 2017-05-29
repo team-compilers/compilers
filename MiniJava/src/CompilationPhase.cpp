@@ -16,6 +16,7 @@
 #include <IRT/visitors/EseqEliminationVisitor.h>
 #include <IRT/visitors/TraceFormationVisitor.h>
 
+#include <Synthesis/Trace.h>
 #include <Synthesis/visitors/TilingVisitor.h>
 
 #include <BisonParser.h>
@@ -220,7 +221,12 @@ void CTraceFormationPhase::Run() {
     for ( auto it = methodTrees->begin(); it != methodTrees->end(); ++it ) {
         IRTree::CTraceFormationVisitor traceVisitor( verbose > 1 );
         it->second->Accept( &traceVisitor );
-        methodTraces->emplace( it->first, std::move( traceVisitor.Trace() ) );
+
+        std::unique_ptr<Synthesis::CTrace> trace = traceVisitor.Trace();
+        trace = Synthesis::RearrangeBlocks( std::move( trace ) );
+        std::unique_ptr<Synthesis::CTrace> traceConst( trace.release() );
+
+        methodTraces->emplace( it->first, std::move( traceConst ) );
     }
 }
 

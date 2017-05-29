@@ -1,43 +1,8 @@
 digraph {
 	ordering = out;
-	ExpConst1 -> "Value1: 0";
-	ExpName0 -> "Label1: Tree@GetHas_Right";
-	StatMove2 -> ExpTemp3;
-	StatMove2 -> ExpMem0;
-	ExpTemp2 -> "Temp2: T114";
-	ExpTemp3 -> "Temp3: T115";
-	StatLabel0 -> "Label0: L31";
+	StatJump0 -> "Label1: L36";
 	StatList0 -> StatLabel0;
-	StatList0 -> StatMove0;
-	StatList0 -> StatMove1;
-	StatList0 -> StatMove2;
-	StatList0 -> StatMove3;
-	StatList0 -> StatCJump0;
-	ExpTemp0 -> "Temp0: T116";
-	StatMove0 -> ExpTemp0;
-	StatMove0 -> ExpTemp1;
-	ExpTemp7 -> "Temp7: T115";
-	ExpTemp4 -> "Temp4: $fp";
-	ExpCall0 -> ExpTemp6;
-	ExpCall0 -> ExpList0;
-	ExpBinary0 -> ExpTemp4;
-	ExpBinary0 -> Plus0;
-	ExpBinary0 -> ExpConst0;
-	ExpConst0 -> "Value0: 20";
-	ExpMem0 -> ExpBinary0;
-	ExpTemp1 -> "Temp1: T97";
-	ExpTemp5 -> "Temp5: T116";
-	StatMove3 -> ExpTemp5;
-	StatMove3 -> ExpCall0;
-	ExpTemp6 -> "Temp6: T114";
-	ExpList0 -> ExpTemp7;
-	StatMove1 -> ExpTemp2;
-	StatMove1 -> ExpName0;
-	ExpTemp8 -> "Temp8: T97";
-	StatCJump0 -> NE0;
-	StatCJump0 -> ExpTemp8;
-	StatCJump0 -> ExpConst1;
-	StatCJump0 -> "Label2: L21";
-	StatCJump0 -> "Label3: L22";
+	StatList0 -> StatJump0;
+	StatLabel0 -> "Label0: L33";
 }
 
