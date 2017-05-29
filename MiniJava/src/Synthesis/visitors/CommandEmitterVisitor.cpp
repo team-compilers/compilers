@@ -221,7 +221,7 @@ void CCommandEmitterVisitor::Visit( const CLoadCommand* expression ) {
 
     std::string targetRegister = lastRegisterValue;
 
-    code.push_back( CAssemblyCommand( "MOV " + targetRegister + "," + "(%" + addressRegister + ")", {targetRegister, addressRegister} ) );
+    code.push_back( CAssemblyCommand( "MOV " + targetRegister + "," + "[" + addressRegister + "]", {targetRegister, addressRegister} ) );
     lastRegisterValue = targetRegister;
 }
 
@@ -240,5 +240,5 @@ void CCommandEmitterVisitor::Visit( const CStoreCommand* expression ) {
     code.push_back( CAssemblyCommand( "MOV " + addressRegister + "," + destinationRegister, {addressRegister, destinationRegister} ) );
     code.push_back( CAssemblyCommand( "ADD " + addressRegister + "," + std::to_string(offset), {addressRegister} ) );
 
-    code.push_back( CAssemblyCommand( "MOV (%" + destinationRegister + ")," + sourceRegister, {destinationRegister, sourceRegister} ) );
+    code.push_back( CAssemblyCommand( "MOV [" + destinationRegister + "]," + sourceRegister, {destinationRegister, sourceRegister} ) );
 }
