@@ -13,7 +13,6 @@ class CMultCommand;
 class CDivCommand;
 class CLoadCommand;
 class CStoreCommand;
-class CMoveCommand;
 class CNullExpression;
 class CTempExpression;
 class CMoveRegisterCommand;
@@ -41,7 +40,6 @@ public:
     virtual void Visit( const CDivCommand* expression ) = 0;
     virtual void Visit( const CLoadCommand* expression ) = 0;
     virtual void Visit( const CStoreCommand* expression ) = 0;
-    virtual void Visit( const CMoveCommand* expression ) = 0;
     virtual void Visit( const CNullExpression* expression ) = 0;
     virtual void Visit( const CExpStatementCommand* statement ) = 0;
 };

@@ -7,28 +7,23 @@ using namespace Synthesis;
 
 int CAssemblyCommand::registerCounter = 0;
 
-void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) 
-{
+void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
 
 }
 
-void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) 
-{
+void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) {
 
 }
 
-void CCommandEmitterVisitor::Visit( const CCallFunctionCommand* command )
-{
+void CCommandEmitterVisitor::Visit( const CCallFunctionCommand* command ) {
 
 }
 
-void CCommandEmitterVisitor::Visit( const CLabelDeclarationCommand* command )
-{
+void CCommandEmitterVisitor::Visit( const CLabelDeclarationCommand* command ) {
 
 }
 
-void CCommandEmitterVisitor::Visit( const CMoveRegisterCommand* command ) 
-{
+void CCommandEmitterVisitor::Visit( const CMoveRegisterCommand* command ) {
     const CExpression* source = command->Source();
     const CExpression* destination = command->Destination();
 
@@ -41,8 +36,7 @@ void CCommandEmitterVisitor::Visit( const CMoveRegisterCommand* command )
         {sourceRegister, destinationRegister} ) );
 }
 
-void CCommandEmitterVisitor::Visit( const CTempExpression* expression )
-{
+void CCommandEmitterVisitor::Visit( const CTempExpression* expression ) {
     std::string tempValue = expression->Name();
 
     auto pos = tempToRegister.find( tempValue );
@@ -53,8 +47,7 @@ void CCommandEmitterVisitor::Visit( const CTempExpression* expression )
     lastRegisterValue = tempToRegister[tempValue];
 }
 
-void CCommandEmitterVisitor::Visit( const CAddCommand* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CAddCommand* expression ) {
     const CExpression* leftOperand = expression->LeftOperand();
     const CExpression* rightOperand = expression->RightOperand();
 
@@ -73,8 +66,7 @@ void CCommandEmitterVisitor::Visit( const CAddCommand* expression )
     lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CAddConstCommand* passedExpression ) 
-{
+void CCommandEmitterVisitor::Visit( const CAddConstCommand* passedExpression ) {
     const CExpression* expression = passedExpression->Expression();
     const int constant = passedExpression->Constant();
 
@@ -91,8 +83,7 @@ void CCommandEmitterVisitor::Visit( const CAddConstCommand* passedExpression )
     lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CSubCommand* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CSubCommand* expression ) {
     const CExpression* leftOperand = expression->LeftOperand();
     const CExpression* rightOperand = expression->RightOperand();
 
@@ -111,8 +102,7 @@ void CCommandEmitterVisitor::Visit( const CSubCommand* expression )
     lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CSubConstCommand* passedExpression )
-{
+void CCommandEmitterVisitor::Visit( const CSubConstCommand* passedExpression ) {
     const CExpression* expression = passedExpression->Expression();
     const int constant = passedExpression->Constant();
 
@@ -129,8 +119,7 @@ void CCommandEmitterVisitor::Visit( const CSubConstCommand* passedExpression )
     lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CMultCommand* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CMultCommand* expression ) {
     const CExpression* leftOperand = expression->LeftOperand();
     const CExpression* rightOperand = expression->RightOperand();
 
@@ -152,8 +141,7 @@ void CCommandEmitterVisitor::Visit( const CMultCommand* expression )
     lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CDivCommand* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CDivCommand* expression ) {
     const CExpression* leftOperand = expression->LeftOperand();
     const CExpression* rightOperand = expression->RightOperand();
 
@@ -173,8 +161,7 @@ void CCommandEmitterVisitor::Visit( const CDivCommand* expression )
     lastRegisterValue = resultRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CNullExpression* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CNullExpression* expression ) {
     std::string reg = CAssemblyCommand::NewRegister();
 
     code.push_back( CAssemblyCommand( "MOV " + reg + ",0", {reg} ) );
@@ -182,8 +169,7 @@ void CCommandEmitterVisitor::Visit( const CNullExpression* expression )
     lastRegisterValue = reg;
 }
 
-void CCommandEmitterVisitor::Visit( const CLoadCommand* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CLoadCommand* expression ) {
     const int offset = expression->Offset();
     const CExpression* expr = expression->Source();
 
@@ -200,8 +186,7 @@ void CCommandEmitterVisitor::Visit( const CLoadCommand* expression )
     lastRegisterValue = targetRegister;
 }
 
-void CCommandEmitterVisitor::Visit( const CStoreCommand* expression ) 
-{
+void CCommandEmitterVisitor::Visit( const CStoreCommand* expression ) {
     const int offset = expression->Offset();
     const CExpression* source = expression->Source();
     const CExpression* destination = expression->Destination();

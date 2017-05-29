@@ -217,16 +217,3 @@ void CDotLangVisitor::Visit( const CStoreCommand* expression ) {
 
     addEdge( nodeName, valueNodeName );
 }
-
-void CDotLangVisitor::Visit( const CMoveCommand* expression ) {
-    std::string nodeName = generateNodeName( CNodeNames::MOVE_COMMAND );
-    visitedNodeStack.push_back( nodeName );
-
-    expression->Destination()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-
-    expression->Source()->Accept( this );
-    addEdge( nodeName, visitedNodeStack.back() );
-    visitedNodeStack.pop_back();
-}
