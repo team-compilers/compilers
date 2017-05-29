@@ -82,8 +82,8 @@ public:
     void Visit( const CExpressionList* list ) override;
     void Visit( const CStatementList* list ) override;
 
-    const CCommand * Result() {
-        return dynamic[root].second.get();
+    const CCommand* Result() const {
+        return dynamic.at( root ).second.get();
     }
 
 private:

@@ -1,17 +1,22 @@
 #pragma once
 
 #include <Synthesis/visitors/Visitor.h>
-#include <Synthesis/AssemblyCommand.h>
-#include <map>
+#include <sstream>
 #include <string>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace Synthesis {
 
-class CCommandEmitterVisitor : public CVisitor {
+class CDotLangVisitor : public CVisitor {
 public:
     using CVisitor::CVisitor;
-    virtual ~CCommandEmitterVisitor() {}
+    virtual ~CDotLangVisitor() {}
+
+    // Generates a string, representing the last traversal of the tree, in the DOT Language.
+    // The DOT Language is the one supported by GraphViz.
+    std::string GetTraversalInDotLanguage() const;
 
     void Visit( const CConditionalJumpCommand* command ) override;
     void Visit( const CJumpCommand* command ) override;
@@ -27,12 +32,16 @@ public:
     void Visit( const CDivCommand* expression ) override;
     void Visit( const CLoadCommand* expression ) override;
     void Visit( const CStoreCommand* expression ) override;
+    void Visit( const CMoveCommand* expression ) override;
     void Visit( const CNullExpression* expression ) override;
-private:
-    std::string lastRegisterValue;
-    std::vector<CAssemblyCommand> code;
 
-    std::map<std::string, std::string> tempToRegister;
+private:
+    std::unordered_map<std::string, std::vector<std::string>> treeEdges;
+    // used to track the traverse and collect some information
+    std::vector<std::string> visitedNodeStack;
+
+    // Adds edge (nodeFromName; nodeToName) to treeEdges.
+    void addEdge( const std::string& nodeFromName, const std::string& nodeToName );
 };
 
 }; // Synthesis

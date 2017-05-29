@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
 namespace Synthesis {
 
 class CAddCommand;
@@ -46,8 +49,16 @@ public:
     CVisitor( bool _verbose ) : verbose( _verbose ) {}
     virtual ~CVisitor() {}
 
+    // Generates unique id for nodes of one type.
+    int generateNodeNextIndex( const std::string& nodeType );
+
+    // Generates full node name based on the node type and a unique id assigned to the node.
+    std::string generateNodeName( const std::string& nodeTypeName );
+
 protected:
     bool verbose;
+    // used for generating unique node names
+    std::unordered_map<std::string, int> nodeTypeLastUsedIndex;
 };
 
 }

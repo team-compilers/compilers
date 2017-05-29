@@ -187,6 +187,9 @@ public:
     virtual void PrintResults( const std::string& pathOutputFile, const std::string& extension,
         const std::ios_base::openmode& openMode = std::fstream::out ) override;
 
+    const TMethodToCommandsList& Commands() const;
+    std::string ToDotLanguage( const Synthesis::CCommand* tree );
+
 private:
     const TMethodToTraceMap* methodTraces;
 

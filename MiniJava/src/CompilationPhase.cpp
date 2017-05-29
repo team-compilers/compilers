@@ -17,7 +17,9 @@
 #include <IRT/visitors/TraceFormationVisitor.h>
 
 #include <Synthesis/Trace.h>
+#include <Synthesis/visitors/DotLangVisitor.h>
 #include <Synthesis/visitors/TilingVisitor.h>
+#include <Synthesis/nodes/Commands.h>
 
 #include <BisonParser.h>
 
@@ -273,8 +275,31 @@ void CTilingFormationPhase::Run() {
     }
 }
 
-void CTilingFormationPhase::PrintResults( const std::string& pathOutputFile,
+std::string CTilingFormationPhase::ToDotLanguage( const Synthesis::CCommand* tree ) {
+    assert( tree );
+    Synthesis::CDotLangVisitor dotLangVisitor( verbose > 1 );
+    tree->Accept( &dotLangVisitor );
+    return dotLangVisitor.GetTraversalInDotLanguage();
+}
+
+void CTilingFormationPhase::PrintResults( const std::string& pathOutputDir,
                                           const std::string& extension,
                                           const std::ios_base::openmode& openMode ) {
-    
+    for ( auto methodIt = commands.begin(); methodIt != commands.end(); ++methodIt ) {
+        const std::string& methodName = methodIt->first;
+        std::string dirPath = JoinPath( JoinPath( pathOutputDir, methodName ), "commands");
+        CreateDirectory( dirPath );
+
+        int visitorIndex = 0;
+        for ( auto visitorIt = methodIt->second.begin(); visitorIt != methodIt->second.end(); ++visitorIt, ++visitorIndex ) {
+            const Synthesis::CCommand* command = ( *visitorIt )->Result();
+            std::fstream outputStream( JoinPath( dirPath, std::to_string( visitorIndex ) + extension ), openMode );
+            outputStream << ToDotLanguage( command ) << std::endl;
+            outputStream.close();
+        }
+    }
+}
+
+const TMethodToCommandsList& CTilingFormationPhase::Commands() const {
+    return commands;
 }

@@ -39,4 +39,5 @@ void CCompiler::Run() {
 
     CTilingFormationPhase tilingFormation( traceFormation.MethodTraces() );
     tilingFormation.Run();
+    tilingFormation.PrintResults( pathOutputDir, ".gv" );
 }
