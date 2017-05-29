@@ -39,7 +39,6 @@ public:
             CStoreConstMemoryPattern,
             CStoreMemoryLeftOffsetPattern,
             CStoreMemoryRightOffsetPattern,
-            CMoveMemoryPattern,
             CStoreRegisterPattern,
             CCallFunctionPattern,
             CJumpPattern,

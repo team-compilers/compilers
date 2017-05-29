@@ -26,7 +26,6 @@ public:
     void Visit( const CDivCommand* expression ) override;
     void Visit( const CLoadCommand* expression ) override;
     void Visit( const CStoreCommand* expression ) override;
-    void Visit( const CMoveCommand* expression ) override;
     void Visit( const CNullExpression* expression ) override;
 private:
     std::string lastRegisterValue;

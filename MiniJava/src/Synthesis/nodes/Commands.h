@@ -179,25 +179,6 @@ private:
     const CExpression* source;
 };
 
-// M[dst] = M[src]
-class CMoveCommand : public CMemoryStatement {
-public:
-    CMoveCommand( const CExpression* _destination, const CExpression* _source ) :
-        destination( _destination ),
-        source( _source ) {}
-    
-    ~CMoveCommand() {}
-
-    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
-
-    const CExpression* Destination() const { return destination; }
-    const CExpression* Source() const { return source; }
-
-private:
-    const CExpression* destination;
-    const CExpression* source;
-};
-
 // dst = src
 class CMoveRegisterCommand : public CStatement {
 public:

@@ -176,14 +176,6 @@ public:
     void Consume( const IRTVT* node ) override;
 };
 
-// Move commands
-// M[dst] = M[src]
-class CMoveMemoryPattern : public CPattern {
-public:
-    using CPattern::CPattern;
-    void Consume( const IRTVT* node ) override;
-};
-
 // TempK = src
 class CStoreRegisterPattern : public CPattern {
 public:

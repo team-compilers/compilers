@@ -411,32 +411,6 @@ void CStoreMemoryLeftOffsetPattern::Consume( const IRTVT* node ) {
     }
 }
 
-void CMoveMemoryPattern::Consume( const IRTVT* node ) {
-    const auto root = GetTypedNode<CMoveStatement>( node );
-    if( !root.IsValid() ) {
-        return;
-    }
-    const IRTree::CExpression* dest = root->Destination();
-    const IRTree::CExpression* source = root->Source();
-
-    const auto destValue = GetTypedNode<CMemExpression>( dest );
-    const auto sourceValue = GetTypedNode<CMemExpression>( source );
-    if( !destValue.IsValid() || !sourceValue.IsValid() ) {
-        return;
-    }
-
-    const int price = GetDynamicPrice( destValue->Address() ) 
-        + GetDynamicPrice( sourceValue->Address() ) + 1;
-
-    if( GetDynamicPrice( *root ) > price ) {
-        (*dynamic)[*root] = std::make_pair( price,
-            std::unique_ptr<const CStatement>( new CMoveCommand(
-                GetDynamicValue( dest ),
-                GetDynamicValue( source )
-            ) ) );
-    }
-}
-
 void CStoreRegisterPattern::Consume( const IRTVT* node ) {
     const auto root = GetTypedNode<CMoveStatement>( node );
     if( !root.IsValid() ) {

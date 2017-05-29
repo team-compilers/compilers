@@ -184,15 +184,37 @@ void CCommandEmitterVisitor::Visit( const CNullExpression* expression )
 
 void CCommandEmitterVisitor::Visit( const CLoadCommand* expression ) 
 {
+    const int offset = expression->Offset();
+    const CExpression* expr = expression->Source();
 
+    expr->Accept(this);
+    std::string lastRegister = lastRegisterValue;
+
+    std::string addressRegister = CAssemblyCommand::NewRegister();
+    code.push_back( CAssemblyCommand( "MOV " + addressRegister + "," + lastRegister, {addressRegister, lastRegister} ) );
+    code.push_back( CAssemblyCommand( "ADD " + addressRegister + "," + std::to_string(offset), {addressRegister} ) );
+
+    std::string targetRegister = lastRegisterValue;
+
+    code.push_back( CAssemblyCommand( "MOV " + targetRegister + "," + "(%" + addressRegister + ")", {targetRegister, addressRegister} ) );
+    lastRegisterValue = targetRegister;
 }
 
 void CCommandEmitterVisitor::Visit( const CStoreCommand* expression ) 
 {
+    const int offset = expression->Offset();
+    const CExpression* source = expression->Source();
+    const CExpression* destination = expression->Destination();
 
-}
 
-void CCommandEmitterVisitor::Visit( const CMoveCommand* expression ) 
-{
+    destination->Accept(this);
+    std::string destinationRegister = lastRegisterValue;
+    source->Accept(this);
+    std::string sourceRegister = lastRegisterValue;
 
+    std::string addressRegister = CAssemblyCommand::NewRegister();
+    code.push_back( CAssemblyCommand( "MOV " + addressRegister + "," + destinationRegister, {addressRegister, destinationRegister} ) );
+    code.push_back( CAssemblyCommand( "ADD " + addressRegister + "," + std::to_string(offset), {addressRegister} ) );
+
+    code.push_back( CAssemblyCommand( "MOV (%" + destinationRegister + ")," + sourceRegister, {destinationRegister, sourceRegister} ) );
 }
