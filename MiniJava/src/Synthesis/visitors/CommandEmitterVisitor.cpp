@@ -9,6 +9,12 @@ using LOT = IRTree::TLogicOperatorType;
 
 int CAssemblyCommand::registerCounter = 0;
 
+CCommandEmitterVisitor::CCommandEmitterVisitor() :
+    CVisitor( false )
+{
+    tempToRegister["$fp"] = "EBP";
+}
+
 void CCommandEmitterVisitor::Visit( const CExpStatementCommand* statement )  {
     statement->Expression()->Accept( this );
 }

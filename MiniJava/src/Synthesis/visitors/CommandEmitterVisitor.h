@@ -11,6 +11,7 @@ namespace Synthesis {
 class CCommandEmitterVisitor : public CVisitor {
 public:
     using CVisitor::CVisitor;
+    CCommandEmitterVisitor();
     virtual ~CCommandEmitterVisitor() {}
 
     void Visit( const CConditionalJumpCommand* command ) override;
