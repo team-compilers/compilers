@@ -1,0 +1,14 @@
+digraph {
+	ordering = out;
+	Temp6 -> "Temp7: T70";
+	Temp0 -> "Temp1: T71";
+	Temp2 -> "Temp3: T68";
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Call0;
+	Temp4 -> "Temp5: T69";
+	Call0 -> "Function0: Tree@RemoveLeft";
+	Call0 -> Temp2;
+	Call0 -> Temp4;
+	Call0 -> Temp6;
+}
+

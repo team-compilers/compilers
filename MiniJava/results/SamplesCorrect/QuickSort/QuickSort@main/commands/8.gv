@@ -1,0 +1,12 @@
+digraph {
+	ordering = out;
+	Temp0 -> "Temp1: T45";
+	Temp2 -> "Temp3: T43";
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Call0;
+	Temp4 -> "Temp5: T44";
+	Call0 -> "Function0: QS@Start";
+	Call0 -> Temp2;
+	Call0 -> Temp4;
+}
+

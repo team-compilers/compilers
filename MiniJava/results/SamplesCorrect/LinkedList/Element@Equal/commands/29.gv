@@ -1,0 +1,14 @@
+digraph {
+	ordering = out;
+	Temp6 -> "Temp7: T252";
+	Temp0 -> "Temp1: T253";
+	Temp2 -> "Temp3: T250";
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Call0;
+	Temp4 -> "Temp5: T251";
+	Call0 -> "Function0: Element@Compare";
+	Call0 -> Temp2;
+	Call0 -> Temp4;
+	Call0 -> Temp6;
+}
+

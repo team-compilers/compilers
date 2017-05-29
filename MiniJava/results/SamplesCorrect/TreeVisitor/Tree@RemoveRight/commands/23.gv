@@ -1,0 +1,14 @@
+digraph {
+	ordering = out;
+	Load0 -> Add0;
+	Load0 -> "Value1: 0";
+	AddConst0 -> NullExp0;
+	AddConst0 -> "Value0: 16";
+	Temp0 -> "Temp1: T401";
+	Temp2 -> "Temp3: $fp";
+	Add0 -> Temp2;
+	Add0 -> AddConst0;
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Load0;
+}
+

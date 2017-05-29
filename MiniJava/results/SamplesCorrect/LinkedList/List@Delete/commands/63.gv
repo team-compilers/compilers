@@ -1,0 +1,13 @@
+digraph {
+	ordering = out;
+	Temp0 -> "Temp1: T214";
+	AddConst0 -> NullExp0;
+	AddConst0 -> "Value0: 0";
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Sub0;
+	AddConst1 -> NullExp1;
+	AddConst1 -> "Value1: 555";
+	Sub0 -> AddConst0;
+	Sub0 -> AddConst1;
+}
+

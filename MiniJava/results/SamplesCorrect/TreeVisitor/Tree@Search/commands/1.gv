@@ -1,0 +1,18 @@
+digraph {
+	ordering = out;
+	Temp2 -> "Temp3: $fp";
+	Load1 -> Temp2;
+	Load1 -> "Value3: 0";
+	Store0 -> Load0;
+	Store0 -> "Value2: 24";
+	Store0 -> Load1;
+	Store0 -> "Value2: 24";
+	Temp0 -> "Temp1: $fp";
+	Add0 -> Temp0;
+	Add0 -> AddConst0;
+	AddConst0 -> NullExp0;
+	AddConst0 -> "Value0: 24";
+	Load0 -> Add0;
+	Load0 -> "Value1: 0";
+}
+

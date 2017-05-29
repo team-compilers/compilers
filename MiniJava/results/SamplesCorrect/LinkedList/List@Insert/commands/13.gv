@@ -1,0 +1,16 @@
+digraph {
+	ordering = out;
+	Temp8 -> "Temp9: T266";
+	Temp6 -> "Temp7: T265";
+	Temp0 -> "Temp1: T267";
+	Temp2 -> "Temp3: T263";
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Call0;
+	Temp4 -> "Temp5: T264";
+	Call0 -> "Function0: List@InitNew";
+	Call0 -> Temp2;
+	Call0 -> Temp4;
+	Call0 -> Temp6;
+	Call0 -> Temp8;
+}
+

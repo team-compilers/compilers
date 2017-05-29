@@ -1,0 +1,10 @@
+digraph {
+	ordering = out;
+	Call0 -> "Function0: print";
+	Call0 -> Temp2;
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Call0;
+	Temp2 -> "Temp3: T77";
+	Temp0 -> "Temp1: T78";
+}
+

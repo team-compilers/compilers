@@ -1,0 +1,8 @@
+digraph {
+	ordering = out;
+	MoveRegister0 -> Temp0;
+	MoveRegister0 -> Temp2;
+	Temp2 -> "Temp3: T1";
+	Temp0 -> "Temp1: T40";
+}
+

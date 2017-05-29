@@ -1,35 +1,30 @@
 digraph {
 	ordering = out;
-	ExpList0 -> ExpTemp6;
-	ExpTemp6 -> "Temp6: T76";
 	StatJump0 -> "Label2: L20";
-	ExpTemp5 -> "Temp5: T75";
-	StatMove3 -> ExpTemp4;
-	StatMove3 -> ExpCall0;
-	ExpCall0 -> ExpTemp5;
+	ExpTemp5 -> "Temp5: T26";
+	ExpList0 -> ExpTemp4;
+	ExpTemp4 -> "Temp4: T63";
+	ExpCall0 -> ExpName0;
 	ExpCall0 -> ExpList0;
-	ExpTemp4 -> "Temp4: T77";
-	ExpConst0 -> "Value0: 1";
+	ExpName0 -> "Label1: print";
 	StatMove0 -> ExpTemp0;
 	StatMove0 -> ExpTemp1;
-	StatExp0 -> ExpTemp7;
-	ExpTemp0 -> "Temp0: T77";
+	StatExp0 -> ExpTemp5;
+	ExpTemp0 -> "Temp0: T64";
 	StatList0 -> StatLabel0;
 	StatList0 -> StatMove0;
 	StatList0 -> StatMove1;
 	StatList0 -> StatMove2;
-	StatList0 -> StatMove3;
 	StatList0 -> StatExp0;
 	StatList0 -> StatJump0;
 	StatLabel0 -> "Label0: L18";
-	ExpTemp3 -> "Temp3: T76";
-	ExpTemp1 -> "Temp1: T32";
+	ExpConst0 -> "Value0: 1";
+	ExpTemp3 -> "Temp3: T64";
+	ExpTemp1 -> "Temp1: T26";
 	StatMove1 -> ExpTemp2;
-	StatMove1 -> ExpName0;
-	ExpTemp2 -> "Temp2: T75";
+	StatMove1 -> ExpConst0;
+	ExpTemp2 -> "Temp2: T63";
 	StatMove2 -> ExpTemp3;
-	StatMove2 -> ExpConst0;
-	ExpTemp7 -> "Temp7: T32";
-	ExpName0 -> "Label1: print";
+	StatMove2 -> ExpCall0;
 }
 

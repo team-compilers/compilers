@@ -1,0 +1,10 @@
+digraph {
+	ordering = out;
+	AddConst1 -> NullExp1;
+	AddConst1 -> "Value1: 0";
+	CJump0 -> AddConst0;
+	CJump0 -> AddConst1;
+	AddConst0 -> NullExp0;
+	AddConst0 -> "Value0: 1";
+}
+

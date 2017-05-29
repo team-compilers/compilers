@@ -1,0 +1,15 @@
+digraph {
+	ordering = out;
+	AddConst0 -> NullExp0;
+	AddConst0 -> "Value3: 0";
+	Temp0 -> "Temp1: $fp";
+	Load0 -> Load1;
+	Load0 -> "Value1: 0";
+	Load1 -> Temp0;
+	Load1 -> "Value0: 0";
+	Store0 -> Load0;
+	Store0 -> "Value2: 0";
+	Store0 -> AddConst0;
+	Store0 -> "Value2: 0";
+}
+
