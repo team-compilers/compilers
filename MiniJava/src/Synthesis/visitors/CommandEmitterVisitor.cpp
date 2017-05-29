@@ -40,7 +40,7 @@ void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
         assert( false );
     }
 
-    code.push_back( CAssemblyCommand( ret, { leftRegister, rightRegister } ) );
+    code.push_back( CAssemblyCommand( ret + " " + command->PositiveLabelName(), { leftRegister, rightRegister } ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) {
