@@ -2,8 +2,10 @@
 #include <Synthesis/AssemblyCommand.h>
 #include <Synthesis/nodes/Commands.h>
 #include <string>
+#include <cassert>
 
 using namespace Synthesis;
+using LOT = IRTree::TLogicOperatorType;
 
 int CAssemblyCommand::registerCounter = 0;
 
@@ -20,11 +22,29 @@ void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
     right->Accept( this );
     std::string rightRegister = lastRegisterValue;
 
-    code.push_back( CAssemblyCommand( "CJUMP <TODO>", {} ) );
+    auto cmp = command->Cmp();
+    std::string ret;
+    if (cmp == LOT::LOT_EQ) {
+        ret = "JE";
+    } else if (cmp == LOT::LOT_NE) {
+        ret = "JNE";
+    } else if (cmp == LOT::LOT_LT) {
+        ret = "JL";
+    } else if (cmp == LOT::LOT_GT) {
+        ret = "JG";
+    } else if (cmp == LOT::LOT_LE) {
+        ret = "JLE";
+    } else if (cmp == LOT::LOT_GE) {
+        ret = "JGE";
+    } else {
+        assert( false );
+    }
+
+    code.push_back( CAssemblyCommand( ret + " " + command->PositiveLabelName(), { leftRegister, rightRegister } ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) {
-    code.push_back( CAssemblyCommand( "JUMP " + command->LabelName(), {} ) );
+    code.push_back( CAssemblyCommand( "JMP " + command->LabelName(), {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CCallFunctionCommand* command ) {

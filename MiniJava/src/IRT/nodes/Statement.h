@@ -19,6 +19,8 @@ enum class TLogicOperatorType : char {
     LOT_GT,
     LOT_LE,
     LOT_GE,
+    // TODO(dubov94): What is this and why
+    // is it never used?
     LOT_ULT,
     LOT_ULE,
     LOT_UGT,
