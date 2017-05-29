@@ -50,12 +50,12 @@ void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) {
 void CCommandEmitterVisitor::Visit( const CCallFunctionCommand* command ) {
     const std::vector<const CExpression*>& arguments = command->Arguments();
 
-    for(auto it = arguments.begin(); it != arguments.end(); ++it) {
+    for(auto it = arguments.rbegin(); it != arguments.rend(); ++it) {
         (*it)->Accept( this );
-        // TODO: lastRegisterValue
+        code.push_back( CAssemblyCommand( "PUSH", { lastRegisterValue } ));
     }
 
-    code.push_back( CAssemblyCommand( "CALL <TODO>", {} ) );
+    code.push_back( CAssemblyCommand( "CALL " + command->Function(), {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CLabelDeclarationCommand* command ) {
