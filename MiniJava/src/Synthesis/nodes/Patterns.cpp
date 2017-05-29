@@ -491,3 +491,21 @@ void CConditionalJumpPattern::Consume( const IRTVT* node ) {
                 root->FalseLabel().ToString() ) ) );
     }
 }
+
+void CExpStatementPattern::Consume( const IRTVT* node ) {
+    const auto root = GetTypedNode<CExpStatement>( node );
+
+    if ( !root.IsValid() ) {
+        return;
+    }
+
+    const IRTree::CExpression* expression = root->Expression();
+
+    const int price = GetDynamicPrice( expression );
+
+    if( GetDynamicPrice( *root ) > price ) {
+        (*dynamic)[*root] = std::make_pair( price,
+            std::unique_ptr<const CStatement>( new CExpStatementCommand( GetDynamicValue( expression ) ) )
+        );
+    }
+}

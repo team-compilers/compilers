@@ -196,6 +196,13 @@ public:
 };
 
 class CConditionalJumpPattern : public CPattern {
+public:
+    using CPattern::CPattern;
+    void Consume( const IRTVT* node ) override;
+};
+
+class CExpStatementPattern : public CPattern {
+public:
     using CPattern::CPattern;
     void Consume( const IRTVT* node ) override;
 };

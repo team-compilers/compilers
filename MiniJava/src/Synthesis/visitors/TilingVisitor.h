@@ -42,7 +42,8 @@ public:
             CStoreRegisterPattern,
             CCallFunctionPattern,
             CJumpPattern,
-            CConditionalJumpPattern>();
+            CConditionalJumpPattern,
+            CExpStatementPattern>();
     }
     ~CTilingVisitor() {}
 

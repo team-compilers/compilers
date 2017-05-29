@@ -22,6 +22,7 @@ public:
     static const std::string STORE;
     static const std::string MOVE_COMMAND;
     static const std::string NULL_EXP;
+    static const std::string EXP_STAT;
 };
 
 }

@@ -34,6 +34,7 @@ public:
     void Visit( const CStoreCommand* expression ) override;
     void Visit( const CMoveCommand* expression ) override;
     void Visit( const CNullExpression* expression ) override;
+    void Visit( const CExpStatementCommand* statement ) override;
 
 private:
     std::unordered_map<std::string, std::vector<std::string>> treeEdges;

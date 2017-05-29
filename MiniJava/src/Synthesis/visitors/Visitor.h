@@ -21,6 +21,7 @@ class CLabelDeclarationCommand;
 class CCallFunctionCommand;
 class CJumpCommand;
 class CConditionalJumpCommand;
+class CExpStatementCommand;
 
 class IVisitor {
 public:
@@ -42,6 +43,7 @@ public:
     virtual void Visit( const CStoreCommand* expression ) = 0;
     virtual void Visit( const CMoveCommand* expression ) = 0;
     virtual void Visit( const CNullExpression* expression ) = 0;
+    virtual void Visit( const CExpStatementCommand* statement ) = 0;
 };
 
 class CVisitor : public IVisitor {

@@ -270,4 +270,17 @@ private:
     std::string negativeLabelName;
 };
 
+class CExpStatementCommand : public CStatement {
+public:
+    CExpStatementCommand( const CExpression* _expression ) :
+        expression( _expression ) {}
+    ~CExpStatementCommand() {}
+
+    void Accept( IVisitor* visitor ) const override { visitor->Visit( this ); }
+    const CExpression* Expression() const { return expression; }
+
+private:
+    const CExpression* expression;
+};
+
 } // namespace Synthesis

@@ -18,3 +18,4 @@ const std::string CNodeNames::LOAD = "Load";
 const std::string CNodeNames::STORE = "Store";
 const std::string CNodeNames::MOVE_COMMAND = "MoveCommand";
 const std::string CNodeNames::NULL_EXP = "NullExp";
+const std::string CNodeNames::EXP_STAT = "ExpStat";

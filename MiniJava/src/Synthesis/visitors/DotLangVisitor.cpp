@@ -190,6 +190,15 @@ void CDotLangVisitor::Visit( const CNullExpression* expression ) {
     visitedNodeStack.push_back( nodeName );
 }
 
+void CDotLangVisitor::Visit( const CExpStatementCommand* statement ) {
+    std::string nodeName = generateNodeName( CNodeNames::EXP_STAT );
+    visitedNodeStack.push_back( nodeName );
+
+    statement->Expression()->Accept( this );
+    addEdge( nodeName, visitedNodeStack.back() );
+    visitedNodeStack.pop_back();
+}
+
 void CDotLangVisitor::Visit( const CStoreCommand* expression ) {
     std::string nodeName = generateNodeName( CNodeNames::STORE );
     visitedNodeStack.push_back( nodeName );
