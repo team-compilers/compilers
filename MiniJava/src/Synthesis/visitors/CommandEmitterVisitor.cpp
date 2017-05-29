@@ -2,6 +2,7 @@
 #include <Synthesis/AssemblyCommand.h>
 #include <Synthesis/nodes/Commands.h>
 #include <string>
+#include <cassert>
 
 using namespace Synthesis;
 using LOT = IRTree::TLogicOperatorType;
@@ -30,7 +31,7 @@ void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
     } else if (cmp == LOT::LOT_LT) {
         ret = "JL";
     } else if (cmp == LOT::LOT_GT) {
-        ret = "JG"
+        ret = "JG";
     } else if (cmp == LOT::LOT_LE) {
         ret = "JLE";
     } else if (cmp == LOT::LOT_GE) {
@@ -43,7 +44,7 @@ void CCommandEmitterVisitor::Visit( const CConditionalJumpCommand* command ) {
 }
 
 void CCommandEmitterVisitor::Visit( const CJumpCommand* command ) {
-    code.push_back( CAssemblyCommand( "JUMP " + command->LabelName(), {} ) );
+    code.push_back( CAssemblyCommand( "JMP " + command->LabelName(), {} ) );
 }
 
 void CCommandEmitterVisitor::Visit( const CCallFunctionCommand* command ) {
