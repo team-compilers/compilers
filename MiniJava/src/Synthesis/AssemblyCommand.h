@@ -9,7 +9,7 @@ public:
         text( _text ),
         registers( _registers ) {}
     
-    static std::string NewRegister() { return "%r" + std::to_string(registerCounter); }
+    static std::string NewRegister() { return "r" + std::to_string(registerCounter++); }
 
     const std::string& Text() const {
         return text;

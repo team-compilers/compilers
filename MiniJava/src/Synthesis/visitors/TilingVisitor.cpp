@@ -28,6 +28,7 @@ void CTilingVisitor::Visit( const IRTree::CTempExpression* expression ) {
     onNodeEnter( nodeName );
 
     ApplyPatterns(expression);
+    
 
     onNodeExit( nodeName );
 }
